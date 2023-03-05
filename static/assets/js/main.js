@@ -511,7 +511,7 @@
     });
     
     /*-------------------------
-        Create an account toggle
+        Create an base toggle
     --------------------------*/
     $('.checkout-toggle2').on('click', function() {
         $('.open-toggle2').slideToggle(1000);
