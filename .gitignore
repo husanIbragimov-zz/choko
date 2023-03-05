@@ -128,3 +128,12 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea/
+
+#migration files
+apps/about/migrations/
+apps/base/migrations/
+apps/contact/migrations/
+apps/product/migrations/
+apps/order/migrations/
+
+media/
