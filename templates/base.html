@@ -172,7 +172,7 @@
                             {% for cat in categories %}
                                 {% if not cat.parent %}
                                     <li class="has-children">
-                                        <a href="shop-grid-right.html"><i class="wowy-font-cpu"></i>{{ cat }}</a>
+                                        <a href="/shop/?cat={{ cat }}"><i class="wowy-font-cpu"></i>{{ cat }}</a>
                                         <div class="dropdown-menu">
                                             <ul class="mega-menu d-lg-flex">
                                                 <li class="mega-menu-col col">
@@ -182,13 +182,13 @@
                                                                 <li class="col col-6 col-md-4 mega-menu-col">
                                                                     <ul>
                                                                         <li><span><a class="submenu-title"
-                                                                                     href="?cat={{ child }}">{{ child }}</a></span>
+                                                                                     href="/shop/?cat={{ child }}">{{ child }}</a></span>
                                                                         </li>
                                                                         {% for sub_child in categories %}
                                                                             {% if sub_child.parent == child %}
                                                                                 <li>
                                                                                 <a class="dropdown-item nav-link nav_item"
-                                                                                   href="?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                   href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
                                                                             {% endif %}
                                                                         {% endfor %}
                                                                         </li>
@@ -235,7 +235,7 @@
                             <li>
                                 <a href="about/">About</a>
                             </li>
-                            <li><a href="shop/">Shop <i class="fa fa-chevron-down"></i></a>
+                            <li><a href="/shop/">Shop <i class="fa fa-chevron-down"></i></a>
                                 <ul class="sub-menu">
                                     <li><a href="shop-grid-right.html">Shop – Left Sidebar</a></li>
                                     <li><a href="shop-right-sidebar.html">Shop – Right Sidebar</a></li>
@@ -672,16 +672,10 @@
 <script src="{% static 'assets/js/plugins/isotope.js' %}"></script>
 <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
 <script src="{% static 'assets/js/plugins/jquery.vticker-min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
 {#ckeditor#}
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
-        integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
-        crossorigin="anonymous"></script>
 <!-- Template  JS -->
 <script src="{% static 'assets/js/main.js' %}"></script>
 </body>
