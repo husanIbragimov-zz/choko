@@ -74,7 +74,7 @@ class Product(BaseAbstractDate):
     percentage = models.IntegerField(default=0, null=True, blank=True)
     discount = models.IntegerField(default=0, null=True, blank=True)
     view = models.IntegerField(default=0, null=True, blank=True)
-    mid_rate = models.FloatField(default=0.0, null=True, blank=True)
+    mid_rate = models.IntegerField(default=0, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     guarantee = models.CharField(max_length=223, null=True, blank=True)
@@ -85,11 +85,13 @@ class Product(BaseAbstractDate):
     def get_mid_rate(self):
         rates = self.rate_set.all()
         mid = 0
+        pr = 0
         try:
             mid = sum(i.rate for i in rates) / rates.count()
+            pr = 100 * mid // 5
         except ZeroDivisionError:
             pass
-        self.mid_rate = mid
+        self.mid_rate = pr
         self.save()
         return mid
 
