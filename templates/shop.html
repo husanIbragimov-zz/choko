@@ -22,20 +22,18 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="shop-product-right.html">
+                                                <a href="/shop-details/{{ product.id }}">
                                                     <img class="default-img"
-                                                         src="{{ product.product_images.first.image.url }}" alt="">
+                                                         src="{{ product.product_images.first.image.url }}" alt=""
+                                                         width="214px" height="214px">
                                                     <img class="hover-img"
-                                                         src="{{ product.product_images.first.image.url }}" alt="">
+                                                         src="{{ product.product_images.first.image.url }}" alt=""
+                                                         width="214px" height="214px">
                                                 </a>
                                             </div>
                                             <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn hover-up"><i
-                                                        class="far fa-search"></i></a>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                    href="shop-wishlist.html"><i class="far fa-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn hover-up"
-                                                   href="shop-compare.html"><i class="far fa-exchange-alt"></i></a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="{{ product.status }}">{{ product.status }}</span>
@@ -43,13 +41,15 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="shop-grid-right.html">{{ product.category.first }}</a>
+                                                <a href="/shop-details/{{ product.id }}">{{ product.category.first }}</a>
                                             </div>
-                                            <h2><a href="shop-product-right.html">{{ product.title }}</a></h2>
+                                            <h2><a href="/shop-details/{{ product.id }}">{{ product.title }}</a></h2>
                                             <div class="rating-result" title="{{ product.mid_rate }}">
+                                            {% if product.percentage > 0 %}
                                             <span>
                                                 <span>{{ product.percentage }}%</span>
                                             </span>
+                                                {% endif %}
                                             </div>
                                             <div class="product-price">
                                                 {% if product.percentage > 0 %}
@@ -109,10 +109,11 @@
                                         {% for category in categories %}
                                             {% for child in categories %}
                                                 {% if child.parent == category %}
-                                            <li class="cat-item text-muted"><a href="shop-grid-right.html">{{ child }}</a>
-                                            ({{ child.product_set.count }})
+                                                    <li class="cat-item text-muted">
+                                                    <a href="shop-grid-right.html">{{ child }}</a>
+                                                    ({{ child.product_set.count }})
                                                 {% endif %}
-                                                {% endfor %}
+                                            {% endfor %}
                                         {% endfor %}
 
                                         </li>
@@ -131,7 +132,7 @@
                                             <img src="{{ last_3_product.product_images.first.image.url }}" alt="#">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="shop-product-detail.html">{{ last_3_product.title }}</a></h5>
+                                            <h5><a href="/shop-details/{{ last_3_product.id }}">{{ last_3_product.title }}</a></h5>
                                             <div class="product-price">
                                                 {% if last_3_product.percentage > 0 %}
 
@@ -161,7 +162,7 @@
                                             <img src="{{ top_rate_product.product_images.first.image.url }}" alt="#">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="shop-product-detail.html">{{ top_rate_product.title }}</a></h5>
+                                            <h5><a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title }}</a></h5>
                                             <div class="product-price">
                                                 {% if top_rate_product.percentage > 0 %}
 

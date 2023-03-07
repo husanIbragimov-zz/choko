@@ -1,8 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.db.models import Avg
+from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate
+from colorfield.fields import ColorField
 
 
 class Advertisement(BaseAbstractDate):
@@ -25,8 +28,8 @@ class Category(MPTTModel, BaseAbstractDate):
     is_active = models.BooleanField(default=True)
 
     class MPTTMeta:
-        verbose_name = 'Kitob'
-        verbose_name_plural = 'Kitoblar'
+        verbose_name = 'Kategoriya'
+        verbose_name_plural = 'Kategoriyalar'
         order_insertion_by = ['title']
 
     def __str__(self):
@@ -42,18 +45,18 @@ class Banner(BaseAbstractDate):
         return self.title
 
 
-class Tag(BaseAbstractDate):
-    title = models.CharField(max_length=223)
-
-    def __str__(self):
-        return self.title
-
-
 class Brand(BaseAbstractDate):
     title = models.CharField(max_length=223)
 
     def __str__(self):
         return self.title
+
+
+class Color(BaseAbstractDate):
+    name = ColorField(default='#FF0000')
+
+    def __str__(self):
+        return self.name
 
 
 class Product(BaseAbstractDate):
@@ -74,26 +77,29 @@ class Product(BaseAbstractDate):
     percentage = models.IntegerField(default=0, null=True, blank=True)
     discount = models.IntegerField(default=0, null=True, blank=True)
     view = models.IntegerField(default=0, null=True, blank=True)
-    mid_rate = models.IntegerField(default=0, null=True, blank=True)
+    # mid_rate = models.IntegerField(default=0, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True)
-    guarantee = models.CharField(max_length=223, null=True, blank=True)
+    # guarantee = models.CharField(max_length=223, null=True, blank=True)
     availability = models.IntegerField(default=0, null=True, blank=True)
+    has_size = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
 
     @property
-    def get_mid_rate(self):
-        rates = self.rate_set.all()
-        mid = 0
-        pr = 0
-        try:
-            mid = sum(i.rate for i in rates) / rates.count()
-            pr = 100 * mid // 5
-        except ZeroDivisionError:
-            pass
-        self.mid_rate = pr
-        self.save()
-        return mid
+    def mid_rate(self):
+        result = Rate.objects.filter(product=self.id).aggregate(avarage=Avg("rate"))
+        if result['avarage']:
+            return round(result['avarage'], 1)
+        else:
+            return 0.0
+
+    @property
+    def mid_rate_percent(self):
+        result = Rate.objects.filter(product=self.id).aggregate(avarage=Avg("rate"))
+        if result['avarage']:
+            percent = result['avarage'] * 100 / 5
+            return percent
+        else:
+            return 0.0
 
     @property
     def get_discount_price(self):
@@ -109,6 +115,15 @@ class Product(BaseAbstractDate):
             return self.title
         return f'{self.id}'
 
+    def image_tag(self):
+        if self.product_images.all().first().image.url is not None:
+            return mark_safe('<img src="{}" height="80"/>'.format(self.product_images.all().first().image.url))
+        else:
+            return ""
+
+    image_tag.short_description = 'Mahsulot rasmi'
+    # image_tag.allow_tags = True
+
 
 class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
@@ -117,6 +132,15 @@ class ProductImage(BaseAbstractDate):
 
     def __str__(self):
         return f'Image of {self.product}'
+
+
+class AdditionalInfo(BaseAbstractDate):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='additional_info')
+    title = models.CharField(max_length=255)
+    description = RichTextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Rate(BaseAbstractDate):
@@ -129,9 +153,13 @@ class Rate(BaseAbstractDate):
         (5, 5),
     )
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_rate")
     rate = models.IntegerField(choices=RATE, default=0)
     comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'rate of {self.user}'
+
+    @property
+    def rate_percent(self):
+        return round(self.rate * 100 / 5, 1)

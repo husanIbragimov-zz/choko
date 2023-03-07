@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Wowy - HTML eCommerce + Admin Template</title>
+    <title>Chocco</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -109,11 +109,11 @@
                                 <ul>
                                     <li>
                                         <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="wowy"
-                                                                                   src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}"></a>
+                                            <a href="shop-details.html"><img alt="wowy"
+                                                                             src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}"></a>
                                         </div>
                                         <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Apple Watch Serial 7</a></h4>
+                                            <h4><a href="shop-details.html">Apple Watch Serial 7</a></h4>
                                             <h3><span>1 × </span>$800.00</h3>
                                         </div>
                                         <div class="shopping-cart-delete">
@@ -122,11 +122,11 @@
                                     </li>
                                     <li>
                                         <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="wowy"
-                                                                                   src="assets/imgs/shop/thumbnail-1.jpg"></a>
+                                            <a href="shop-details.html"><img alt="wowy"
+                                                                             src="assets/imgs/shop/thumbnail-1.jpg"></a>
                                         </div>
                                         <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
+                                            <h4><a href="shop-details.html">Macbook Pro 2022</a></h4>
                                             <h3><span>1 × </span>$3200.00</h3>
                                         </div>
                                         <div class="shopping-cart-delete">
@@ -159,7 +159,7 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative main-nav">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="{% static 'assets/imgs/theme/logo-white.pngmenu-banner-wrap' %}"
+                    <a href="index.html"><img src="{% static 'assets/imgs/theme/logo-white.png' %}"
                                               alt="logo"></a>
                 </div>
                 <div class="main-categori-wrap d-none d-lg-block">
@@ -225,46 +225,15 @@
                     <nav>
                         <ul>
                             <li><a class="active" href="/">Home</a>
-                                {#                                <ul class="sub-menu">#}
-                                {#                                    <li><a href="index.html">Home 1</a></li>#}
-                                {#                                    <li><a href="index-2.html">Home 2</a></li>#}
-                                {#                                    <li><a href="index-3.html">Home 3</a></li>#}
-                                {#                                    <li><a href="index-4.html">Home 4</a></li>#}
-                                {#                                </ul>#}
                             </li>
                             <li>
                                 <a href="about/">About</a>
                             </li>
-                            <li><a href="/shop/">Shop <i class="fa fa-chevron-down"></i></a>
-                                <ul class="sub-menu">
-                                    <li><a href="shop-grid-right.html">Shop – Left Sidebar</a></li>
-                                    <li><a href="shop-right-sidebar.html">Shop – Right Sidebar</a></li>
-                                    <li><a href="#">Single Product Layout <i class="fa fa-chevron-right"></i></a>
-                                        <ul class="level-menu">
-                                            <li><a href="shop-product-right.html">List – Left Sidebar</a></li>
-                                            <li><a href="shop-product-details-right-sidebar.html">List – Right
-                                                Sidebar</a></li>
-                                            <li><a href="shop-product-details-no-sidebar.html">List – No Sidebar</a>
-                                            </li>
-                                            <li><a href="shop-product-details-tab-left-sidebar.html">Tabs – Left
-                                                Sidebar</a></li>
-                                            <li><a href="shop-product-details-tab-right-sidebar.html">Tabs – Right
-                                                Sidebar</a></li>
-                                            <li><a href="shop-product-details-tab-no-sidebar.html">Tabs – No Sidebar</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="shop-filter.html">Shop – Filter</a></li>
-                                    <li><a href="shop-wishlist.html">Wishlist</a></li>
-                                    <li><a href="shop-cart.html">Shopping Cart</a></li>
-                                    <li><a href="shop-checkout.html">Checkout</a></li>
-                                    <li><a href="shop-compare.html">Compare</a></li>
-                                </ul>
+                            <li><a href="/shop/">Shop</a>
                             </li>
                             <li>
                                 <a href="page-contact.html">Contact</a>
                             </li>
-                            <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
 
                             <li><a href="page-account.html">My Account</a></li>
 
@@ -278,24 +247,24 @@
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
                             <a href="shop-wishlist.html">
-                                <img alt="wowy" src="assets/imgs/theme/icons/icon-heart-white.svg">
+                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-heart-white.svg">
                                 <span class="pro-count white">4</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="shop-cart.html">
-                                <img alt="wowy" src="assets/imgs/theme/icons/icon-cart-white.svg">
+                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-cart-white.svg">
                                 <span class="pro-count white">02</span>
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                 <ul>
                                     <li>
                                         <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="wowy"
-                                                                                   src="assets/imgs/shop/thumbnail-3.jpg"></a>
+                                            <a href="shop-details.html"><img alt="wowy"
+                                                                             src="{% static '' %}assets/imgs/shop/thumbnail-3.jpg"></a>
                                         </div>
                                         <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Apple Watch Serial 7</a></h4>
+                                            <h4><a href="shop-details.html">Apple Watch Serial 7</a></h4>
                                             <h3><span>1 × </span>$800.00</h3>
                                         </div>
                                         <div class="shopping-cart-delete">
@@ -304,11 +273,11 @@
                                     </li>
                                     <li>
                                         <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="wowy"
-                                                                                   src="assets/imgs/shop/thumbnail-4.jpg"></a>
+                                            <a href="shop-details.html"><img alt="wowy"
+                                                                             src="{% static '' %}assets/imgs/shop/thumbnail-4.jpg"></a>
                                         </div>
                                         <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
+                                            <h4><a href="shop-details.html">Macbook Pro 2022</a></h4>
                                             <h3><span>1 × </span>$3500.00</h3>
                                         </div>
                                         <div class="shopping-cart-delete">
@@ -329,7 +298,7 @@
                         </div>
                         <div class="header-action-icon-2">
                             <a href="page-login-register.html">
-                                <img alt="wowy" src="assets/imgs/theme/icons/icon-user-white.svg">
+                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-user-white.svg">
                             </a>
                         </div>
                         <div class="header-action-icon-2 d-block d-lg-none">
@@ -349,7 +318,7 @@
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="index.html"><img src="assets/imgs/theme/logo-default.png" alt="logo"></a>
+                <a href="index.html"><img src="{% static '' %}assets/imgs/theme/logo-default.png" alt="logo"></a>
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -395,7 +364,7 @@
                             <ul class="dropdown">
                                 <li><a href="index.html">Home 1</a></li>
                                 <li><a href="index-2.html">Home 2</a></li>
-                                <li><a href="index-3.html">Home 3</a></li>
+                                <li><a href="index.html">Home 3</a></li>
                                 <li><a href="index-4.html">Home 4</a></li>
                             </ul>
                         </li>
@@ -403,14 +372,14 @@
                                 href="shop-grid-right.html">shop</a>
                             <ul class="dropdown">
                                 <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
-                                <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                <li><a href="shop.html">Shop Grid – Left Sidebar</a></li>
                                 <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
                                 <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
                                 <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
                                 <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single
                                     Product</a>
                                     <ul class="dropdown">
-                                        <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                        <li><a href="shop-details.html">Product – Right Sidebar</a></li>
                                         <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
                                         <li><a href="shop-product-full.html">Product – No sidebar</a></li>
                                     </ul>
@@ -427,27 +396,27 @@
                                 <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Women's
                                     Fashion</a>
                                     <ul class="dropdown">
-                                        <li><a href="shop-product-right.html">Dresses</a></li>
-                                        <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
-                                        <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
-                                        <li><a href="shop-product-right.html">Women's Sets</a></li>
+                                        <li><a href="shop-details.html">Dresses</a></li>
+                                        <li><a href="shop-details.html">Blouses & Shirts</a></li>
+                                        <li><a href="shop-details.html">Hoodies & Sweatshirts</a></li>
+                                        <li><a href="shop-details.html">Women's Sets</a></li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Men's
                                     Fashion</a>
                                     <ul class="dropdown">
-                                        <li><a href="shop-product-right.html">Jackets</a></li>
-                                        <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
-                                        <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                        <li><a href="shop-details.html">Jackets</a></li>
+                                        <li><a href="shop-details.html">Casual Faux Leather</a></li>
+                                        <li><a href="shop-details.html">Genuine Leather</a></li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Technology</a>
                                     <ul class="dropdown">
-                                        <li><a href="shop-product-right.html">Gaming Laptops</a></li>
-                                        <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
-                                        <li><a href="shop-product-right.html">Tablets</a></li>
-                                        <li><a href="shop-product-right.html">Laptop Accessories</a></li>
-                                        <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                        <li><a href="shop-details.html">Gaming Laptops</a></li>
+                                        <li><a href="shop-details.html">Ultraslim Laptops</a></li>
+                                        <li><a href="shop-details.html">Tablets</a></li>
+                                        <li><a href="shop-details.html">Laptop Accessories</a></li>
+                                        <li><a href="shop-details.html">Tablet Accessories</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -678,6 +647,7 @@
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 <!-- Template  JS -->
 <script src="{% static 'assets/js/main.js' %}"></script>
+{% block script %}{% endblock %}
 </body>
 
 </html>
