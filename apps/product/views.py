@@ -1,8 +1,9 @@
 from datetime import datetime
 
+from django.db.models import Q
 from django.views import View
-from django.shortcuts import render
-from apps.product.models import Category, Banner, Brand, Tag, Product, Rate, Advertisement
+from django.shortcuts import render, get_object_or_404
+from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color
 from django.core.paginator import Paginator
 
 
@@ -15,7 +16,7 @@ class IndexView(View):
         brand = Brand.objects.all().order_by('-id')
         banner = Banner.objects.all()
         last_3_products = product.order_by('-created_at')
-        top_rate_products = product.order_by('-mid_rate')
+        top_rated_products = sorted(product, key=lambda t: t.mid_rate, reverse=True)
         top_viewed_products = product.order_by('-view')
         query = []
         for qs in product:
@@ -24,9 +25,17 @@ class IndexView(View):
 
         # filters
         cat = request.GET.get('cat')
+        status = request.GET.get('status')
+        status_index = 'featured'
         if cat:
             product = product.filter(category__title__icontains=cat)
-
+        if status:
+            if status == "popular":
+                product = sorted(product, key=lambda t: t.mid_rate, reverse=True)
+                status_index = 'popular'
+            elif status == "top_rated":
+                product = product.order_by('-view')
+                status_index = 'top_rated'
         context = {
             'advertisements': advertisements[:1],
             'discounts': query[2:3],
@@ -38,10 +47,11 @@ class IndexView(View):
             'brands': brand,
             'banners': banner[:5],
             'last_products': last_3_products,
-            'top_rate_products': top_rate_products,
-            'top_viewed_products': top_viewed_products
+            'top_rate_products': top_rated_products,
+            'top_viewed_products': top_viewed_products,
+            'status_index': status_index
         }
-        return render(request, 'index-3.html', context)
+        return render(request, 'index.html', context)
 
 
 def about(request):
@@ -49,10 +59,10 @@ def about(request):
 
 
 def shop_list(request):
-    products = Product.objects.all().order_by('-id')
+    products = Product.objects.filter(is_active=True).order_by('-id')
     category = Category.objects.filter(is_active=True)
     brands = Brand.objects.all().order_by('-id')
-    top_rate_products = products.order_by('-mid_rate')
+    top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
 
     # filter
@@ -80,4 +90,19 @@ def shop_list(request):
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
     }
-    return render(request, 'shop-grid-left.html', context)
+    return render(request, 'shop.html', context)
+
+
+def shop_details(request, id):
+    product = get_object_or_404(Product, id=id)
+    related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
+                                              is_active=True)
+    new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
+    colors = Color.objects.all()
+    context = {
+        "product": product,
+        "colors": colors,
+        "related_products": related_products,
+        "new_products": new_products,
+    }
+    return render(request, "shop-details.html", context)

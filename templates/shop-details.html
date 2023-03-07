@@ -1,0 +1,402 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/" rel="nofollow">Home</a>
+                    <span></span> {{ product.category.first }}
+                    <span></span> {{ product.title }}
+                </div>
+            </div>
+        </div>
+    {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <section class="mt-60 mb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="product-detail accordion-detail">
+                            <div class="row mb-50">
+                                <div class="col-md-6 col-sm-12 col-xs-12" style="height: 70%">
+                                    <div class="detail-gallery">
+                                        <span class="zoom-icon"><i class="fa fa-search-plus"></i></span>
+                                        <!-- MAIN SLIDES -->
+                                        <div class="product-image-slider">
+                                            {% for img in product.product_images.all %}
+                                                <figure class="border-radius-10">
+                                                    <img src="{{ img.image.url }}" alt="product image">
+                                                </figure>
+                                            {% endfor %}
+                                        </div>
+                                        <!-- THUMBNAILS -->
+                                        <div class="slider-nav-thumbnails pl-15 pr-15">
+                                            {% for img in product.product_images.all %}
+                                                <div><img src="{{ img.image.url }}" alt="product image"></div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="detail-info">
+                                        <h2 class="title-detail">{{ product.title }}</h2>
+                                        <div class="product-detail-rating">
+                                            <div class="pro-details-brand">
+                                                <span> Brands: <a href="#">{{ product.brand }}</a></span>
+                                            </div>
+                                            <div class="product-rate-cover text-end">
+                                                <div class="product-rate d-inline-block">
+                                                    <div class="product-rating"
+                                                         style="width:{{ product.mid_rate_percent }}%">
+                                                    </div>
+                                                </div>
+                                                <span class="font-small ml-5 text-muted"> ({{ product.product_rate.all.count }} reviews)</span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix product-price-cover">
+                                            <div class="product-price primary-color float-left">
+                                                <ins><span class="text-brand">{{ product.price }}</span></ins>
+                                                {% if product.percentage > 0 %}
+                                                    <ins><span
+                                                            class="old-price font-md ml-15">{{ product.discount }}</span>
+                                                    </ins>
+                                                    <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                        <div class="short-desc mb-30">
+                                            {{ product.description|safe|truncatewords:40 }}
+                                        </div>
+                                        <div class="attr-detail attr-color mb-15">
+                                            <strong class="mr-10">Color</strong>
+                                            <ul class="list-filter color-filter">
+                                                {% for color in colors %}
+                                                    <li><a href="#" data-color="Red"><span class=""
+                                                                                           style="background-color: {{ color.name }}"></span></a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        {% if product.has_size %}
+                                            <div class="attr-detail attr-size">
+                                                <strong class="mr-10">Size</strong>
+                                                <ul class="list-filter size-filter font-small">
+                                                    <li><a href="#">S</a></li>
+                                                    <li class="active"><a href="#">M</a></li>
+                                                    <li><a href="#">L</a></li>
+                                                    <li><a href="#">XL</a></li>
+                                                    <li><a href="#">XXL</a></li>
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+                                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                        <div class="detail-extralink">
+                                            <div class="border radius">
+                                                {% csrf_token %}
+                                                <input class="prod_id" type="hidden" value="{{ product.id }}">
+                                                <input class="qty-input" type="number" min="1" value="1">
+                                            </div>
+                                            <div class="product-extra-link2">
+                                                <button type="button" class="button button-add-to-cart addToCartBtn">Add
+                                                    to cart
+                                                </button>
+                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                   href="shop-wishlist.html"><i class="far fa-heart"></i></a>
+                                            </div>
+                                        </div>
+                                        <ul class="product-meta font-xs color-grey mt-50">
+                                            <li>Availability:<span
+                                                    class="in-stock text-success ml-5">{{ product.availability }} Items In Stock</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Detail Info -->
+                                </div>
+                            </div>
+                            <div class="tab-style3">
+                                <ul class="nav nav-tabs text-uppercase">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="Description-tab" data-bs-toggle="tab"
+                                           href="#Description">Description</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab"
+                                           href="#Additional-info">Additional info</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Reviews
+                                            ({{ product.product_rate.all.count }})</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content shop_info_tab entry-main-content">
+                                    <div class="tab-pane fade show active" id="Description">
+                                        <div class="">
+                                            {{ product.description|safe }}
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="Additional-info">
+                                        <table class="font-md">
+                                            <tbody>
+                                            {% for item in product.additional_info.all %}
+                                                <tr class="stand-up">
+                                                    <th>{{ item.title }}</th>
+                                                    <td>
+                                                        <p>{{ item.description|safe }}</p>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="Reviews">
+                                        <!--Comments-->
+                                        <div class="comments-area">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <h4 class="mb-30">Customer feedbacks</h4>
+                                                    <div class="comment-list">
+                                                        {% for rate in product.product_rate.all %}
+                                                            <div class="single-comment justify-content-between d-flex">
+                                                                <div class="user justify-content-between d-flex">
+                                                                    <div class="thumb text-center">
+                                                                        <img src="{% static '' %}assets/imgs/user.png"
+                                                                             alt="">
+                                                                        <h6><a href="#">{{ rate.user.full_name }}</a>
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="desc">
+                                                                        <div class="product-rate d-inline-block">
+                                                                            <div class="product-rating"
+                                                                                 style="width:{{ rate.rate_percent }}%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <p>{{ rate.comment }}</p>
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <p class="font-xs mr-30">{{ rate.created_at }}
+                                                                                    3:12 pm </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <h4 class="mb-30">Customer reviews</h4>
+                                                    <div class="d-flex mb-30">
+                                                        <div class="product-rate d-inline-block mr-15">
+                                                            <div class="product-rating" style="width:90%">
+                                                            </div>
+                                                        </div>
+                                                        <h6>4.8 out of 5</h6>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>5 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 50%;"
+                                                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                                            50%
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>4 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 25%;"
+                                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                            25%
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>3 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 45%;"
+                                                             aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+                                                            45%
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>2 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 65%;"
+                                                             aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+                                                            65%
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress mb-30">
+                                                        <span>1 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 85%;"
+                                                             aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                                                            85%
+                                                        </div>
+                                                    </div>
+                                                    <a href="#" class="font-xs text-muted">How are ratings
+                                                        calculated?</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--comment form-->
+                                        <div class="comment-form">
+                                            <h4 class="mb-15">Add a review</h4>
+                                            <div class="product-rate d-inline-block mb-30">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-8 col-md-12">
+                                                    <form class="form-contact comment_form" action="#" id="commentForm">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <textarea class="form-control w-100" name="comment"
+                                                                              id="comment" cols="30" rows="9"
+                                                                              placeholder="Write Comment"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" name="name" id="name"
+                                                                           type="text" placeholder="Name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" name="email" id="email"
+                                                                           type="email" placeholder="Email">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" name="website"
+                                                                           id="website" type="text"
+                                                                           placeholder="Website">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="button button-contactForm">
+                                                                Submit
+                                                                Review
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-60">
+                                <div class="col-12">
+                                    <h3 class="section-title style-1 mb-30">Related products</h3>
+                                </div>
+                                <div class="row">
+                                    {% for item in related_products %}
+                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                            <div class="product-cart-wrap small hover-up">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="/details/{{ item.id }}" tabindex="0">
+                                                            <img class="default-img"
+                                                                 src="{{ item.product_images.first.image.url }}"
+                                                                 alt="">
+                                                            <img class="hover-img"
+                                                                 src="{{ item.product_images.last.image.url }}"
+                                                                 alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-1">
+                                                        <a aria-label="Add To Wishlist"
+                                                           class="action-btn small hover-up"
+                                                           href="shop-wishlist.html" tabindex="0"><i
+                                                                class="far fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                                        <span class="{{ product.status.lower }}">{{ product.status }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content-wrap">
+                                                    <h2><a href="/details/{{ item.id }}"
+                                                           tabindex="0">{{ item.title }}</a>
+                                                    </h2>
+                                                    <div class="rating-result" title="90%">
+                                                    <span>
+                                                    </span>
+                                                    </div>
+                                                    <div class="product-price">
+                                                        <span>{{ item.price }} </span>
+                                                        {% if item.percentage > 0 %}
+                                                            <span class="old-price">{{ item.discount }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                        <div class="widget-area">
+                            <!-- Product sidebar Widget -->
+                            <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
+                                <div class="widget-header position-relative mb-20 pb-10">
+                                    <h5 class="widget-title mb-10">New products</h5>
+                                    <div class="bt-1 border-color-1"></div>
+                                </div>
+                                {% for item in new_products %}
+                                    <div class="single-post clearfix">
+                                        <div class="image">
+                                            <img src="{{ item.product_images.first.image.url }}" alt="#">
+                                        </div>
+                                        <div class="content pt-10">
+                                            <h5><a href="/details/{{ item.id }}">{{ item.title }}</a></h5>
+                                            <p class="price mb-0 mt-5">{{ item.price }}</p>
+                                            <div class="product-rate">
+                                                <div class="product-rating"
+                                                     style="width:{{ item.mid_rate_percent }}%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <!--Widget categories-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+{% block script %}
+    <script src="{% static '' %}assets/js/shop.js"></script>
+    <script src="{% static '' %}assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="{% static '' %}assets/js/plugins/jquery.elevatezoom.js"></script>
+    <script>
+        $('.addToCartBtn').on('click', function () {
+            var product_id = $('.prod_id').val()
+            var quantity = $('.qty-input').val()
+            var token = $("input[name=csrfmiddlewaretoken]").val();
+
+            $.ajax({
+                method: 'POST',
+                url: "/order/add-to-cart/",
+                data: {
+                    "product_id": product_id,
+                    "quantity": quantity,
+                    csrfmiddlewaretoken: token
+                },
+                dataType: "dataType",
+                succes: function (response) {
+
+                }
+            })
+
+        })
+
+    </script>
+{% endblock %}

@@ -28,7 +28,7 @@ urlpatterns = [
     # local apps
     path('', include('apps.product.urls')),
     path('about/', include('apps.about.api.urls')),
-    path('order/', include('apps.order.api.urls')),
+    path('order/', include('apps.order.urls')),
     path('contact/', include('apps.contact.api.urls')),
 ]
 
