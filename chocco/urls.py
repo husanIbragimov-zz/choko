@@ -18,6 +18,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from apps.base import views
+
 urlpatterns = [
     # admin
     path('admin/', admin.site.urls),
@@ -30,6 +32,12 @@ urlpatterns = [
     path('about/', include('apps.about.api.urls')),
     path('order/', include('apps.order.urls')),
     path('contact/', include('apps.contact.api.urls')),
+
+    # login & register
+    path('register/', views.register, name="register"),
+    path('login/', views.login_func, name="login"),
+    path('logout/', views.logout_func, name="logout"),
+
 ]
 
 if settings.DEBUG:
