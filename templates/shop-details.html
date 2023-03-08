@@ -2,6 +2,72 @@
 {% load static %}
 {% block content %}
 
+    {% block style %}
+        <style>
+            @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+            fieldset, label {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin: 10px;
+            }
+
+            /****** Style Star Rating Widget *****/
+
+            .rating {
+                border: none;
+                float: left;
+            }
+
+            .rating > input {
+                display: none;
+            }
+
+            .rating > label:before {
+                margin: 5px;
+                font-size: 1.25em;
+                font-family: FontAwesome;
+                display: inline-block;
+                content: "\f005";
+            }
+
+            .rating > .half:before {
+                content: "\f089";
+                position: absolute;
+            }
+
+            .rating > label {
+                color: #ddd;
+                float: right;
+            }
+
+            /***** CSS Magic to Highlight Stars on Hover *****/
+
+            .rating > input:checked ~ label, /* show gold star when clicked */
+            .rating:not(:checked) > label:hover, /* hover current star */
+            .rating:not(:checked) > label:hover ~ label {
+                color: #FFD700;
+            }
+
+            /* hover previous stars in list */
+
+            .rating > input:checked + label:hover, /* hover current star when changing rating */
+            .rating > input:checked ~ label:hover,
+            .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+            .rating > input:checked ~ label:hover ~ label {
+                color: #FFED85;
+            }
+        </style>
+    {% endblock %}
+
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
@@ -12,7 +78,7 @@
                 </div>
             </div>
         </div>
-    {% if messages %}
+        {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}" role="alert">
                     {{ message }}
@@ -88,8 +154,9 @@
                                         {% if product.has_size %}
                                             <div class="attr-detail attr-size">
                                                 <strong class="mr-10">Size</strong>
-                                                <ul class="list-filter size-filter font-small">
-                                                    <li><a href="#">S</a></li>
+                                                <ul class="list-filter size-filter font-small size_class">
+                                                    <li class="size_"><a href="#">S <input type="hidden" value="S"></a>
+                                                    </li>
                                                     <li class="active"><a href="#">M</a></li>
                                                     <li><a href="#">L</a></li>
                                                     <li><a href="#">XL</a></li>
@@ -109,7 +176,7 @@
                                                     to cart
                                                 </button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="shop-wishlist.html"><i class="far fa-heart"></i></a>
+                                                   href="/order/wishlist/{{ product.id }}"><i class="far fa-heart"></i></a>
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
@@ -169,7 +236,7 @@
                                                                     <div class="thumb text-center">
                                                                         <img src="{% static '' %}assets/imgs/user.png"
                                                                              alt="">
-                                                                        <h6><a href="#">{{ rate.user.full_name }}</a>
+                                                                        <h6><a href="#">{{ rate.user.username }}</a>
                                                                         </h6>
                                                                     </div>
                                                                     <div class="desc">
@@ -191,63 +258,31 @@
                                                         {% endfor %}
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4">
-                                                    <h4 class="mb-30">Customer reviews</h4>
-                                                    <div class="d-flex mb-30">
-                                                        <div class="product-rate d-inline-block mr-15">
-                                                            <div class="product-rating" style="width:90%">
-                                                            </div>
-                                                        </div>
-                                                        <h6>4.8 out of 5</h6>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>5 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 50%;"
-                                                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                            50%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>4 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 25%;"
-                                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                                            25%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>3 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 45%;"
-                                                             aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
-                                                            45%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>2 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 65%;"
-                                                             aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
-                                                            65%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress mb-30">
-                                                        <span>1 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 85%;"
-                                                             aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                                            85%
-                                                        </div>
-                                                    </div>
-                                                    <a href="#" class="font-xs text-muted">How are ratings
-                                                        calculated?</a>
-                                                </div>
                                             </div>
                                         </div>
                                         <!--comment form-->
                                         <div class="comment-form">
-                                            <h4 class="mb-15">Add a review</h4>
-                                            <div class="product-rate d-inline-block mb-30">
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-8 col-md-12">
-                                                    <form class="form-contact comment_form" action="#" id="commentForm">
+                                            <form class="form-contact comment_form" action="{% url 'review' %}"
+                                                  method="post" id="commentForm">
+                                                {% csrf_token %}
+                                                <h4 class="mb-15">Add a review</h4>
+                                                <fieldset class="rating">
+                                                    <input type="radio" id="star5" name="rating" value="5"/>
+                                                    <label
+                                                            class="full" for="star5" title="Awesome - 5 stars"></label>
+                                                    <input type="radio" id="star4" name="rating" value="4"/><label
+                                                        class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                                    <input type="radio" id="star3" name="rating" value="3"/><label
+                                                        class="full" for="star3" title="Meh - 3 stars"></label>
+                                                    <input type="radio" id="star2" name="rating" value="2"/><label
+                                                        class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                                    <input type="radio" id="star1" name="rating" value="1"/><label
+                                                        class="full" for="star1"
+                                                        title="Sucks big time - 1 star"></label>
+                                                </fieldset>
+
+                                                <div class="row">
+                                                    <div class="col-lg-8 col-md-12">
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="form-group">
@@ -256,35 +291,17 @@
                                                                               placeholder="Write Comment"></textarea>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="name" id="name"
-                                                                           type="text" placeholder="Name">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="email" id="email"
-                                                                           type="email" placeholder="Email">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="website"
-                                                                           id="website" type="text"
-                                                                           placeholder="Website">
-                                                                </div>
+                                                            <input type="hidden" name="product"
+                                                                   value="{{ product.id }}">
+                                                            <div class="form-group">
+                                                                <button type="submit" class="button button-contactForm">
+                                                                    Submit
+                                                                    Review
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <button type="submit" class="button button-contactForm">
-                                                                Submit
-                                                                Review
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                                    </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -376,27 +393,9 @@
     <script src="{% static '' %}assets/js/shop.js"></script>
     <script src="{% static '' %}assets/js/plugins/jquery.theia.sticky.js"></script>
     <script src="{% static '' %}assets/js/plugins/jquery.elevatezoom.js"></script>
-    <script>
-        $('.addToCartBtn').on('click', function () {
-            var product_id = $('.prod_id').val()
-            var quantity = $('.qty-input').val()
-            var token = $("input[name=csrfmiddlewaretoken]").val();
-
-            $.ajax({
-                method: 'POST',
-                url: "/order/add-to-cart/",
-                data: {
-                    "product_id": product_id,
-                    "quantity": quantity,
-                    csrfmiddlewaretoken: token
-                },
-                dataType: "dataType",
-                succes: function (response) {
-
-                }
-            })
-
-        })
-
+    <script src="http://code.jquery.com/jquery-1.9.1.js">
     </script>
+    <script src="{% static '' %}assets/js/alertify.min.js"></script>
+    <script src="{% static '' %}assets/js/ajax_request.js"></script>
+
 {% endblock %}

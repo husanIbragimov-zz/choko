@@ -87,7 +87,8 @@
                                             </div>
                                             <div class="product-action-1">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="shop-wishlist.html"><i class="far fa-heart"></i></a>
+                                                   href="/order/wishlist/{{ product.id }}"><i
+                                                        class="far fa-heart"></i></a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="{{ product.status.lower }}">{{ product.status }}</span>
@@ -117,7 +118,7 @@
                                             <div class="product-action-1 show">
 
                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="shop-cart.html"><i
+                                                   href="/order/create_order_wishlist/{{ product.id }}"><i
                                                         class="far fa-shopping-bag"></i></a>
                                             </div>
                                         </div>
@@ -237,7 +238,7 @@
                                             <h2><a href="/shop-details/{{ product.id }}">{{ product.title }}</a></h2>
                                             <div class="rating-result" title="{{ product.mid_rate }}%">
                                                 {% if product.percentage > 0 %}
-                                            <span>
+                                                    <span>
                                                 <span>{{ product.percentage }}%</span>
                                             </span>
                                                 {% endif %}
@@ -253,10 +254,10 @@
                                             </div>
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="shop-cart.html"><i
+                                                   href="/order/create_order_wishlist/{{ product.id }}"><i
                                                         class="far fa-shopping-bag"></i></a>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="shop-cart.html"><i
+                                                   href="/order/wishlist/{{ product.id }}"><i
                                                         class="far fa-shopping-bag"></i></a>
                                             </div>
                                         </div>

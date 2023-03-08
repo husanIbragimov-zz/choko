@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.order.models import CartItem, Cart
+from apps.order.models import CartItem, Cart, Order, Wishlist
 
 
 # Register your models here.
@@ -19,4 +19,21 @@ class CartAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [CartItemAdmin]
+    list_display = ('user', 'num_of_items', 'cart_total', 'status',
+                    'id')
+    list_filter = ('status', 'created_at')
+    list_per_page = 20
+
+
+class WishlistAdmin(admin.ModelAdmin):
+    list_display = ('session_id', 'product',
+                    'id',)
+    list_filter = ('created_at',)
+    list_per_page = 20
+
+
+admin.site.register(Wishlist, WishlistAdmin)
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Cart, CartAdmin)

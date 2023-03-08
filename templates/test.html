@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul id="menu">
+    <li class="ui-widget-header"> Category 1</li>
+    <li value="1"> Option 1</li>
+    <li value="2"> Option 2</li>
+    <li value="3"> Option 3</li>
+    <li class="ui-widget-header"> Category 2</li>
+    <li value="4"> Option 4</li>
+    <li value="5"> Option 5</li>
+    <li value="6"> Option 6</li>
+</ul>
+<script>
+    $("#menu").menu({
+        items: '> :not(.ui-widget-header)'
+    });
+
+    $('#btn').button().click(function (ev) {
+        ev.preventDefault();
+        var value = $('#menu').val();
+        // var value = $('#menu li').attr('value');
+        alert('Selected menu value: ' + value);
+    });
+</script>
+</body>
+</html>
