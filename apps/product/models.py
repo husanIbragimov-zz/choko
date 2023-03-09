@@ -152,7 +152,7 @@ class Rate(BaseAbstractDate):
         (4, 4),
         (5, 5),
     )
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_rate")
     rate = models.IntegerField(choices=RATE, default=0)
     comment = models.TextField(null=True, blank=True)
