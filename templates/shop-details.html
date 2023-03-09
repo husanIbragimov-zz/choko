@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-    {% if messages %}
+        {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}" role="alert">
                     {{ message }}
@@ -49,7 +49,8 @@
                                         <h2 class="title-detail">{{ product.title }}</h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
-                                                <span> Brands: <a href="#">{{ product.brand }}</a></span>
+                                                <span> Brands: <a
+                                                        href="/shop/?brand={{ product.brand }}">{{ product.brand }}</a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -62,12 +63,17 @@
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
-                                                <ins><span class="text-brand">{{ product.price }}</span></ins>
                                                 {% if product.percentage > 0 %}
+                                                    <ins><span class="text-brand">${{ product.discount }}</span></ins>
                                                     <ins><span
-                                                            class="old-price font-md ml-15">{{ product.discount }}</span>
+                                                            class="old-price font-md ml-15">${{ product.price }}</span>
                                                     </ins>
+
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
+                                                {% else %}
+                                                    <ins><span class="text-brand">${{ product.price }}</span></ins>
+                                                    <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
+
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -181,8 +187,7 @@
                                                                         <p>{{ rate.comment }}</p>
                                                                         <div class="d-flex justify-content-between">
                                                                             <div class="d-flex align-items-center">
-                                                                                <p class="font-xs mr-30">{{ rate.created_at }}
-                                                                                    3:12 pm </p>
+                                                                                <p class="font-xs mr-30">{{ rate.created_at }}</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -191,96 +196,37 @@
                                                         {% endfor %}
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4">
-                                                    <h4 class="mb-30">Customer reviews</h4>
-                                                    <div class="d-flex mb-30">
-                                                        <div class="product-rate d-inline-block mr-15">
-                                                            <div class="product-rating" style="width:90%">
-                                                            </div>
-                                                        </div>
-                                                        <h6>4.8 out of 5</h6>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>5 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 50%;"
-                                                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                            50%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>4 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 25%;"
-                                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                                            25%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>3 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 45%;"
-                                                             aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
-                                                            45%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <span>2 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 65%;"
-                                                             aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
-                                                            65%
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress mb-30">
-                                                        <span>1 star</span>
-                                                        <div class="progress-bar" role="progressbar" style="width: 85%;"
-                                                             aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                                            85%
-                                                        </div>
-                                                    </div>
-                                                    <a href="#" class="font-xs text-muted">How are ratings
-                                                        calculated?</a>
-                                                </div>
                                             </div>
                                         </div>
                                         <!--comment form-->
-                                        <div class="comment-form">
+                                        <div class="comment-form" id="comments">
                                             <h4 class="mb-15">Add a review</h4>
-                                            <div class="product-rate d-inline-block mb-30">
+                                            <div class="rating pb-5">
+                                                <div class="rating__star far fa-star"
+                                                     style="cursor: pointer; color: #dabd18b2;"></div>
+
                                             </div>
+                                            {#TODO comment to'g'irlash#}
                                             <div class="row">
                                                 <div class="col-lg-8 col-md-12">
-                                                    <form class="form-contact comment_form" action="#" id="commentForm">
+                                                    <form class="form-contact comment_form"
+                                                          action="/shop-details/{{ product.id }}" id="commentForm"
+                                                          method="post" enctype="multipart/form-data">
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <textarea class="form-control w-100" name="comment"
-                                                                              id="comment" cols="30" rows="9"
-                                                                              placeholder="Write Comment"></textarea>
+                                                                    {{ form.comment }}
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="name" id="name"
-                                                                           type="text" placeholder="Name">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="email" id="email"
-                                                                           type="email" placeholder="Email">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="website"
-                                                                           id="website" type="text"
-                                                                           placeholder="Website">
-                                                                </div>
+                                                                <input type="hidden" name="product"
+                                                                       value="{{ product.id }}">
                                                             </div>
                                                         </div>
+                                                        {% csrf_token %}
                                                         <div class="form-group">
-                                                            <button type="submit" class="button button-contactForm">
-                                                                Submit
-                                                                Review
-                                                            </button>
+                                                            <input type="submit" class="button button-contactForm">
+                                                            Submit
+                                                            Review
+                                                            </input>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -322,14 +268,22 @@
                                                     <h2><a href="/details/{{ item.id }}"
                                                            tabindex="0">{{ item.title }}</a>
                                                     </h2>
-                                                    <div class="rating-result" title="90%">
+                                                    <div class="product-rate d-inline-block">
+                                                        <div class="product-rating"
+                                                             title="{{ item.mid_rate_percent }}%"
+                                                             style="width:{{ item.mid_rate_percent }}%">
+                                                        </div>
+                                                    </div>
+                                                    <div>
                                                     <span>
                                                     </span>
                                                     </div>
                                                     <div class="product-price">
-                                                        <span>{{ item.price }} </span>
                                                         {% if item.percentage > 0 %}
-                                                            <span class="old-price">{{ item.discount }}</span>
+                                                            <span>${{ item.discount }} </span>
+                                                            <span class="old-price">${{ item.price }}</span>
+                                                        {% else %}
+                                                            <span>${{ item.price }}</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -355,7 +309,11 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5><a href="/details/{{ item.id }}">{{ item.title }}</a></h5>
-                                            <p class="price mb-0 mt-5">{{ item.price }}</p>
+                                            {% if item.percentage > 0 %}
+                                                <span class="price mb-0 mt-5">${{ item.get_discount_price }} </span>
+                                            {% else %}
+                                                <span class="price mb-0 mt-5">${{ item.price }} </span>
+                                            {% endif %}
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ item.mid_rate_percent }}%"></div>
@@ -373,9 +331,9 @@
     </main>
 {% endblock %}
 {% block script %}
-    <script src="{% static '' %}assets/js/shop.js"></script>
-    <script src="{% static '' %}assets/js/plugins/jquery.theia.sticky.js"></script>
-    <script src="{% static '' %}assets/js/plugins/jquery.elevatezoom.js"></script>
+    <script src="{% static 'assets/js/shop.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
     <script>
         $('.addToCartBtn').on('click', function () {
             var product_id = $('.prod_id').val()
@@ -397,6 +355,29 @@
             })
 
         })
+
+        const ratingStars = [...document.getElementsByClassName("rating__star")];
+
+        function executeRating(stars) {
+            const starClassActive = "rating__star fas fa-star";
+            const starClassInactive = "rating__star far fa-star";
+            const starsLength = stars.length;
+            let i;
+            stars.map((star) => {
+                star.onclick = () => {
+                    i = stars.indexOf(star);
+
+                    if (star.className === starClassInactive) {
+                        for (i; i >= 0; --i) stars[i].className = starClassActive;
+                    } else {
+                        for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+                    }
+                };
+            });
+        }
+
+        executeRating(ratingStars);
+
 
     </script>
 {% endblock %}
