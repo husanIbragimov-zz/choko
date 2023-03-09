@@ -25,10 +25,10 @@
                                                 <a href="/shop-details/{{ product.id }}">
                                                     <img class="default-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="214px" height="214px">
+                                                         width="214px" height="280px">
                                                     <img class="hover-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="214px" height="214px">
+                                                         width="214px" height="280px">
                                                 </a>
                                             </div>
                                             <div class="product-action-1">
@@ -44,17 +44,26 @@
                                                 <a href="/shop-details/{{ product.id }}">{{ product.category.first }}</a>
                                             </div>
                                             <h2><a href="/shop-details/{{ product.id }}">{{ product.title }}</a></h2>
-                                            <div class="rating-result" title="{{ product.mid_rate }}">
-                                            {% if product.percentage > 0 %}
-                                            <span>
-                                                <span>{{ product.percentage }}%</span>
-                                            </span>
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" title="{{ product.mid_rate_percent }}%"
+                                                     style="width:{{ product.mid_rate_percent }}%">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                {% if product.percentage > 0 %}
+                                                    <span>
+                                                        <span>{{ product.percentage }}%</span>
+                                                    </span>
+                                                {% else %}
+                                                    <span>
+                                                        <span>{{ product.percentage }}%</span>
+                                                    </span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-price">
                                                 {% if product.percentage > 0 %}
 
-                                                    <span>${{ product.discount }} </span>
+                                                    <span>${{ product.get_discount_price }} </span>
                                                     <span class="old-price">${{ product.price }}</span>
                                                 {% else %}
                                                     <span>${{ product.price }} </span>
@@ -106,12 +115,18 @@
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
-                                        {% for category in categories %}
-                                            {% for child in categories %}
+                                        {% for category in cats %}
+                                            {% for child in cats %}
                                                 {% if child.parent == category %}
-                                                    <li class="cat-item text-muted">
-                                                    <a href="shop-grid-right.html">{{ child }}</a>
-                                                    ({{ child.product_set.count }})
+                                                    {% for sub_child in cats %}
+
+                                                        {% if sub_child.parent == child %}
+                                                            <li class="cat-item text-muted">
+                                                            <a href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                            ({{ sub_child.product_set.count }})
+                                                        {% endif %}
+                                                    {% endfor %}
+
                                                 {% endif %}
                                             {% endfor %}
                                         {% endfor %}
@@ -132,7 +147,9 @@
                                             <img src="{{ last_3_product.product_images.first.image.url }}" alt="#">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="/shop-details/{{ last_3_product.id }}">{{ last_3_product.title }}</a></h5>
+                                            <h5>
+                                                <a href="/shop-details/{{ last_3_product.id }}">{{ last_3_product.title }}</a>
+                                            </h5>
                                             <div class="product-price">
                                                 {% if last_3_product.percentage > 0 %}
 
@@ -162,7 +179,9 @@
                                             <img src="{{ top_rate_product.product_images.first.image.url }}" alt="#">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title }}</a></h5>
+                                            <h5>
+                                                <a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title }}</a>
+                                            </h5>
                                             <div class="product-price">
                                                 {% if top_rate_product.percentage > 0 %}
 
@@ -173,7 +192,7 @@
                                             </div>
                                             <div class="product-rate">
                                                 <div class="product-rating"
-                                                     style="width:{{ top_rate_product.mid_rate }}%"></div>
+                                                     style="width:{{ top_rate_product.mid_rate_percent }}%"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -208,7 +227,7 @@
                                     <ul class="categor-list">
                                         {% for brand in brands %}
                                             <li class="cat-item text-muted">
-                                            <a href="shop-grid-right.html">{{ brand.title }}</a>
+                                            <a href="/shop/?brand={{ brand }}">{{ brand.title }}</a>
                                             ({{ brand.product_set.count }})
 
                                         {% endfor %}
