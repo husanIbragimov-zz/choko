@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.db.models import Avg
@@ -6,6 +7,13 @@ from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate
 from colorfield.fields import ColorField
+
+
+class Currency(BaseAbstractDate):
+    amount = models.FloatField()
+
+    def __str__(self):
+        return str(self.amount)
 
 
 class Advertisement(BaseAbstractDate):
@@ -73,13 +81,11 @@ class Product(BaseAbstractDate):
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True})
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
-    price = models.IntegerField(default=0, null=True)
-    percentage = models.IntegerField(default=0, null=True, blank=True)
-    discount = models.IntegerField(default=0, null=True, blank=True)
+    price = models.FloatField(default=0, null=True)
+    percentage = models.FloatField(default=0, null=True, blank=True)
+    discount = models.FloatField(default=0, null=True, blank=True)
     view = models.IntegerField(default=0, null=True, blank=True)
-    # mid_rate = models.IntegerField(default=0, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
-    # guarantee = models.CharField(max_length=223, null=True, blank=True)
     availability = models.IntegerField(default=0, null=True, blank=True)
     has_size = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
@@ -122,7 +128,19 @@ class Product(BaseAbstractDate):
             return ""
 
     image_tag.short_description = 'Mahsulot rasmi'
+
     # image_tag.allow_tags = True
+
+    @property
+    def price_uzs(self):
+        price = round(self.price * Currency.objects.last().amount, 2)
+        return "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
+
+    @property
+    def discount_uzs(self):
+        discount = round(self.discount * Currency.objects.last().amount, 2)
+
+        return "%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class ProductImage(BaseAbstractDate):

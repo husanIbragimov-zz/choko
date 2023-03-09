@@ -15,8 +15,19 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/imgs/theme/favico.svg' %}">
     <!-- Template CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/alertify.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" type="text/css">
+    <style>
+        .alertify-log-custom {
+            background: green;
+        }
+
+        .height {
+            height: 10px;
+        }
+    </style>
+    {% block style %} {% endblock %}
 </head>
 
 <body>
@@ -94,16 +105,16 @@
                 <div class="header-action-right">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
-                            <a href="shop-wishlist.html">
+                            <a href="/order/wishlist">
                                 <img class="svgInject" alt="wowy"
                                      src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}">
-                                <span class="pro-count blue">4</span>
+                                <span class="pro-count blue">{{ wishlists.count }}</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
-                            <a class="mini-cart-icon" href="shop-cart.html">
+                            <a class="mini-cart-icon" href="/order/shop-cart">
                                 <img alt="wowy" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}">
-                                <span class="pro-count blue">2</span>
+                                <span class="pro-count blue">{{ cart.cart_items.all.count }}</span>
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                 <ul>
@@ -133,22 +144,46 @@
                                             <a href="#"><i class="far fa-times"></i></a>
                                         </div>
                                     </li>
+                                    {% for item in cart.cart_items.all %}
+                                        <li>
+                                            <div class="shopping-cart-img">
+                                                <a href="/shop-details/{{ item.product.id }}"><img alt="wowy"
+                                                                                                   src="{{ item.product.product_images.first.image.url }}"></a>
+                                            </div>
+                                            <div class="shopping-cart-title">
+                                                <h4>
+                                                    <a href="/shop-details/{{ item.product.id }}">{{ item.product.title }}</a>
+                                                </h4>
+                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs }} UZS</h3>
+                                            </div>
+                                            <div class="shopping-cart-delete">
+                                                <a
+                                                        href="/order/delete-cart-item/{{ item.id }}" class="text-muted"><i
+                                                        class="far fa-times"
+                                                        onclick="return confirm('Are you sure delete this order?')"></i></a>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
                                 </ul>
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>$4000.00</span></h4>
+                                        <h4>Total <span>{{ cart.cart_total }} UZS</span></h4>
                                     </div>
                                     <div class="shopping-cart-button">
-                                        <a href="shop-cart.html">View cart</a>
-                                        <a href="shop-checkout.html">Checkout</a>
+                                        <a href="/order/shop-cart">View cart</a>
+                                        <a href="/order/create-order/{{ cart.id }}">Checkout</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="header-action-icon-2">
-                            <a href="page-login-register.html">
-                                <img alt="wowy" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}">
-                            </a>
+                            {% if not user.is_authenticated %}
+                                <a href="/register/">
+                                    <p><a href="/register">Login/Register</a></p>
+                                </a>
+                            {% else %}
+                                <p><a href="/logout">Log Out</a></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -256,15 +291,15 @@
                             <li><a class="active" href="/">Home</a>
                             </li>
                             <li>
-                                <a href="about/">About</a>
+                                <a href="#">About</a>
                             </li>
                             <li><a href="/shop/">Shop</a>
                             </li>
                             <li>
-                                <a href="page-contact.html">Contact</a>
+                                <a href="#">Contact</a>
                             </li>
 
-                            <li><a href="page-account.html">My Account</a></li>
+                            <li><a href="#">My Account</a></li>
 
                         </ul>
                     </nav>
@@ -319,14 +354,14 @@
                                         <h4>Total <span>$383.00</span></h4>
                                     </div>
                                     <div class="shopping-cart-button">
-                                        <a href="shop-cart.html">View cart</a>
+                                        <a href="/order/shop-cart/">View cart</a>
                                         <a href="shop-checkout.html">Checkout</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="header-action-icon-2">
-                            <a href="page-login-register.html">
+                            <a href="register.html">
                                 <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-user-white.svg">
                             </a>
                         </div>
@@ -463,8 +498,39 @@
                         </li>
                         <li><a href="/shop/">Shop</a>
                         </li>
+<<<<<<< HEAD
                         <li>
                             <a href="page-contact.html">Contact</a>
+=======
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                href="blog-category-fullwidth.html">Blog</a>
+                            <ul class="dropdown">
+                                <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single
+                                    Product Layout</a>
+                                    <ul class="dropdown">
+                                        <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                        <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                        <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
+                            <ul class="dropdown">
+                                <li><a href="page-about.html">About Us</a></li>
+                                <li><a href="page-contact.html">Contact</a></li>
+                                <li><a href="page-account.html">My Account</a></li>
+                                <li><a href="register.html">login/register</a></li>
+                                <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                <li><a href="page-terms.html">Terms of Service</a></li>
+                                <li><a href="page-404.html">404 Page</a></li>
+                            </ul>
+>>>>>>> 84eb7307f326c438cb0e4c6191c10b3cdc4f6171
                         </li>
 
                         <li><a href="page-account.html">My Account</a></li>
@@ -490,7 +556,7 @@
                     <a target="_blank" href="page-location.html"> Our location </a>
                 </div>
                 <div class="single-mobile-header-info">
-                    <a href="page-login-register.html">Log In / Sign Up </a>
+                    <a href="register.html">Log In / Sign Up </a>
                 </div>
                 <div class="single-mobile-header-info">
                     <a href="#">(+01) - 2345 - 6789 </a>
@@ -578,9 +644,9 @@
                 <div class="col-lg-2  col-md-3">
                     <h5 class="widget-title mb-30 wow fadeIn animated">My Account</h5>
                     <ul class="footer-list wow fadeIn animated">
-                        <li><a href="#">Sign In</a></li>
-                        <li><a href="#">View Cart</a></li>
-                        <li><a href="#">My Wishlist</a></li>
+                        <li><a href="/login/">Sign In</a></li>
+                        <li><a href="/order/shop-cart/">View Cart</a></li>
+                        <li><a href="/order/wishlist/">My Wishlist</a></li>
                         <li><a href="#">Track My Order</a></li>
                         <li><a href="#">Help</a></li>
                         <li><a href="#">Order</a></li>
@@ -626,12 +692,15 @@
 <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
 <script src="{% static 'assets/js/plugins/jquery.vticker-min.js' %}"></script>
 <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
+{% block script %}
+
+{% endblock %}
 {#ckeditor#}
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 <!-- Template  JS -->
 <script src="{% static 'assets/js/main.js' %}"></script>
-{% block script %}{% endblock %}
+
 </body>
 
 </html>

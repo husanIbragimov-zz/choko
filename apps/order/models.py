@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from apps.base.models import BaseAbstractDate
-from apps.product.models import Product
+from apps.product.models import Product, Color
 
 
 # Create your models here.
@@ -12,12 +12,10 @@ class Variant(BaseAbstractDate):
     percent = models.IntegerField()
 
     def __str__(self):
-        return self.duration
+        return str(self.duration)
 
 
 class Cart(BaseAbstractDate):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    variant = models.ForeignKey(Variant, on_delete=models.CASCADE, null=True, blank=True)
     completed = models.BooleanField(default=False)
     session_id = models.CharField(max_length=100)
 
@@ -35,14 +33,52 @@ class Cart(BaseAbstractDate):
         return str(self.session_id)
 
 
+class Order(BaseAbstractDate):
+    STATUS = (
+        ('New', 'New'),
+        ('Accepted', 'Accepted'),
+        ('Preaparing', 'Preaparing'),
+        ('Completed', 'Completed'),
+        ('Canceled', 'Canceled'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS, default='New')
+
+    def __str__(self):
+        return f"{self.user.username}"
+
+    @property
+    def num_of_items(self):
+        cart_items = self.order_items.all()
+        return sum([i.quantity for i in cart_items])
+
+    @property
+    def cart_total(self):
+        cart_items = self.order_items.all()
+        return sum([i.subtotal for i in cart_items])
+
+
 class CartItem(BaseAbstractDate):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True, blank=True, related_name="cart_items")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="order_items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    variant = models.ForeignKey(Variant, on_delete=models.CASCADE, null=True, blank=True,
+                                related_name='variant_cart_items')
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
+    size = models.CharField(max_length=10, null=True, blank=True)
 
     def __str__(self):
         return str(self.subtotal)
 
     @property
     def subtotal(self):
-        return self.quantity * self.product.price
+        return self.quantity * self.product.price_uzs
+
+
+class Wishlist(BaseAbstractDate):
+    session_id = models.CharField(max_length=100)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.session_id

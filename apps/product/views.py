@@ -1,10 +1,10 @@
 from datetime import datetime
-
 from django.db.models import Q
 from django.views import View
+from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
 
-from apps.product.forms import CommentForm
+from apps.order.models import Variant
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color
 from django.core.paginator import Paginator
 
@@ -126,28 +126,26 @@ def shop_details(request, id):
     if product.id:
         product.view += 1
         product.save()
-    print("Hellloooo")
     # comments
     comment = None
     if request.method == "POST":
         form = CommentForm(data=request.POST or None)
         if form.is_valid():
-            print("Helloo1")
             comment = form.save(commit=False)
             comment.product = product
             comment.user = request.user
-            print("Helloo2")
             comment.save()
-            print("Helloo3")
             return redirect(f'/shop-details/{product.id}#comments')
 
     else:
         form = CommentForm()
 
+    variants = Variant.objects.all()
     context = {
         'form': form,
         "colors": colors,
         "product": product,
+        "variants": variants,
         'comments': comments,
         'categories': category[10:],
         "new_products": new_products,

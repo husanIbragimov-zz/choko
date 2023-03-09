@@ -2,6 +2,72 @@
 {% load static %}
 {% block content %}
 
+    {% block style %}
+        <style>
+            @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+            fieldset, label {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin: 10px;
+            }
+
+            /****** Style Star Rating Widget *****/
+
+            .rating {
+                border: none;
+                float: left;
+            }
+
+            .rating > input {
+                display: none;
+            }
+
+            .rating > label:before {
+                margin: 5px;
+                font-size: 1.25em;
+                font-family: FontAwesome;
+                display: inline-block;
+                content: "\f005";
+            }
+
+            .rating > .half:before {
+                content: "\f089";
+                position: absolute;
+            }
+
+            .rating > label {
+                color: #ddd;
+                float: right;
+            }
+
+            /***** CSS Magic to Highlight Stars on Hover *****/
+
+            .rating > input:checked ~ label, /* show gold star when clicked */
+            .rating:not(:checked) > label:hover, /* hover current star */
+            .rating:not(:checked) > label:hover ~ label {
+                color: #FFD700;
+            }
+
+            /* hover previous stars in list */
+
+            .rating > input:checked + label:hover, /* hover current star when changing rating */
+            .rating > input:checked ~ label:hover,
+            .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+            .rating > input:checked ~ label:hover ~ label {
+                color: #FFED85;
+            }
+        </style>
+    {% endblock %}
+
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
@@ -64,14 +130,17 @@
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
                                                 {% if product.percentage > 0 %}
-                                                    <ins><span class="text-brand">${{ product.discount }}</span></ins>
+                                                    <ins><span class="text-brand">UZS {{ product.discount_uzs }} </span>
+                                                    </ins>
+
                                                     <ins><span
-                                                            class="old-price font-md ml-15">${{ product.price }}</span>
+                                                            class="old-price font-md ml-15">UZS {{ product.price_uzs }}</span>
                                                     </ins>
 
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
                                                 {% else %}
-                                                    <ins><span class="text-brand">${{ product.price }}</span></ins>
+                                                    <ins><span class="text-brand">UZS {{ product.price_uzs }}</span>
+                                                    </ins>
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
 
                                                 {% endif %}
@@ -83,26 +152,62 @@
                                         </div>
                                         <div class="attr-detail attr-color mb-15">
                                             <strong class="mr-10">Color</strong>
-                                            <ul class="list-filter color-filter">
+                                            <ul class="list-filter color-filter" id="color_class">
                                                 {% for color in colors %}
-                                                    <li><a href="#" data-color="Red"><span class=""
-                                                                                           style="background-color: {{ color.name }}"></span></a>
+                                                    <li><a href="#"><span class=""
+                                                                          style="background-color: {{ color.name }}"><span
+                                                            class="d-none">{{ color.id }}</span></span>
+                                                    </a>
                                                     </li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
                                         {% if product.has_size %}
-                                            <div class="attr-detail attr-size">
+                                            <div class="attr-detail attr-size mb-15">
                                                 <strong class="mr-10">Size</strong>
-                                                <ul class="list-filter size-filter font-small">
-                                                    <li><a href="#">S</a></li>
-                                                    <li class="active"><a href="#">M</a></li>
+                                                <ul class="list-filter size-filter font-small size_class">
+                                                    <li class="size_"><a href="#">S <input type="hidden" value="S"></a>
+                                                    </li>
+                                                    <li><a href="#">M</a></li>
                                                     <li><a href="#">L</a></li>
                                                     <li><a href="#">XL</a></li>
                                                     <li><a href="#">XXL</a></li>
                                                 </ul>
                                             </div>
+
                                         {% endif %}
+                                        <div class="attr-detail attr-size mt-15 mb-15">
+                                            <strong class="mr-10">Variant</strong>
+                                            <ul class="list-filter size-filter font-small variant_class">
+                                                {% for variant in variants %}
+                                                    <li>
+                                                        <a class="calculate"
+                                                           onclick="calculate({{ variant.duration }}, {{ variant.percent }}, {{ product.price_uzs }})"
+                                                           href="#">{{ variant.duration }} months
+                                                            <span class="d-none">{{ variant.id }}</span>
+                                                        </a>
+                                                    </li>
+
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div id="div_main" style="display: none;">
+                                            <hr>
+                                            <div class="attr-detail attr-size mb-15">
+                                                <div class="mr-10">
+                                                    <strong>Total:</strong>
+                                                    <span id="total" class="fw-bold text-success"></span>
+                                                </div>
+                                                <div class="ml-10">
+                                                    <strong class="ml-10">Percent:</strong>
+                                                    <span id="percent" class="fw-bold text-success"></span>
+                                                </div>
+                                                <div class="ml-10">
+                                                    <strong class="ml-10">Monthly:</strong>
+                                                    <span id="monthly" class="fw-bold text-success"></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
                                             <div class="border radius">
@@ -111,11 +216,13 @@
                                                 <input class="qty-input" type="number" min="1" value="1">
                                             </div>
                                             <div class="product-extra-link2">
-                                                <button type="button" class="button button-add-to-cart addToCartBtn">Add
+                                                <button type="button"
+                                                        class="button button-add-to-cart addToCartBtn">Add
                                                     to cart
                                                 </button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="shop-wishlist.html"><i class="far fa-heart"></i></a>
+                                                   href="/order/wishlist/{{ product.id }}"><i
+                                                        class="far fa-heart"></i></a>
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
@@ -175,7 +282,7 @@
                                                                     <div class="thumb text-center">
                                                                         <img src="{% static '' %}assets/imgs/user.png"
                                                                              alt="">
-                                                                        <h6><a href="#">{{ rate.user.full_name }}</a>
+                                                                        <h6><a href="#">{{ rate.user.username }}</a>
                                                                         </h6>
                                                                     </div>
                                                                     <div class="desc">
@@ -199,38 +306,51 @@
                                             </div>
                                         </div>
                                         <!--comment form-->
-                                        <div class="comment-form" id="comments">
-                                            <h4 class="mb-15">Add a review</h4>
-                                            <div class="rating pb-5">
-                                                <div class="rating__star far fa-star"
-                                                     style="cursor: pointer; color: #dabd18b2;"></div>
+                                        <div class="comment-form">
+                                            <form class="form-contact comment_form" action="{% url 'review' %}"
+                                                  method="post" id="commentForm">
+                                                {% csrf_token %}
+                                                <h4 class="mb-15">Add a review</h4>
+                                                <fieldset class="rating">
+                                                    <input type="radio" id="star5" name="rating" value="5"/>
+                                                    <label
+                                                            class="full" for="star5"
+                                                            title="Awesome - 5 stars"></label>
+                                                    <input type="radio" id="star4" name="rating" value="4"/><label
+                                                        class="full" for="star4"
+                                                        title="Pretty good - 4 stars"></label>
+                                                    <input type="radio" id="star3" name="rating" value="3"/><label
+                                                        class="full" for="star3" title="Meh - 3 stars"></label>
+                                                    <input type="radio" id="star2" name="rating" value="2"/><label
+                                                        class="full" for="star2"
+                                                        title="Kinda bad - 2 stars"></label>
+                                                    <input type="radio" id="star1" name="rating" value="1"/><label
+                                                        class="full" for="star1"
+                                                        title="Sucks big time - 1 star"></label>
+                                                </fieldset>
 
-                                            </div>
-                                            {#TODO comment to'g'irlash#}
-                                            <div class="row">
-                                                <div class="col-lg-8 col-md-12">
-                                                    <form class="form-contact comment_form"
-                                                          action="/shop-details/{{ product.id }}" id="commentForm"
-                                                          method="post" enctype="multipart/form-data">
+                                                <div class="row">
+                                                    <div class="col-lg-8 col-md-12">
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    {{ form.comment }}
+                                                                    <textarea class="form-control w-100" name="comment"
+                                                                              id="comment" cols="30" rows="9"
+                                                                              placeholder="Write Comment"></textarea>
                                                                 </div>
-                                                                <input type="hidden" name="product"
-                                                                       value="{{ product.id }}">
+                                                            </div>
+                                                            <input type="hidden" name="product"
+                                                                   value="{{ product.id }}">
+                                                            <div class="form-group">
+                                                                <button type="submit"
+                                                                        class="button button-contactForm">
+                                                                    Submit
+                                                                    Review
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        {% csrf_token %}
-                                                        <div class="form-group">
-                                                            <input type="submit" class="button button-contactForm">
-                                                            Submit
-                                                            Review
-                                                            </input>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                                    </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -257,7 +377,7 @@
                                                     <div class="product-action-1">
                                                         <a aria-label="Add To Wishlist"
                                                            class="action-btn small hover-up"
-                                                           href="shop-wishlist.html" tabindex="0"><i
+                                                           href="/order/wishlist/{{ item.id }}" tabindex="0"><i
                                                                 class="far fa-heart"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
@@ -266,7 +386,7 @@
                                                 </div>
                                                 <div class="product-content-wrap">
                                                     <h2><a href="/details/{{ item.id }}"
-                                                           tabindex="0">{{ item.title }}</a>
+                                                           tabindex="0">{{ item.title|slice:'0:20' }}</a>
                                                     </h2>
                                                     <div class="product-rate d-inline-block">
                                                         <div class="product-rating"
@@ -280,10 +400,10 @@
                                                     </div>
                                                     <div class="product-price">
                                                         {% if item.percentage > 0 %}
-                                                            <span>${{ item.discount }} </span>
-                                                            <span class="old-price">${{ item.price }}</span>
+                                                            <span>UZS {{ item.discount_uzs }} </span><br>
+                                                            <span class="old-price">UZS {{ item.price_uzs }}</span>
                                                         {% else %}
-                                                            <span>${{ item.price }}</span>
+                                                            <span>UZS {{ item.price_uzs }} UZS</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -292,28 +412,33 @@
                                     {% endfor %}
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="widget-area">
                             <!-- Product sidebar Widget -->
-                            <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
+                            <div style="position: absolute; right: 100px; top: 470px;"
+                                 class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
                                     <h5 class="widget-title mb-10">New products</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                {% for item in new_products %}
+                                {% for item in new_products|slice:'0:6' %}
                                     <div class="single-post clearfix">
                                         <div class="image">
                                             <img src="{{ item.product_images.first.image.url }}" alt="#">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="/details/{{ item.id }}">{{ item.title }}</a></h5>
+                                            <h5><a href="/details/{{ item.id }}">{{ item.title|slice:'0:8' }}</a></h5>
+
                                             {% if item.percentage > 0 %}
-                                                <span class="price mb-0 mt-5">${{ item.get_discount_price }} </span>
+                                                <span class="price mb-0 mt-5">UZS {{ item.discount_uzs }} </span>
                                             {% else %}
-                                                <span class="price mb-0 mt-5">${{ item.price }} </span>
+                                                <span class="price mb-0 mt-5">UZS {{ item.price_uzs }} </span>
                                             {% endif %}
+
+                                            {#                                                <p class="price mb-0 mt-5">{{ item.price_uzs }} UZS</p>#}
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ item.mid_rate_percent }}%"></div>
@@ -334,6 +459,12 @@
     <script src="{% static 'assets/js/shop.js' %}"></script>
     <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
     <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.js">
+    </script>
+    <script src="{% static '' %}assets/js/alertify.min.js"></script>
+    <script src="{% static '' %}assets/js/ajax_request.js"></script>
+    <script src="{% static '' %}assets/js/calculate_price.js"></script>
     <script>
         $('.addToCartBtn').on('click', function () {
             var product_id = $('.prod_id').val()
@@ -355,29 +486,6 @@
             })
 
         })
-
-        const ratingStars = [...document.getElementsByClassName("rating__star")];
-
-        function executeRating(stars) {
-            const starClassActive = "rating__star fas fa-star";
-            const starClassInactive = "rating__star far fa-star";
-            const starsLength = stars.length;
-            let i;
-            stars.map((star) => {
-                star.onclick = () => {
-                    i = stars.indexOf(star);
-
-                    if (star.className === starClassInactive) {
-                        for (i; i >= 0; --i) stars[i].className = starClassActive;
-                    } else {
-                        for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
-                    }
-                };
-            });
-        }
-
-        executeRating(ratingStars);
-
-
     </script>
+
 {% endblock %}
