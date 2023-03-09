@@ -1,7 +1,19 @@
 var size = 0
+var color = 0
+var variant = 0
+console.log("Salom")
 $(".size_class li").on("click", function () {
     size = $(this).text();
 
+});
+
+$("#color_class li").on("click", function () {
+    color = $(this).text();
+
+});
+
+$(".variant_class li").on("click", function () {
+    variant = $(this).text();
 });
 
 $('.addToCartBtn').on('click', function () {
@@ -16,10 +28,11 @@ $('.addToCartBtn').on('click', function () {
             "product_id": product_id,
             "quantity": quantity,
             "size": size,
+            "variant": variant,
+            "color": color,
             csrfmiddlewaretoken: token
         },
         success: function (response) {
-            console.log(response.status)
             if (response.status) {
                 alertify.success(response.msg)
 

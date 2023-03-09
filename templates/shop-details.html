@@ -128,10 +128,10 @@
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
-                                                <ins><span class="text-brand">{{ product.price }}</span></ins>
+                                                <ins><span class="text-brand">{{ product.price_uzs }} UZS</span></ins>
                                                 {% if product.percentage > 0 %}
                                                     <ins><span
-                                                            class="old-price font-md ml-15">{{ product.discount }}</span>
+                                                            class="old-price font-md ml-15">{{ product.discount_uzs }} UZS</span>
                                                     </ins>
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
                                                 {% endif %}
@@ -143,27 +143,61 @@
                                         </div>
                                         <div class="attr-detail attr-color mb-15">
                                             <strong class="mr-10">Color</strong>
-                                            <ul class="list-filter color-filter">
+                                            <ul class="list-filter color-filter" id="color_class">
                                                 {% for color in colors %}
-                                                    <li><a href="#" data-color="Red"><span class=""
-                                                                                           style="background-color: {{ color.name }}"></span></a>
+                                                    <li><a href="#"><span class=""
+                                                                          style="background-color: {{ color.name }}"><span class="d-none">{{ color.id }}</span></span>
+                                                    </a>
                                                     </li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
                                         {% if product.has_size %}
-                                            <div class="attr-detail attr-size">
+                                            <div class="attr-detail attr-size mb-15">
                                                 <strong class="mr-10">Size</strong>
                                                 <ul class="list-filter size-filter font-small size_class">
                                                     <li class="size_"><a href="#">S <input type="hidden" value="S"></a>
                                                     </li>
-                                                    <li class="active"><a href="#">M</a></li>
+                                                    <li><a href="#">M</a></li>
                                                     <li><a href="#">L</a></li>
                                                     <li><a href="#">XL</a></li>
                                                     <li><a href="#">XXL</a></li>
                                                 </ul>
                                             </div>
+
                                         {% endif %}
+                                        <div class="attr-detail attr-size mt-15 mb-15">
+                                            <strong class="mr-10">Variant</strong>
+                                            <ul class="list-filter size-filter font-small variant_class">
+                                                {% for variant in variants %}
+                                                    <li>
+                                                        <a class="calculate"
+                                                           onclick="calculate({{ variant.duration }}, {{ variant.percent }}, {{ product.price_uzs }})"
+                                                           href="#">{{ variant.duration }} months
+                                                            <span class="d-none">{{ variant.id }}</span>
+                                                        </a>
+                                                    </li>
+
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div id="div_main" style="display: none;">
+                                            <hr>
+                                            <div class="attr-detail attr-size mb-15">
+                                                <div class="mr-10">
+                                                    <strong>Total:</strong>
+                                                    <span id="total" class="fw-bold text-success"></span>
+                                                </div>
+                                                <div class="ml-10">
+                                                    <strong class="ml-10">Percent:</strong>
+                                                    <span id="percent" class="fw-bold text-success"></span>
+                                                </div>
+                                                <div class="ml-10">
+                                                    <strong class="ml-10">Monthly:</strong>
+                                                    <span id="monthly" class="fw-bold text-success"></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
                                             <div class="border radius">
@@ -172,11 +206,13 @@
                                                 <input class="qty-input" type="number" min="1" value="1">
                                             </div>
                                             <div class="product-extra-link2">
-                                                <button type="button" class="button button-add-to-cart addToCartBtn">Add
+                                                <button type="button"
+                                                        class="button button-add-to-cart addToCartBtn">Add
                                                     to cart
                                                 </button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="/order/wishlist/{{ product.id }}"><i class="far fa-heart"></i></a>
+                                                   href="/order/wishlist/{{ product.id }}"><i
+                                                        class="far fa-heart"></i></a>
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
@@ -269,13 +305,16 @@
                                                 <fieldset class="rating">
                                                     <input type="radio" id="star5" name="rating" value="5"/>
                                                     <label
-                                                            class="full" for="star5" title="Awesome - 5 stars"></label>
+                                                            class="full" for="star5"
+                                                            title="Awesome - 5 stars"></label>
                                                     <input type="radio" id="star4" name="rating" value="4"/><label
-                                                        class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                                        class="full" for="star4"
+                                                        title="Pretty good - 4 stars"></label>
                                                     <input type="radio" id="star3" name="rating" value="3"/><label
                                                         class="full" for="star3" title="Meh - 3 stars"></label>
                                                     <input type="radio" id="star2" name="rating" value="2"/><label
-                                                        class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                                        class="full" for="star2"
+                                                        title="Kinda bad - 2 stars"></label>
                                                     <input type="radio" id="star1" name="rating" value="1"/><label
                                                         class="full" for="star1"
                                                         title="Sucks big time - 1 star"></label>
@@ -294,7 +333,8 @@
                                                             <input type="hidden" name="product"
                                                                    value="{{ product.id }}">
                                                             <div class="form-group">
-                                                                <button type="submit" class="button button-contactForm">
+                                                                <button type="submit"
+                                                                        class="button button-contactForm">
                                                                     Submit
                                                                     Review
                                                                 </button>
@@ -328,7 +368,7 @@
                                                     <div class="product-action-1">
                                                         <a aria-label="Add To Wishlist"
                                                            class="action-btn small hover-up"
-                                                           href="shop-wishlist.html" tabindex="0"><i
+                                                           href="/order/wishlist/{{ item.id }}" tabindex="0"><i
                                                                 class="far fa-heart"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
@@ -344,9 +384,9 @@
                                                     </span>
                                                     </div>
                                                     <div class="product-price">
-                                                        <span>{{ item.price }} </span>
+                                                        <span>{{ item.price_uzs }} UZS</span>
                                                         {% if item.percentage > 0 %}
-                                                            <span class="old-price">{{ item.discount }}</span>
+                                                            <span class="old-price">{{ item.discount_uzs }} UZS</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -372,7 +412,7 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5><a href="/details/{{ item.id }}">{{ item.title }}</a></h5>
-                                            <p class="price mb-0 mt-5">{{ item.price }}</p>
+                                            <p class="price mb-0 mt-5">{{ item.price_uzs }} UZS</p>
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ item.mid_rate_percent }}%"></div>
@@ -397,5 +437,6 @@
     </script>
     <script src="{% static '' %}assets/js/alertify.min.js"></script>
     <script src="{% static '' %}assets/js/ajax_request.js"></script>
+    <script src="{% static '' %}assets/js/calculate_price.js"></script>
 
 {% endblock %}

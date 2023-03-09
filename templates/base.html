@@ -128,7 +128,7 @@
                                                 <h4>
                                                     <a href="/shop-details/{{ item.product.id }}">{{ item.product.title }}</a>
                                                 </h4>
-                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price }}</h3>
+                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs }} UZS</h3>
                                             </div>
                                             <div class="shopping-cart-delete">
                                                 <a
@@ -141,7 +141,7 @@
                                 </ul>
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>{{ cart.cart_total }}</span></h4>
+                                        <h4>Total <span>{{ cart.cart_total }} UZS</span></h4>
                                     </div>
                                     <div class="shopping-cart-button">
                                         <a href="/order/shop-cart">View cart</a>
