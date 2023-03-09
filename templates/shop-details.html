@@ -430,7 +430,7 @@
                                             <img src="{{ item.product_images.first.image.url }}" alt="#">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="/details/{{ item.id }}">{{ item.title|slice:'0:8' }}</a></h5>
+                                            <h5><a href="/shop-details/{{ item.id }}">{{ item.title|slice:'0:8' }}</a></h5>
 
                                             {% if item.percentage > 0 %}
                                                 <span class="price mb-0 mt-5">UZS {{ item.discount_uzs }} </span>
