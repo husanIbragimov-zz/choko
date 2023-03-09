@@ -3,6 +3,8 @@ from datetime import datetime
 from django.db.models import Q
 from django.views import View
 from django.shortcuts import render, get_object_or_404
+
+from apps.order.models import Variant
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color
 from django.core.paginator import Paginator
 
@@ -99,10 +101,12 @@ def shop_details(request, id):
                                               is_active=True)
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     colors = Color.objects.all()
+    variants = Variant.objects.all()
     context = {
         "product": product,
         "colors": colors,
         "related_products": related_products,
         "new_products": new_products,
+        "variants": variants,
     }
     return render(request, "shop-details.html", context)

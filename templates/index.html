@@ -109,18 +109,18 @@
                                             <div class="product-price">
                                                 {% if product.percentage > 0 %}
 
-                                                    <span>${{ product.discount }} </span>
-                                                    <span class="old-price">${{ product.price }}</span>
+                                                    <span>{{ product.discount_uzs }} uzs</span>
+                                                    <span class="old-price">{{ product.price_uzs }} uzs</span>
                                                 {% else %}
-                                                    <span>${{ product.price }} </span>
+                                                    <span>{{ product.price_uzs }} uzs</span>
                                                 {% endif %}
                                             </div>
-                                            <div class="product-action-1 show">
-
-                                                <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="/order/create_order_wishlist/{{ product.id }}"><i
-                                                        class="far fa-shopping-bag"></i></a>
-                                            </div>
+{#                                            <div class="product-action-1 show">#}
+{##}
+{#                                                <a aria-label="Add To Cart" class="action-btn hover-up"#}
+{#                                                   href="/order/create_order_wishlist/{{ product.id }}"><i#}
+{#                                                        class="far fa-shopping-bag"></i></a>#}
+{#                                            </div>#}
                                         </div>
                                     </div>
                                 </div>
@@ -246,16 +246,16 @@
                                             <div class="product-price">
                                                 {% if product.percentage > 0 %}
 
-                                                    <span>${{ product.discount }} </span>
-                                                    <span class="old-price">${{ product.price }}</span>
+                                                    <span>{{ product.discount_uzs }} uzs</span>
+                                                    <span class="old-price">{{ product.price_uzs }} uzs</span>
                                                 {% else %}
-                                                    <span>${{ product.price }} </span>
+                                                    <span>{{ product.price_uzs }} uzs</span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="/order/create_order_wishlist/{{ product.id }}"><i
-                                                        class="far fa-shopping-bag"></i></a>
+{#                                                <a aria-label="Add To Cart" class="action-btn hover-up"#}
+{#                                                   href="/order/create_order_wishlist/{{ product.id }}"><i#}
+{#                                                        class="far fa-shopping-bag"></i></a>#}
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                    href="/order/wishlist/{{ product.id }}"><i
                                                         class="far fa-shopping-bag"></i></a>
@@ -309,10 +309,10 @@
                                         <div class="product-price">
                                             {% if qs.percentage > 0 %}
 
-                                                <span>${{ qs.discount }} </span>
-                                                <span class="old-price">${{ qs.price }}</span>
+                                                <span>{{ qs.discount_uzs }} uzs</span>
+                                                <span class="old-price">{{ qs.price_uzs }} uzs</span>
                                             {% else %}
-                                                <span>${{ qs.price }} </span>
+                                                <span>{{ qs.price_uzs }} uzs</span>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -343,10 +343,10 @@
                                             <div class="product-price">
                                                 {% if top_rate_product.percentage > 0 %}
 
-                                                    <span>${{ top_rate_product.discount }} </span>
-                                                    <span class="old-price">${{ top_rate_product.price }}</span>
+                                                    <span>{{ top_rate_product.discount_uzs }} uzs</span>
+                                                    <span class="old-price">{{ top_rate_product.price_uzs }} uzs</span>
                                                 {% else %}
-                                                    <span>${{ top_rate_product.price }} </span>
+                                                    <span>{{ top_rate_product.price_uzs }} uzs</span>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -379,10 +379,10 @@
                                             <div class="product-price">
                                                 {% if top_viewed_product.percentage > 0 %}
 
-                                                    <span>${{ top_viewed_product.discount }} </span>
-                                                    <span class="old-price">${{ top_viewed_product.price }}</span>
+                                                    <span>{{ top_viewed_product.discount_uzs }} uzs</span>
+                                                    <span class="old-price">{{ top_viewed_product.price_uzs }} uzs</span>
                                                 {% else %}
-                                                    <span>${{ top_viewed_product.price }} </span>
+                                                    <span>{{ top_viewed_product.price_uzs }} uzs</span>
                                                 {% endif %}
                                             </div>
                                         </div>

@@ -8,6 +8,13 @@ from apps.base.models import BaseAbstractDate
 from colorfield.fields import ColorField
 
 
+class Currency(BaseAbstractDate):
+    amount = models.FloatField()
+
+    def __str__(self):
+        return str(self.amount)
+
+
 class Advertisement(BaseAbstractDate):
     icon = models.ImageField(upload_to='advertisement/icons/', null=True, blank=True)
     title = models.CharField(max_length=223, null=True)
@@ -73,13 +80,11 @@ class Product(BaseAbstractDate):
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True})
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
-    price = models.IntegerField(default=0, null=True)
-    percentage = models.IntegerField(default=0, null=True, blank=True)
-    discount = models.IntegerField(default=0, null=True, blank=True)
+    price = models.FloatField(default=0, null=True)
+    percentage = models.FloatField(default=0, null=True, blank=True)
+    discount = models.FloatField(default=0, null=True, blank=True)
     view = models.IntegerField(default=0, null=True, blank=True)
-    # mid_rate = models.IntegerField(default=0, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
-    # guarantee = models.CharField(max_length=223, null=True, blank=True)
     availability = models.IntegerField(default=0, null=True, blank=True)
     has_size = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
@@ -122,7 +127,16 @@ class Product(BaseAbstractDate):
             return ""
 
     image_tag.short_description = 'Mahsulot rasmi'
+
     # image_tag.allow_tags = True
+
+    @property
+    def price_uzs(self):
+        return round(self.price * Currency.objects.last().amount, 2)
+
+    @property
+    def discount_uzs(self):
+        return round(self.discount * Currency.objects.last().amount, 2)
 
 
 class ProductImage(BaseAbstractDate):

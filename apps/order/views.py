@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from apps.order.models import Cart, CartItem, Order, Wishlist
-from apps.product.models import Product, Rate
+from apps.order.models import Cart, CartItem, Order, Wishlist, Variant
+from apps.product.models import Product, Rate, Color
 
 
 # Create your views here.
@@ -12,11 +12,23 @@ def add_to_cart(request):
     if request.method == "POST":
         session_id = request.session['nonuser']
         product_id = request.POST['product_id']
+        color = request.POST.get('color', None)
+        variant = request.POST.get('variant', None)
         quantity = request.POST['quantity']
         size = request.POST['size']
         cart = Cart.objects.get(session_id=session_id, completed=False)
         cart_item = CartItem.objects.filter(cart=cart, product_id=product_id)
         product = Product.objects.get(id=product_id)
+        if color != '0':
+            color = color.replace(" ", "")
+            color = Color.objects.get(id=color)
+        else:
+            return JsonResponse({"msg": "Please choose the color!", "status": False})
+        if variant != '0':
+            variant = variant.replace(" ", '').split('months')[1]
+            variant = Variant.objects.get(id=variant)
+        else:
+            return JsonResponse({"msg": "Please choose the variant!", "status": False})
         if cart_item.exists():
             for i in cart_item:
                 i.quantity += int(quantity)
@@ -28,16 +40,21 @@ def add_to_cart(request):
                         cart_id=cart.id,
                         product_id=product_id,
                         quantity=quantity,
-                        size=size
+                        size=size,
+                        color=color,
+                        variant=variant
                     )
                     return JsonResponse({"msg": "Added to cart successfully!", "status": True})
                 else:
-                    return JsonResponse({"msg": "Please choose color!", "status": False})
+                    return JsonResponse({"msg": "Please choose size and color!", "status": False})
             else:
                 cart_item = CartItem.objects.create(
                     cart_id=cart.id,
                     product_id=product_id,
-                    quantity=quantity
+                    quantity=quantity,
+                    color=color,
+                    variant=variant
+
                 )
                 return JsonResponse({"msg": "Added to cart successfully!", "status": True})
     return JsonResponse({"msg": "Added to cart successfully!", "status": True})

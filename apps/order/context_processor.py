@@ -1,8 +1,11 @@
 from .models import Cart, Wishlist
 import uuid
 
+from ..product.models import Currency
+
 
 def cart_renderer(request):
+    currency = Currency.objects.last()
     try:
         cart = Cart.objects.get(session_id=request.session['nonuser'], completed=False)
         wishlists = Wishlist.objects.filter(session_id=request.session['nonuser'])
@@ -13,5 +16,6 @@ def cart_renderer(request):
 
     return {
         "cart": cart,
-        "wishlists": wishlists
+        "wishlists": wishlists,
+        "currency": currency
     }
