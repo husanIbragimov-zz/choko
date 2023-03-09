@@ -2,7 +2,9 @@ from datetime import datetime
 
 from django.db.models import Q
 from django.views import View
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
+from apps.product.forms import CommentForm
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color
 from django.core.paginator import Paginator
 
@@ -26,6 +28,7 @@ class IndexView(View):
         # filters
         cat = request.GET.get('cat')
         status = request.GET.get('status')
+        search = request.GET.get('search')
         status_index = 'featured'
         if cat:
             product = product.filter(category__title__icontains=cat)
@@ -36,14 +39,18 @@ class IndexView(View):
             elif status == "top_rated":
                 product = product.order_by('-view')
                 status_index = 'top_rated'
+        if search:
+            product = product.filter(Q(title__icontains=search) | Q(category__title__icontains=search))
         context = {
             'advertisements': advertisements[:1],
+            'last_advertisements': advertisements[1:2],
             'discounts': query[2:3],
             'queryset': query[:2],
 
             'products': product[:12],
             'objects': product[12:24],
-            'categories': category,
+            'categories': category[:10],
+            'hide_categories': category[10:],
             'brands': brand,
             'banners': banner[:5],
             'last_products': last_3_products,
@@ -68,8 +75,20 @@ def shop_list(request):
     # filter
     cat = request.GET.get('cat')
     top_rated = request.GET.get('top_rated')
+    search = request.GET.get('search')
+    advertisement = request.GET.get('advertisement')
+    brand = request.GET.get('brand')
+
     if cat:
         products = products.filter(category__title__icontains=cat)
+    if search:
+        products = products.filter(
+            Q(title__icontains=search) | Q(status__contains=search) | Q(brand__title__icontains=search) | Q(
+                description=search))
+    if advertisement:
+        products = products.filter(advertisement__title__contains=advertisement)
+    if brand:
+        products = products.filter(brand__title__icontains=brand)
 
     query = []
     for qs in products:
@@ -85,7 +104,9 @@ def shop_list(request):
         'products': products,
         'discounts': query,
         'page_obj': products,
-        'categories': category,
+        'cats': category,
+        'categories': category[10:],
+        'hide_categories': category[10:],
         'brands': brands,
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
@@ -97,12 +118,40 @@ def shop_details(request, id):
     product = get_object_or_404(Product, id=id)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
+    category = Category.objects.filter(is_active=True)
+
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
+    comments = Rate.objects.filter(product_id=id).order_by('-id')
     colors = Color.objects.all()
+    if product.id:
+        product.view += 1
+        product.save()
+    print("Hellloooo")
+    # comments
+    comment = None
+    if request.method == "POST":
+        form = CommentForm(data=request.POST or None)
+        if form.is_valid():
+            print("Helloo1")
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.user = request.user
+            print("Helloo2")
+            comment.save()
+            print("Helloo3")
+            return redirect(f'/shop-details/{product.id}#comments')
+
+    else:
+        form = CommentForm()
+
     context = {
-        "product": product,
+        'form': form,
         "colors": colors,
-        "related_products": related_products,
+        "product": product,
+        'comments': comments,
+        'categories': category[10:],
         "new_products": new_products,
+        'hide_categories': category[10:],
+        "related_products": related_products[:4],
     }
     return render(request, "shop-details.html", context)
