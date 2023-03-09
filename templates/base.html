@@ -39,7 +39,7 @@
                     <div class="header-info">
                         <ul>
                             <li><a href="#">(+01) - 2345 - 6789</a></li>
-                            <li><i class="fa fa-map-marker-alt mr-5"></i><a target="_blank" href="page-location.html">Our
+                            <li><i class="fa fa-map-marker-alt mr-5"></i><a target="_blank" href="/">Our
                                 location</a></li>
                         </ul>
                     </div>
@@ -49,12 +49,12 @@
                         <div id="news-flash" class="d-inline-block">
                             <ul>
                                 <li><i class="fa fa-angle-double-right mr-5"></i> Get great devices up to 50% off <a
-                                        class="active" href="shop-grid-right.html">View details</a></li>
+                                        class="active" href="/shop/">View details</a></li>
                                 <li><i class="fa fa-asterisk mr-5"></i><b>Supper Value Deals</b> - Save more with
                                     coupons
                                 </li>
                                 <li><i class="fa fa-bell mr-5"></i> <b> Trendy 25</b> silver jewelry, save up 35% off
-                                    today <a href="shop-grid-right.html">Shop now</a></li>
+                                    today <a href="/shop/">Shop now</a></li>
                             </ul>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                     <li><a href="#">РУССКИЙ</a></li>
                                 </ul>
                             </li>
-                            <li><a href="page-account.html"><i class="far fa-anchor"></i> Track Your Order</a></li>
+                            <li><a href="/"><i class="far fa-anchor"></i> Track Your Order</a></li>
                         </ul>
                     </div>
                 </div>
@@ -118,32 +118,6 @@
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                 <ul>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-details.html"><img alt="wowy"
-                                                                             src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}"></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-details.html">Apple Watch Serial 7</a></h4>
-                                            <h3><span>1 × </span>$800.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="far fa-times"></i></a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-details.html"><img alt="wowy"
-                                                                             src="{% static 'assets/imgs/shop/thumbnail-1.jpg' %}"></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-details.html">Macbook Pro 2022</a></h4>
-                                            <h3><span>1 × </span>$3200.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="far fa-times"></i></a>
-                                        </div>
-                                    </li>
                                     {% for item in cart.cart_items.all %}
                                         <li>
                                             <div class="shopping-cart-img">
@@ -154,7 +128,8 @@
                                                 <h4>
                                                     <a href="/shop-details/{{ item.product.id }}">{{ item.product.title }}</a>
                                                 </h4>
-                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs }} UZS</h3>
+                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs }} UZS
+                                                </h3>
                                             </div>
                                             <div class="shopping-cart-delete">
                                                 <a
@@ -167,7 +142,7 @@
                                 </ul>
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>{{ cart.cart_total }} UZS</span></h4>
+                                        <h4>Total <span>{{ cart }} UZS</span></h4>
                                     </div>
                                     <div class="shopping-cart-button">
                                         <a href="/order/shop-cart">View cart</a>
@@ -498,42 +473,10 @@
                         </li>
                         <li><a href="/shop/">Shop</a>
                         </li>
-<<<<<<< HEAD
                         <li>
-                            <a href="page-contact.html">Contact</a>
-=======
-                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                href="blog-category-fullwidth.html">Blog</a>
-                            <ul class="dropdown">
-                                <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
-                                <li><a href="blog-category-list.html">Blog Category List</a></li>
-                                <li><a href="blog-category-big.html">Blog Category Big</a></li>
-                                <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single
-                                    Product Layout</a>
-                                    <ul class="dropdown">
-                                        <li><a href="blog-post-left.html">Left Sidebar</a></li>
-                                        <li><a href="blog-post-right.html">Right Sidebar</a></li>
-                                        <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="page-about.html">About Us</a></li>
-                                <li><a href="page-contact.html">Contact</a></li>
-                                <li><a href="page-account.html">My Account</a></li>
-                                <li><a href="register.html">login/register</a></li>
-                                <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
-                                <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
-                                <li><a href="page-terms.html">Terms of Service</a></li>
-                                <li><a href="page-404.html">404 Page</a></li>
-                            </ul>
->>>>>>> 84eb7307f326c438cb0e4c6191c10b3cdc4f6171
-                        </li>
+                            <a href="#">Contact</a>
 
-                        <li><a href="page-account.html">My Account</a></li>
+                        <li><a href="#">My Account</a></li>
 
                     </ul>
                 </nav>
@@ -553,7 +496,7 @@
                     </div>
                 </div>
                 <div class="single-mobile-header-info mt-30">
-                    <a target="_blank" href="page-location.html"> Our location </a>
+                    <a target="_blank" href="#"> Our location </a>
                 </div>
                 <div class="single-mobile-header-info">
                     <a href="register.html">Log In / Sign Up </a>
@@ -700,6 +643,7 @@
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 <!-- Template  JS -->
 <script src="{% static 'assets/js/main.js' %}"></script>
+<script src="{% static 'assets/js/shop.js' %}"></script>
 
 </body>
 

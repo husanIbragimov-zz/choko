@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from apps.order.models import Cart, CartItem, Order, Wishlist, Variant
-from apps.product.models import Product, Rate, Color
+from apps.product.models import Product, Rate, Color, Category
 
 
 # Create your views here.
@@ -95,8 +95,12 @@ def review(request):
 def shop_cart(request):
     session_id = request.session['nonuser']
     cart = Cart.objects.filter(session_id=session_id, completed=False)
+    category = Category.objects.all()
+    print(category)
     context = {
-        'cart': cart.last()
+        'cart': cart.last(),
+        'categories': category[10:],
+        'hide_categories': category[10:],
     }
     return render(request, "shop-cart.html", context)
 

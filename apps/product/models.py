@@ -134,13 +134,13 @@ class Product(BaseAbstractDate):
     @property
     def price_uzs(self):
         price = round(self.price * Currency.objects.last().amount, 2)
-        return "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
+        return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
         discount = round(self.discount * Currency.objects.last().amount, 2)
 
-        return "%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+        return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class ProductImage(BaseAbstractDate):

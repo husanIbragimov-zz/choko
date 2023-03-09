@@ -69,7 +69,7 @@ class CartItem(BaseAbstractDate):
     size = models.CharField(max_length=10, null=True, blank=True)
 
     def __str__(self):
-        return str(self.subtotal)
+        return f'{self.subtotal}'
 
     @property
     def subtotal(self):
