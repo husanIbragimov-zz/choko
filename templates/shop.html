@@ -1,13 +1,14 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">Home</a>
-                    <span></span> Shop
+                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
+                    <span></span> {% trans "Mahsulotlar" %}
                 </div>
             </div>
         </div>
@@ -33,7 +34,7 @@
                                             </div>
                                             <div class="product-action-1">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="shop-wishlist.html"><i class="far fa-heart"></i></a>
+                                                   href="/"><i class="far fa-heart"></i></a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="{{ product.status }}">{{ product.status }}</span>
@@ -68,10 +69,6 @@
                                                 {% else %}
                                                     <span>${{ product.price }} </span>
                                                 {% endif %}
-                                            </div>
-                                            <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="shop-cart.html"><i class="far fa-shopping-bag"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +107,7 @@
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Categories</h5>
+                                    <h5 class="widget-title mb-10">{%  trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class="">
@@ -138,7 +135,7 @@
                             <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Top Viewed products</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Eng ko'p ko'rilgan mahsulotlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 {% for last_3_product in last_3_products %}
@@ -170,7 +167,7 @@
                             <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Top Rated products</h5>
+                                    <h5 class="widget-title mb-10">T{% trans "Eng yaxshi baholanganlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 {% for top_rate_product in top_rate_products|slice:'0:3' %}
@@ -208,8 +205,8 @@
                                              src="{{ discount.product_images.first.image.url }}" alt="">
                                         <div class="banner-text">
                                             <span>{{ discount.category.first }}</span>
-                                            <h4>Save {{ discount.percentage }}% on <br>{{ discount.title }}</h4>
-                                            <a href="shop-grid-right.html">Shop Now <i
+                                            <h4>{{ discount.percentage }}% {% trans "Tejab qolish" %} <br>{{ discount.title }}</h4>
+                                            <a href="/">{% trans "Sotib olish" %} <i
                                                     class="fa fa-arrow-right"></i></a>
                                         </div>
                                     </div>
@@ -220,7 +217,7 @@
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-50 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Manufacturers</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Ishlab chiqaruvchilar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class="">

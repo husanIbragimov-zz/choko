@@ -1,5 +1,6 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 
     <main class="main">
@@ -16,7 +17,7 @@
                                                 <div class="hero-slider-content-2">
                                                     <h4>{{ banner.desc|safe }}</h4>
                                                     <a class="animated btn btn-default btn-rounded"
-                                                       href="/shop/"> SHOP NOW <i
+                                                       href="/shop/"> {% trans "Sotib Olish" %} <i
                                                             class="fa fa-arrow-right"></i> </a>
                                                 </div>
                                                 <div class="slider-img">
@@ -37,8 +38,9 @@
                                      alt="">
                                 <div class="banner-text">
                                     <span>{{ foo.category.first }}</span>
-                                    <h4>Save {{ foo.percentage }}% on <br>{{ foo.title }}</h4>
-                                    <a href="/shop-details/{{ foo.id }}">Shop Now <i class="fa fa-arrow-right"></i></a>
+                                    <h4> {{ foo.percentage }}% {% trans "tejab qolish" %} <br>{{ foo.title }}</h4>
+                                    <a href="/shop-details/{{ foo.id }}">{% trans "Sotib Olish" %} <i
+                                            class="fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -52,18 +54,18 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {% if status_index == 'featured' %}active{% endif %}" id="nav-tab-one"
                                 data-bs-toggle="tab" data-bs-target="#tab-one"
-                                type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured
+                                type="button" role="tab" aria-controls="tab-one" aria-selected="true">{% trans "Maxsus" %}
                         </button>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link {% if status_index == 'popular' %}active{% endif %}" href="/?status=popular"
                            id="nav-tab-two"
-                           type="button">Popular
+                           type="button">{% trans "Mashhurlar" %}
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link {% if status_index == 'top_rated' %}active{% endif %}"
                            href="/?status=top_rated" id="nav-tab-three"
-                           type="button">Top Rated
+                           type="button">{% trans "Eng Yaxshilar" %}
                         </a>
                     </li>
                 </ul>
@@ -91,7 +93,9 @@
                                             <div class="product-category">
                                                 <a href="/shop-details/{{ product.id }}">{{ product.category.first }}</a>
                                             </div>
-                                            <h2><a href="/shop-details/{{ product.id }}">{{ product.title|slice:'0:25' }}</a></h2>
+                                            <h2>
+                                                <a href="/shop-details/{{ product.id }}">{{ product.title|slice:'0:25' }}</a>
+                                            </h2>
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
@@ -118,9 +122,6 @@
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="shop-cart.html"><i
-                                                        class="far fa-shopping-bag"></i></a>
                                             </div>
 
                                         </div>
@@ -144,7 +145,7 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             <p>{{ advertisement.description|safe }}</p>
                             <br>
-                            <a href="/shop/?advertisement={{ advertisement }}" class="btn">Learn More <i
+                            <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -157,7 +158,7 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one"
-                                type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured
+                                type="button" role="tab" aria-controls="tab-one" aria-selected="true">{% trans "Maxsus" %}
                         </button>
                     </li>
                 </ul>
@@ -187,7 +188,9 @@
                                             <div class="product-category">
                                                 <a href="/shop-details/{{ product.id }}">{{ product.category.first }}</a>
                                             </div>
-                                            <h2><a href="/shop-details/{{ product.id }}">{{ product.title|slice:'0:25' }}</a></h2>
+                                            <h2>
+                                                <a href="/shop-details/{{ product.id }}">{{ product.title|slice:'0:25' }}</a>
+                                            </h2>
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
@@ -239,7 +242,7 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             <p>{{ advertisement.description|safe }}</p>
                             <br>
-                            <a href="/shop/?advertisement={{ advertisement }}" class="btn">Learn More <i
+                            <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -259,15 +262,15 @@
                                      alt="">
                                 <div class="banner-text">
                                     <span>{{ discount.category.first.title }}</span>
-                                    <h4>Save {{ discount.percentage }}% on <br>{{ discount.title }}</h4>
-                                    <a href="/shop-details/{{ discount.id }}">Shop Now <i class="fa fa-arrow-right"></i></a>
+                                    <h4>{{ discount.percentage }}% {% trans "tejab qolish" %} <br>{{ discount.title }}</h4>
+                                    <a href="/shop-details/{{ discount.id }}">{%  trans "Sotib olish" %} <i class="fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         {% endfor %}
 
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">Latest Products</h4>
+                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{%  trans "So'ngi Mahsulotlar" %}</h4>
                         <div class="product-list-small wow fadeIn animated">
                             {% for qs in last_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
@@ -289,7 +292,8 @@
                                             {% if qs.percentage > 0 %}
 
                                                 <span>UZS {{ qs.discount_uzs }}</span><br>
-                                                <span style="font-size: 12px" class="old-price">UZS {{ qs.price_uzs }}</span>
+                                                <span style="font-size: 12px"
+                                                      class="old-price">UZS {{ qs.price_uzs }}</span>
                                             {% else %}
                                                 <span>UZS {{ qs.price_uzs }}</span><br><br>
                                             {% endif %}
@@ -301,7 +305,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">Top Rated Products</h4>
+                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{%  trans "Eng Yaxshi Baholanganlar" %}</h4>
                         <div class="product-list-small wow fadeIn animated">
                             {% for top_rate_product in top_rate_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
@@ -314,7 +318,9 @@
                                         <h4 class="title-small mb-2">
                                             <a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title|slice:'0:20' }}</a>
                                         </h4>
-                                        <pre class="d-inline p-2"><code><i class="fa fa-star-half-alt"></i> {% if top_rate_product.mid_rate %}{{ top_rate_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                        <pre class="d-inline p-2"><code><i
+                                                class="fa fa-star-half-alt"></i> {% if top_rate_product.mid_rate %}
+                                            {{ top_rate_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-eye"></i> {{ top_rate_product.view }}</code></pre>
                                         <div class="product-price">
@@ -322,7 +328,8 @@
                                                 {% if top_rate_product.percentage > 0 %}
 
                                                     <span>UZS {{ top_rate_product.discount_uzs }}</span><br>
-                                                    <span style="font-size: 12px" class="old-price">UZS {{ top_rate_product.price_uzs }}</span>
+                                                    <span style="font-size: 12px"
+                                                          class="old-price">UZS {{ top_rate_product.price_uzs }}</span>
                                                 {% else %}
                                                     <span>{{ top_rate_product.price_uzs }}</span><br><br>
                                                 {% endif %}
@@ -335,7 +342,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">Review Products</h4>
+                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{%  trans "Mahsulotlarni Ko'rib Chiqish" %}</h4>
                         <div class="product-list-small wow fadeIn animated">
                             {% for top_viewed_product in top_viewed_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
@@ -350,7 +357,8 @@
                                             <a href="/shop-details/{{ top_viewed_product.id }}">{{ top_viewed_product.title|slice:'0:20' }}</a>
                                         </h4>
                                         <pre class="d-inline p-2"><code><i
-                                                class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}{{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                                class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}
+                                            {{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-eye"></i> {{ top_viewed_product.view }}</code></pre>
                                         <div class="product-price">
@@ -358,7 +366,8 @@
                                                 {% if top_viewed_product.percentage > 0 %}
 
                                                     <span>UZS {{ top_viewed_product.discount_uzs }}</span><br>
-                                                    <span style="font-size: 12px" class="old-price">UZS {{ top_viewed_product.price_uzs }}</span>
+                                                    <span style="font-size: 12px"
+                                                          class="old-price">UZS {{ top_viewed_product.price_uzs }}</span>
                                                 {% else %}
                                                     <span>{{ top_viewed_product.price_uzs }} uzs</span><br><br>
                                                 {% endif %}

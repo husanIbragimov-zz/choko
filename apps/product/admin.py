@@ -4,10 +4,23 @@ import admin_thumbnails
 from apps.product.forms import BannerFrom
 from apps.product.models import Category, Brand, Banner, Product, ProductImage, Rate, Advertisement, Color, \
     AdditionalInfo, Currency
+from modeltranslation.admin import TranslationAdmin
 
 
-class BannerAdmin(admin.ModelAdmin):
+class BannerAdmin(TranslationAdmin):
     form = BannerFrom
+
+    group_fieldsets = True
+
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
 
 
 @admin_thumbnails.thumbnail('image')
@@ -22,7 +35,7 @@ class ImagesAdmin(admin.ModelAdmin):
     list_display = ['image', 'product', 'image_thumbnail']
 
 
-class CategoryAdmin(DraggableMPTTAdmin):
+class CategoryAdmin(DraggableMPTTAdmin, TranslationAdmin):
     mptt_indent_field = "title"
     list_display = ('tree_actions', 'indented_title', 'created_at', 'is_active', 'id')
     list_display_links = ('indented_title',)
@@ -42,7 +55,7 @@ class AdditionalInfoAdmin(admin.TabularInline):
     list_filter = ['prodcut', 'created_at']
 
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(TranslationAdmin):
     inlines = [ProductImageInline, AdditionalInfoAdmin]
     filter_horizontal = ('category',)
     list_display = ('image_tag',
@@ -52,13 +65,57 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('status', 'brand', 'updated_at', 'created_at')
     list_per_page = 20
 
+    group_fieldsets = True
+
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+
+
+class BrandAdmin(TranslationAdmin):
+    list_display = ['id', "title"]
+
+    group_fieldsets = True
+
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+
+
+class AdvertisementAdmin(TranslationAdmin):
+    list_display = ['id', "title", "description"]
+
+    group_fieldsets = True
+
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Brand)
+admin.site.register(Brand, BrandAdmin)
 admin.site.register(AdditionalInfo)
 admin.site.register(Color)
 admin.site.register(Banner, BannerAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Rate)
-admin.site.register(Advertisement)
+admin.site.register(Advertisement, AdvertisementAdmin)
 admin.site.register(Currency)
