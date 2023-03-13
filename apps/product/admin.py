@@ -128,10 +128,10 @@ class BannerTranslationAdmin(TranslationAdmin):
 
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Brand, BannerTranslationAdmin)
+admin.site.register(Brand, BrandAdmin)
 admin.site.register(AdditionalInfo)
 admin.site.register(Color)
-admin.site.register(Banner, BannerAdmin)
+admin.site.register(Banner, BannerTranslationAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Rate)
 admin.site.register(Advertisement, AdvertisementAdmin)
