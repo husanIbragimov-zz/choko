@@ -125,8 +125,7 @@ class Product(BaseAbstractDate):
     def image_tag(self):
         if self.product_images.all().first().image.url is not None:
             return mark_safe('<img src="{}" height="80"/>'.format(self.product_images.all().first().image.url))
-        else:
-            return ""
+        return "No Image"
 
     image_tag.short_description = 'Mahsulot rasmi'
 

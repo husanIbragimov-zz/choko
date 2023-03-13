@@ -60,9 +60,9 @@ class AdditionalInfoAdmin(admin.StackedInline):
 class ProductAdmin(TranslationAdmin):
     inlines = [ProductImageInline, AdditionalInfoAdmin]
     filter_horizontal = ('category',)
-    list_display_links = ('id', )
-    list_display = ('image_tag',
-                    'title', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
+    list_display_links = ('id', 'title')
+    list_display = (
+                    'title', 'image_tag', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
                     'id')
     readonly_fields = ('mid_rate', 'get_discount_price',)
     list_filter = ('status', 'brand', 'updated_at', 'created_at')
