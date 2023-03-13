@@ -33,6 +33,7 @@ class Category(MPTTModel, BaseAbstractDate):
                                limit_choices_to={'is_active': True},
                                related_name='children', null=True, blank=True, )
     title = models.CharField(max_length=50)
+    icon = models.ImageField(upload_to='category', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     class MPTTMeta:

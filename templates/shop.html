@@ -31,10 +31,7 @@
                                                          width="214px" height="280px">
                                                 </a>
                                             </div>
-                                            <div class="product-action-1">
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="shop-wishlist.html"><i class="far fa-heart"></i></a>
-                                            </div>
+                                            
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="{{ product.status }}">{{ product.status }}</span>
                                             </div>
@@ -70,8 +67,8 @@
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="shop-cart.html"><i class="far fa-shopping-bag"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                   href="/order/wishlist/{{ product.id }}"><i class="far fa-heart"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -80,14 +77,14 @@
 
                         </div>
                         <!--pagination-->
-                        <div class="pagination-area mt-15 mb-md-5 mb-lg-0">
+                        <div class="pagination-area mt-10 mb-md-5 mb-lg-0 mb-10">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-start">
 
                                     {% if products.has_previous %}
                                         <li class="page-item"><a class="page-link"
                                                                  href="?page={{ products.previous_page_number }}"><i
-                                                class="fa fa-angle-left"></i> </a></li>
+                                                class="fa fa-angle-left mt-15"></i> </a></li>
                                     {% endif %}
                                     {% for obj in products.paginator.page_range %}
                                         {% if products.number == obj %}
@@ -98,7 +95,7 @@
                                     {% if products.has_next %}
                                         <li class="page-item"><a class="page-link"
                                                                  href="?page={{ products.next_page_number }}"><i
-                                                class="fa fa-angle-right"></i> </a></li>
+                                                class="fa fa-angle-right mt-15"></i> </a></li>
                                     {% endif %}
 
                                 </ul>

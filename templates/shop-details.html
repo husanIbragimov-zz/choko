@@ -12,7 +12,7 @@
             }
 
             body {
-                margin: 20px;
+                margin: 0;
             }
 
             h1 {
@@ -91,7 +91,7 @@
                     <div class="col-lg-9">
                         <div class="product-detail accordion-detail">
                             <div class="row mb-50">
-                                <div class="col-md-6 col-sm-12 col-xs-12" style="height: 70%">
+                                <div class="col-md-6 col-sm-12 col-xs-12" style="height: 70%; width: 471px;">
                                     <div class="detail-gallery">
                                         <span class="zoom-icon"><i class="fa fa-search-plus"></i></span>
                                         <!-- MAIN SLIDES -->
@@ -280,7 +280,7 @@
                                                             <div class="single-comment justify-content-between d-flex">
                                                                 <div class="user justify-content-between d-flex">
                                                                     <div class="thumb text-center">
-                                                                        <img src="{% static '' %}assets/imgs/user.png"
+                                                                        <img src="{% static 'assets/imgs/user.png' %}"
                                                                              alt="">
                                                                         <h6><a href="#">{{ rate.user.username }}</a>
                                                                         </h6>
@@ -306,51 +306,64 @@
                                             </div>
                                         </div>
                                         <!--comment form-->
-                                        <div class="comment-form">
-                                            <form class="form-contact comment_form" action="{% url 'review' %}"
-                                                  method="post" id="commentForm">
-                                                {% csrf_token %}
-                                                <h4 class="mb-15">Add a review</h4>
-                                                <fieldset class="rating">
-                                                    <input type="radio" id="star5" name="rating" value="5"/>
-                                                    <label
-                                                            class="full" for="star5"
-                                                            title="Awesome - 5 stars"></label>
-                                                    <input type="radio" id="star4" name="rating" value="4"/><label
-                                                        class="full" for="star4"
-                                                        title="Pretty good - 4 stars"></label>
-                                                    <input type="radio" id="star3" name="rating" value="3"/><label
-                                                        class="full" for="star3" title="Meh - 3 stars"></label>
-                                                    <input type="radio" id="star2" name="rating" value="2"/><label
-                                                        class="full" for="star2"
-                                                        title="Kinda bad - 2 stars"></label>
-                                                    <input type="radio" id="star1" name="rating" value="1"/><label
-                                                        class="full" for="star1"
-                                                        title="Sucks big time - 1 star"></label>
-                                                </fieldset>
 
-                                                <div class="row">
-                                                    <div class="col-lg-8 col-md-12">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="form-group">
+                                        <div class="comment-form">
+                                            <h4 class="mb-15">Add a review</h4>
+
+                                            <div class="row">
+                                                <div class="col-lg-8 col-md-12">
+                                                    <form class="form-contact comment_form" action="{% url 'review' %}"
+                                                          method="post" id="commentForm">
+                                                        {% csrf_token %}
+
+                                                        <div class="d-inline-block mb-30">
+                                                            <fieldset class="rating">
+                                                                <input type="radio" id="star5" name="rating" value="5"/>
+                                                                <label
+                                                                        class="full" for="star5"
+                                                                        title="Awesome - 5 stars"></label>
+                                                                <input type="radio" id="star4" name="rating"
+                                                                       value="4"/><label
+                                                                    class="full" for="star4"
+                                                                    title="Pretty good - 4 stars"></label>
+                                                                <input type="radio" id="star3" name="rating"
+                                                                       value="3"/><label
+                                                                    class="full" for="star3"
+                                                                    title="Meh - 3 stars"></label>
+                                                                <input type="radio" id="star2" name="rating"
+                                                                       value="2"/><label
+                                                                    class="full" for="star2"
+                                                                    title="Kinda bad - 2 stars"></label>
+                                                                <input type="radio" id="star1" name="rating"
+                                                                       value="1"/><label
+                                                                    class="full" for="star1"
+                                                                    title="Sucks big time - 1 star"></label>
+                                                            </fieldset>
+                                                        </div>
+
+                                                        <div class="col-lg-8 col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
                                                                     <textarea class="form-control w-100" name="comment"
                                                                               id="comment" cols="30" rows="9"
                                                                               placeholder="Write Comment"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" name="product"
+                                                                       value="{{ product.id }}">
+                                                                <div class="form-group">
+                                                                    <button type="submit"
+                                                                            class="button button-contactForm">
+                                                                        Submit
+                                                                        Review
+                                                                    </button>
                                                                 </div>
                                                             </div>
-                                                            <input type="hidden" name="product"
-                                                                   value="{{ product.id }}">
-                                                            <div class="form-group">
-                                                                <button type="submit"
-                                                                        class="button button-contactForm">
-                                                                    Submit
-                                                                    Review
-                                                                </button>
-                                                            </div>
                                                         </div>
-                                                    </div>
-                                            </form>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -394,10 +407,6 @@
                                                              style="width:{{ item.mid_rate_percent }}%">
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                    <span>
-                                                    </span>
-                                                    </div>
                                                     <div class="product-price">
                                                         {% if item.percentage > 0 %}
                                                             <span>UZS {{ item.discount_uzs }} </span><br>
@@ -412,46 +421,53 @@
                                     {% endfor %}
                                 </div>
                             </div>
-
+{#                            <div class="banner-img banner-big wow fadeIn f-none animated mt-50">#}
+{#                                <img class="border-radius-10" src="{% static '' %}assets/imgs/banner/banner-4.png" alt="">#}
+{#                                <div class="banner-text">#}
+{#                                    <h4 class="mb-15 mt-40 text-white">Repair Services</h4>#}
+{#                                    <h2 class="fw-600 mb-20 text-white">We're an Apple <br>Authorised Service Provider</h2>#}
+{#                                </div>#}
+{#                            </div>#}
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
-                        <div class="widget-area">
-                            <!-- Product sidebar Widget -->
-                            <div style="position: absolute; right: 100px; top: 470px;"
-                                 class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
-                                <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">New products</h5>
-                                    <div class="bt-1 border-color-1"></div>
-                                </div>
-                                {% for item in new_products|slice:'0:6' %}
-                                    <div class="single-post clearfix">
-                                        <div class="image">
-                                            <img src="{{ item.product_images.first.image.url }}" alt="#">
-                                        </div>
-                                        <div class="content pt-10">
-                                            <h5><a href="/shop-details/{{ item.id }}">{{ item.title|slice:'0:8' }}</a></h5>
+                        <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                            <div class="widget-area">
+                                <!-- Product sidebar Widget -->
+                                <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
+                                    <div class="widget-header position-relative mb-20 pb-10">
+                                        <h5 class="widget-title mb-10">New products</h5>
+                                        <div class="bt-1 border-color-1"></div>
+                                    </div>
+                                    {% for item in new_products|slice:'0:6' %}
+                                        <div class="single-post clearfix">
+                                            <div class="image">
+                                                <img src="{{ item.product_images.first.image.url }}" alt="#">
+                                            </div>
+                                            <div class="content pt-10">
+                                                <h5>
+                                                    <a href="/shop-details/{{ item.id }}">{{ item.title|slice:'0:8' }}</a>
+                                                </h5>
 
-                                            {% if item.percentage > 0 %}
-                                                <span class="price mb-0 mt-5">UZS {{ item.discount_uzs }} </span>
-                                            {% else %}
-                                                <span class="price mb-0 mt-5">UZS {{ item.price_uzs }} </span>
-                                            {% endif %}
+                                                {% if item.percentage > 0 %}
+                                                    <span class="price mb-0 mt-5">UZS {{ item.discount_uzs }} </span>
+                                                {% else %}
+                                                    <span class="price mb-0 mt-5">UZS {{ item.price_uzs }} </span>
+                                                {% endif %}
 
-                                            {#                                                <p class="price mb-0 mt-5">{{ item.price_uzs }} UZS</p>#}
-                                            <div class="product-rate">
-                                                <div class="product-rating"
-                                                     style="width:{{ item.mid_rate_percent }}%"></div>
+                                                <div class="product-rate">
+                                                    <div class="product-rating"
+                                                         style="width:{{ item.mid_rate_percent }}%"></div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
+                                <!--Widget categories-->
                             </div>
-                            <!--Widget categories-->
                         </div>
+
                     </div>
                 </div>
-            </div>
         </section>
     </main>
 {% endblock %}
@@ -462,9 +478,9 @@
 
     <script src="http://code.jquery.com/jquery-1.9.1.js">
     </script>
-    <script src="{% static '' %}assets/js/alertify.min.js"></script>
-    <script src="{% static '' %}assets/js/ajax_request.js"></script>
-    <script src="{% static '' %}assets/js/calculate_price.js"></script>
+    <script src="{% static 'assets/js/alertify.min.js' %}"></script>
+    <script src="{% static 'assets/js/ajax_request.js' %}"></script>
+    <script src="{% static 'assets/js/calculate_price.js' %}"></script>
     <script>
         $('.addToCartBtn').on('click', function () {
             var product_id = $('.prod_id').val()

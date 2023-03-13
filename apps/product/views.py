@@ -14,7 +14,6 @@ class IndexView(View):
     def get(self, request):
         advertisements = Advertisement.objects.all().order_by('-id')
         product = Product.objects.filter(is_active=True).order_by('-id')
-        category = Category.objects.filter(is_active=True)
         brand = Brand.objects.all().order_by('-id')
         banner = Banner.objects.all()
         last_3_products = product.order_by('-created_at')
@@ -49,8 +48,6 @@ class IndexView(View):
 
             'products': product[:12],
             'objects': product[12:24],
-            'categories': category[:10],
-            'hide_categories': category[10:],
             'brands': brand,
             'banners': banner[:5],
             'last_products': last_3_products,
@@ -105,8 +102,6 @@ def shop_list(request):
         'discounts': query,
         'page_obj': products,
         'cats': category,
-        'categories': category[10:],
-        'hide_categories': category[10:],
         'brands': brands,
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
@@ -118,7 +113,6 @@ def shop_details(request, id):
     product = get_object_or_404(Product, id=id)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
-    category = Category.objects.filter(is_active=True)
 
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
@@ -147,9 +141,7 @@ def shop_details(request, id):
         "product": product,
         "variants": variants,
         'comments': comments,
-        'categories': category[10:],
         "new_products": new_products,
-        'hide_categories': category[10:],
         "related_products": related_products[:4],
     }
     return render(request, "shop-details.html", context)

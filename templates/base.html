@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Chocco</title>
+    <title>Choko Market — Интернет-магазин</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,13 +48,18 @@
                     <div class="text-center">
                         <div id="news-flash" class="d-inline-block">
                             <ul>
-                                <li><i class="fa fa-angle-double-right mr-5"></i> Get great devices up to 50% off <a
-                                        class="active" href="/shop/">View details</a></li>
-                                <li><i class="fa fa-asterisk mr-5"></i><b>Supper Value Deals</b> - Save more with
-                                    coupons
-                                </li>
-                                <li><i class="fa fa-bell mr-5"></i> <b> Trendy 25</b> silver jewelry, save up 35% off
-                                    today <a href="/shop/">Shop now</a></li>
+                                {% for product in products %}
+                                    {% if product.percentage > 20 %}
+                                        <li><i class="fa fa-angle-double-right mr-5"></i>Get great devices up
+                                            to {{ product.percentage }}% off<a
+                                                    class="active" href="/shop-details/{{ product.id }}">View
+                                                details</a></li>
+                                    {% else %}
+
+                                    {% endif %}
+                                {% endfor %}
+                                {#                                <li><i class="fa fa-bell mr-5"></i> <b> Trendy 25</b> silver jewelry, save up 35% off#}
+                                {#                                    today <a href="/shop/">Shop now</a></li>#}
                             </ul>
                         </div>
                     </div>
@@ -82,7 +87,7 @@
         <div class="container">
             <div class="header-wrap header-space-between">
                 <div class="logo logo-width-1">
-                    <a href="/"><img src="{% static 'assets/imgs/theme/logo-default.png' %}" alt="logo"></a>
+                    <a href="/"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="logo"></a>
                 </div>
                 <div class="search-style-2">
                     <form action="{% url 'products_filter' %}" method="get">
@@ -169,8 +174,8 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative main-nav">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="{% static 'assets/imgs/theme/logo-white.png' %}"
-                                              alt="logo"></a>
+                    <a href="/"><img src="{% static 'assets/imgs/theme/whitechokoicon.png' %}"
+                                     alt="logo"></a>
                 </div>
                 <div class="main-categori-wrap d-none d-lg-block">
                     <a class="categori-button-active" href="#">
@@ -182,7 +187,11 @@
                             {% for cat in categories %}
                                 {% if not cat.parent %}
                                     <li class="has-children">
-                                        <a href="/shop/?cat={{ cat }}"><i class="wowy-font-cpu"></i>{{ cat }}</a>
+                                        <a href="/shop/?cat={{ cat }}">{% if cat.icon %}<img src="{{ cat.icon.url }}"
+                                                                                             alt="" width="19px"
+                                                                                             height="19px"
+                                                                                             style="margin-right: 17px">{% else %}
+                                            <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
                                         <div class="dropdown-menu">
                                             <ul class="mega-menu d-lg-flex">
                                                 <li class="mega-menu-col col">
@@ -266,7 +275,7 @@
                             <li><a class="active" href="/">Home</a>
                             </li>
                             <li>
-                                <a href="#">About</a>
+                                <a href="/about/">About</a>
                             </li>
                             <li><a href="/shop/">Shop</a>
                             </li>
@@ -285,61 +294,19 @@
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
-                            <a href="shop-wishlist.html">
-                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-heart-white.svg">
-                                <span class="pro-count white">4</span>
+                            <a href="/order/wishlist">
+                                <img class="svgInject" alt="wowy"
+                                     src="{% static 'assets/imgs/theme/icons/icon-heart-white.svg' %}">
+                                <span class="pro-count white">{{ wishlists.count }}</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
-                            <a class="mini-cart-icon" href="shop-cart.html">
-                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-cart-white.svg">
-                                <span class="pro-count white">02</span>
-                            </a>
-                            <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                <ul>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-details.html"><img alt="wowy"
-                                                                             src="{% static '' %}assets/imgs/shop/thumbnail-3.jpg"></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-details.html">Apple Watch Serial 7</a></h4>
-                                            <h3><span>1 × </span>$800.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="far fa-times"></i></a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-details.html"><img alt="wowy"
-                                                                             src="{% static '' %}assets/imgs/shop/thumbnail-4.jpg"></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-details.html">Macbook Pro 2022</a></h4>
-                                            <h3><span>1 × </span>$3500.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="far fa-times"></i></a>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="shopping-cart-footer">
-                                    <div class="shopping-cart-total">
-                                        <h4>Total <span>$383.00</span></h4>
-                                    </div>
-                                    <div class="shopping-cart-button">
-                                        <a href="/order/shop-cart/">View cart</a>
-                                        <a href="shop-checkout.html">Checkout</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="header-action-icon-2">
-                            <a href="register.html">
-                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-user-white.svg">
+                            <a class="mini-cart-icon" href="/order/shop-cart">
+                                <img alt="wowy" src="{% static 'assets/imgs/theme/icons/icon-cart-white.svg' %}">
+                                <span class="pro-count white">{{ cart.cart_items.all.count }}</span>
                             </a>
                         </div>
+
                         <div class="header-action-icon-2 d-block d-lg-none">
                             <div class="burger-icon burger-icon-white">
                                 <span class="burger-icon-top"></span>
@@ -357,7 +324,7 @@
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="/"><img src="{% static 'assets/imgs/theme/logo-default.png' %}" alt="logo"></a>
+                <a href="/"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="logo"></a>
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -368,8 +335,8 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="#">
-                    <input type="text" placeholder="Search…">
+                <form action="/shop/">
+                    <input type="text" name="search" placeholder="Search…">
                     <button type="submit"><i class="far fa-search"></i></button>
                 </form>
             </div>
@@ -381,84 +348,19 @@
                     <div class="categori-dropdown-wrap categori-dropdown-active-small">
                         <ul>
                             {% for cat in categories %}
-                                {% if not cat.parent %}
-                                    <li class="has-children">
-                                        <a href="/shop/?cat={{ cat }}"><i class="wowy-font-cpu"></i>{{ cat }}</a>
-                                        <div class="dropdown-menu">
-                                            <ul class="mega-menu d-lg-flex">
-                                                <li class="mega-menu-col col">
-                                                    <ul class="d-lg-flex row row-cols-3">
-                                                        {% for child in categories %}
-                                                            {% if child.parent == cat %}
-                                                                <li class="col col-6 col-md-4 mega-menu-col">
-                                                                    <ul>
-                                                                        <li><span><a class="submenu-title"
-                                                                                     href="/shop/?cat={{ child }}">{{ child }}</a></span>
-                                                                        </li>
-                                                                        {% for sub_child in categories %}
-                                                                            {% if sub_child.parent == child %}
-                                                                                <li>
-                                                                                <a class="dropdown-item nav-link nav_item"
-                                                                                   href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
-                                                                            {% endif %}
-                                                                        {% endfor %}
-                                                                        </li>
-                                                                    </ul>
-                                                                </li>
+                                {% if cat.parent %}
+                                    <li>
 
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
+                                                                                             alt="" width="19px"
+                                                                                             height="19px"
+                                                                                             style="margin-right: 17px">{% else %}
+                                            <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
+
                                     </li>
                                 {% endif %}
                             {% endfor %}
-                            <li>
-                                <ul class="more_slide_open" style="display: none;">
-                                    {% for cat in hide_categories %}
-                                        {% if not cat.parent %}
-                                            <li class="has-children">
-                                                <a href="/shop/?cat={{ cat }}"><i
-                                                        class="wowy-font-cpu"></i>{{ cat }}</a>
-                                                <div class="dropdown-menu">
-                                                    <ul class="mega-menu d-lg-flex">
-                                                        <li class="mega-menu-col col">
-                                                            <ul class="d-lg-flex row row-cols-3">
-                                                                {% for child in hide_categories %}
-                                                                    {% if child.parent == cat %}
-                                                                        <li class="col col-6 col-md-4 mega-menu-col">
-                                                                            <ul>
-                                                                                <li><span><a class="submenu-title"
-                                                                                             href="/shop/?cat={{ child }}">{{ child }}</a></span>
-                                                                                </li>
-                                                                                {% for sub_child in hide_categories %}
-                                                                                    {% if sub_child.parent == child %}
-                                                                                        <li>
-                                                                                        <a class="dropdown-item nav-link nav_item"
-                                                                                           href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
-                                                                                    {% endif %}
-                                                                                {% endfor %}
-                                                                                </li>
-                                                                            </ul>
-                                                                        </li>
-
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
                         </ul>
-
-                        <div class="more_categories">Show more...</div>
                     </div>
 
                 </div>
@@ -498,9 +400,16 @@
                 <div class="single-mobile-header-info mt-30">
                     <a target="_blank" href="#"> Our location </a>
                 </div>
-                <div class="single-mobile-header-info">
-                    <a href="register.html">Log In / Sign Up </a>
+                <div class="header-action-icon-2 mb-5">
+                    {% if not user.is_authenticated %}
+                        <a href="/register/">
+                            <p><a href="/register">Login/Register</a></p>
+                        </a>
+                    {% else %}
+                        <p><a href="/logout">Log Out</a></p>
+                    {% endif %}
                 </div>
+
                 <div class="single-mobile-header-info">
                     <a href="#">(+01) - 2345 - 6789 </a>
                 </div>
@@ -552,7 +461,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="widget-about font-md mb-md-5">
                         <div class="logo logo-width-1 wow fadeIn animated">
-                            <a href="index.html"><img src="{% static 'assets/imgs/theme/logo-default.png' %}"
+                            <a href="/"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}"
                                                       alt="logo"></a>
                         </div>
                         <h4 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h4>
@@ -577,7 +486,7 @@
                 <div class="col-lg-2 col-md-3">
                     <h5 class="widget-title mb-30 wow fadeIn animated">About</h5>
                     <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="/about/">About Us</a></li>
                         <li><a href="#">Delivery Information</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms &amp; Conditions</a></li>
@@ -592,7 +501,7 @@
                         <li><a href="/order/wishlist/">My Wishlist</a></li>
                         <li><a href="#">Track My Order</a></li>
                         <li><a href="#">Help</a></li>
-                        <li><a href="#">Order</a></li>
+                        {#                        <li><a href="#">Order</a></li>#}
                     </ul>
                 </div>
             </div>
@@ -604,8 +513,9 @@
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="preloader-inner position-relative">
             <div class="text-center">
-                <img class="jump" src="{% static 'assets/imgs/theme/favico.svg' %}" alt="">
-                <h5 class="mb-5">Now Loading</h5>
+                <img class="jump" src="{% static 'assets/imgs/theme/iconchoko.png' %}" alt="" height="70px"
+                     width="70px">
+                <h5 class="mb-5 pt-20">Now Loading</h5>
                 <div class="loader">
                     <div class="bar bar1"></div>
                     <div class="bar bar2"></div>
@@ -635,12 +545,14 @@
 <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
 <script src="{% static 'assets/js/plugins/jquery.vticker-min.js' %}"></script>
 <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
+<script src="{% static 'assets/js/plugins/TweenMax.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/custom-parallax.js' %}"></script>
 {% block script %}
 
 {% endblock %}
 {#ckeditor#}
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <!-- Template  JS -->
 <script src="{% static 'assets/js/main.js' %}"></script>
 <script src="{% static 'assets/js/shop.js' %}"></script>
