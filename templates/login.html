@@ -1,13 +1,14 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
                     <a href="/" rel="nofollow">Home</a>
-                    <span></span> Pages
-                    <span></span> Login
+                    <span></span> {%  trans "Sahifa" %}
+                    <span></span> {%  trans "Kirish" %}
                 </div>
             </div>
         </div>
@@ -27,26 +28,26 @@
                                             {% endfor %}
                                         {% endif %}
                                         <div class="heading_s1">
-                                            <h3 class="mb-30">Login</h3>
+                                            <h3 class="mb-30">{%  trans "Kirish" %}</h3>
                                         </div>
                                         <form method="post" action="/login/">
                                             {% csrf_token %}
                                             <div class="form-group">
-                                                <input type="text" required="" name="username" placeholder="Your Phone Number">
+                                                <input type="text" required="" name="username" placeholder="{%  trans "Telefon Raqamingiz" %}">
                                             </div>
                                             <div class="form-group">
-                                                <input required="" type="password" name="password" placeholder="Password">
+                                                <input required="" type="password" name="password" placeholder="{%  trans "Parol" %}">
                                             </div>
                                             <div class="login_footer form-group">
                                                 <div class="chek-form">
                                                     <div class="custome-checkbox">
                                                         <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
-                                                        <label class="form-check-label" for="exampleCheckbox1"><span>Remember me</span></label>
+                                                        <label class="form-check-label" for="exampleCheckbox1"><span>{%  trans "Meni eslab qol" %}</span></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Log in</button>
+                                                <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">{%  trans "Kirish" %}</button>
                                             </div>
                                         </form>
                                     </div>

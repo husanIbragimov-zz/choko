@@ -1,13 +1,14 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">Home</a>
-                    <span></span> Shop
+                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
+                    <span></span> {% trans "Mahsulotlar" %}
                 </div>
             </div>
         </div>
@@ -31,7 +32,7 @@
                                                          width="214px" height="280px">
                                                 </a>
                                             </div>
-                                            
+
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="{{ product.status }}">{{ product.status }}</span>
                                             </div>
@@ -40,30 +41,19 @@
                                             <div class="product-category">
                                                 <a href="/shop-details/{{ product.id }}">{{ product.category.first }}</a>
                                             </div>
-                                            <h2><a href="/shop-details/{{ product.id }}">{{ product.title }}</a></h2>
+                                            <h2><a href="/shop-details/{{ product.id }}">{{ product.title|slice:'0:25' }}</a></h2>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
                                                 </div>
                                             </div>
-                                            <div>
-                                                {% if product.percentage > 0 %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% else %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% endif %}
-                                            </div>
                                             <div class="product-price">
-                                                {% if product.percentage > 0 %}
+                                                {% if product.discount > 0 %}
 
-                                                    <span>${{ product.get_discount_price }} </span>
-                                                    <span class="old-price">${{ product.price }}</span>
+                                                    <span>UZS {{ product.discount_uzs }} </span><br>
+                                                    <span class="old-price">UZS {{ product.price_uzs }}</span>
                                                 {% else %}
-                                                    <span>${{ product.price }} </span>
+                                                    <span>UZS {{ product.price_uzs }} </span><br><br>
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
@@ -107,7 +97,7 @@
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Categories</h5>
+                                    <h5 class="widget-title mb-10">{%  trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class="">
@@ -135,7 +125,7 @@
                             <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Top Viewed products</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Eng ko'p ko'rilgan mahsulotlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 {% for last_3_product in last_3_products %}
@@ -145,14 +135,14 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="/shop-details/{{ last_3_product.id }}">{{ last_3_product.title }}</a>
+                                                <a href="/shop-details/{{ last_3_product.id }}">{{ last_3_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
-                                                {% if last_3_product.percentage > 0 %}
+                                                {% if last_3_product.discount > 0 %}
 
-                                                    <span>${{ last_3_product.discount }} </span>
+                                                    <span>UZS {{ last_3_product.discount_uzs }}</span>
                                                 {% else %}
-                                                    <span>${{ last_3_product.price }} </span>
+                                                    <span>UZS {{ last_3_product.price_uzs }}</span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-rate">
@@ -167,7 +157,7 @@
                             <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Top Rated products</h5>
+                                    <h5 class="widget-title mb-10">T{% trans "Eng yaxshi baholanganlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 {% for top_rate_product in top_rate_products|slice:'0:3' %}
@@ -177,10 +167,10 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title }}</a>
+                                                <a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
-                                                {% if top_rate_product.percentage > 0 %}
+                                                {% if top_rate_product.discount > 0 %}
 
                                                     <span>${{ top_rate_product.discount }} </span>
                                                 {% else %}
@@ -205,8 +195,8 @@
                                              src="{{ discount.product_images.first.image.url }}" alt="">
                                         <div class="banner-text">
                                             <span>{{ discount.category.first }}</span>
-                                            <h4>Save {{ discount.percentage }}% on <br>{{ discount.title }}</h4>
-                                            <a href="shop-grid-right.html">Shop Now <i
+                                            <h4>{{ discount.percentage }}% {% trans "Tejab qolish" %} <br>{{ discount.title|slice:'0:25' }}</h4>
+                                            <a href="/">{% trans "Sotib olish" %} <i
                                                     class="fa fa-arrow-right"></i></a>
                                         </div>
                                     </div>
@@ -217,7 +207,7 @@
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-50 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">Manufacturers</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Ishlab chiqaruvchilar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class="">

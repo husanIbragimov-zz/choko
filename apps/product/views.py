@@ -9,53 +9,53 @@ from apps.product.models import Category, Banner, Brand, Product, Rate, Advertis
 from django.core.paginator import Paginator
 
 
-class IndexView(View):
+def index(request):
+    advertisements = Advertisement.objects.all().order_by('-id')
+    product = Product.objects.filter(is_active=True).order_by('-id')
+    category = Category.objects.filter(is_active=True)
+    brand = Brand.objects.all().order_by('-id')
+    banner = Banner.objects.all()
+    last_3_products = product.order_by('-created_at')
+    top_rated_products = sorted(product, key=lambda t: t.mid_rate, reverse=True)
+    top_viewed_products = product.order_by('-view')
+    query = []
+    for qs in product:
+        if qs.percentage > 20:
+            query.append(qs)
 
-    def get(self, request):
-        advertisements = Advertisement.objects.all().order_by('-id')
-        product = Product.objects.filter(is_active=True).order_by('-id')
-        brand = Brand.objects.all().order_by('-id')
-        banner = Banner.objects.all()
-        last_3_products = product.order_by('-created_at')
-        top_rated_products = sorted(product, key=lambda t: t.mid_rate, reverse=True)
-        top_viewed_products = product.order_by('-view')
-        query = []
-        for qs in product:
-            if qs.percentage > 20:
-                query.append(qs)
+    # filters
+    cat = request.GET.get('cat')
+    status = request.GET.get('status')
+    search = request.GET.get('search')
+    status_index = 'featured'
+    if cat:
+        product = product.filter(category__title__icontains=cat)
+    if status:
+        if status == "popular":
+            product = sorted(product, key=lambda t: t.mid_rate, reverse=True)
+            status_index = 'popular'
+        elif status == "top_rated":
+            product = product.order_by('-view')
+            status_index = 'top_rated'
+    if search:
+        product = product.filter(Q(title__icontains=search) | Q(category__title__icontains=search))
+    context = {
+        'advertisements': advertisements[:1],
+        'last_advertisements': advertisements[1:2],
+        'discounts': query[2:3],
+        'queryset': query[:2],
 
-        # filters
-        cat = request.GET.get('cat')
-        status = request.GET.get('status')
-        search = request.GET.get('search')
-        status_index = 'featured'
-        if cat:
-            product = product.filter(category__title__icontains=cat)
-        if status:
-            if status == "popular":
-                product = sorted(product, key=lambda t: t.mid_rate, reverse=True)
-                status_index = 'popular'
-            elif status == "top_rated":
-                product = product.order_by('-view')
-                status_index = 'top_rated'
-        if search:
-            product = product.filter(Q(title__icontains=search) | Q(category__title__icontains=search))
-        context = {
-            'advertisements': advertisements[:1],
-            'last_advertisements': advertisements[1:2],
-            'discounts': query[2:3],
-            'queryset': query[:2],
-
-            'products': product[:12],
-            'objects': product[12:24],
-            'brands': brand,
-            'banners': banner[:5],
-            'last_products': last_3_products,
-            'top_rate_products': top_rated_products,
-            'top_viewed_products': top_viewed_products,
-            'status_index': status_index
-        }
-        return render(request, 'index.html', context)
+        'products': product[:12],
+        'objects': product[12:24],
+        'categories': category,
+        'brands': brand,
+        'banners': banner[:5],
+        'last_products': last_3_products,
+        'top_rate_products': top_rated_products,
+        'top_viewed_products': top_viewed_products,
+        'status_index': status_index
+    }
+    return render(request, 'index.html', context)
 
 
 def about(request):

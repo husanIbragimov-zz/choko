@@ -1,14 +1,15 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">Home</a>
-                    <span></span> Shop
-                    <span></span> Your Cart
+                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
+                    <span></span> {% trans "Mahsulotlar" %}
+                    <span></span> {% trans "Sizning savatchangiz" %}
                 </div>
             </div>
         </div>
@@ -20,12 +21,12 @@
                             <table class="table shopping-summery text-center clean">
                                 <thead>
                                 <tr class="main-heading">
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Subtotal</th>
-                                    <th scope="col">Remove</th>
+                                    <th scope="col">{% trans "Rasm" %}</th>
+                                    <th scope="col">{% trans "Nomi" %}</th>
+                                    <th scope="col">{% trans "Narxi" %}</th>
+                                    <th scope="col">{% trans "Miqdori" %}</th>
+                                    <th scope="col">{% trans "Jami" %}</th>
+                                    <th scope="col">{% trans "O'chirish" %}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -53,7 +54,7 @@
                                         <td class="action" data-title="Remove"><a
                                                 href="/order/delete-cart-item/{{ item.id }}" class="text-muted"><i
                                                 class="fa fa-trash-alt"
-                                                onclick="return confirm('Are you sure delete this order?')"></i></a>
+                                                onclick="return confirm('{% trans "Rostdan ham ushbu mahsulotni o'chirmoqchimisiz?" %}')"></i></a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -61,9 +62,10 @@
                             </table>
                         </div>
                         <div class="cart-action text-end">
-                            <a class="btn btn-rounded mr-10 mt-5" href="/shop"><i class="far fa-retweet mr-5"></i>Update Cart</a>
+                            <a class="btn btn-rounded mr-10 mt-5" href="/shop"><i class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
                             <a class="btn btn-rounded mt-5" href="/order/create-order/{{ cart.id }}"><i
-                                    class="far fa-cart-plus mr-5"></i>Continue Shopping</a>
+                                    class="far fa-cart-plus mr-5"></i>{% trans "Davom etish" %}</a>
+
                         </div>
                         <div class="divider center_icon mt-50 mb-50"><i class="fa fa-gem"></i></div>
                         <div class="row mb-50">
@@ -71,13 +73,13 @@
                             <div class="col-lg-6 col-md-12">
                                 <div class="border p-md-4 p-30 border-radius-10 cart-totals">
                                     <div class="heading_s1 mb-3">
-                                        <h4>Cart Totals</h4>
+                                        <h4>{% trans "Jami Savatcha" %}</h4>
                                     </div>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <tbody>
                                             <tr>
-                                                <td class="cart_total_label">Total</td>
+                                                <td class="cart_total_label">{% trans "Umumiy" %}</td>
                                                 <td class="cart_total_amount"><strong><span
                                                         class="font-xl fw-900 text-brand">{{ cart.cart_total }} UZS</span></strong></td>
                                             </tr>
@@ -85,7 +87,7 @@
                                         </table>
                                     </div>
                                     <a href="/order/create-order/{{ cart.id }}" class="btn btn-rounded"> <i class="fa fa-share-square mr-10"></i>
-                                        Proceed To CheckOut</a>
+                                        {% trans "Buyurtmani tasdiqlash" %}</a>
                                 </div>
                             </div>
                         </div>

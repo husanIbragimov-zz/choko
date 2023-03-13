@@ -1,5 +1,6 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 
     {% block style %}
@@ -72,7 +73,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">Home</a>
+                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
                     <span></span> {{ product.category.first }}
                     <span></span> {{ product.title }}
                 </div>
@@ -151,7 +152,7 @@
                                             {{ product.description|safe|truncatewords:40 }}
                                         </div>
                                         <div class="attr-detail attr-color mb-15">
-                                            <strong class="mr-10">Color</strong>
+                                            <strong class="mr-10">{% trans "Rang" %}</strong>
                                             <ul class="list-filter color-filter" id="color_class">
                                                 {% for color in colors %}
                                                     <li><a href="#"><span class=""
@@ -164,7 +165,7 @@
                                         </div>
                                         {% if product.has_size %}
                                             <div class="attr-detail attr-size mb-15">
-                                                <strong class="mr-10">Size</strong>
+                                                <strong class="mr-10">{% trans "O'lcham" %}</strong>
                                                 <ul class="list-filter size-filter font-small size_class">
                                                     <li class="size_"><a href="#">S <input type="hidden" value="S"></a>
                                                     </li>
@@ -177,13 +178,13 @@
 
                                         {% endif %}
                                         <div class="attr-detail attr-size mt-15 mb-15">
-                                            <strong class="mr-10">Variant</strong>
+                                            <strong class="mr-10">{% trans "Bo'lib to'lash" %}</strong>
                                             <ul class="list-filter size-filter font-small variant_class">
                                                 {% for variant in variants %}
                                                     <li>
                                                         <a class="calculate"
                                                            onclick="calculate({{ variant.duration }}, {{ variant.percent }}, {{ product.price_uzs }})"
-                                                           href="#">{{ variant.duration }} months
+                                                           href="#">{{ variant.duration }} {% trans "oy" %}
                                                             <span class="d-none">{{ variant.id }}</span>
                                                         </a>
                                                     </li>
@@ -195,15 +196,15 @@
                                             <hr>
                                             <div class="attr-detail attr-size mb-15">
                                                 <div class="mr-10">
-                                                    <strong>Total:</strong>
+                                                    <strong>{% trans "Jami" %}:</strong>
                                                     <span id="total" class="fw-bold text-success"></span>
                                                 </div>
                                                 <div class="ml-10">
-                                                    <strong class="ml-10">Percent:</strong>
+                                                    <strong class="ml-10">{% trans "Foiz" %}:</strong>
                                                     <span id="percent" class="fw-bold text-success"></span>
                                                 </div>
                                                 <div class="ml-10">
-                                                    <strong class="ml-10">Monthly:</strong>
+                                                    <strong class="ml-10">{% trans "Oyiga" %}:</strong>
                                                     <span id="monthly" class="fw-bold text-success"></span>
                                                 </div>
                                             </div>
@@ -217,8 +218,7 @@
                                             </div>
                                             <div class="product-extra-link2">
                                                 <button type="button"
-                                                        class="button button-add-to-cart addToCartBtn">Add
-                                                    to cart
+                                                        class="button button-add-to-cart addToCartBtn">{% trans "Savatchaga qo'shish" %}
                                                 </button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                    href="/order/wishlist/{{ product.id }}"><i
@@ -226,8 +226,8 @@
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
-                                            <li>Availability:<span
-                                                    class="in-stock text-success ml-5">{{ product.availability }} Items In Stock</span>
+                                            <li>{% trans "Mavjud" %}:<span
+                                                    class="in-stock text-success ml-5">{{ product.availability }}  {% trans " ta mavjud" %}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -238,14 +238,14 @@
                                 <ul class="nav nav-tabs text-uppercase">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="Description-tab" data-bs-toggle="tab"
-                                           href="#Description">Description</a>
+                                           href="#Description">{% trans "Tafsilotlar" %}</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab"
-                                           href="#Additional-info">Additional info</a>
+                                           href="#Additional-info">{% trans "Qo'shimcha ma'lumotlar" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Reviews
+                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">{% trans "Baholar" %}
                                             ({{ product.product_rate.all.count }})</a>
                                     </li>
                                 </ul>
@@ -274,7 +274,7 @@
                                         <div class="comments-area">
                                             <div class="row">
                                                 <div class="col-lg-8">
-                                                    <h4 class="mb-30">Customer feedbacks</h4>
+                                                    <h4 class="mb-30">{% trans "Xaridorlar fikri" %}</h4>
                                                     <div class="comment-list">
                                                         {% for rate in product.product_rate.all %}
                                                             <div class="single-comment justify-content-between d-flex">
@@ -308,7 +308,7 @@
                                         <!--comment form-->
 
                                         <div class="comment-form">
-                                            <h4 class="mb-15">Add a review</h4>
+                                            <h4 class="mb-15">{% trans "Izoh qoldirish" %}</h4>
 
                                             <div class="row">
                                                 <div class="col-lg-8 col-md-12">
@@ -316,7 +316,7 @@
                                                           method="post" id="commentForm">
                                                         {% csrf_token %}
 
-                                                        <div class="d-inline-block mb-30">
+                                                        <div class="d-inline-block mb-20">
                                                             <fieldset class="rating">
                                                                 <input type="radio" id="star5" name="rating" value="5"/>
                                                                 <label
@@ -347,7 +347,7 @@
                                                                     <div class="form-group">
                                                                     <textarea class="form-control w-100" name="comment"
                                                                               id="comment" cols="30" rows="9"
-                                                                              placeholder="Write Comment"></textarea>
+                                                                              placeholder="{% trans "Izoh yozish" %}..."></textarea>
                                                                     </div>
                                                                 </div>
                                                                 <input type="hidden" name="product"
@@ -355,8 +355,7 @@
                                                                 <div class="form-group">
                                                                     <button type="submit"
                                                                             class="button button-contactForm">
-                                                                        Submit
-                                                                        Review
+                                                                        {% trans "Saqlash" %}
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -370,7 +369,7 @@
                             </div>
                             <div class="row mt-60">
                                 <div class="col-12">
-                                    <h3 class="section-title style-1 mb-30">Related products</h3>
+                                    <h3 class="section-title style-1 mb-30">{% trans "O'xshash Mahsulotlar" %}</h3>
                                 </div>
                                 <div class="row">
                                     {% for item in related_products %}
@@ -430,12 +429,13 @@
 {#                            </div>#}
                             </div>
                         </div>
+{#<<<<<<< HEAD#}
                         <div class="col-lg-3 primary-sidebar sticky-sidebar">
                             <div class="widget-area">
                                 <!-- Product sidebar Widget -->
                                 <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                                     <div class="widget-header position-relative mb-20 pb-10">
-                                        <h5 class="widget-title mb-10">New products</h5>
+                                        <h5 class="widget-title mb-10">{% trans "So'ngi mahsulotlar" %}</h5>
                                         <div class="bt-1 border-color-1"></div>
                                     </div>
                                     {% for item in new_products|slice:'0:6' %}
@@ -458,6 +458,7 @@
                                                     <div class="product-rating"
                                                          style="width:{{ item.mid_rate_percent }}%"></div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     {% endfor %}
