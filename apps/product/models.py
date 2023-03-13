@@ -145,7 +145,7 @@ class Product(BaseAbstractDate):
 
 class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
-    image = models.ImageField(upload_to='products', null=True)
+    image = models.ImageField(upload_to='products', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
