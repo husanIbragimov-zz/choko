@@ -12,6 +12,15 @@ class BannerAdmin(TranslationAdmin):
 
     group_fieldsets = True
 
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
 
 
 @admin_thumbnails.thumbnail('image')
@@ -53,23 +62,23 @@ class ProductAdmin(TranslationAdmin):
     filter_horizontal = ('category',)
     list_display_links = ('id', 'title')
     list_display = (
-                    'title', 'image_tag', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
-                    'id')
+        'title', 'image_tag', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
+        'id')
     readonly_fields = ('mid_rate', 'get_discount_price',)
     list_filter = ('status', 'brand', 'updated_at', 'created_at')
     list_per_page = 20
 
     group_fieldsets = True
 
-    # class Media:
-    #     js = (
-    #         'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-    #         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-    #         'modeltranslation/js/tabbed_translation_fields.js',
-    #     )
-    #     css = {
-    #         'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
-    #     }
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
 
 
 class BrandAdmin(TranslationAdmin):
@@ -77,15 +86,15 @@ class BrandAdmin(TranslationAdmin):
 
     group_fieldsets = True
 
-    # class Media:
-    #     js = (
-    #         'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-    #         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-    #         'modeltranslation/js/tabbed_translation_fields.js',
-    #     )
-    #     css = {
-    #         'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
-    #     }
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
 
 
 class AdvertisementAdmin(TranslationAdmin):
@@ -93,19 +102,33 @@ class AdvertisementAdmin(TranslationAdmin):
 
     group_fieldsets = True
 
-    # class Media:
-    #     js = (
-    #         'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-    #         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-    #         'modeltranslation/js/tabbed_translation_fields.js',
-    #     )
-    #     css = {
-    #         'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
-    #     }
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+
+
+class BannerTranslationAdmin(TranslationAdmin):
+    group_fieldsets = True
+
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
 
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Brand, BrandAdmin)
+admin.site.register(Brand, BannerTranslationAdmin)
 admin.site.register(AdditionalInfo)
 admin.site.register(Color)
 admin.site.register(Banner, BannerAdmin)
