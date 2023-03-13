@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.core.validators import validate_image_file_extension
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.db.models import Avg
@@ -47,7 +48,7 @@ class Category(MPTTModel, BaseAbstractDate):
 class Banner(BaseAbstractDate):
     desc = RichTextField(null=True, blank=True)
     title = models.CharField(max_length=223, null=True, blank=True)
-    image = models.ImageField(upload_to='banner', null=True)
+    image = models.ImageField(upload_to='banner', null=True, blank=True)
 
     def __str__(self):
         return self.title

@@ -10,6 +10,8 @@ from modeltranslation.admin import TranslationAdmin
 class BannerAdmin(TranslationAdmin):
     form = BannerFrom
 
+class BannerTranslationAdmin(TranslationAdmin):
+
     group_fieldsets = True
 
     class Media:
@@ -78,11 +80,8 @@ class ProductAdmin(TranslationAdmin):
         }
 
 
-class BrandAdmin(TranslationAdmin):
-    list_display = ['id', "title"]
-
+class BrandTranslationAdmin(TranslationAdmin):
     group_fieldsets = True
-
     class Media:
         js = (
             'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
@@ -111,10 +110,10 @@ class AdvertisementAdmin(TranslationAdmin):
 
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Brand, BrandAdmin)
+admin.site.register(Brand, BrandTranslationAdmin)
 admin.site.register(AdditionalInfo)
 admin.site.register(Color)
-admin.site.register(Banner, BannerAdmin)
+admin.site.register(Banner, BannerTranslationAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Rate)
 admin.site.register(Advertisement, AdvertisementAdmin)
