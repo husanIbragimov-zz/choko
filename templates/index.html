@@ -28,14 +28,22 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <div class="slider-arrow hero-slider-1-arrow style-3"></div>
+                            <div class="slider-arrow hero-slider-1-arrow style-3">
+{#                                <span class="slider-btn slider-prev slick-arrow">#}
+{#                                    <i class="far fa-chevron-left mt-15"></i>#}
+{#                                </span>#}
+{#                                <span class="slider-btn slider-next slick-arrow">#}
+{#                                    <i class="far fa-chevron-right mt-15"></i>#}
+{#                                </span>#}
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3 d-md-none d-lg-block">
                         {% for foo in queryset %}
-                            <div class="banner-img banner-{{ forloop.counter }} wow fadeIn  animated">
+                            <div class="banner-img banner-{{ forloop.counter }} wow fadeIn animated"
+                                 style="visibility: visible; animation-name: fadeIn;margin-bottom: 5px;">
                                 <img class="border-radius-10" src="{{ foo.product_images.first.image.url }}"
-                                     alt="">
+                                     alt="" height="270px" width="290px">
                                 <div class="banner-text">
                                     <span>{{ foo.category.first }}</span>
                                     <h4> {{ foo.percentage }}% {% trans "tejab qolish" %} <br>{{ foo.title }}</h4>
@@ -80,9 +88,11 @@
                                             <div class="product-img product-img-zoom">
                                                 <a href="/shop-details/{{ product.id }}">
                                                     <img class="default-img"
-                                                         src="{{ product.product_images.first.image.url }}" alt="">
+                                                         src="{{ product.product_images.first.image.url }}" alt=""
+                                                         width="270px" height="280px">
                                                     <img class="hover-img"
-                                                         src="{{ product.product_images.last.image.url }}" alt="">
+                                                         src="{{ product.product_images.last.image.url }}" alt=""
+                                                         width="270px" height="280px">
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
@@ -101,18 +111,9 @@
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
                                             </div>
                                             <div>
-                                                {% if product.percentage > 0 %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% else %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% endif %}
                                             </div>
                                             <div class="product-price">
-                                                {% if product.percentage > 0 %}
+                                                {% if product.discount > 0 %}
 
                                                     <span>UZS {{ product.discount_uzs }} </span><br>
                                                     <span class="old-price">UZS {{ product.price_uzs }}</span>
@@ -122,6 +123,9 @@
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
+                                                <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                   href="/order/wishlist/{{ product.id }}"><i
+                                                        class="far fa-heart"></i></a>
                                             </div>
 
                                         </div>
@@ -140,7 +144,7 @@
 
                 {% for advertisement in advertisements %}
                     <div class="banner-img banner-big wow fadeIn animated">
-                        <img src="{{ advertisement.banner_image.url }}" alt="">
+                        <img src="{{ advertisement.banner_image.url }}" alt="" width="1296px">
                         <div class="banner-text">
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             <p>{{ advertisement.description|safe }}</p>
@@ -155,7 +159,7 @@
         </section>
         <section class="product-tabs pt-30 pb-30 wow fadeIn animated">
             <div class="container">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one"
                                 type="button" role="tab" aria-controls="tab-one" aria-selected="true">{% trans "Maxsus" %}
@@ -167,17 +171,17 @@
                     <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                         <div class="row product-grid-4">
                             {% for product in objects %}
-                                <div class="col-lg-3 col-md-4 col-12 col-sm-5">
+                                <div class="col-lg-3 col-md-6 col-12 col-sm-5">
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
                                                 <a href="/shop-details/{{ product.id }}">
                                                     <img class="default-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="214px" height="280px">
+                                                         width="270px" height="280px">
                                                     <img class="hover-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="214px" height="280px">
+                                                         width="270px" height="280px">
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
@@ -196,19 +200,9 @@
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
                                             </div>
                                             <div>
-
-                                                {% if product.percentage > 0 %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% else %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% endif %}
                                             </div>
                                             <div class="product-price">
-                                                {% if product.percentage > 0 %}
+                                                {% if product.discount > 0 %}
 
                                                     <span>UZS {{ product.discount_uzs }} </span><br>
                                                     <span class="old-price">UZS {{ product.price_uzs }}</span>
@@ -220,7 +214,7 @@
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                    href="/order/wishlist/{{ product.id }}"><i
-                                                        class="far fa-shopping-bag"></i></a>
+                                                        class="far fa-heart"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -237,7 +231,7 @@
             <div class="container">
                 {% for advertisement in last_advertisements %}
                     <div class="banner-img banner-big wow fadeIn animated">
-                        <img src="{{ advertisement.banner_image.url }}" alt="">
+                        <img src="{{ advertisement.banner_image.url }}" alt="" width="1296px">
                         <div class="banner-text">
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             <p>{{ advertisement.description|safe }}</p>
@@ -259,7 +253,7 @@
                         {% for discount in discounts %}
                             <div class="banner-img wow fadeIn animated mb-md-4">
                                 <img class="border-radius-10" src="{{ discount.product_images.first.image.url }}"
-                                     alt="">
+                                     alt="" height="270px">
                                 <div class="banner-text">
                                     <span>{{ discount.category.first.title }}</span>
                                     <h4>{{ discount.percentage }}% {% trans "tejab qolish" %} <br>{{ discount.title }}</h4>
@@ -284,12 +278,11 @@
                                             <a href="/shop-details/{{ qs.id }}">{{ qs.title|slice:'0:20' }}</a>
                                         </h4>
                                         <pre class="d-inline p-2"><code><i
-                                                class="fa fa-star-half-alt"></i> {% if qs.mid_rate %}
-                                            {{ qs.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                                class="fa fa-star-half-alt"></i> {% if qs.mid_rate %}{{ qs.mid_rate }}{% else %}0.0{% endif %}</code></pre>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-eye"></i> {{ qs.view }}</code></pre>
                                         <div class="product-price">
-                                            {% if qs.percentage > 0 %}
+                                            {% if qs.discount > 0 %}
 
                                                 <span>UZS {{ qs.discount_uzs }}</span><br>
                                                 <span style="font-size: 12px"
@@ -307,31 +300,30 @@
                     <div class="col-lg-3 col-md-6">
                         <h4 class="section-title style-1 mb-30 wow fadeIn animated">{%  trans "Eng Yaxshi Baholanganlar" %}</h4>
                         <div class="product-list-small wow fadeIn animated">
-                            {% for top_rate_product in top_rate_products|slice:'0:3' %}
+                            {% for trp in top_rate_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
                                     <figure class="col-md-3 mb-0">
-                                        <a href="/shop-details/{{ top_rate_product.id }}"><img
-                                                src="{{ top_rate_product.product_images.first.image.url }}"
+                                        <a href="/shop-details/{{ trp.id }}"><img
+                                                src="{{ trp.product_images.first.image.url }}"
                                                 alt=""></a>
                                     </figure>
                                     <div class="col-md-9 pl-0">
                                         <h4 class="title-small mb-2">
-                                            <a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title|slice:'0:20' }}</a>
+                                            <a href="/shop-details/{{ trp.id }}">{{ trp.title|slice:'0:20' }}</a>
                                         </h4>
+
+                                        <pre class="d-inline p-2"><code><i class="fa fa-star-half-alt"></i> {% if trp.mid_rate %}{{ trp.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+
                                         <pre class="d-inline p-2"><code><i
-                                                class="fa fa-star-half-alt"></i> {% if top_rate_product.mid_rate %}
-                                            {{ top_rate_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
-                                        <pre class="d-inline p-2"><code><i
-                                                class="fa fa-eye"></i> {{ top_rate_product.view }}</code></pre>
+                                                class="fa fa-eye"></i> {{ trp.view }}</code></pre>
                                         <div class="product-price">
                                             <div class="product-price">
-                                                {% if top_rate_product.percentage > 0 %}
-
-                                                    <span>UZS {{ top_rate_product.discount_uzs }}</span><br>
+                                                {% if trp.discount > 0 %}
+                                                    <span>UZS {{ trp.discount_uzs }}</span><br>
                                                     <span style="font-size: 12px"
-                                                          class="old-price">UZS {{ top_rate_product.price_uzs }}</span>
+                                                          class="old-price">UZS {{ trp.price_uzs }}</span>
                                                 {% else %}
-                                                    <span>{{ top_rate_product.price_uzs }}</span><br><br>
+                                                    <span>{{ trp.price_uzs }}</span><br><br>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -357,19 +349,18 @@
                                             <a href="/shop-details/{{ top_viewed_product.id }}">{{ top_viewed_product.title|slice:'0:20' }}</a>
                                         </h4>
                                         <pre class="d-inline p-2"><code><i
-                                                class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}
-                                            {{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                                class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}{{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-eye"></i> {{ top_viewed_product.view }}</code></pre>
                                         <div class="product-price">
                                             <div class="product-price">
-                                                {% if top_viewed_product.percentage > 0 %}
+                                                {% if top_viewed_product.discount > 0 %}
 
                                                     <span>UZS {{ top_viewed_product.discount_uzs }}</span><br>
                                                     <span style="font-size: 12px"
                                                           class="old-price">UZS {{ top_viewed_product.price_uzs }}</span>
                                                 {% else %}
-                                                    <span>{{ top_viewed_product.price_uzs }} uzs</span><br><br>
+                                                    <span>UZS {{ top_viewed_product.price_uzs }}</span><br><br>
                                                 {% endif %}
                                             </div>
                                         </div>

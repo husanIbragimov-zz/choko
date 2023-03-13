@@ -34,6 +34,7 @@ class Category(MPTTModel, BaseAbstractDate):
                                limit_choices_to={'is_active': True},
                                related_name='children', null=True, blank=True, )
     title = models.CharField(max_length=50)
+    icon = models.ImageField(upload_to='category', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     class MPTTMeta:
@@ -125,8 +126,7 @@ class Product(BaseAbstractDate):
     def image_tag(self):
         if self.product_images.all().first().image.url is not None:
             return mark_safe('<img src="{}" height="80"/>'.format(self.product_images.all().first().image.url))
-        else:
-            return ""
+        return "No Image"
 
     image_tag.short_description = 'Mahsulot rasmi'
 
@@ -146,7 +146,7 @@ class Product(BaseAbstractDate):
 
 class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
-    image = models.ImageField(upload_to='products', null=True)
+    image = models.ImageField(upload_to='products', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

@@ -40,7 +40,8 @@ class ImagesAdmin(admin.ModelAdmin):
 class CategoryAdmin(DraggableMPTTAdmin, TranslationAdmin):
     mptt_indent_field = "title"
     list_display = ('tree_actions', 'indented_title', 'created_at', 'is_active', 'id')
-    list_display_links = ('indented_title',)
+
+    list_display_links = ('indented_title', 'id')
     list_filter = ('is_active', 'created_at')
     search_fields = ('title',)
     list_per_page = 25
@@ -51,8 +52,9 @@ class ProductImageStackedInline(admin.StackedInline):
     extra = 1
 
 
-class AdditionalInfoAdmin(admin.TabularInline):
+class AdditionalInfoAdmin(admin.StackedInline):
     model = AdditionalInfo
+    extra = 1
     list_display = ['id', "title", 'product', "description"]
     list_filter = ['prodcut', 'created_at']
 
@@ -60,9 +62,10 @@ class AdditionalInfoAdmin(admin.TabularInline):
 class ProductAdmin(TranslationAdmin):
     inlines = [ProductImageInline, AdditionalInfoAdmin]
     filter_horizontal = ('category',)
-    list_display = ('image_tag',
-                    'title', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
-                    'id')
+    list_display_links = ('id', 'title')
+    list_display = (
+        'title', 'image_tag', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
+        'id')
     readonly_fields = ('mid_rate', 'get_discount_price',)
     list_filter = ('status', 'brand', 'updated_at', 'created_at')
     list_per_page = 20
@@ -96,6 +99,20 @@ class BrandTranslationAdmin(TranslationAdmin):
 class AdvertisementAdmin(TranslationAdmin):
     list_display = ['id', "title", "description"]
 
+    group_fieldsets = True
+
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+
+
+class BannerTranslationAdmin(TranslationAdmin):
     group_fieldsets = True
 
     class Media:
