@@ -216,7 +216,7 @@
                                                         class="button button-add-to-cart addToCartBtn">{% trans "Savatchaga qo'shish" %}
                                                 </button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="/order/wishlist/{{ product.id }}"><i
+                                                   href="{% url "wishlist" product.id %}"><i
                                                         class="far fa-heart"></i></a>
                                             </div>
                                         </div>
@@ -372,7 +372,7 @@
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
-                                                        <a href="/shop-details/{{ item.id }}" tabindex="0">
+                                                        <a href="{% url "shop-details" item.id %}" tabindex="0">
                                                             <img class="default-img"
                                                                  src="{{ item.product_images.first.image.url }}"
                                                                  alt="">
@@ -384,7 +384,7 @@
                                                     <div class="product-action-1">
                                                         <a aria-label="Add To Wishlist"
                                                            class="action-btn small hover-up"
-                                                           href="/order/wishlist/{{ item.id }}" tabindex="0"><i
+                                                           href="{% url "wishlist" item.id %}" tabindex="0"><i
                                                                 class="far fa-heart"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
@@ -392,7 +392,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
-                                                    <h2><a href="/shop-details/{{ item.id }}"
+                                                    <h2><a href="{% url "shop-details" item.id %}"
                                                            tabindex="0">{{ item.title|slice:'0:20' }}</a>
                                                     </h2>
                                                     <div class="product-rate d-inline-block">
@@ -440,7 +440,7 @@
                                             </div>
                                             <div class="content pt-10">
                                                 <h5>
-                                                    <a href="/shop-details/{{ item.id }}">{{ item.title|slice:'0:8' }}</a>
+                                                    <a href="{% url "shop-details" item.id %}">{{ item.title|slice:'0:8' }}</a>
                                                 </h5>
 
                                                 {% if item.percentage > 0 %}
