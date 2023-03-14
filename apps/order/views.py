@@ -25,7 +25,11 @@ def add_to_cart(request):
         else:
             return JsonResponse({"msg": "Please choose the color!", "status": False})
         if variant != '0':
-            variant = variant.replace(" ", '').split('months')[1]
+            try:
+                variant = variant.replace(" ", '').split('oy')[1]
+            except:
+                variant = variant.replace(" ", '').split('месяц')[1]
+
             variant = Variant.objects.get(id=variant)
         else:
             return JsonResponse({"msg": "Please choose the variant!", "status": False})

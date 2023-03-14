@@ -3,7 +3,7 @@
 {% load i18n %}
 {% block content %}
 
-    {% block style %}
+
         <style>
             @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 
@@ -67,7 +67,6 @@
                 color: #FFED85;
             }
         </style>
-    {% endblock %}
 
     <main class="main">
         <div class="page-header breadcrumb-wrap">
@@ -217,13 +216,11 @@
                                                 <input class="qty-input" type="number" min="1" value="1">
                                             </div>
                                             <div class="product-extra-link2">
-                                                <button type="button"
+                                                <button style="border-radius: 30px" type="button"
                                                         class="button button-add-to-cart addToCartBtn">{% trans "Savatchaga qo'shish" %}
                                                 </button>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="/order/wishlist/{{ product.id }}"><i
-                                                        class="far fa-heart"></i></a>
                                             </div>
+
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
                                             <li>{% trans "Mavjud" %}:<span
