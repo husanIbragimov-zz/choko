@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.core.validators import validate_image_file_extension
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.db.models import Avg
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate
@@ -48,7 +50,7 @@ class Category(MPTTModel, BaseAbstractDate):
 class Banner(BaseAbstractDate):
     desc = RichTextField(null=True, blank=True)
     title = models.CharField(max_length=223, null=True, blank=True)
-    image = models.ImageField(upload_to='banner', null=True)
+    image = models.ImageField(upload_to='banner', null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -62,7 +64,29 @@ class Brand(BaseAbstractDate):
 
 
 class Color(BaseAbstractDate):
-    name = ColorField(default='#FF0000')
+    COLOR_PALETTE = [
+        ("#ff0000", "qizil",),
+        ("#ffa500", "jigar rang",),
+        ("#ffff00", "sariq",),
+        ("#008000", "yashil",),
+        ("#0000ff", "ko'k",),
+        ("#4b0082", "binafsha",),
+        ("#ee82ee", "pushti",),
+    ]
+    name = ColorField(samples=COLOR_PALETTE)
+
+    def __str__(self):
+        return self.name
+
+    def colored_name(self):
+        return format_html(
+            '<span style="color: #{};">{}</span>',
+            self.name,
+        )
+
+
+class Size(BaseAbstractDate):
+    name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
@@ -82,6 +106,8 @@ class Product(BaseAbstractDate):
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
+    color = models.ManyToManyField(Color, blank=True)
+    size = models.ManyToManyField(Size, blank=True)
     price = models.FloatField(default=0, null=True)
     percentage = models.FloatField(default=0, null=True, blank=True)
     discount = models.FloatField(default=0, null=True, blank=True)

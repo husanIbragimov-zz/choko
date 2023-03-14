@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from apps.base.models import BaseAbstractDate
-from apps.product.models import Product, Color
+from apps.product.models import Product, Color, Size
 
 
 # Create your models here.
@@ -36,8 +36,6 @@ class Cart(BaseAbstractDate):
 class Order(BaseAbstractDate):
     STATUS = (
         ('New', 'New'),
-        ('Accepted', 'Accepted'),
-        ('Preaparing', 'Preaparing'),
         ('Completed', 'Completed'),
         ('Canceled', 'Canceled'),
     )
@@ -65,8 +63,8 @@ class CartItem(BaseAbstractDate):
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE, null=True, blank=True,
                                 related_name='variant_cart_items')
     color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True)
+    size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
-    size = models.CharField(max_length=10, null=True, blank=True)
 
     def __str__(self):
         return f'{self.subtotal}'

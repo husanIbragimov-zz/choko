@@ -37,7 +37,7 @@
                                                 alt="#"></td>
                                         <td class="product-des product-name">
                                             <p class="product-name"><a
-                                                    href="/shop-details/{{ item.product.id }}">{{ item.product.title }}</a>
+                                                    href="{% url "shop-details" item.id %}">{{ item.product.title }}</a>
                                             </p>
                                         </td>
                                         <td class="price" data-title="Price"><span>{{ item.product.price_uzs }} UZS</span></td>
@@ -62,8 +62,8 @@
                             </table>
                         </div>
                         <div class="cart-action text-end">
-                            <a class="btn btn-rounded mr-10 mt-5" href="/shop"><i class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
-                            <a class="btn btn-rounded mt-5" href="/order/create-order/{{ cart.id }}"><i
+                            <a class="btn btn-rounded mr-10 mt-5" href="{% url "products_filter" %}"><i class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
+                            <a class="btn btn-rounded mt-5" href="{% url "create-order" cart.id %}"><i
                                     class="far fa-cart-plus mr-5"></i>{% trans "Davom etish" %}</a>
 
                         </div>
@@ -86,7 +86,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <a href="/order/create-order/{{ cart.id }}" class="btn btn-rounded"> <i class="fa fa-share-square mr-10"></i>
+                                    <a href="{% url "create-order" cart.id %}" class="btn btn-rounded"> <i class="fa fa-share-square mr-10"></i>
                                         {% trans "Buyurtmani tasdiqlash" %}</a>
                                 </div>
                             </div>

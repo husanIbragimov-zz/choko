@@ -3,24 +3,12 @@ from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
 from apps.product.forms import BannerFrom
 from apps.product.models import Category, Brand, Banner, Product, ProductImage, Rate, Advertisement, Color, \
-    AdditionalInfo, Currency
+    AdditionalInfo, Currency, Size
 from modeltranslation.admin import TranslationAdmin
 
 
 class BannerAdmin(TranslationAdmin):
     form = BannerFrom
-
-    group_fieldsets = True
-
-    class Media:
-        js = (
-            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-            'modeltranslation/js/tabbed_translation_fields.js',
-        )
-        css = {
-            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
-        }
 
 
 @admin_thumbnails.thumbnail('image')
@@ -60,7 +48,7 @@ class AdditionalInfoAdmin(admin.StackedInline):
 class ProductAdmin(TranslationAdmin):
     actions = ['make_published']
     inlines = [ProductImageInline, AdditionalInfoAdmin]
-    filter_horizontal = ('category',)
+    filter_horizontal = ('category', 'color', 'size')
     list_display_links = ('id', 'title')
     list_display = (
         'title', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
@@ -86,9 +74,7 @@ class ProductAdmin(TranslationAdmin):
         }
 
 
-class BrandAdmin(TranslationAdmin):
-    list_display = ['id', "title"]
-
+class BrandTranslationAdmin(TranslationAdmin):
     group_fieldsets = True
 
     class Media:
@@ -133,9 +119,10 @@ class BannerTranslationAdmin(TranslationAdmin):
 
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Brand, BrandAdmin)
+admin.site.register(Brand, BrandTranslationAdmin)
 admin.site.register(AdditionalInfo)
 admin.site.register(Color)
+admin.site.register(Size)
 admin.site.register(Banner, BannerTranslationAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Rate)

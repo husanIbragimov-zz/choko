@@ -23,7 +23,7 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="/shop-details/{{ product.id }}">
+                                                <a href="{% url "shop-details" product.id %}">
                                                     <img class="default-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
                                                          width="214px" height="280px">
@@ -39,13 +39,24 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="/shop-details/{{ product.id }}">{{ product.category.first }}</a>
+                                                <a href="{% url "shop-details" product.id %}">{{ product.category.first }}</a>
                                             </div>
-                                            <h2><a href="/shop-details/{{ product.id }}">{{ product.title|slice:'0:25' }}</a></h2>
+                                            <h2><a href="{% url "shop-details" product.id %}">{{ product.title|slice:'0:25' }}</a></h2>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
                                                 </div>
+                                            </div>
+                                            <div>
+                                                {% if product.percentage %}
+                                                    <span>
+                                                        <span>{{ product.percentage }}%</span>
+                                                    </span>
+                                                {% else %}
+                                                    <span>
+                                                        <span>{{ product.percentage }}%</span>
+                                                    </span>
+                                                {% endif %}
                                             </div>
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
@@ -58,7 +69,8 @@
                                             </div>
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="/order/wishlist/{{ product.id }}"><i style="padding-top: 15px;" class="far fa-heart"></i></a>
+                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 15px;" class="far fa-heart"></i></a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -135,7 +147,7 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="/shop-details/{{ last_3_product.id }}">{{ last_3_product.title|slice:'0:25' }}</a>
+                                                <a href="{% url "shop-details" last_3_product.id %}">{{ last_3_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
                                                 {% if last_3_product.discount > 0 %}
@@ -167,7 +179,7 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="/shop-details/{{ top_rate_product.id }}">{{ top_rate_product.title|slice:'0:25' }}</a>
+                                                <a href="{% url "shop-details" top_rate_product.id %}">{{ top_rate_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
                                                 {% if top_rate_product.discount > 0 %}

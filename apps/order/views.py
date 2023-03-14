@@ -4,64 +4,79 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from apps.order.models import Cart, CartItem, Order, Wishlist, Variant
-from apps.product.models import Product, Rate, Color, Category
+from apps.product.models import Product, Rate, Color, Category, Size
 
 
 # Create your views here.
+
+def account(request):
+    orders = Order.objects.filter(user=request.user)
+    context = {
+        "orders": orders
+    }
+    return render(request, "account.html", context)
+
+
 def add_to_cart(request):
     if request.method == "POST":
+        print(request.POST)
         session_id = request.session['nonuser']
         product_id = request.POST['product_id']
         color = request.POST.get('color', None)
         variant = request.POST.get('variant', None)
         quantity = request.POST['quantity']
-        size = request.POST['size']
+        size = request.POST.get('size', None)
         cart = Cart.objects.get(session_id=session_id, completed=False)
         cart_item = CartItem.objects.filter(cart=cart, product_id=product_id)
         product = Product.objects.get(id=product_id)
-        if color != '0':
+        print(color, "coloor")
+        has_size = False
+        has_color = False
+        if product.size.all().exists():
+            has_size = True
+        if product.color.all().exists():
+            has_color = True
+        if has_color and color is not None:
             color = color.replace(" ", "")
             color = Color.objects.get(id=color)
-        else:
-            return JsonResponse({"msg": "Please choose the color!", "status": False})
-        if variant != '0':
+
+        elif has_color and color is None:
+            return JsonResponse({"msg": "Iltimos! rang tanlang", "status": False})
+
+        if has_size and size is not None:
+            size = size.replace(" ", "")
+            size = Size.objects.get(name=size)
+        elif has_size and size is None:
+            return JsonResponse({"msg": "Iltimos! o'lcham tanlang", "status": False})
+
+        if variant is not None:
             try:
                 variant = variant.replace(" ", '').split('oy')[1]
             except:
                 variant = variant.replace(" ", '').split('месяц')[1]
-
             variant = Variant.objects.get(id=variant)
         else:
-            return JsonResponse({"msg": "Please choose the variant!", "status": False})
+            return JsonResponse({"msg": "Iltimos! muddatni tanlang", "status": False})
         if cart_item.exists():
             for i in cart_item:
                 i.quantity += int(quantity)
                 i.save()
         else:
-            if product.has_size:
-                if size != '0':
-                    cart_item = CartItem.objects.create(
-                        cart_id=cart.id,
-                        product_id=product_id,
-                        quantity=quantity,
-                        size=size,
-                        color=color,
-                        variant=variant
-                    )
-                    return JsonResponse({"msg": "Added to cart successfully!", "status": True})
-                else:
-                    return JsonResponse({"msg": "Please choose size and color!", "status": False})
-            else:
-                cart_item = CartItem.objects.create(
-                    cart_id=cart.id,
-                    product_id=product_id,
-                    quantity=quantity,
-                    color=color,
-                    variant=variant
 
-                )
-                return JsonResponse({"msg": "Added to cart successfully!", "status": True})
-    return JsonResponse({"msg": "Added to cart successfully!", "status": True})
+            cart_item = CartItem.objects.create(
+                cart_id=cart.id,
+                product_id=product_id,
+                quantity=quantity,
+                variant=variant
+            )
+            if size is not None and has_size:
+                cart_item.size = size
+                cart_item.save()
+            if color is not None and has_color:
+                cart_item.color = color
+                cart_item.save()
+
+    return JsonResponse({"msg": "Savatchaga muvaffaqiyatli qo'shildi!", "status": True})
 
 
 @login_required(login_url='/login')
