@@ -1,7 +1,6 @@
-var size = 0
-var color = 0
-var variant = 0
-console.log("Salom")
+var size = undefined
+var color = undefined
+var variant = undefined
 $(".size_class li").on("click", function () {
     size = $(this).text();
 

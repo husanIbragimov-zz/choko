@@ -120,14 +120,14 @@
                 <div class="header-action-right">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
-                            <a href="/order/wishlist">
+                            <a href="{% url 'wishlist' %}">
                                 <img class="svgInject" alt="wowy"
                                      src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}">
                                 <span class="pro-count blue">{{ wishlists.count }}</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
-                            <a class="mini-cart-icon" href="/order/shop-cart">
+                            <a class="mini-cart-icon" href="{% url 'shop-cart' %}">
                                 <img alt="wowy" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}">
                                 <span class="pro-count blue">{{ cart.cart_items.all.count }}</span>
                             </a>
@@ -136,12 +136,12 @@
                                     {% for item in cart.cart_items.all %}
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="/shop-details/{{ item.product.id }}"><img alt="wowy"
+                                                <a href="{% url 'shop-details' item.product.id %}"><img alt="wowy"
                                                                                                    src="{{ item.product.product_images.first.image.url }}"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4>
-                                                    <a href="/shop-details/{{ item.product.id }}">{{ item.product.title }}</a>
+                                                    <a href="{% url 'shop-details' item.product.id %}">{{ item.product.title }}</a>
                                                 </h4>
                                                 <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs }} UZS
                                                 </h3>
@@ -157,10 +157,10 @@
                                 </ul>
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>{% trans "Jami" %} <span>{{ cart }} UZS</span></h4>
+                                        <h4>{% trans "Jami" %} <span>{{ cart.cart_total }} UZS</span></h4>
                                     </div>
-                                    <div class="shopping-cart-button">
-                                        <a href="/order/shop-cart">{% trans "Savatchani ko'rish" %}</a>
+                                    <div class="shopping-cart-button d-flex">
+                                        <a href="/order/shop-cart">{% trans "Ko'rish" %}</a>
                                         <a href="/order/create-order/{{ cart.id }}">{% trans "Tasdiqlash" %}</a>
                                     </div>
                                 </div>
@@ -172,7 +172,7 @@
                                     <p><a href="/register">{% trans "Kirish/Ro'yxatdan o'tish" %}</a></p>
                                 </a>
                             {% else %}
-                                <p><a href="/logout">{% trans "Chiqish" %}</a></p>
+                                <p><a href="{% url 'my-account' %}">{% trans "Kabinet" %}</a></p>
                             {% endif %}
                         </div>
                     </div>
@@ -459,7 +459,7 @@
                 <div class="col-lg-5">
                     <!-- Subscribe Form -->
                     <form class="form-subcriber d-flex wow fadeIn animated">
-                        <input type="email" class="form-control bg-white font-small" placeholder="Enter your email">
+                        <input type="email" class="form-control bg-white font-small" placeholder="{% trans "Emailingizni kiriting" %}">
                         <button class="btn bg-dark text-white" type="submit">{% trans "A'zo bo'lish" %}</button>
                     </form>
                     <!-- End Subscribe Form -->

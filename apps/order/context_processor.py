@@ -8,7 +8,6 @@ def cart_renderer(request):
     currency = Currency.objects.last()
     categories = Category.objects.filter(is_active=True)
     products = Product.objects.all()
-    print(categories)
     try:
         cart = Cart.objects.get(session_id=request.session['nonuser'], completed=False)
         wishlists = Wishlist.objects.filter(session_id=request.session['nonuser'])
