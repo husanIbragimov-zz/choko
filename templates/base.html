@@ -284,12 +284,12 @@
                             </li>
                             <li>
 
-                                <a href="/about/">{% trans "Biz haqimizda" %}</a>
+                                <a href="{% url "about" %}">{% trans "Biz haqimizda" %}</a>
                             </li>
                             <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a>
                             </li>
                             <li>
-                                <a href="/contact/">{% trans "Aloqa" %}</a>
+                                <a href="{% url "contact" %}">{% trans "Aloqa" %}</a>
                             </li>
 
                             {#                            <li><a href="#">My Account</a></li>#}
@@ -384,7 +384,7 @@
                         <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a>
                         </li>
                         <li>
-                            <a href="/contact/">{% trans "Aloqa" %}</a>
+                            <a href="{% url "contact" %}">{% trans "Aloqa" %}</a>
 
                             {#                        <li><a href="#">My Account</a></li>#}
 
@@ -506,7 +506,7 @@
                         <li><a href="#">Delivery Information</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="/contact/">Contact Us</a></li>
+                        <li><a href="{% url "contact" %}">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2  col-md-3">

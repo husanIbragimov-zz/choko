@@ -6,7 +6,6 @@
             <div class="container">
                 <div class="breadcrumb">
                     <a href="/" rel="nofollow">Home</a>
-                    <span></span> Pages
                     <span></span> About us
                 </div>
             </div>
@@ -29,7 +28,7 @@
                         </div>
                         <div class="parallax-img img-8 wow animate__animated animate__fade">
                             <img class="paralax-8" src="{% static '' %}assets/imgs/theme/icons/pattern-4.svg"
-                                 alt="wowy">
+                                 alt="choko">
                         </div>
                     </div>
                 </div>
@@ -46,7 +45,7 @@
                             pariatur provident nam ratione incidunt magnam sequi.</p>
                         <p class="wow fadeIn animated">
                             <a class="btn btn-brand btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up"
-                               href="page-contact.html">Contact Us</a>
+                               href="{% url "contact" %}">Contact Us</a>
                             <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand bg-white text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up">Our
                                 Services</a>
                         </p>
@@ -156,7 +155,7 @@
                     <div class="col-12 text-center">
                         <p class="wow fadeIn animated">
                             <a class="btn btn-brand btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up"
-                               href="page-contact.html">Contact Us</a>
+                               href="{% url "contact" %}">Contact Us</a>
                             <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up">Learn
                                 More</a>
                         </p>

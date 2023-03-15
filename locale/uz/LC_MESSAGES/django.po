@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 07:00+0000\n"
+"POT-Creation-Date: 2023-03-15 12:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,8 +27,9 @@ msgid "Russian"
 msgstr ""
 
 #: templates/account.html:9 templates/base.html:283 templates/base.html:379
-#: templates/shop-cart.html:10 templates/shop-details.html:75
-#: templates/shop-wishlist.html:9 templates/shop.html:10
+#: templates/page-contact.html:19 templates/shop-cart.html:10
+#: templates/shop-details.html:75 templates/shop-wishlist.html:9
+#: templates/shop.html:10
 msgid "Bosh sahifa"
 msgstr ""
 
@@ -146,6 +147,7 @@ msgid "Mahsulotlar"
 msgstr ""
 
 #: templates/base.html:292 templates/base.html:387 templates/base.html:483
+#: templates/page-contact.html:20 templates/page-contact.html:45
 msgid "Aloqa"
 msgstr ""
 
@@ -254,6 +256,22 @@ msgstr ""
 msgid "Meni eslab qol"
 msgstr ""
 
+#: templates/page-contact.html:52
+msgid "Ism"
+msgstr ""
+
+#: templates/page-contact.html:57
+msgid "Familiya"
+msgstr ""
+
+#: templates/page-contact.html:62 templates/register.html:42
+msgid "Telefon raqam"
+msgstr ""
+
+#: templates/page-contact.html:68 templates/shop-details.html:308
+msgid "Izoh qoldirish"
+msgstr ""
+
 #: templates/register.html:11 templates/register.html:54
 msgid "Ro'yxatdan o'tish"
 msgstr ""
@@ -267,10 +285,6 @@ msgid ""
 "Sizning shaxsiy ma'lumotlaringiz bu vaqt davomida tajribangizni qo'llab-"
 "quvvatlash uchun ishlatiladi veb-sayt, hisobingizga kirishni boshqarish va "
 "tavsiflangan boshqa maqsadlar uchun maxfiylik siyosatimizda"
-msgstr ""
-
-#: templates/register.html:42
-msgid "Telefon raqam"
 msgstr ""
 
 #: templates/register.html:50
@@ -371,10 +385,6 @@ msgstr ""
 
 #: templates/shop-details.html:274
 msgid "Xaridorlar fikri"
-msgstr ""
-
-#: templates/shop-details.html:308
-msgid "Izoh qoldirish"
 msgstr ""
 
 #: templates/shop-details.html:347

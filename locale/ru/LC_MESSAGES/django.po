@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 07:00+0000\n"
+"POT-Creation-Date: 2023-03-15 12:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,8 +29,9 @@ msgid "Russian"
 msgstr ""
 
 #: templates/account.html:9 templates/base.html:283 templates/base.html:379
-#: templates/shop-cart.html:10 templates/shop-details.html:75
-#: templates/shop-wishlist.html:9 templates/shop.html:10
+#: templates/page-contact.html:19 templates/shop-cart.html:10
+#: templates/shop-details.html:75 templates/shop-wishlist.html:9
+#: templates/shop.html:10
 msgid "Bosh sahifa"
 msgstr "Главная страница"
 
@@ -154,6 +155,7 @@ msgid "Mahsulotlar"
 msgstr "Продукты"
 
 #: templates/base.html:292 templates/base.html:387 templates/base.html:483
+#: templates/page-contact.html:20 templates/page-contact.html:45
 msgid "Aloqa"
 msgstr "Cвязь"
 
@@ -264,6 +266,22 @@ msgstr "Пароль"
 msgid "Meni eslab qol"
 msgstr "запомнить меня"
 
+#: templates/page-contact.html:52
+msgid "Ism"
+msgstr "Имя"
+
+#: templates/page-contact.html:57
+msgid "Familiya"
+msgstr "Фамилия"
+
+#: templates/page-contact.html:62 templates/register.html:42
+msgid "Telefon raqam"
+msgstr "Номер телефона"
+
+#: templates/page-contact.html:68 templates/shop-details.html:308
+msgid "Izoh qoldirish"
+msgstr "Оставить комментарий"
+
 #: templates/register.html:11 templates/register.html:54
 msgid "Ro'yxatdan o'tish"
 msgstr "Зарегистрироваться"
@@ -281,10 +299,6 @@ msgstr ""
 "Ваши личные данные будут поддерживать ваш опыт в течение этого времени."
 "используется для поддержки веб-сайта, управления доступом к вашей учетной "
 "записи и для других целей, описанных в нашей политике конфиденциальности"
-
-#: templates/register.html:42
-msgid "Telefon raqam"
-msgstr "Номер телефона"
 
 #: templates/register.html:50
 msgid "Parolni tasdiqlash"
@@ -385,10 +399,6 @@ msgstr "Оценки"
 #: templates/shop-details.html:274
 msgid "Xaridorlar fikri"
 msgstr "Мнение покупателей"
-
-#: templates/shop-details.html:308
-msgid "Izoh qoldirish"
-msgstr "Оставить комментарий"
 
 #: templates/shop-details.html:347
 msgid "Izoh yozish"
@@ -1704,6 +1714,11 @@ msgstr ""
 #: venv/lib/python3.8/site-packages/modeltranslation/widgets.py:26
 msgid "None"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Telefon raqam"
+#~ msgid "Telefon raqami"
+#~ msgstr "Номер телефона"
 
 #, fuzzy
 #~ msgid "Buyurtmalarim"
