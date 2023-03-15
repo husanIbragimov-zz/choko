@@ -1,5 +1,6 @@
 ﻿{% load static %}
 {% load i18n %}
+{% load humanize %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -136,7 +137,7 @@
                                                 <h4>
                                                     <a href="{% url 'shop-details' item.product.id %}">{{ item.product.title }}</a>
                                                 </h4>
-                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs }} UZS
+                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs|intcomma }} UZS
                                                 </h3>
                                             </div>
                                             <div class="shopping-cart-delete">

@@ -1,5 +1,6 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% load i18n %}
 {% block content %}
 
@@ -130,16 +131,16 @@
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
                                                 {% if product.percentage > 0 %}
-                                                    <ins><span class="text-brand">UZS {{ product.discount_uzs }} </span>
+                                                    <ins><span class="text-brand">UZS {{ product.discount_uzs|intcomma }} </span>
                                                     </ins>
 
                                                     <ins><span
-                                                            class="old-price font-md ml-15">UZS {{ product.price_uzs }}</span>
+                                                            class="old-price font-md ml-15">UZS {{ product.price_uzs|intcomma }}</span>
                                                     </ins>
 
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
                                                 {% else %}
-                                                    <ins><span class="text-brand">UZS {{ product.price_uzs }}</span>
+                                                    <ins><span class="text-brand">UZS {{ product.price_uzs|intcomma }}</span>
                                                     </ins>
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
 
@@ -387,7 +388,7 @@
                                                         <a aria-label="Add To Wishlist"
                                                            class="action-btn small hover-up"
                                                            href="{% url "wishlist" item.id %}" tabindex="0"><i
-                                                                class="far fa-heart"></i></a>
+                                                                class="far fa-heart pt-10"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
                                                         <span class="{{ product.status.lower }}">{{ product.status }}</span>
@@ -405,10 +406,10 @@
                                                     </div>
                                                     <div class="product-price">
                                                         {% if item.percentage > 0 %}
-                                                            <span>UZS {{ item.discount_uzs }} </span><br>
-                                                            <span class="old-price">UZS {{ item.price_uzs }}</span>
+                                                            <span>UZS {{ item.discount_uzs|intcomma }} </span><br>
+                                                            <span class="old-price">UZS {{ item.price_uzs|intcomma }}</span>
                                                         {% else %}
-                                                            <span>UZS {{ item.price_uzs }} UZS</span>
+                                                            <span>UZS {{ item.price_uzs|intcomma }} UZS</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -438,9 +439,9 @@
                                             </h5>
 
                                             {% if item.percentage > 0 %}
-                                                <span class="price mb-0 mt-5">UZS {{ item.discount_uzs }} </span>
+                                                <span class="price mb-0 mt-5">UZS {{ item.discount_uzs|intcomma }} </span>
                                             {% else %}
-                                                <span class="price mb-0 mt-5">UZS {{ item.price_uzs }} </span>
+                                                <span class="price mb-0 mt-5">UZS {{ item.price_uzs|intcomma }} </span>
                                             {% endif %}
 
                                             <div class="product-rate">
@@ -462,36 +463,11 @@
     </main>
 {% endblock %}
 {% block script %}
-    <script src="{% static 'assets/js/shop.js' %}"></script>
     <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
     <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
 
-    <script src="http://code.jquery.com/jquery-1.9.1.js">
-    </script>
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
     <script src="{% static 'assets/js/ajax_request.js' %}"></script>
     <script src="{% static 'assets/js/calculate_price.js' %}"></script>
-    <script>
-        $('.addToCartBtn').on('click', function () {
-            var product_id = $('.prod_id').val()
-            var quantity = $('.qty-input').val()
-            var token = $("input[name=csrfmiddlewaretoken]").val();
-
-            $.ajax({
-                method: 'POST',
-                url: "/order/add-to-cart/",
-                data: {
-                    "product_id": product_id,
-                    "quantity": quantity,
-                    csrfmiddlewaretoken: token
-                },
-                dataType: "dataType",
-                succes: function (response) {
-
-                }
-            })
-
-        })
-    </script>
 
 {% endblock %}

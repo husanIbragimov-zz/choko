@@ -68,6 +68,7 @@ def shop_list(request):
     brands = Brand.objects.all().order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
+    print(category)
 
     # filter
     cat = request.GET.get('cat')

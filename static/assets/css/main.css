@@ -20,7 +20,7 @@ TABLE CONTENT
  WP STYPE
  Custom amine
 ***/
-@import url("../../../../../css2");
+/*@import url("../../../../../css2");*/
 /*import vendors*/
 @import url(vendors/normalize.css);
 @import url(vendors/bootstrap.min.css);
@@ -451,7 +451,7 @@ h4 {
   display: inline-block;
   -webkit-animation: spinner 1.2s infinite ease-in-out;
   animation: spinner 1.2s infinite ease-in-out;
-  background: url(../imgs/favicon.svg);
+  background: url(../imgs/theme/favicon.ico);
   -webkit-box-shadow: 0 0 10px #fff;
           box-shadow: 0 0 10px #fff;
 }
@@ -821,7 +821,7 @@ button.submit:hover, button[type='submit']:hover {
 }
 
 .btn-login {
-  font-weight: 13px;
+  /*font-weight: 13px;*/
 }
 
 .btn-login .btn {
@@ -1731,6 +1731,7 @@ label {
 
 .slider-arrow .slider-btn.slider-prev i {
   margin-right: 4px;
+  margin-top: 12px;
 }
 
 .slider-arrow .slider-btn.slider-next {
@@ -1739,6 +1740,7 @@ label {
 
 .slider-arrow .slider-btn.slider-next i {
   margin-left: 4px;
+  margin-top: 12px;
 }
 
 .slider-arrow .slider-btn:hover {

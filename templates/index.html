@@ -1,4 +1,5 @@
 ﻿{% extends 'base.html' %}
+{% load humanize %}
 {% load static %}
 {% load i18n %}
 {% block style %}
@@ -35,7 +36,7 @@
                                         <div class="container">
                                             <div class="slider-1-height-3 slider-animated-1">
                                                 <div class="hero-slider-content-2">
-                                                    <h4>{{ banner.desc|safe }}</h4>
+{#                                                    <h4>{{ banner.desc|safe }}</h4>#}
                                                     <a class="animated btn btn-default btn-rounded"
                                                        href="{% url "products_filter" %}"> {% trans "Sotib Olish" %} <i
                                                             class="fa fa-arrow-right"></i> </a>
@@ -143,10 +144,10 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span>UZS {{ product.discount_uzs }} </span><br>
-                                                    <span class="old-price">UZS {{ product.price_uzs }}</span>
+                                                    <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
+                                                    <span class="old-price">UZS {{ product.price_uzs|intcomma|intcomma }}</span>
                                                 {% else %}
-                                                    <span>UZS {{ product.price_uzs }}</span><br><br>
+                                                    <span>UZS {{ product.price_uzs|intcomma|intcomma }}</span><br><br>
                                                     <span></span>
                                                 {% endif %}
                                             </div>
@@ -176,7 +177,7 @@
                         <img src="{{ advertisement.banner_image.url }}" alt="" width="1296px">
                         <div class="banner-text">
                             <h4 class="text-white">{{ advertisement.title }}</h4>
-                            <p>{{ advertisement.description|safe }}</p>
+{#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
                             <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
@@ -245,16 +246,16 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span>UZS {{ product.discount_uzs }} </span><br>
-                                                    <span class="old-price">UZS {{ product.price_uzs }}</span>
+                                                    <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
+                                                    <span class="old-price">UZS {{ product.price_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span>UZS {{ product.price_uzs }}</span><br><br>
+                                                    <span>UZS {{ product.price_uzs|intcomma }}</span><br><br>
                                                     <span></span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 15px"
+                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 15px"
                                                                                               class="far fa-heart"></i></a>
 
                                             </div>
@@ -276,7 +277,7 @@
                         <img src="{{ advertisement.banner_image.url }}" alt="" width="1296px">
                         <div class="banner-text">
                             <h4 class="text-white">{{ advertisement.title }}</h4>
-                            <p>{{ advertisement.description|safe }}</p>
+{#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
                             <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
@@ -329,11 +330,11 @@
                                         <div class="product-price">
                                             {% if qs.discount > 0 %}
 
-                                                <span>UZS {{ qs.discount_uzs }}</span><br>
+                                                <span>UZS {{ qs.discount_uzs|intcomma }}</span><br>
                                                 <span style="font-size: 12px"
-                                                      class="old-price">UZS {{ qs.price_uzs }}</span>
+                                                      class="old-price">UZS {{ qs.price_uzs|intcomma }}</span>
                                             {% else %}
-                                                <span>UZS {{ qs.price_uzs }}</span><br><br>
+                                                <span>UZS {{ qs.price_uzs|intcomma }}</span><br><br>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -366,11 +367,11 @@
                                         <div class="product-price">
                                             <div class="product-price">
                                                 {% if trp.discount > 0 %}
-                                                    <span>UZS {{ trp.discount_uzs }}</span><br>
+                                                    <span>UZS {{ trp.discount_uzs|intcomma }}</span><br>
                                                     <span style="font-size: 12px"
-                                                          class="old-price">UZS {{ trp.price_uzs }}</span>
+                                                          class="old-price">UZS {{ trp.price_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span>{{ trp.price_uzs }}</span><br><br>
+                                                    <span>{{ trp.price_uzs|intcomma }}</span><br><br>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -404,11 +405,11 @@
                                             <div class="product-price">
                                                 {% if top_viewed_product.discount > 0 %}
 
-                                                    <span>UZS {{ top_viewed_product.discount_uzs }}</span><br>
+                                                    <span>UZS {{ top_viewed_product.discount_uzs|intcomma }}</span><br>
                                                     <span style="font-size: 12px"
-                                                          class="old-price">UZS {{ top_viewed_product.price_uzs }}</span>
+                                                          class="old-price">UZS {{ top_viewed_product.price_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span>UZS {{ top_viewed_product.price_uzs }}</span><br><br>
+                                                    <span>UZS {{ top_viewed_product.price_uzs|intcomma }}</span><br><br>
                                                 {% endif %}
                                             </div>
                                         </div>
