@@ -2,6 +2,7 @@
 {% load humanize %}
 {% load static %}
 {% load i18n %}
+
 {% block style %}
     <style>
         .sales {
@@ -36,7 +37,7 @@
                                         <div class="container">
                                             <div class="slider-1-height-3 slider-animated-1">
                                                 <div class="hero-slider-content-2">
-{#                                                    <h4>{{ banner.desc|safe }}</h4>#}
+                                                    {#                                                    <h4>{{ banner.desc|safe }}</h4>#}
                                                     <a class="animated btn btn-default btn-rounded"
                                                        href="{% url "products_filter" %}"> {% trans "Sotib Olish" %} <i
                                                             class="fa fa-arrow-right"></i> </a>
@@ -49,7 +50,18 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            <<<<<<< HEAD
+                            <div class="slider-arrow hero-slider-1-arrow style-3">
+                                {#                                <span class="slider-btn slider-prev slick-arrow">#}
+                                {#                                    <i class="far fa-chevron-left mt-15"></i>#}
+                                {#                                </span>#}
+                                {#                                <span class="slider-btn slider-next slick-arrow">#}
+                                {#                                    <i class="far fa-chevron-right mt-15"></i>#}
+                                {#                                </span>#}
+                            </div>
+                            =======
                             <div class="slider-arrow hero-slider-1-arrow style-3"></div>
+                            >>>>>>> a31dacd37da1f07a09f10bdf6157d889311d208f
                         </div>
                     </div>
                     <div style="padding-left: 0" class="col-lg-3 d-md-none d-lg-block">
@@ -64,7 +76,8 @@
                                     <h4 class="fs-8"> {{ foo.percentage }}% {% trans "tejab qolish" %}
                                         <br>{{ foo.title }}</h4>
                                     <a class="buy"
-                                       href="{% url "shop-details" foo.id %}">{% trans "Sotib Olish" %} <i class="fa fa-arrow-right"></i></a>
+                                       href="{% url "shop-details" foo.id %}">{% trans "Sotib Olish" %} <i
+                                            class="fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -145,7 +158,11 @@
                                                 {% if product.discount > 0 %}
 
                                                     <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
+                                                    <<<<<<< HEAD
+                                                    <span class="old-price">UZS {{ product.price_uzs|intcomma }}</span>
+                                                    =======
                                                     <span class="old-price">UZS {{ product.price_uzs|intcomma|intcomma }}</span>
+                                                    >>>>>>> a31dacd37da1f07a09f10bdf6157d889311d208f
                                                 {% else %}
                                                     <span>UZS {{ product.price_uzs|intcomma|intcomma }}</span><br><br>
                                                     <span></span>
@@ -154,7 +171,7 @@
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
                                                    href="{% url "wishlist" product.id %}"><i style="padding-top: 15px"
-                                                                                              class="far fa-heart"></i></a>
+                                                                                             class="far fa-heart"></i></a>
 
                                             </div>
 
@@ -177,7 +194,7 @@
                         <img src="{{ advertisement.banner_image.url }}" alt="" width="1296px">
                         <div class="banner-text">
                             <h4 class="text-white">{{ advertisement.title }}</h4>
-{#                            <p>{{ advertisement.description|safe }}</p>#}
+                            {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
                             <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
@@ -256,7 +273,7 @@
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                    href="{% url 'wishlist' product.id %}"><i style="padding-top: 15px"
-                                                                                              class="far fa-heart"></i></a>
+                                                                                             class="far fa-heart"></i></a>
 
                                             </div>
                                         </div>
@@ -277,7 +294,7 @@
                         <img src="{{ advertisement.banner_image.url }}" alt="" width="1296px">
                         <div class="banner-text">
                             <h4 class="text-white">{{ advertisement.title }}</h4>
-{#                            <p>{{ advertisement.description|safe }}</p>#}
+                            {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
                             <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
@@ -301,8 +318,9 @@
                                     <span>{{ discount.category.first.title }}</span>
                                     <h4>{{ discount.percentage }}% {% trans "tejab qolish" %} <br>{{ discount.title }}
                                     </h4>
-                                    <a class="buy" href="{% url "shop-details" discount.id %}">{% trans "Sotib olish" %} <i
-                                            class="fa fa-arrow-right"></i></a>
+
+                                    <a class="buy" href="{% url "shop-details" discount.id %}">{% trans "Sotib olish" %}
+                                        <i class="fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         {% endfor %}

@@ -20,6 +20,7 @@ $('.addToCartBtn').on('click', function () {
     var quantity = $('.qty-input').val()
     var token = $("input[name=csrfmiddlewaretoken]").val();
 
+
     $.ajax({
         method: 'POST',
         url: "/order/add-to-cart/",

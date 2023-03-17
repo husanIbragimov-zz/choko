@@ -10,8 +10,6 @@ from ..product.models import Currency, Category, Product
 def cart_renderer(request):
     currency = Currency.objects.last()
     categories = Category.objects.filter(is_active=True)
-    products = Product.objects.all()
-
     sbb = request.POST.get('sbb')
     subscribe = Subscribe.objects.filter(email=sbb)
     if not subscribe.exists():
