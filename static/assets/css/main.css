@@ -1731,6 +1731,7 @@ label {
 
 .slider-arrow .slider-btn.slider-prev i {
   margin-right: 4px;
+  margin-top: 10px;
 }
 
 .slider-arrow .slider-btn.slider-next {
@@ -1739,6 +1740,7 @@ label {
 
 .slider-arrow .slider-btn.slider-next i {
   margin-left: 4px;
+  margin-top: 10px;
 }
 
 .slider-arrow .slider-btn:hover {

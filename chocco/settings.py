@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'modeltranslation',
     'django.contrib.admin',
+    'django.contrib.humanize',
 
     # libs
     'allauth',

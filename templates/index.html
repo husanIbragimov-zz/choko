@@ -2,7 +2,10 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
+    {% load humanize %}
+    {% block style %}
 
+    {% endblock %}
     <main class="main">
         <section class="home-slider position-relative">
             <div class="container">
@@ -29,12 +32,12 @@
                                 {% endfor %}
                             </div>
                             <div class="slider-arrow hero-slider-1-arrow style-3">
-{#                                <span class="slider-btn slider-prev slick-arrow">#}
-{#                                    <i class="far fa-chevron-left mt-15"></i>#}
-{#                                </span>#}
-{#                                <span class="slider-btn slider-next slick-arrow">#}
-{#                                    <i class="far fa-chevron-right mt-15"></i>#}
-{#                                </span>#}
+                                {#                                <span class="slider-btn slider-prev slick-arrow">#}
+                                {#                                    <i class="far fa-chevron-left mt-15"></i>#}
+                                {#                                </span>#}
+                                {#                                <span class="slider-btn slider-next slick-arrow">#}
+                                {#                                    <i class="far fa-chevron-right mt-15"></i>#}
+                                {#                                </span>#}
                             </div>
                         </div>
                     </div>
@@ -62,7 +65,8 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {% if status_index == 'featured' %}active{% endif %}" id="nav-tab-one"
                                 data-bs-toggle="tab" data-bs-target="#tab-one"
-                                type="button" role="tab" aria-controls="tab-one" aria-selected="true">{% trans "Maxsus" %}
+                                type="button" role="tab" aria-controls="tab-one"
+                                aria-selected="true">{% trans "Maxsus" %}
                         </button>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link {% if status_index == 'popular' %}active{% endif %}" href="/?status=popular"
@@ -115,8 +119,8 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span>UZS {{ product.discount_uzs }} </span><br>
-                                                    <span class="old-price">UZS {{ product.price_uzs }}</span>
+                                                    <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
+                                                    <span class="old-price">UZS {{ product.price_uzs|intcomma }}</span>
                                                 {% else %}
                                                     <span>UZS {{ product.price_uzs }}</span><br><br>
                                                     <span></span>
@@ -162,7 +166,8 @@
                 <ul class="nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one"
-                                type="button" role="tab" aria-controls="tab-one" aria-selected="true">{% trans "Maxsus" %}
+                                type="button" role="tab" aria-controls="tab-one"
+                                aria-selected="true">{% trans "Maxsus" %}
                         </button>
                     </li>
                 </ul>
@@ -204,10 +209,10 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span>UZS {{ product.discount_uzs }} </span><br>
-                                                    <span class="old-price">UZS {{ product.price_uzs }}</span>
+                                                    <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
+                                                    <span class="old-price">UZS {{ product.price_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span>UZS {{ product.price_uzs }}</span><br><br>
+                                                    <span>UZS {{ product.price_uzs|intcomma }}</span><br><br>
                                                     <span></span>
                                                 {% endif %}
                                             </div>
@@ -256,15 +261,17 @@
                                      alt="" height="270px">
                                 <div class="banner-text">
                                     <span>{{ discount.category.first.title }}</span>
-                                    <h4>{{ discount.percentage }}% {% trans "tejab qolish" %} <br>{{ discount.title }}</h4>
-                                    <a href="{% url "shop-details" discount.id %}">{%  trans "Sotib olish" %} <i class="fa fa-arrow-right"></i></a>
+                                    <h4>{{ discount.percentage }}% {% trans "tejab qolish" %} <br>{{ discount.title }}
+                                    </h4>
+                                    <a href="{% url "shop-details" discount.id %}">{% trans "Sotib olish" %} <i
+                                            class="fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         {% endfor %}
 
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{%  trans "So'ngi Mahsulotlar" %}</h4>
+                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{% trans "So'ngi Mahsulotlar" %}</h4>
                         <div class="product-list-small wow fadeIn animated">
                             {% for qs in last_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
@@ -278,7 +285,8 @@
                                             <a href="{% url "shop-details" qs.id %}">{{ qs.title|slice:'0:20' }}</a>
                                         </h4>
                                         <pre class="d-inline p-2"><code><i
-                                                class="fa fa-star-half-alt"></i> {% if qs.mid_rate %}{{ qs.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                                class="fa fa-star-half-alt"></i> {% if qs.mid_rate %}
+                                            {{ qs.mid_rate }}{% else %}0.0{% endif %}</code></pre>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-eye"></i> {{ qs.view }}</code></pre>
                                         <div class="product-price">
@@ -298,7 +306,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{%  trans "Eng Yaxshi Baholanganlar" %}</h4>
+                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{% trans "Eng Yaxshi Baholanganlar" %}</h4>
                         <div class="product-list-small wow fadeIn animated">
                             {% for trp in top_rate_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
@@ -312,7 +320,9 @@
                                             <a href="{% url "shop-details" trp.id %}">{{ trp.title|slice:'0:20' }}</a>
                                         </h4>
 
-                                        <pre class="d-inline p-2"><code><i class="fa fa-star-half-alt"></i> {% if trp.mid_rate %}{{ trp.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                        <pre class="d-inline p-2"><code><i
+                                                class="fa fa-star-half-alt"></i> {% if trp.mid_rate %}
+                                            {{ trp.mid_rate }}{% else %}0.0{% endif %}</code></pre>
 
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-eye"></i> {{ trp.view }}</code></pre>
@@ -334,7 +344,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{%  trans "Mahsulotlarni Ko'rib Chiqish" %}</h4>
+                        <h4 class="section-title style-1 mb-30 wow fadeIn animated">{% trans "Mahsulotlarni Ko'rib Chiqish" %}</h4>
                         <div class="product-list-small wow fadeIn animated">
                             {% for top_viewed_product in top_viewed_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
@@ -349,7 +359,8 @@
                                             <a href="{% url "shop-details" top_viewed_product.id %}">{{ top_viewed_product.title|slice:'0:20' }}</a>
                                         </h4>
                                         <pre class="d-inline p-2"><code><i
-                                                class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}{{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                                class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}
+                                            {{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-eye"></i> {{ top_viewed_product.view }}</code></pre>
                                         <div class="product-price">

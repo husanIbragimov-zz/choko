@@ -468,36 +468,12 @@
     </main>
 {% endblock %}
 {% block script %}
-    <script src="{% static 'assets/js/shop.js' %}"></script>
     <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
     <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
 
-    <script src="http://code.jquery.com/jquery-1.9.1.js">
-    </script>
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
     <script src="{% static 'assets/js/ajax_request.js' %}"></script>
     <script src="{% static 'assets/js/calculate_price.js' %}"></script>
-    <script>
-        $('.addToCartBtn').on('click', function () {
-            var product_id = $('.prod_id').val()
-            var quantity = $('.qty-input').val()
-            var token = $("input[name=csrfmiddlewaretoken]").val();
 
-            $.ajax({
-                method: 'POST',
-                url: "/order/add-to-cart/",
-                data: {
-                    "product_id": product_id,
-                    "quantity": quantity,
-                    csrfmiddlewaretoken: token
-                },
-                dataType: "dataType",
-                succes: function (response) {
-
-                }
-            })
-
-        })
-    </script>
 
 {% endblock %}
