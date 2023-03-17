@@ -1,5 +1,6 @@
 ﻿{% load static %}
 {% load i18n %}
+{% load humanize %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -19,27 +20,20 @@
     <link rel="stylesheet" href="{% static 'assets/css/alertify.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" type="text/css">
-    <style>
-        .alertify-log-custom {
-            background: green;
-        }
-
-        .height {
-            height: 10px;
-        }
-    </style>
     {% block style %} {% endblock %}
+    {% block topscript %} {% endblock %}
+
 </head>
 
-<body>
-<header class="header-area header-style-3 header-height-2 mb-30">
-    <div class="header-top header-top-ptb-1 d-none d-lg-block">
+<body style="line-height: 15px">
+<header class="header-area header-style-3 header-height-2 mb-10">
+    <div style="padding: 0" class="header-top header-top-ptb-1 d-none d-lg-block">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info">
                         <ul>
-                            <li><a href="#">(+01) - 2345 - 6789</a></li>
+                            <li><a href="tel:+99855-506-0102">+998 (55)-506-0102</a></li>
                             <li><i class="fa fa-map-marker-alt mr-5"></i><a target="_blank"
                                                                             href="/">{% trans 'Bizning joylashuv' %}</a>
                             </li>
@@ -93,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+    <div style="padding: 20px" class="header-middle header-middle-ptb-1 d-none d-lg-block">
         <div class="container">
             <div class="header-wrap header-space-between">
                 <div class="logo logo-width-1">
@@ -143,7 +137,7 @@
                                                 <h4>
                                                     <a href="{% url 'shop-details' item.product.id %}">{{ item.product.title }}</a>
                                                 </h4>
-                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs }} UZS
+                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs|intcomma }} UZS
                                                 </h3>
                                             </div>
                                             <div class="shopping-cart-delete">
@@ -198,8 +192,11 @@
                             {% for cat in categories %}
                                 {% if not cat.parent %}
                                     <li class="has-children">
-                                        <a href="/shop/?cat={{ cat }}"><i
-                                                class="wowy-font-cpu"></i>{{ cat }}</a>
+                                        <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
+                                                                          alt="" width="19px"
+                                                                          height="19px"
+                                                                          style="margin-right: 17px">{% else %}
+                                            <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
                                         <div class="dropdown-menu">
                                             <ul class="mega-menu d-lg-flex">
                                                 <li class="mega-menu-col col">
@@ -237,8 +234,11 @@
                                     {% for cat in hide_categories %}
                                         {% if not cat.parent %}
                                             <li class="has-children">
-                                                <a href="/shop/?cat={{ cat }}"><i
-                                                        class="wowy-font-cpu"></i>{{ cat }}</a>
+                                                <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
+                                                                                  alt="" width="19px"
+                                                                                  height="19px"
+                                                                                  style="margin-right: 17px">{% else %}
+                                                    <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
                                                 <div class="dropdown-menu">
                                                     <ul class="mega-menu d-lg-flex">
                                                         <li class="mega-menu-col col">
@@ -285,12 +285,12 @@
                             </li>
                             <li>
 
-                                <a href="#">{% trans "Biz haqimizda" %}</a>
+                                <a href="{% url "about" %}">{% trans "Biz haqimizda" %}</a>
                             </li>
                             <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a>
                             </li>
                             <li>
-                                <a href="#">{% trans "Aloqa" %}</a>
+                                <a href="{% url "contact" %}">{% trans "Aloqa" %}</a>
                             </li>
 
                             {#                            <li><a href="#">My Account</a></li>#}
@@ -299,7 +299,8 @@
                     </nav>
                 </div>
                 <div class="hotline d-none d-lg-block">
-                    <p><i class="fa fa-phone-alt"></i><span>{% trans "Tel" %}:</span> 1900 - 888 </p>
+                    <p><i style="font-size: 25px" class="fa fa-phone-alt"></i><span></span><a
+                            style="text-decoration: none; font-size: 15px" href="tel:+998555060102">+998 (55)-506-0102</a></p>
                 </div>
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
@@ -384,7 +385,7 @@
                         <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a>
                         </li>
                         <li>
-                            <a href="#">{% trans "Aloqa" %}</a>
+                            <a href="{% url "contact" %}">{% trans "Aloqa" %}</a>
 
                             {#                        <li><a href="#">My Account</a></li>#}
 
@@ -427,7 +428,7 @@
                 </div>
 
                 <div class="single-mobile-header-info">
-                    <a href="#">(+01) - 2345 - 6789 </a>
+                    <a href="tel:+998555060102">+998 (55)-506-0102 </a>
                 </div>
             </div>
             <div class="mobile-social-icon">
@@ -439,10 +440,11 @@
         </div>
     </div>
 </div>
-
+<div style="line-height: 24px">
 {% block content %}
 
 {% endblock %}
+</div>
 
 <footer class="main">
     <section class="newsletter bg-brand p-30 text-white wow fadeIn animated">
@@ -458,16 +460,19 @@
                 </div>
                 <div class="col-lg-5">
                     <!-- Subscribe Form -->
-                    <form class="form-subcriber d-flex wow fadeIn animated">
-                        <input type="email" class="form-control bg-white font-small" placeholder="{% trans "Emailingizni kiriting" %}">
-                        <button class="btn bg-dark text-white" type="submit">{% trans "A'zo bo'lish" %}</button>
+
+                    <form class="form-subcriber d-flex wow fadeIn animated" method="post" action="#">
+                        {% csrf_token %}
+                        <input type="email" name="sbb" class="form-control bg-white font-small" placeholder="{% trans "Emailingizni kiriting" %}">
+                            <button class="btn bg-dark text-white" type="submit">{% trans "A'zo bo'lish" %}</button>
+
                     </form>
                     <!-- End Subscribe Form -->
                 </div>
             </div>
         </div>
     </section>
-    <section class="section-padding-60">
+    <section class="section-padding-50">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6">
@@ -478,20 +483,20 @@
                         </div>
                         <h4 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">{% trans "Aloqa" %}</h4>
                         <p class="wow fadeIn animated">
-                            <strong>{% trans "Manzil" %}: </strong>562 Wellington Road, Street 32, San Francisco
+                            <strong>{% trans "Manzil" %}: </strong>Tashkent, Baynalmilal
                         </p>
                         <p class="wow fadeIn animated">
-                            <strong>{% trans "Tel" %}: </strong>+01 2222 365 /(+91) 01 2345 6789
+                            <strong>{% trans "Tel" %}: </strong>+998 (55)-506-0102
                         </p>
                         <p class="wow fadeIn animated">
                             <strong>{% trans "Ish vaqti" %}: </strong>10:00 - 18:00, Mon - Sat
                         </p>
                         <h4 class="mb-10 mt-20 fw-600 text-grey-4 wow fadeIn animated">{% trans "Kuzating" %}</h4>
                         <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
-                            <a class="facebook" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="twitter" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="tumblr" href="#"><i class="fab fa-tumblr"></i></a>
-                            <a class="instagram" href="#"><i class="fab fa-instagram"></i></a>
+                            <a class="facebook" href="#"><i class="fab fa-facebook-f pt-10"></i></a>
+                            <a class="twitter" href="#"><i class="fab fa-twitter pt-10"></i></a>
+                            <a class="tumblr" href="#"><i class="fab fa-tumblr pt-10"></i></a>
+                            <a class="instagram" href="#"><i class="fab fa-instagram pt-10"></i></a>
                         </div>
                     </div>
                 </div>
@@ -502,7 +507,7 @@
                         <li><a href="#">Delivery Information</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="{% url "contact" %}">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2  col-md-3">

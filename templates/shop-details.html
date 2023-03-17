@@ -1,73 +1,73 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% load i18n %}
 {% block content %}
 
-    {% block style %}
-        <style>
-            @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 
-            fieldset, label {
-                margin: 0;
-                padding: 0;
-            }
+    <style>
+        @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 
-            body {
-                margin: 0;
-            }
+        fieldset, label {
+            margin: 0;
+            padding: 0;
+        }
 
-            h1 {
-                font-size: 1.5em;
-                margin: 10px;
-            }
+        body {
+            margin: 0;
+        }
 
-            /****** Style Star Rating Widget *****/
+        h1 {
+            font-size: 1.5em;
+            margin: 10px;
+        }
 
-            .rating {
-                border: none;
-                float: left;
-            }
+        /****** Style Star Rating Widget *****/
 
-            .rating > input {
-                display: none;
-            }
+        .rating {
+            border: none;
+            float: left;
+        }
 
-            .rating > label:before {
-                margin: 5px;
-                font-size: 1.25em;
-                font-family: FontAwesome;
-                display: inline-block;
-                content: "\f005";
-            }
+        .rating > input {
+            display: none;
+        }
 
-            .rating > .half:before {
-                content: "\f089";
-                position: absolute;
-            }
+        .rating > label:before {
+            margin: 5px;
+            font-size: 1.25em;
+            font-family: FontAwesome;
+            display: inline-block;
+            content: "\f005";
+        }
 
-            .rating > label {
-                color: #ddd;
-                float: right;
-            }
+        .rating > .half:before {
+            content: "\f089";
+            position: absolute;
+        }
 
-            /***** CSS Magic to Highlight Stars on Hover *****/
+        .rating > label {
+            color: #ddd;
+            float: right;
+        }
 
-            .rating > input:checked ~ label, /* show gold star when clicked */
-            .rating:not(:checked) > label:hover, /* hover current star */
-            .rating:not(:checked) > label:hover ~ label {
-                color: #FFD700;
-            }
+        /***** CSS Magic to Highlight Stars on Hover *****/
 
-            /* hover previous stars in list */
+        .rating > input:checked ~ label, /* show gold star when clicked */
+        .rating:not(:checked) > label:hover, /* hover current star */
+        .rating:not(:checked) > label:hover ~ label {
+            color: #FFD700;
+        }
 
-            .rating > input:checked + label:hover, /* hover current star when changing rating */
-            .rating > input:checked ~ label:hover,
-            .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-            .rating > input:checked ~ label:hover ~ label {
-                color: #FFED85;
-            }
-        </style>
-    {% endblock %}
+        /* hover previous stars in list */
+
+        .rating > input:checked + label:hover, /* hover current star when changing rating */
+        .rating > input:checked ~ label:hover,
+        .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+        .rating > input:checked ~ label:hover ~ label {
+            color: #FFED85;
+        }
+    </style>
 
     <main class="main">
         <div class="page-header breadcrumb-wrap">
@@ -131,16 +131,16 @@
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
                                                 {% if product.percentage > 0 %}
-                                                    <ins><span class="text-brand">UZS {{ product.discount_uzs }} </span>
+                                                    <ins><span class="text-brand">UZS {{ product.discount_uzs|intcomma }} </span>
                                                     </ins>
 
                                                     <ins><span
-                                                            class="old-price font-md ml-15">UZS {{ product.price_uzs }}</span>
+                                                            class="old-price font-md ml-15">UZS {{ product.price_uzs|intcomma }}</span>
                                                     </ins>
 
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
                                                 {% else %}
-                                                    <ins><span class="text-brand">UZS {{ product.price_uzs }}</span>
+                                                    <ins><span class="text-brand">UZS {{ product.price_uzs|intcomma }}</span>
                                                     </ins>
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
 
@@ -151,26 +151,26 @@
                                         <div class="short-desc mb-30">
                                             {{ product.description|safe|truncatewords:40 }}
                                         </div>
-                                    {% if product.color.all %}
-                                        <div class="attr-detail attr-color mb-15">
-                                            <strong class="mr-10">{% trans "Rang" %}</strong>
-                                            <ul class="list-filter color-filter" id="color_class">
-                                                {% for color in product.color.all %}
-                                                    <li><a href="#"><span class=""
-                                                                          style="background-color: {{ color.name }}"><span
-                                                            class="d-none">{{ color.id }}</span></span>
-                                                    </a>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% endif %}
+                                        {% if product.color.all %}
+                                            <div class="attr-detail attr-color mb-15">
+                                                <strong class="mr-10">{% trans "Rang" %}</strong>
+                                                <ul class="list-filter color-filter" id="color_class">
+                                                    {% for color in product.color.all %}
+                                                        <li><a href="#"><span
+                                                                style="background-color: {{ color.name }}; border: 1px solid {{ color.name }}; border-radius: 5px; margin-top: 6px"><span
+                                                                class="d-none">{{ color.id }}</span></span>
+                                                        </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
                                         {% if product.size.all %}
                                             <div class="attr-detail attr-size mb-15">
                                                 <strong class="mr-10">{% trans "O'lcham" %}</strong>
                                                 <ul class="list-filter size-filter font-small size_class">
                                                     {% for size in product.size.all %}
-                                                    <li><a href="#">{{ size.name }}</a></li>
+                                                        <li><a href="#">{{ size.name }}</a></li>
                                                     {% endfor %}
                                                 </ul>
                                             </div>
@@ -212,17 +212,19 @@
                                                 <input class="qty-input" type="number" min="1" value="1">
                                             </div>
                                             <div class="product-extra-link2">
-                                                <button type="button"
+                                                <button style="border-radius: 30px" type="button"
                                                         class="button button-add-to-cart addToCartBtn">{% trans "Savatchaga qo'shish" %}
                                                 </button>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i
-                                                        class="far fa-heart"></i></a>
+                                                {#                                                <a style="padding-top: 14px" aria-label="Add To Wishlist" class="action-btn hover-up"#}
+                                                {#                                                   href="{% url "wishlist" product.id %}"><i#}
+                                                {#                                                        class="far fa-heart"></i></a>#}
                                             </div>
+
+
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
                                             <li>{% trans "Mavjud" %}:<span
-                                                    class="in-stock text-success ml-5">{{ product.availability }}  {% trans " ta mavjud" %}</span>
+                                                    class="in-stock text-success ml-5">{{ product.availability }} {% trans " ta mavjud" %}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -240,7 +242,8 @@
                                            href="#Additional-info">{% trans "Qo'shimcha ma'lumotlar" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">{% trans "Baholar" %}
+                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab"
+                                           href="#Reviews">{% trans "Baholar" %}
                                             ({{ product.product_rate.all.count }})</a>
                                     </li>
                                 </ul>
@@ -385,7 +388,7 @@
                                                         <a aria-label="Add To Wishlist"
                                                            class="action-btn small hover-up"
                                                            href="{% url "wishlist" item.id %}" tabindex="0"><i
-                                                                class="far fa-heart"></i></a>
+                                                                class="far fa-heart pt-10"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
                                                         <span class="{{ product.status.lower }}">{{ product.status }}</span>
@@ -403,10 +406,10 @@
                                                     </div>
                                                     <div class="product-price">
                                                         {% if item.percentage > 0 %}
-                                                            <span>UZS {{ item.discount_uzs }} </span><br>
-                                                            <span class="old-price">UZS {{ item.price_uzs }}</span>
+                                                            <span>UZS {{ item.discount_uzs|intcomma }} </span><br>
+                                                            <span class="old-price">UZS {{ item.price_uzs|intcomma }}</span>
                                                         {% else %}
-                                                            <span>UZS {{ item.price_uzs }} UZS</span>
+                                                            <span>UZS {{ item.price_uzs|intcomma }} UZS</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -415,55 +418,47 @@
                                     {% endfor %}
                                 </div>
                             </div>
-{#                            <div class="banner-img banner-big wow fadeIn f-none animated mt-50">#}
-{#                                <img class="border-radius-10" src="{% static '' %}assets/imgs/banner/banner-4.png" alt="">#}
-{#                                <div class="banner-text">#}
-{#                                    <h4 class="mb-15 mt-40 text-white">Repair Services</h4>#}
-{#                                    <h2 class="fw-600 mb-20 text-white">We're an Apple <br>Authorised Service Provider</h2>#}
-{#                                </div>#}
-{#                            </div>#}
-                            </div>
                         </div>
-{#<<<<<<< HEAD#}
-                        <div class="col-lg-3 primary-sidebar sticky-sidebar">
-                            <div class="widget-area">
-                                <!-- Product sidebar Widget -->
-                                <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
-                                    <div class="widget-header position-relative mb-20 pb-10">
-                                        <h5 class="widget-title mb-10">{% trans "So'ngi mahsulotlar" %}</h5>
-                                        <div class="bt-1 border-color-1"></div>
-                                    </div>
-                                    {% for item in new_products|slice:'0:6' %}
-                                        <div class="single-post clearfix">
-                                            <div class="image">
-                                                <img src="{{ item.product_images.first.image.url }}" alt="#">
-                                            </div>
-                                            <div class="content pt-10">
-                                                <h5>
-                                                    <a href="{% url "shop-details" item.id %}">{{ item.title|slice:'0:8' }}</a>
-                                                </h5>
-
-                                                {% if item.percentage > 0 %}
-                                                    <span class="price mb-0 mt-5">UZS {{ item.discount_uzs }} </span>
-                                                {% else %}
-                                                    <span class="price mb-0 mt-5">UZS {{ item.price_uzs }} </span>
-                                                {% endif %}
-
-                                                <div class="product-rate">
-                                                    <div class="product-rating"
-                                                         style="width:{{ item.mid_rate_percent }}%"></div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <!--Widget categories-->
-                            </div>
-                        </div>
-
                     </div>
+                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                        <div class="widget-area">
+                            <!-- Product sidebar Widget -->
+                            <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
+                                <div class="widget-header position-relative mb-20 pb-10">
+                                    <h5 class="widget-title mb-10">{% trans "So'ngi mahsulotlar" %}</h5>
+                                    <div class="bt-1 border-color-1"></div>
+                                </div>
+                                {% for item in new_products|slice:'0:8' %}
+                                    <div class="single-post clearfix">
+                                        <div class="image">
+                                            <img src="{{ item.product_images.first.image.url }}" alt="#">
+                                        </div>
+                                        <div class="content pt-10">
+                                            <h5>
+                                                <a href="{% url "shop-details" item.id %}">{{ item.title|slice:'0:8' }}</a>
+                                            </h5>
+
+                                            {% if item.percentage > 0 %}
+                                                <span class="price mb-0 mt-5">UZS {{ item.discount_uzs|intcomma }} </span>
+                                            {% else %}
+                                                <span class="price mb-0 mt-5">UZS {{ item.price_uzs|intcomma }} </span>
+                                            {% endif %}
+
+                                            <div class="product-rate">
+                                                <div class="product-rating"
+                                                     style="width:{{ item.mid_rate_percent }}%"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <!--Widget categories-->
+                        </div>
+                    </div>
+
                 </div>
+            </div>
         </section>
     </main>
 {% endblock %}
@@ -474,6 +469,5 @@
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
     <script src="{% static 'assets/js/ajax_request.js' %}"></script>
     <script src="{% static 'assets/js/calculate_price.js' %}"></script>
-
 
 {% endblock %}

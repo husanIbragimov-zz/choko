@@ -46,17 +46,22 @@ class AdditionalInfoAdmin(admin.StackedInline):
 
 
 class ProductAdmin(TranslationAdmin):
+    actions = ['make_published']
     inlines = [ProductImageInline, AdditionalInfoAdmin]
     filter_horizontal = ('category', 'color', 'size')
     list_display_links = ('id', 'title')
     list_display = (
-        'title', 'image_tag', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
+        'title', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
         'id')
     readonly_fields = ('mid_rate', 'get_discount_price',)
     list_filter = ('status', 'brand', 'updated_at', 'created_at')
     list_per_page = 20
 
     group_fieldsets = True
+
+    @admin.action(description='Mark selected stories as published')
+    def make_published(modeladmin, request, queryset):
+        queryset.create(status='NEW')
 
     class Media:
         js = (

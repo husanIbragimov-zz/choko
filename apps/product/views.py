@@ -68,6 +68,7 @@ def shop_list(request):
     brands = Brand.objects.all().order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
+    print(category)
 
     # filter
     cat = request.GET.get('cat')
@@ -116,6 +117,7 @@ def shop_details(request, id):
 
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
+    category = Category.objects.filter(is_active=True)
     colors = Color.objects.all()
     if product.id:
         product.view += 1
@@ -142,6 +144,7 @@ def shop_details(request, id):
         "variants": variants,
         'comments': comments,
         "new_products": new_products,
+        "categories": category,
         "related_products": related_products[:4],
     }
     return render(request, "shop-details.html", context)

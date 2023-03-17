@@ -137,3 +137,5 @@ apps/product/migrations/
 apps/order/migrations/
 
 media/
+staticfiles/
+/staticfiles/

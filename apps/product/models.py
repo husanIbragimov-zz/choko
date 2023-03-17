@@ -104,7 +104,7 @@ class Product(BaseAbstractDate):
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
     title = models.CharField(max_length=223, null=True)
     category = models.ManyToManyField(Category, blank=True,
-                                      limit_choices_to={'is_active': True})
+                                      limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
     color = models.ManyToManyField(Color, blank=True)
     size = models.ManyToManyField(Size, blank=True)
@@ -149,9 +149,9 @@ class Product(BaseAbstractDate):
         return f'{self.id}'
 
     def image_tag(self):
-        if self.product_images.all().first().image.url is not None:
-            return mark_safe('<img src="{}" height="80"/>'.format(self.product_images.all().first().image.url))
-        return "No Image"
+        if not self.product_images.all().first().image.url:
+            return "No Image"
+        return mark_safe('<img src="{}" height="80"/>'.format(self.product_images.all().first().image.url))
 
     image_tag.short_description = 'Mahsulot rasmi'
 
@@ -181,7 +181,7 @@ class ProductImage(BaseAbstractDate):
 class AdditionalInfo(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='additional_info')
     title = models.CharField(max_length=255)
-    description = RichTextField(null=True, blank=True)
+    description = models.CharField(max_length=225, null=True, blank=True)
 
     def __str__(self):
         return self.title

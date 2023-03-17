@@ -1,5 +1,6 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% load i18n %}
 {% block content %}
 
@@ -40,7 +41,7 @@
                                                     href="{% url "shop-details" item.id %}">{{ item.product.title }}</a>
                                             </p>
                                         </td>
-                                        <td class="price" data-title="Price"><span>{{ item.product.price_uzs }} UZS</span></td>
+                                        <td class="price" data-title="Price"><span>{{ item.product.price_uzs|intcomma }} UZS</span></td>
                                         <td class="text-center" data-title="Stock">
                                             <div class="detail-qty border radius  m-auto">
                                                 <a href="#" class="qty-down"></a>
@@ -49,7 +50,7 @@
                                             </div>
                                         </td>
                                         <td class="text-right" data-title="Cart">
-                                            <span>{{ item.subtotal }} UZS</span>
+                                            <span>{{ item.subtotal|intcomma }} UZS</span>
                                         </td>
                                         <td class="action" data-title="Remove"><a
                                                 href="/order/delete-cart-item/{{ item.id }}" class="text-muted"><i
@@ -81,7 +82,7 @@
                                             <tr>
                                                 <td class="cart_total_label">{% trans "Umumiy" %}</td>
                                                 <td class="cart_total_amount"><strong><span
-                                                        class="font-xl fw-900 text-brand">{{ cart.cart_total }} UZS</span></strong></td>
+                                                        class="font-xl fw-900 text-brand">{{ cart.cart_total|intcomma }} UZS</span></strong></td>
                                             </tr>
                                             </tbody>
                                         </table>

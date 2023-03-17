@@ -22,6 +22,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.base import views
 from apps.base.views import set_language
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -35,7 +36,7 @@ urlpatterns = [
     path('', include('apps.product.urls')),
     path('about/', include('apps.about.api.urls')),
     path('order/', include('apps.order.urls')),
-    path('contact/', include('apps.contact.api.urls')),
+    path('contact/', include('apps.contact.urls')),
 
     # login & register
     path('register/', views.register, name="register"),
@@ -43,8 +44,6 @@ urlpatterns = [
     path('logout/', views.logout_func, name="logout"),
     prefix_default_language=False,
 )
-
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

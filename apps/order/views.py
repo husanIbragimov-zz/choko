@@ -39,6 +39,7 @@ def add_to_cart(request):
         if has_color and color is not None:
             color = color.replace(" ", "")
             color = Color.objects.get(id=color)
+
         elif has_color and color is None:
             return JsonResponse({"msg": "Iltimos! rang tanlang", "status": False})
 
