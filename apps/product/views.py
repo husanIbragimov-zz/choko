@@ -1,11 +1,12 @@
 from datetime import datetime
-from django.db.models import Q
+from django.db.models import Q, QuerySet, Count
+from django.http import JsonResponse
 from django.views import View
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
 
 from apps.order.models import Variant
-from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color
+from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage
 from django.core.paginator import Paginator
 
 
@@ -68,7 +69,6 @@ def shop_list(request):
     brands = Brand.objects.all().order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
-    print(category)
 
     # filter
     cat = request.GET.get('cat')
@@ -114,7 +114,9 @@ def shop_details(request, id):
     product = get_object_or_404(Product, id=id)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
-
+    images = ProductImage.objects.raw(
+        'SELECT *, count(color_id) as number_colors FROM product_productimage WHERE product_id = %s GROUP BY color_id ORDER By number_colors desc',
+        [id])
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
     category = Category.objects.filter(is_active=True)
@@ -122,9 +124,12 @@ def shop_details(request, id):
     if product.id:
         product.view += 1
         product.save()
+    image_objects = ProductImage.objects.filter(product_id=id, color=images[0].color)
+    print(image_objects)
     # comments
     comment = None
     if request.method == "POST":
+
         form = CommentForm(data=request.POST or None)
         if form.is_valid():
             comment = form.save(commit=False)
@@ -132,19 +137,38 @@ def shop_details(request, id):
             comment.user = request.user
             comment.save()
             return redirect(f'/shop-details/{product.id}#comments')
-
     else:
         form = CommentForm()
-
-    variants = Variant.objects.all()
+    variants = Variant.objects.all().order_by('duration')
+    active_variant = variants.last()
+    total = image_objects.first().price_uzs + ((active_variant.percent * image_objects.first().price_uzs) / 100)
+    monthly = total / active_variant.duration
     context = {
         'form': form,
         "colors": colors,
+        "images": images,
+        "image_objects": image_objects,
         "product": product,
         "variants": variants,
+        "active_variant": active_variant,
+        "default_monthly_price": monthly,
         'comments': comments,
         "new_products": new_products,
         "categories": category,
         "related_products": related_products[:4],
     }
     return render(request, "shop-details.html", context)
+
+
+def shop_images(request):
+    data = []
+    if request.method == 'POST':
+        image_id = request.POST.get('image_id')
+        product_id = request.POST.get('product_id')
+        new_image = ProductImage.objects.get(id=image_id)
+        images = ProductImage.objects.filter(product_id=product_id, color=new_image.color)
+        for i in images:
+            data.append({
+                "url": i.image.url
+            })
+    return JsonResponse({"data": data})

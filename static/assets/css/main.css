@@ -1731,11 +1731,8 @@ label {
 
 .slider-arrow .slider-btn.slider-prev i {
   margin-right: 4px;
-<<<<<<< HEAD
-  margin-top: 10px;
-=======
+
   margin-top: 12px;
->>>>>>> a31dacd37da1f07a09f10bdf6157d889311d208f
 }
 
 .slider-arrow .slider-btn.slider-next {
@@ -1744,11 +1741,8 @@ label {
 
 .slider-arrow .slider-btn.slider-next i {
   margin-left: 4px;
-<<<<<<< HEAD
-  margin-top: 10px;
-=======
+
   margin-top: 12px;
->>>>>>> a31dacd37da1f07a09f10bdf6157d889311d208f
 }
 
 .slider-arrow .slider-btn:hover {

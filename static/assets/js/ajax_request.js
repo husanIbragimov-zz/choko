@@ -1,5 +1,5 @@
 var size = undefined
-var color = undefined
+var product_image = undefined
 var variant = undefined
 $(".size_class li").on("click", function () {
     size = $(this).text();
@@ -7,7 +7,10 @@ $(".size_class li").on("click", function () {
 });
 
 $("#color_class li").on("click", function () {
-    color = $(this).text();
+    // product_image =  document.getElementById("image_id").value;
+    product_image = $(this).text();
+    console.log(product_image)
+    // product_image = $('#image_id').val()
 
 });
 
@@ -29,13 +32,13 @@ $('.addToCartBtn').on('click', function () {
             "quantity": quantity,
             "size": size,
             "variant": variant,
-            "color": color,
+            "product_image": product_image,
             csrfmiddlewaretoken: token
         },
         success: function (response) {
             if (response.status) {
                 alertify.success(response.msg)
-
+                location.reload();
             } else {
                 alertify.error(response.msg)
             }

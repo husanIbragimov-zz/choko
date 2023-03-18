@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from apps.base.models import BaseAbstractDate
-from apps.product.models import Product, Color, Size
+from apps.product.models import Product, Color, Size, ProductImage
 
 
 # Create your models here.
@@ -62,7 +62,7 @@ class CartItem(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE, null=True, blank=True,
                                 related_name='variant_cart_items')
-    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True)
+    product_image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, null=True, blank=True)
     size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
 
@@ -71,7 +71,7 @@ class CartItem(BaseAbstractDate):
 
     @property
     def subtotal(self):
-        return self.quantity * self.product.price_uzs
+        return self.quantity * self.product_image.price_uzs
 
 
 class Wishlist(BaseAbstractDate):

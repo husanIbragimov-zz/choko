@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from apps.order.models import Cart, CartItem, Order, Wishlist, Variant
-from apps.product.models import Product, Rate, Color, Category, Size
+from apps.product.models import Product, Rate, Color, Category, Size, ProductImage
 
 
 # Create your views here.
@@ -22,25 +22,25 @@ def add_to_cart(request):
         print(request.POST)
         session_id = request.session['nonuser']
         product_id = request.POST['product_id']
-        color = request.POST.get('color', None)
+        product_image = request.POST.get('product_image', None)
         variant = request.POST.get('variant', None)
         quantity = request.POST['quantity']
         size = request.POST.get('size', None)
         cart = Cart.objects.get(session_id=session_id, completed=False)
         cart_item = CartItem.objects.filter(cart=cart, product_id=product_id)
         product = Product.objects.get(id=product_id)
-        print(color, "coloor")
+        print(product_image, "product_image")
         has_size = False
         has_color = False
         if product.size.all().exists():
             has_size = True
-        if product.color.all().exists():
+        if product.product_images.all().exists():
             has_color = True
-        if has_color and color is not None:
-            color = color.replace(" ", "")
-            color = Color.objects.get(id=color)
+        if has_color and product_image is not None:
+            product_image = product_image.replace(" ", "")
+            product_image = ProductImage.objects.get(id=product_image)
 
-        elif has_color and color is None:
+        elif has_color and product_image is None:
             return JsonResponse({"msg": "Iltimos! rang tanlang", "status": False})
 
         if has_size and size is not None:
@@ -54,9 +54,10 @@ def add_to_cart(request):
                 variant = variant.replace(" ", '').split('oy')[1]
             except:
                 variant = variant.replace(" ", '').split('месяц')[1]
-            variant = Variant.objects.get(id=variant)
         else:
-            return JsonResponse({"msg": "Iltimos! muddatni tanlang", "status": False})
+            variants = Variant.objects.all().order_by('duration')
+            variant = variants.last().id
+        variant = Variant.objects.get(id=variant)
         if cart_item.exists():
             for i in cart_item:
                 i.quantity += int(quantity)
@@ -72,8 +73,8 @@ def add_to_cart(request):
             if size is not None and has_size:
                 cart_item.size = size
                 cart_item.save()
-            if color is not None and has_color:
-                cart_item.color = color
+            if product_image is not None and has_color:
+                cart_item.product_image = product_image
                 cart_item.save()
 
     return JsonResponse({"msg": "Savatchaga muvaffaqiyatli qo'shildi!", "status": True})
