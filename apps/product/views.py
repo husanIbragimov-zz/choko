@@ -18,7 +18,7 @@ def index(request):
     last_3_products = product.order_by('-created_at')
     top_rated_products = sorted(product, key=lambda t: t.mid_rate, reverse=True)
     top_viewed_products = product.order_by('-view')
-    banner_discounts = BannerDiscount.objects.filter(is_active=True)
+    banner_discounts = BannerDiscount.objects.filter(product__isnull=False, is_active=True)
     query = []
     for qs in product:
         if qs.percentage > 20:
@@ -44,8 +44,6 @@ def index(request):
     for banner_discount in banner_discounts:
         now = timezone.now()
         deadline = banner_discount.deadline
-        print(now)
-        print(deadline)
         if now >= deadline:
             banner_discount.is_active = False
             banner_discount.save()
@@ -136,7 +134,6 @@ def shop_details(request, id):
         product.view += 1
         product.save()
     image_objects = ProductImage.objects.filter(product_id=id, color=images[0].color)
-    print(image_objects)
     # comments
     comment = None
     if request.method == "POST":

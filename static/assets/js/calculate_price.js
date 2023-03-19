@@ -31,6 +31,7 @@ function calculate(duration, percent, price, status, id) {
         if (type_data.image === 0) {
             var total = price + ((percent * price) / 100);
             var monthly = total / duration;
+            price = price + " uzs";
         } else {
             var total = type_data.image.price + ((percent * type_data.image.price) / 100);
             var monthly = total / duration;

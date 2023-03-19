@@ -115,7 +115,7 @@
                                         <h2 class="title-detail">{{ product.title }}</h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
-                                                <span> Brands: <a
+                                                <span> {% trans "Brand" %}: <a
                                                         href="/shop/?brand={{ product.brand }}">{{ product.brand }}</a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
@@ -124,20 +124,20 @@
                                                          style="width:{{ product.mid_rate_percent }}%">
                                                     </div>
                                                 </div>
-                                                <span class="font-small ml-5 text-muted"> ({{ product.product_rate.all.count }} reviews)</span>
+                                                <span class="font-small ml-5 text-muted"> ({{ product.product_rate.all.count }} {% trans "Izohlar" %})</span>
                                             </div>
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left d-flex">
                                                 {% if product.percentage > 0 %}
                                                     <div class="mr-50">
-                                                        <p class="fw-600">Bo'lib to'lash:</p>
+                                                        <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
                                                         <ins><span id="monthly" style="font-size: 20px"
                                                                    class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
                                                     <div>
-                                                        <p>Narx:</p>
+                                                        <p>{% trans "Narx" %}:</p>
                                                         <span style="font-size: 20px" id="origin_price"
                                                         >{{ image_objects.first.price_uzs|intcomma }} uzs</span>
 
@@ -146,19 +146,17 @@
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
                                                 {% else %}
                                                     <div class="mr-50">
-                                                        <p class="fw-600">Bo'lib to'lash:</p>
+                                                        <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
                                                         <ins><span id="monthly" style="font-size: 20px"
                                                                    class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
                                                     <div>
-                                                        <p>Narx:</p>
+                                                        <p>{% trans "Narx" %}:</p>
                                                         <span style="font-size: 20px" id="origin_price"
                                                         >{{ image_objects.first.price_uzs|intcomma }} uzs</span>
 
                                                     </div>
-
-
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -167,7 +165,7 @@
                                             {{ product.description|safe|truncatewords:40 }}
                                         </div>
                                         <div class="attr-detail attr-color mb-15">
-                                            <strong class="mr-10">{% trans "Rang" %}</strong>
+                                            <strong class="mr-10">{% trans "Rang" %}:</strong>
                                             <ul class="list-filter color-filter" id="color_class">
                                                 {% for item in images %}
                                                     {% csrf_token %}
@@ -199,7 +197,7 @@
 
                                         {% endif %}
                                         <div class="attr-detail attr-size mt-15 mb-15">
-                                            <strong class="mr-10">{% trans "Bo'lib to'lash" %}</strong>
+                                            <strong class="mr-10">{% trans "Bo'lib to'lash" %}:</strong>
                                             <ul class="list-filter size-filter font-small variant_class">
                                                 {% for variant in variants %}
                                                     <li class="{% if variant.id == active_variant.id %}active{% endif %}">
@@ -225,18 +223,10 @@
                                                 <button style="border-radius: 30px" type="button"
                                                         class="button button-add-to-cart addToCartBtn">{% trans "Savatchaga qo'shish" %}
                                                 </button>
-                                                {#                                                <a style="padding-top: 14px" aria-label="Add To Wishlist" class="action-btn hover-up"#}
-                                                {#                                                   href="{% url "wishlist" product.id %}"><i#}
-                                                {#                                                        class="far fa-heart"></i></a>#}
                                             </div>
 
 
                                         </div>
-                                        {#                                        <ul class="product-meta font-xs color-grey mt-50">#}
-                                        {#                                            <li>{% trans "Mavjud" %}:<span#}
-                                        {#                                                    class="in-stock text-success ml-5">{{ product.availability }} {% trans " ta mavjud" %}</span>#}
-                                        {#                                            </li>#}
-                                        {#                                        </ul>#}
                                     </div>
                                     <!-- Detail Info -->
                                 </div>

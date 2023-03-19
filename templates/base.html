@@ -280,10 +280,10 @@
                         <ul>
                             <li><a class="active" href="/">{% trans "Bosh sahifa" %}</a>
                             </li>
-                            <li>
-
-                                <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>
-                            </li>
+{#                            <li>#}
+{##}
+{#                                <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>#}
+{#                            </li>#}
                             <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                             </li>
                             <li>
@@ -376,9 +376,9 @@
                     <ul class="mobile-menu">
                         <li><a class="active" href="/">{% trans "Bosh sahifa" %}</a>
                         </li>
-                        <li>
-                            <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>
-                        </li>
+{#                        <li>#}
+{#                            <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>#}
+{#                        </li>#}
                         <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                         </li>
                         <li>
@@ -498,13 +498,11 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3">
-                    <h5 class="widget-title mb-30 wow fadeIn animated">About</h5>
+                    <h5 class="widget-title mb-30 wow fadeIn animated">{% trans "Biz haqimizda" %}</h5>
                     <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                        <li><a href="{% url 'about' %}">About Us</a></li>
-                        <li><a href="#">Delivery Information</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+{#                        <li><a href="{% url 'about' %}">About Us</a></li>#}
+                        <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a></li>
+                        <li><a href="{% url 'contact' %}">{% trans "Aloqa" %}</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2  col-md-3">
