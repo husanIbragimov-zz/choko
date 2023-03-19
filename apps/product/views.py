@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
@@ -124,8 +124,16 @@ def shop_details(request, id):
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
     images = ProductImage.objects.raw(
-        'SELECT id,updated_at,created_at, image, is_active, product_id, color_id, price, count(color_id) as number_colors FROM product_productimage WHERE product_id = %s GROUP BY color_id ORDER By number_colors desc',
+        '''SELECT *,
+            count(color_id)
+            FROM product_productimage
+            WHERE product_id = 12 
+            GROUP by color_id
+            ORDER By count(color_id) desc''',
         [id])
+    images_ = ProductImage.objects.filter(product_id=12).values('color').annotate(count=Count('color'))
+    for image in images_:
+        print(image)
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
     category = Category.objects.filter(is_active=True)
