@@ -14,8 +14,6 @@
     <meta property="og:type" content="">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
-    <!-- Favicon -->
-    <link href="{% static ' ' %}assets/imgs/theme/favicon.ico">
     <!-- Template CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/alertify.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" type="text/css">
@@ -47,7 +45,7 @@
                                 <li>
                                     <i class="fa fa-angle-double-right mr-5"></i> {% trans 'Eng yaxshi qurilmalarni 50% chegirmagacha ol' %}
                                     <a
-                                            class="active" href="{% url "products_filter" %}">{% trans 'Batafsil' %}</a></li>
+                                            class="active" href="{% url 'products_filter' %}">{% trans 'Batafsil' %}</a></li>
                                 <li><i class="fa fa-asterisk mr-5"></i><b>{% trans 'Super narxdagi kelishuvlar' %}</b>
                                 </li>
 
@@ -101,7 +99,6 @@
                                 {% for child in categories %}
                                     {% if child.parent == category %}
                                         <option>{{ child }}</option>
-                                        </li>
                                     {% endif %}
                                 {% endfor %}
                             {% endfor %}
@@ -154,16 +151,16 @@
                                         <h4>{% trans "Jami" %} <span>{{ cart.cart_total|intcomma }} UZS</span></h4>
                                     </div>
                                     <div class="shopping-cart-button d-flex">
-                                        <a href="{% url "shop-cart" %}">{% trans "Ko'rish" %}</a>
-                                        <a href="{% url "create-order" cart.id %}">{% trans "Tasdiqlash" %}</a>
+                                        <a href="{% url 'shop-cart' %}">{% trans "Ko'rish" %}</a>
+                                        <a href="{% url 'create-order' cart.id %}">{% trans "Tasdiqlash" %}</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="header-action-icon-2">
                             {% if not user.is_authenticated %}
-                                <a href="{% url "register" %}">
-                                    <p><a href="{% url "register" %}">{% trans "Kirish/Ro'yxatdan o'tish" %}</a></p>
+                                <a href="{% url 'register' %}">
+                                    <p><a href="{% url 'register' %}">{% trans "Kirish/Ro'yxatdan o'tish" %}</a></p>
                                 </a>
                             {% else %}
                                 <p><a href="{% url 'my-account' %}">{% trans "Kabinet" %}</a></p>
@@ -285,12 +282,12 @@
                             </li>
                             <li>
 
-                                <a href="{% url "about" %}">{% trans "Biz haqimizda" %}</a>
+                                <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>
                             </li>
-                            <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a>
+                            <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                             </li>
                             <li>
-                                <a href="{% url "contact" %}">{% trans "Aloqa" %}</a>
+                                <a href="{% url 'contact' %}">{% trans "Aloqa" %}</a>
                             </li>
 
                             {#                            <li><a href="#">My Account</a></li>#}
@@ -305,13 +302,13 @@
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
-                            <a href="{% url "wishlist" %}">
+                            <a href="{% url 'wishlist' %}">
                                 <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-heart-white.svg">
                                 <span class="pro-count white">{{ wishlists.count }}</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
-                            <a class="mini-cart-icon" href="{% url "shop-cart" %}">
+                            <a class="mini-cart-icon" href="{% url 'shop-cart' %}">
                                 <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-cart-white.svg">
                                 <span class="pro-count white">{{ cart.cart_items.all.count }}</span>
                             </a>
@@ -380,12 +377,12 @@
                         <li><a class="active" href="/">{% trans "Bosh sahifa" %}</a>
                         </li>
                         <li>
-                            <a href="{% url "about" %}">{% trans "Biz haqimizda" %}</a>
+                            <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>
                         </li>
-                        <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a>
+                        <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                         </li>
                         <li>
-                            <a href="{% url "contact" %}">{% trans "Aloqa" %}</a>
+                            <a href="{% url 'contact' %}">{% trans "Aloqa" %}</a>
 
                             {#                        <li><a href="#">My Account</a></li>#}
 
@@ -423,7 +420,7 @@
                 </div>
 
                 <div class="single-mobile-header-info">
-                    <a href="{% url "register" %}">{% trans "Kirish / Ro'yxatdan o'tish" %} </a>
+                    <a href="{% url 'register' %}">{% trans "Kirish / Ro'yxatdan o'tish" %} </a>
 
                 </div>
 
@@ -503,19 +500,19 @@
                 <div class="col-lg-2 col-md-3">
                     <h5 class="widget-title mb-30 wow fadeIn animated">About</h5>
                     <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                        <li><a href="{% url "about" %}">About Us</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
                         <li><a href="#">Delivery Information</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="{% url "contact" %}">Contact Us</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2  col-md-3">
                     <h5 class="widget-title mb-30 wow fadeIn animated">{% trans "Mening hisobim" %}</h5>
                     <ul class="footer-list wow fadeIn animated">
-                        <li><a href="{% url "login" %}">{% trans "Kirish" %}</a></li>
-                        <li><a href="{% url "shop-cart" %}">{% trans "Mening Savatcham" %}</a></li>
-                        <li><a href="{% url "wishlist" %}">{% trans "Yoqtirganlarim" %}</a></li>
+                        <li><a href="{% url 'login' %}">{% trans "Kirish" %}</a></li>
+                        <li><a href="{% url 'shop-cart' %}">{% trans "Mening Savatcham" %}</a></li>
+                        <li><a href="{% url 'wishlist' %}">{% trans "Yoqtirganlarim" %}</a></li>
 
                     </ul>
                 </div>

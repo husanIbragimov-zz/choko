@@ -22,6 +22,24 @@
             color: white;
             background-color: #5897FB;
         }
+        .countdown-box {
+            position: relative;
+            bottom: 75px;
+            left: 30px;
+        }
+        .timer {
+            background-color: #5897FB;
+            margin: 10px;
+            padding: 7px 10px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 17px;
+        }
+        .double-dot {
+            margin-top: 15px;
+            color: #5897FB;
+            font-size: 17px;
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -39,7 +57,7 @@
                                                 <div class="hero-slider-content-2">
                                                     {#                                                    <h4>{{ banner.desc|safe }}</h4>#}
                                                     <a class="animated btn btn-default btn-rounded"
-                                                       href="{% url "products_filter" %}"> {% trans "Sotib Olish" %} <i
+                                                       href="{% url 'products_filter' %}"> {% trans "Sotib Olish" %} <i
                                                             class="fa fa-arrow-right"></i> </a>
                                                 </div>
                                                 <div class="slider-img">
@@ -55,19 +73,32 @@
                         </div>
                     </div>
                     <div style="padding-left: 0" class="col-lg-3 d-md-none d-lg-block">
-                        {% for foo in queryset %}
+                        {% for foo in banner_discounts %}
                             <div class="banner-img banner-1 wow fadeIn animated"
                                  style="visibility: visible; animation-name: fadeIn; margin-bottom: 5px;">
-                                <img class="border-radius-10 ms-2" src="{{ foo.product_images.first.image.url }}"
-                                     alt="" height="270px" width="290px">
+                                <img class="border-radius-10" src="{{ foo.image.url }}"
+                                     alt="" height="100%" width="370px">
 
+                                <div class="countdown-box">
+                                    <ul class="d-flex">
+                                        <li id="day" class="timer">00</li>
+                                        <li class="double-dot">:</li>
+                                        <li id="hour" class="timer">00</li>
+                                        <li class="double-dot">:</li>
+                                        <li id="min" class="timer">00</li>
+                                        <li class="double-dot">:</li>
+                                        <li id="sec" class="timer">00</li>
+                                    </ul>
+                                </div>
                                 <div style="padding: 0 15px; top: 60px" class="banner-text sales ms-2">
                                     <span>{{ foo.category.first }}</span>
-                                    <h4 class="fs-8"> {{ foo.percentage }}% {% trans "tejab qolish" %}
+
+                                    <h4 class="fs-8">{% trans "tejab qolish" %}
                                         <br>{{ foo.title }}</h4>
                                     <a class="buy"
-                                       href="{% url "shop-details" foo.id %}">{% trans "Sotib Olish" %} <i
+                                       href="{% url 'shop-details' foo.product_id.id %} ">{% trans "Sotib Olish" %}<i
                                             class="fa fa-arrow-right"></i></a>
+                                    <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -106,7 +137,7 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url "shop-details" product.id %}">
+                                                <a href="{% url 'shop-details' product.id %}">
                                                     <img class="default-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
                                                          width="270px" height="280px">
@@ -121,10 +152,10 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}">{{ product.category.first }}</a>
+                                                <a href="{% url 'shop-details' product.id %}">{{ product.category.first }}</a>
                                             </div>
                                             <h2>
-                                                <a href="{% url "shop-details" product.id %}">{{ product.title|slice:'0:25' }}</a>
+                                                <a href="{% url 'shop-details' product.id %}">{{ product.title|slice:'0:25' }}</a>
                                             </h2>
 
                                             <div class="product-rate">
@@ -157,7 +188,7 @@
                                             </div>
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 15px"
+                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 15px"
                                                                                              class="far fa-heart"></i></a>
 
                                             </div>
@@ -210,7 +241,7 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url "shop-details" product.id %}">
+                                                <a href="{% url 'shop-details' product.id %}">
                                                     <img class="default-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
                                                          width="270px" height="280px">
@@ -225,10 +256,10 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}">{{ product.category.first }}</a>
+                                                <a href="{% url 'shop-details' product.id %}">{{ product.category.first }}</a>
                                             </div>
                                             <h2>
-                                                <a href="{% url "shop-details" product.id %}">{{ product.title|slice:'0:25' }}</a>
+                                                <a href="{% url 'shop-details' product.id %}">{{ product.title|slice:'0:25' }}</a>
                                             </h2>
                                             <div class="product-rate">
                                                 <div class="product-rating"
@@ -305,9 +336,9 @@
                                     <span>{{ discount.category.first.title }}</span>
                                     <h4>{{ discount.percentage }}% {% trans "tejab qolish" %} <br>{{ discount.title }}
                                     </h4>
-
-                                    <a class="buy" href="{% url "shop-details" discount.id %}">{% trans "Sotib olish" %}
+                                    <a class="buy" href="{% url 'shop-details' discount.id %}">{% trans "Sotib olish" %}
                                         <i class="fa fa-arrow-right"></i></a>
+
                                 </div>
                             </div>
                         {% endfor %}
@@ -319,13 +350,13 @@
                             {% for qs in last_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
                                     <figure class="col-md-3 mb-0">
-                                        <a href="{% url "shop-details" qs.id %}"><img
+                                        <a href="{% url 'shop-details' qs.id %}"><img
                                                 src="{{ qs.product_images.first.image.url }}"
                                                 alt=""></a>
                                     </figure>
                                     <div class="col-md-9 pl-0">
                                         <h4 class="title-small mb-2">
-                                            <a href="{% url "shop-details" qs.id %}">{{ qs.title|slice:'0:20' }}</a>
+                                            <a href="{% url 'shop-details' qs.id %}">{{ qs.title|slice:'0:20' }}</a>
                                         </h4>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-star-half-alt"></i> {% if qs.mid_rate %}
@@ -354,13 +385,13 @@
                             {% for trp in top_rate_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
                                     <figure class="col-md-3 mb-0">
-                                        <a href="{% url "shop-details" trp.id %}"><img
+                                        <a href="{% url 'shop-details' trp.id %}"><img
                                                 src="{{ trp.product_images.first.image.url }}"
                                                 alt=""></a>
                                     </figure>
                                     <div class="col-md-9 pl-0">
                                         <h4 class="title-small mb-2">
-                                            <a href="{% url "shop-details" trp.id %}">{{ trp.title|slice:'0:20' }}</a>
+                                            <a href="{% url 'shop-details' trp.id %}">{{ trp.title|slice:'0:20' }}</a>
                                         </h4>
 
                                         <pre class="d-inline p-2"><code><i
@@ -392,14 +423,14 @@
                             {% for top_viewed_product in top_viewed_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
                                     <figure class="col-md-3 mb-0">
-                                        <a href="{% url "shop-details" top_viewed_product.id %}"><img
+                                        <a href="{% url 'shop-details' top_viewed_product.id %}"><img
                                                 src="{{ top_viewed_product.product_images.first.image.url }}"
                                                 alt=""></a>
                                     </figure>
                                     <div class="col-md-9 pl-0">
 
                                         <h4 class="title-small mb-2">
-                                            <a href="{% url "shop-details" top_viewed_product.id %}">{{ top_viewed_product.title|slice:'0:20' }}</a>
+                                            <a href="{% url 'shop-details' top_viewed_product.id %}">{{ top_viewed_product.title|slice:'0:20' }}</a>
                                         </h4>
                                         <pre class="d-inline p-2"><code><i
                                                 class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}
@@ -429,4 +460,7 @@
         </section>
     </main>
 
+{% endblock %}
+{% block script %}
+    <script src="{% static 'assets/js/calculate_price.js' %}"></script>
 {% endblock %}
