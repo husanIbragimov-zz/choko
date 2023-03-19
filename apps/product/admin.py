@@ -38,17 +38,18 @@ class ProductImageStackedInline(admin.StackedInline):
     extra = 1
 
 
-class AdditionalInfoAdmin(admin.StackedInline):
+class AdditionalInfoAdmin(admin.StackedInline, ):
     model = AdditionalInfo
     extra = 1
     list_display = ['id', "title", 'product', "description"]
     list_filter = ['prodcut', 'created_at']
 
 
+
 class ProductAdmin(TranslationAdmin):
     actions = ['make_published']
     inlines = [ProductImageInline, AdditionalInfoAdmin]
-    filter_horizontal = ('category', 'color', 'size')
+    filter_horizontal = ('category', 'size')
     list_display_links = ('id', 'title')
     list_display = (
         'title', 'price', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',

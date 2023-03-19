@@ -2,24 +2,25 @@
 {% load static %}
 {% load humanize %}
 {% load i18n %}
-{% block content %}
-
-
+{% block style %}
     <style>
         @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+        .form-submit {
+            padding: 4px !important;
+            border: 0px !important;
+            background-color: #ffffff !important;
+            border-radius: 0px !important;
+        }
+
+        .loader {
+            display: none;
+        }
+
 
         fieldset, label {
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            margin: 0;
-        }
-
-        h1 {
-            font-size: 1.5em;
-            margin: 10px;
         }
 
         /****** Style Star Rating Widget *****/
@@ -68,6 +69,11 @@
             color: #FFED85;
         }
     </style>
+{% endblock %}
+{% block content %}
+
+
+
 
     <main class="main">
         <div class="page-header breadcrumb-wrap">
@@ -96,18 +102,11 @@
                                     <div class="detail-gallery">
                                         <span class="zoom-icon"><i class="fa fa-search-plus"></i></span>
                                         <!-- MAIN SLIDES -->
-                                        <div class="product-image-slider">
-                                            {% for img in product.product_images.all %}
-                                                <figure class="border-radius-10">
-                                                    <img src="{{ img.image.url }}" alt="product image">
-                                                </figure>
-                                            {% endfor %}
+                                        <div class="product-image-slider" id="main_slider_image">
+
                                         </div>
                                         <!-- THUMBNAILS -->
-                                        <div class="slider-nav-thumbnails pl-15 pr-15">
-                                            {% for img in product.product_images.all %}
-                                                <div><img src="{{ img.image.url }}" alt="product image"></div>
-                                            {% endfor %}
+                                        <div class="slider-nav-thumbnails pl-15 pr-15" id="slider_image">
                                         </div>
                                     </div>
                                 </div>
@@ -129,20 +128,36 @@
                                             </div>
                                         </div>
                                         <div class="clearfix product-price-cover">
-                                            <div class="product-price primary-color float-left">
+                                            <div class="product-price primary-color float-left d-flex">
                                                 {% if product.percentage > 0 %}
-                                                    <ins><span class="text-brand">UZS {{ product.discount_uzs|intcomma }} </span>
-                                                    </ins>
+                                                    <div class="mr-50">
+                                                        <p class="fw-600">Bo'lib to'lash:</p>
+                                                        <ins><span id="monthly" style="font-size: 20px"
+                                                                   class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
+                                                        </ins>
+                                                    </div>
+                                                    <div>
+                                                        <p>Narx:</p>
+                                                        <span style="font-size: 20px" id="origin_price"
+                                                        >{{ image_objects.first.price_uzs|intcomma }} uzs</span>
 
-                                                    <ins><span
-                                                            class="old-price font-md ml-15">UZS {{ product.price_uzs|intcomma }}</span>
-                                                    </ins>
+                                                    </div>
 
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
                                                 {% else %}
-                                                    <ins><span class="text-brand">UZS {{ product.price_uzs|intcomma }}</span>
-                                                    </ins>
-                                                    <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
+                                                    <div class="mr-50">
+                                                        <p class="fw-600">Bo'lib to'lash:</p>
+                                                        <ins><span id="monthly" style="font-size: 20px"
+                                                                   class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
+                                                        </ins>
+                                                    </div>
+                                                    <div>
+                                                        <p>Narx:</p>
+                                                        <span style="font-size: 20px" id="origin_price"
+                                                        >{{ image_objects.first.price_uzs|intcomma }} uzs</span>
+
+                                                    </div>
+
 
                                                 {% endif %}
                                             </div>
@@ -151,20 +166,27 @@
                                         <div class="short-desc mb-30">
                                             {{ product.description|safe|truncatewords:40 }}
                                         </div>
-                                        {% if product.color.all %}
-                                            <div class="attr-detail attr-color mb-15">
-                                                <strong class="mr-10">{% trans "Rang" %}</strong>
-                                                <ul class="list-filter color-filter" id="color_class">
-                                                    {% for color in product.color.all %}
-                                                        <li><a href="#"><span
-                                                                style="background-color: {{ color.name }}; border: 1px solid {{ color.name }}; border-radius: 5px; margin-top: 6px"><span
-                                                                class="d-none">{{ color.id }}</span></span>
+                                        <div class="attr-detail attr-color mb-15">
+                                            <strong class="mr-10">{% trans "Rang" %}</strong>
+                                            <ul class="list-filter color-filter" id="color_class">
+                                                {% for item in images %}
+                                                    {% csrf_token %}
+                                                    <li class="ml-5 list-form">
+                                                        <input class="image_id" id="image_id" name="image_id"
+                                                               type="hidden"
+                                                               value="{{ item.id }}">
+                                                        <a href="#"
+                                                           onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
+                                                           class="form-submit">
+                                                            <img src="{{ item.image.url }}" alt="" width="50"
+                                                                 height="70">
+                                                            <p class="d-none">{{ item.id }}</p>
                                                         </a>
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% endif %}
+
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                         {% if product.size.all %}
                                             <div class="attr-detail attr-size mb-15">
                                                 <strong class="mr-10">{% trans "O'lcham" %}</strong>
@@ -180,9 +202,9 @@
                                             <strong class="mr-10">{% trans "Bo'lib to'lash" %}</strong>
                                             <ul class="list-filter size-filter font-small variant_class">
                                                 {% for variant in variants %}
-                                                    <li>
+                                                    <li class="{% if variant.id == active_variant.id %}active{% endif %}">
                                                         <a class="calculate"
-                                                           onclick="calculate({{ variant.duration }}, {{ variant.percent }}, {{ product.price_uzs }})"
+                                                           onclick="calculate({{ variant.duration }}, {{ variant.percent }}, {{ image_objects.first.price_uzs }}, 'variant', {{ variant.id }})"
                                                            href="#">{{ variant.duration }} {% trans "oy" %}
                                                             <span class="d-none">{{ variant.id }}</span>
                                                         </a>
@@ -191,19 +213,7 @@
                                                 {% endfor %}
                                             </ul>
                                         </div>
-                                        <div id="div_main" style="display: none;">
-                                            <hr>
-                                            <div class="attr-detail attr-size mb-15">
-                                                <div class="mr-10">
-                                                    <strong>{% trans "Jami" %}:</strong>
-                                                    <span id="total" class="fw-bold text-success"></span>
-                                                </div>
-                                                <div class="ml-10">
-                                                    <strong class="ml-10">{% trans "Oyiga" %}:</strong>
-                                                    <span id="monthly" class="fw-bold text-success"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
                                             <div class="border radius">
@@ -222,11 +232,11 @@
 
 
                                         </div>
-                                        <ul class="product-meta font-xs color-grey mt-50">
-                                            <li>{% trans "Mavjud" %}:<span
-                                                    class="in-stock text-success ml-5">{{ product.availability }} {% trans " ta mavjud" %}</span>
-                                            </li>
-                                        </ul>
+                                        {#                                        <ul class="product-meta font-xs color-grey mt-50">#}
+                                        {#                                            <li>{% trans "Mavjud" %}:<span#}
+                                        {#                                                    class="in-stock text-success ml-5">{{ product.availability }} {% trans " ta mavjud" %}</span>#}
+                                        {#                                            </li>#}
+                                        {#                                        </ul>#}
                                     </div>
                                     <!-- Detail Info -->
                                 </div>
@@ -469,5 +479,107 @@
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
     <script src="{% static 'assets/js/ajax_request.js' %}"></script>
     <script src="{% static 'assets/js/calculate_price.js' %}"></script>
+    <script src="{% static 'assets/js/change_photo.js' %}"></script>
+
+    <script>
+        let status = {
+            image: 0,
+            variant: 0,
+        }
+        {% for image in image_objects %}
+            <!-- MAIN_SLIDES -->
+            var main_img = document.createElement("img");
+            main_img.src = "{{ image.image.url }}";
+            main_img.id = "main_slide_image_id-{{ forloop.counter0 }}";
+            var main_div = document.createElement("div");
+            main_div.id = 'main_div_image-{{ forloop.counter0 }}';
+            main_div.appendChild(main_img);
+            document.getElementById("main_slider_image").appendChild(main_div);
+
+            <!-- THUMBNAILS -->
+            var img = document.createElement("img");
+            img.src = "{{ image.image.url }}";
+            img.id = "slide_image_id-{{ forloop.counter0 }}";
+            var div = document.createElement("div");
+            div.id = 'div_image-{{ forloop.counter0 }}';
+            div.appendChild(img);
+            document.getElementById("slider_image").appendChild(div);
+        {% endfor %}
+        function generate(data) {
+            {% for image in image_objects %}
+                <!-- MAIN_SLIDES -->
+                var main_text = "main_slide_image_id-" + {{ forloop.counter0 }};
+                var main_text_div = "main_div_image-" + {{ forloop.counter0 }};
+                <!-- THUMBNAILS -->
+                var text = "slide_image_id-" + {{ forloop.counter0 }};
+                var text_div = "div_image-" + {{ forloop.counter0 }};
+                if (data.length > {{ forloop.counter0 }}) {
+                    <!-- MAIN_SLIDES -->
+                    document.getElementById(main_text).remove();
+                    var main_img = document.createElement("img");
+                    main_img.src = data[{{ forloop.counter0 }}].url;
+                    main_img.id = "main_slide_image_id-" + {{ forloop.counter0 }};
+                    var main_div = document.createElement("div");
+                    main_div.id = 'main_div_image_slide';
+                    main_div.appendChild(main_img);
+                    document.getElementById(main_text_div).appendChild(main_div);
+                    <!-- THUMBNAILS -->
+                    document.getElementById(text).remove();
+                    var img = document.createElement("img");
+                    img.src = data[{{ forloop.counter0 }}].url;
+                    img.id = "slide_image_id-" + {{ forloop.counter0 }};
+                    var div = document.createElement("div");
+                    div.id = 'div_image_slide';
+                    div.appendChild(img);
+                    document.getElementById(text_div).appendChild(div);
+                } else {
+                    <!-- MAIN_SLIDES -->
+                    var main_imge = document.getElementById(main_text);
+                    main_imge.src = "";
+                    main_imge.id = "main_slide_image_id-" + {{ forloop.counter0 }};
+                    var main_dive = document.createElement("div");
+                    main_dive.id = 'main_div_image_slide';
+                    main_dive.appendChild(main_imge);
+                    document.getElementById(main_text_div).appendChild(main_dive);
+                    <!-- THUMBNAILS -->
+                    var imge = document.getElementById(text);
+                    imge.src = "";
+                    imge.id = "slide_image_id-" + {{ forloop.counter0 }};
+                    var dive = document.createElement("div");
+                    dive.id = 'div_image_slide';
+                    dive.appendChild(imge);
+                    document.getElementById(text_div).appendChild(dive);
+                    // Expected output: ReferenceError: nonExistentFunction is not defined
+                    // (Note: the exact output may be browser-dependent)
+                }
+
+            {% endfor %}
+        }
+
+
+        function send_val(item_id, pro_id, price) {
+            calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
+            let image_id = item_id;
+            let product_id = pro_id;
+
+
+            var token = $("input[name=csrfmiddlewaretoken]").val();
+
+
+            $.ajax({
+                method: 'POST',
+                url: "/shop-images/",
+                data: {
+                    "product_id": product_id,
+                    "image_id": image_id,
+                    csrfmiddlewaretoken: token
+                },
+                success: function (response) {
+                    generate(response.data)
+                }
+            })
+        }
+
+    </script>
 
 {% endblock %}

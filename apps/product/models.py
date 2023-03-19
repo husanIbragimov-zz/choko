@@ -91,9 +91,10 @@ class Color(BaseAbstractDate):
         ("#ee82ee", "pushti",),
     ]
     name = ColorField(samples=COLOR_PALETTE)
+    title = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def colored_name(self):
         return format_html(
@@ -124,7 +125,6 @@ class Product(BaseAbstractDate):
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
-    color = models.ManyToManyField(Color, blank=True)
     size = models.ManyToManyField(Size, blank=True)
     price = models.FloatField(default=0, null=True)
     percentage = models.FloatField(default=0, null=True, blank=True)
@@ -155,7 +155,8 @@ class Product(BaseAbstractDate):
     @property
     def get_discount_price(self):
         if self.percentage:
-            discount_sell = self.price - (self.price * (self.percentage / 100))
+            discount_sell = self.product_images.first().price - (
+                        self.product_images.first().price * (self.percentage / 100))
             self.discount = discount_sell
             self.save()
             return discount_sell
@@ -177,7 +178,7 @@ class Product(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        price = round(self.price * Currency.objects.last().amount, 2)
+        price = round(self.product_images.first().price * Currency.objects.last().amount, 2)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
@@ -189,11 +190,18 @@ class Product(BaseAbstractDate):
 
 class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True)
     image = models.ImageField(upload_to='products', null=True, blank=True)
+    price = models.FloatField(default=0)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return f'Image of {self.product}'
+
+    @property
+    def price_uzs(self):
+        price = round(self.price * Currency.objects.last().amount, 2)
+        return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
 
 class AdditionalInfo(BaseAbstractDate):

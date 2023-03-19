@@ -128,13 +128,13 @@
                                         <li>
                                             <div class="shopping-cart-img">
                                                 <a href="{% url 'shop-details' item.product.id %}"><img alt="wowy"
-                                                                                                   src="{{ item.product.product_images.first.image.url }}"></a>
+                                                                                                   src="{{ item.product_image.image.url }}"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4>
                                                     <a href="{% url 'shop-details' item.product.id %}">{{ item.product.title }}</a>
                                                 </h4>
-                                                <h3><span>{{ item.quantity }} × </span>{{ item.product.price_uzs|intcomma }} UZS
+                                                <h3><span>{{ item.quantity }} × </span>{{ item.product_image.price_uzs|intcomma }} UZS
                                                 </h3>
                                             </div>
                                             <div class="shopping-cart-delete">
@@ -148,7 +148,7 @@
                                 </ul>
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>{% trans "Jami" %} <span>{{ cart.cart_total }} UZS</span></h4>
+                                        <h4>{% trans "Jami" %} <span>{{ cart.cart_total|intcomma }} UZS</span></h4>
                                     </div>
                                     <div class="shopping-cart-button d-flex">
                                         <a href="{% url 'shop-cart' %}">{% trans "Ko'rish" %}</a>
@@ -521,7 +521,7 @@
     </section>
 </footer>
 <!-- Preloader Start -->
-<div id="preloader-active">
+<div id="preloader-active" class="loader">
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="preloader-inner position-relative">
             <div class="text-center">
