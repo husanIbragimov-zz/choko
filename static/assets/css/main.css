@@ -451,7 +451,7 @@ h4 {
   display: inline-block;
   -webkit-animation: spinner 1.2s infinite ease-in-out;
   animation: spinner 1.2s infinite ease-in-out;
-  
+
   -webkit-box-shadow: 0 0 10px #fff;
           box-shadow: 0 0 10px #fff;
 }
@@ -820,9 +820,9 @@ button.submit:hover, button[type='submit']:hover {
   background-color: #3f81eb !important;
 }
 
-.btn-login {
+/* .btn-login { */
   /*font-weight: 13px;*/
-}
+/* } */
 
 .btn-login .btn {
   min-width: unset;
@@ -1519,7 +1519,7 @@ label {
 }
 
 .hero-slider-1 img {
-  max-height: 620px;
+  max-height: 450px;
 }
 
 .hero-slider-1.style-2 {
@@ -1552,7 +1552,7 @@ label {
 }
 
 .hero-slider-1.style-3 .slider-1-height-3 {
-  height: 542px;
+  height: 450px;
 }
 
 .hero-slider-1.style-3 .slider-img {
@@ -1731,6 +1731,7 @@ label {
 
 .slider-arrow .slider-btn.slider-prev i {
   margin-right: 4px;
+
   margin-top: 12px;
 }
 
@@ -1740,6 +1741,7 @@ label {
 
 .slider-arrow .slider-btn.slider-next i {
   margin-left: 4px;
+
   margin-top: 12px;
 }
 
@@ -7889,7 +7891,7 @@ h6.post-title {
 }
 
 /***************************
-    Page section margin 
+    Page section margin
 ****************************/
 .mtb-0 {
   margin: 0;
@@ -9099,4 +9101,3 @@ h6.post-title {
     display: block;
   }
 }
-/*# sourceMappingURL=main.css.map */

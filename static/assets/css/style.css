@@ -1,0 +1,38 @@
+.sales {
+    margin-top: 0;
+}
+
+.buy {
+    border: 1px solid #5897FB;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.buy:hover {
+    border: 1px solid #fff;
+    border-radius: 20px;
+    padding: 10px 20px;
+    color: white;
+    background-color: #5897FB;
+}
+
+.countdown-box {
+    position: relative;
+    bottom: 75px;
+    left: 30px;
+}
+
+.timer {
+    background-color: #5897FB;
+    margin: 10px;
+    padding: 7px 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 17px;
+}
+
+.double-dot {
+    margin-top: 15px;
+    color: #5897FB;
+    font-size: 17px;
+}
