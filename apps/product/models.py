@@ -4,11 +4,28 @@ from django.core.validators import validate_image_file_extension
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.db.models import Avg
+from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate
 from colorfield.fields import ColorField
+
+
+class BannerDiscount(BaseAbstractDate):
+    title = models.CharField(max_length=223, null=True)
+    image = models.ImageField(upload_to='sales', null=True)
+    deadline = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def product_id (self):
+        return self.product_set.last()
+
+    def __str__(self):
+        return f'{self.deadline}'
+
+    # def get_absolute_url(self):
+    #     return reverse("")
 
 
 class Currency(BaseAbstractDate):
@@ -100,6 +117,7 @@ class Product(BaseAbstractDate):
         ('SALE', 'SALE'),
     )
 
+    banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.CASCADE, null=True)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
     title = models.CharField(max_length=223, null=True)

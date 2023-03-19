@@ -105,12 +105,12 @@ WSGI_APPLICATION = 'chocco.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': BASE_DIR / 'db.sqlite3',
 #    }
-#}
+# }
 
 
 # ================================================== PostgresSQL =======================================================
@@ -164,7 +164,7 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
 
 LANGUAGE_CODE = 'uz-uz'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 

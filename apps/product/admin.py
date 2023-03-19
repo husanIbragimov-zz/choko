@@ -3,7 +3,7 @@ from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
 from apps.product.forms import BannerFrom
 from apps.product.models import Category, Brand, Banner, Product, ProductImage, Rate, Advertisement, Color, \
-    AdditionalInfo, Currency, Size
+    AdditionalInfo, Currency, Size, BannerDiscount
 from modeltranslation.admin import TranslationAdmin
 
 
@@ -128,3 +128,4 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Rate)
 admin.site.register(Advertisement, AdvertisementAdmin)
 admin.site.register(Currency)
+admin.site.register(BannerDiscount)

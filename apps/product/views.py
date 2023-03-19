@@ -1,11 +1,10 @@
-from datetime import datetime
 from django.db.models import Q
+from django.utils import timezone
 from django.views import View
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
-
 from apps.order.models import Variant
-from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color
+from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, BannerDiscount
 from django.core.paginator import Paginator
 
 
@@ -18,6 +17,7 @@ def index(request):
     last_3_products = product.order_by('-created_at')
     top_rated_products = sorted(product, key=lambda t: t.mid_rate, reverse=True)
     top_viewed_products = product.order_by('-view')
+    banner_discounts = BannerDiscount.objects.filter(is_active=True)
     query = []
     for qs in product:
         if qs.percentage > 20:
@@ -39,6 +39,16 @@ def index(request):
             status_index = 'top_rated'
     if search:
         product = product.filter(Q(title__icontains=search) | Q(category__title__icontains=search))
+
+    for banner_discount in banner_discounts:
+        now = timezone.now()
+        deadline = banner_discount.deadline
+        print(now)
+        print(deadline)
+        if now >= deadline:
+            banner_discount.is_active = False
+            banner_discount.save()
+
     context = {
         'advertisements': advertisements[:1],
         'last_advertisements': advertisements[1:2],
@@ -53,7 +63,8 @@ def index(request):
         'last_products': last_3_products,
         'top_rate_products': top_rated_products,
         'top_viewed_products': top_viewed_products,
-        'status_index': status_index
+        'status_index': status_index,
+        'banner_discounts': banner_discounts[:1],
     }
     return render(request, 'index.html', context)
 
