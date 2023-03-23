@@ -124,7 +124,7 @@ def shop_details(request, id):
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
     images = ProductImage.objects.raw(
-        '''SELECT id,color_id,
+        '''SELECT *,
             count(color_id) as number_colors,
             count(id) as number_id
             FROM product_productimage
