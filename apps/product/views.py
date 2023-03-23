@@ -123,20 +123,28 @@ def shop_details(request, id):
     product = get_object_or_404(Product, id=id)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
-    images = ProductImage.objects.raw(
-        '''SELECT *,
-            count(color_id) as number_colors,
-            count(id) as number_id
-            FROM product_productimage
-            WHERE product_id = %s 
-            GROUP by color_id''',
-        [id])
-    images_ = ProductImage.objects.filter(product_id=12).values('color').annotate(count=Count('color'))
+    data = []
+    data_ids = []
     for image in images_:
-        print(image)
-    # for i in ProductImage.objects.all():
-    #     i.color = Color.objects.last()
-    #     i.save()
+        if image.color_id in data_ids:
+            data.append({
+                "id": image.id,
+                'count': data[-1]['count'] + 1,
+                'color': image.color_id
+            })
+        else:
+            data.append({
+                "id": image.id,
+                'count': 1,
+                'color': image.color_id
+            })
+            data_ids.append(image.color_id)
+    filtred_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
+    result_data = []
+    for i in filtred_data:
+        res = ProductImage.objects.filter(product_id=id, color_id=i['color']).last()
+        if res not in result_data and res is not None:
+            result_data.append(res)
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
     category = Category.objects.filter(is_active=True)
@@ -165,7 +173,7 @@ def shop_details(request, id):
     context = {
         'form': form,
         "colors": colors,
-        "images": images,
+        "images": result_data,
         "image_objects": image_objects,
         "product": product,
         "variants": variants,
