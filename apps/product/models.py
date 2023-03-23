@@ -118,7 +118,7 @@ class Product(BaseAbstractDate):
         ('SALE', 'SALE'),
     )
 
-    banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.CASCADE, null=True)
+    banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.CASCADE, null=True, blank=True)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
     title = models.CharField(max_length=223, null=True)

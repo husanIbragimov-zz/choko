@@ -127,13 +127,16 @@ def shop_details(request, id):
         '''SELECT *,
             count(color_id)
             FROM product_productimage
-            WHERE product_id = 12 
+            WHERE product_id = %s 
             GROUP by color_id
             ORDER By count(color_id) desc''',
         [id])
     images_ = ProductImage.objects.filter(product_id=12).values('color').annotate(count=Count('color'))
     for image in images_:
         print(image)
+    for i in ProductImage.objects.all():
+        i.color = Color.objects.last()
+        i.save()
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
     category = Category.objects.filter(is_active=True)
