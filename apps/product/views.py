@@ -124,7 +124,7 @@ def shop_details(request, id):
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
     images = ProductImage.objects.raw(
-        '''SELECT *,
+        '''SELECT id,
             count(color_id)
             FROM product_productimage
             WHERE product_id = %s 
@@ -134,9 +134,9 @@ def shop_details(request, id):
     images_ = ProductImage.objects.filter(product_id=12).values('color').annotate(count=Count('color'))
     for image in images_:
         print(image)
-    for i in ProductImage.objects.all():
-        i.color = Color.objects.last()
-        i.save()
+    # for i in ProductImage.objects.all():
+    #     i.color = Color.objects.last()
+    #     i.save()
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
     category = Category.objects.filter(is_active=True)
