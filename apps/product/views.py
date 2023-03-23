@@ -131,9 +131,9 @@ def shop_details(request, id):
             WHERE product_id = %s 
             GROUP by color_id''',
         [id])
-    images_ = ProductImage.objects.filter(product_id=12).values('color').annotate(count=Count('color'))
-    for image in images_:
-        print(image)
+    # images_ = ProductImage.objects.filter(product_id=12).values('color').annotate(count=Count('color'))
+    # for image in images_:
+    #     print(image)
     # for i in ProductImage.objects.all():
     #     i.color = Color.objects.last()
     #     i.save()
