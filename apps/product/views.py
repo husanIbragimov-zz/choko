@@ -125,7 +125,8 @@ def shop_details(request, id):
                                               is_active=True)
     images = ProductImage.objects.raw(
         '''SELECT id,color_id,
-            count(color_id) as number_colors
+            count(color_id) as number_colors,
+            count(id) as number_id
             FROM product_productimage
             WHERE product_id = %s 
             GROUP by color_id''',
