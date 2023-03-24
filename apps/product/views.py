@@ -142,7 +142,6 @@ def shop_details(request, id):
                 'color': image.color_id
             })
             data_ids.append(image.color_id)
-    print(data)
     filtred_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
     result_data = []
     for i in filtred_data:
@@ -182,7 +181,7 @@ def shop_details(request, id):
         "product": product,
         "variants": variants,
         "active_variant": active_variant,
-        "default_monthly_price": monthly,
+        "default_monthly_price": round(monthly, 2),
         'comments': comments,
         "new_products": new_products,
         "categories": category,
