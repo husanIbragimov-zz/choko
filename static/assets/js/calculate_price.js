@@ -12,10 +12,12 @@ function calculate(duration, percent, price, status, id) {
         if (type_data.variant === 0) {
             var image_total = price + ((percent * price) / 100);
             var image_monthly = image_total / duration;
+            image_monthly = image_monthly.toFixed(2);
 
         } else {
             var image_total = price + ((type_data.variant.percent * price) / 100);
             var image_monthly = image_total / type_data.variant.duration;
+            image_monthly = image_monthly.toFixed(2);
         }
         image_monthly = image_monthly.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         image_monthly = image_monthly + " uzs/oy";
@@ -31,10 +33,12 @@ function calculate(duration, percent, price, status, id) {
         if (type_data.image === 0) {
             var total = price + ((percent * price) / 100);
             var monthly = total / duration;
+            monthly = monthly.toFixed(2);
             price = price + " uzs";
         } else {
             var total = type_data.image.price + ((percent * type_data.image.price) / 100);
             var monthly = total / duration;
+            monthly = monthly.toFixed(2);
             price = type_data.image.price + " uzs";
         }
         monthly = monthly.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");

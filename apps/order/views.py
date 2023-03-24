@@ -8,6 +8,8 @@ from apps.order.models import Cart, CartItem, Order, Wishlist
 from apps.product.models import Product, Rate, Color, Category, Size, ProductImage
 from bot.main import order_product
 import asyncio
+
+
 # Create your views here.
 
 def account(request):
@@ -20,7 +22,6 @@ def account(request):
 
 def add_to_cart(request):
     if request.method == "POST":
-        print(request.POST)
         session_id = request.session['nonuser']
         product_id = request.POST['product_id']
         product_image = request.POST.get('product_image', None)
@@ -30,7 +31,6 @@ def add_to_cart(request):
         cart = Cart.objects.get(session_id=session_id, completed=False)
         cart_item = CartItem.objects.filter(cart=cart, product_id=product_id)
         product = Product.objects.get(id=product_id)
-        print(product_image, "product_image")
         has_size = False
         has_color = False
         if product.size.all().exists():
@@ -95,11 +95,18 @@ def create_order(request, id):
 
     cart.completed = True
     cart.save()
-    asyncio.run(order_product())
-    
+    data = []
+    for i in cart_items:
+        data.append(dict(
+            user=request.user.username,
+            product=i.product.title,
+            variant=i.variant.duration,
+            photo=i.product.product_images.first().image.url
+        ))
+    print(data)
+    asyncio.run(order_product(data))
+
     return redirect('/')
-
-
 
 
 @login_required(login_url='/login')
@@ -122,7 +129,6 @@ def shop_cart(request):
     session_id = request.session['nonuser']
     cart = Cart.objects.filter(session_id=session_id, completed=False)
     category = Category.objects.all()
-    print(category)
     context = {
         'cart': cart.last(),
         'categories': category[10:],
