@@ -176,10 +176,10 @@
 
                                                     <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
                                                     <span class="old-price">UZS {{ product.price_uzs|intcomma }}</span>
-
+                                                    <span>{{ product.monthly_uzs }}uzs x {{ active_variant }}oy</span>
                                                 {% else %}
-                                                    <span>UZS {{ product.price_uzs|intcomma|intcomma }}</span><br><br>
-                                                    <span></span>
+                                                    <span>UZS {{ product.price_uzs|intcomma }}</span><br>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
@@ -279,9 +279,10 @@
 
                                                     <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
                                                     <span class="old-price">UZS {{ product.price_uzs|intcomma }}</span>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% else %}
                                                     <span>UZS {{ product.price_uzs|intcomma }}</span><br><br>
-                                                    <span></span>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
@@ -362,8 +363,10 @@
                                                 <span>UZS {{ qs.discount_uzs|intcomma }}</span><br>
                                                 <span style="font-size: 12px"
                                                       class="old-price">UZS {{ qs.price_uzs|intcomma }}</span>
+                                                <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ qs.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                             {% else %}
-                                                <span>UZS {{ qs.price_uzs|intcomma }}</span><br><br>
+                                                <span>UZS {{ qs.price_uzs|intcomma }}</span><br>
+                                                <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ qs.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -399,8 +402,10 @@
                                                     <span>UZS {{ trp.discount_uzs|intcomma }}</span><br>
                                                     <span style="font-size: 12px"
                                                           class="old-price">UZS {{ trp.price_uzs|intcomma }}</span>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ trp.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% else %}
-                                                    <span>{{ trp.price_uzs|intcomma }}</span><br><br>
+                                                    <span>{{ trp.price_uzs|intcomma }}</span><br>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ trp.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -437,8 +442,10 @@
                                                     <span>UZS {{ top_viewed_product.discount_uzs|intcomma }}</span><br>
                                                     <span style="font-size: 12px"
                                                           class="old-price">UZS {{ top_viewed_product.price_uzs|intcomma }}</span>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ top_viewed_product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% else %}
-                                                    <span>UZS {{ top_viewed_product.price_uzs|intcomma }}</span><br><br>
+                                                    <span>UZS {{ top_viewed_product.price_uzs|intcomma }}</span><br>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ top_viewed_product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% endif %}
                                             </div>
                                         </div>

@@ -86,8 +86,11 @@
 
                                                     <span>UZS {{ product.discount_uzs|intcomma }} </span><br>
                                                     <span class="old-price">UZS {{ product.price_uzs|intcomma }}</span>
+                                                    <br>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% else %}
-                                                    <span>UZS {{ product.price_uzs|intcomma }} </span><br><br>
+                                                    <span>UZS {{ product.price_uzs|intcomma }} </span><br>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show">
@@ -174,10 +177,10 @@
                                             </h5>
                                             <div class="product-price">
                                                 {% if last_3_product.discount > 0 %}
-
                                                     <span>UZS {{ last_3_product.discount_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span>UZS {{ last_3_product.price_uzs|intcomma }}</span>
+                                                    <span>UZS {{ last_3_product.price_uzs|intcomma }}</span><br>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ last_3_product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-rate">
@@ -207,9 +210,10 @@
                                             <div class="product-price">
                                                 {% if top_rate_product.discount > 0 %}
 
-                                                    <span>${{ top_rate_product.discount }} </span>
+                                                    <span>${{ top_rate_product.discount_uzs }} </span>
                                                 {% else %}
-                                                    <span>${{ top_rate_product.price }} </span>
+                                                    <span>${{ top_rate_product.price_uzs }} </span><br>
+                                                    <span class="bg-warning fw-200" style="font-size: 14px; color: black">{{ top_rate_product.monthly_uzs|intcomma }}uzs x {{ active_variant }}oy</span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-rate">

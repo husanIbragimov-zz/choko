@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from apps.order.models import Cart, CartItem, Order, Wishlist, Variant
+from apps.base.models import Variant
+from apps.order.models import Cart, CartItem, Order, Wishlist
 from apps.product.models import Product, Rate, Color, Category, Size, ProductImage
 
 

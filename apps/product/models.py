@@ -11,6 +11,8 @@ from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate
 from colorfield.fields import ColorField
 
+from apps.base.models import Variant
+
 
 class BannerDiscount(BaseAbstractDate):
     title = models.CharField(max_length=223, null=True)
@@ -186,6 +188,16 @@ class Product(BaseAbstractDate):
         discount = round(self.discount * Currency.objects.last().amount, 2)
 
         return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+
+
+    @property
+    def monthly_uzs(self):
+        variants = Variant.objects.all().order_by('duration')
+        active_variant = variants.last()
+        total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
+        monthly = total / active_variant.duration
+
+        return monthly  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class ProductImage(BaseAbstractDate):

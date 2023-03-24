@@ -1,9 +1,10 @@
 from django.utils import timezone
 from django.db.models import Q, Count
 from django.http import JsonResponse
+
+from apps.base.models import Variant
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
-from apps.order.models import Variant
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage, \
     BannerDiscount
 from django.core.paginator import Paginator
