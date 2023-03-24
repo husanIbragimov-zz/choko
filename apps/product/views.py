@@ -124,7 +124,7 @@ def shop_details(request, id):
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
 
-    images = ProductImage.objects.filter(product_id=12)
+    images = ProductImage.objects.filter(product_id=id)
     data = []
     data_ids = []
     for image in images:
@@ -149,7 +149,6 @@ def shop_details(request, id):
         res = ProductImage.objects.filter(product_id=id, color_id=i['color']).last()
         if res not in result_data and res is not None:
             result_data.append(res)
->>>>>>> 6490e5329516ba31532ab866359a2984ad7c040e
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
     category = Category.objects.filter(is_active=True)
