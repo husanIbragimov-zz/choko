@@ -20,7 +20,7 @@ class BannerDiscount(BaseAbstractDate):
     deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
-    def product_id (self):
+    def product_id(self):
         return self.product_set.last()
 
     def __str__(self):
@@ -158,7 +158,7 @@ class Product(BaseAbstractDate):
     def get_discount_price(self):
         if self.percentage:
             discount_sell = self.product_images.first().price - (
-                        self.product_images.first().price * (self.percentage / 100))
+                    self.product_images.first().price * (self.percentage / 100))
             self.discount = discount_sell
             self.save()
             return discount_sell
@@ -189,7 +189,6 @@ class Product(BaseAbstractDate):
 
         return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
-
     @property
     def monthly_uzs(self):
         variants = Variant.objects.all().order_by('duration')
@@ -197,7 +196,7 @@ class Product(BaseAbstractDate):
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         monthly = total / active_variant.duration
 
-        return monthly  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+        return round(monthly, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class ProductImage(BaseAbstractDate):
