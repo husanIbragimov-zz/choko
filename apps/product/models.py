@@ -126,7 +126,7 @@ class Product(BaseAbstractDate):
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
     size = models.ManyToManyField(Size, blank=True)
-    price = models.FloatField(default=0, null=True)
+    # price = models.FloatField(default=0, null=True)
     percentage = models.FloatField(default=0, null=True, blank=True)
     discount = models.FloatField(default=0, null=True, blank=True)
     view = models.IntegerField(default=0, null=True, blank=True)
