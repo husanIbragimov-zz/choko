@@ -18,8 +18,13 @@ categoryMenu = InlineKeyboardMarkup(
 
 async def order_product(data):
     User = data[0]['user']
-    photo1 = url_server + data[0]['photo']
-    #photo1 = "http://choko.uz/media/products/Apple_iPhone_14_Pro_%D1%81%D0%B5%D1%80%D0%B5%D0%B1%D1%80%D0%B8%D1%81%D1%82%D1%8B%D0%B9_1_gHZ9MhM.jpg"
+    # photo1 = url + data[0]['photo']
+    photo1 = "http://choko.uz/media/products/Apple_iPhone_14_Pro_%D1%81%D0%B5%D1%80%D0%B5%D0%B1%D1%80%D0%B8%D1%81%D1%82%D1%8B%D0%B9_1_gHZ9MhM.jpg"
+    media = []
+
+    media[0].caption = "CAption"
+
+
     text = f"<b>Yangi Buyurtma</b> \n" \
            f"Telefon raqam: {User} \n" \
 
@@ -27,6 +32,10 @@ async def order_product(data):
         text += f"------------------------\n" \
                 f"Product: {i['product']} \n" \
                 f"Muddat: {i['variant']} oyga\n"
+        media.append(types.InputMediaPhoto(
+            media=url_server + i['photo']
+        ))
 
-    await  bot.send_photo(chat_id='739412274', photo=photo1, reply_markup=categoryMenu,
-                          caption=text, parse_mode='html')
+    await bot.send_media_group(chat_id='739412274', media=media)
+    await bot.send_message(chat_id='739412274', message=text, reply_markup=categoryMenu,
+                            parse_mode='html')
