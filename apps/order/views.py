@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from apps.order.models import Cart, CartItem, Order, Wishlist, Variant
 from apps.product.models import Product, Rate, Color, Category, Size, ProductImage
-
-
+from bot.main import order_product
+import asyncio
 # Create your views here.
 
 def account(request):
@@ -91,9 +91,14 @@ def create_order(request, id):
     for item in cart_items:
         item.order = order
         item.save()
+
     cart.completed = True
     cart.save()
+    asyncio.run(order_product())
+    
     return redirect('/')
+
+
 
 
 @login_required(login_url='/login')
