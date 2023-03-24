@@ -41,7 +41,7 @@ if ( typeof Object.create !== 'function' ) {
 				self.elem = elem;
 				self.$elem = $( elem );
 
-				self.imageSrc = self.$elem.data("zoom-image") ? self.$elem.data("zoom-image") : self.$elem.attr("src");
+				self.imageSrc = null
 
 				self.options = $.extend( {}, $.fn.elevateZoom.options, options );
 
