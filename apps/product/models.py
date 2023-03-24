@@ -118,13 +118,13 @@ class Product(BaseAbstractDate):
         ('SALE', 'SALE'),
     )
 
-    banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.CASCADE, null=True, blank=True)
-    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, null=True, blank=True)
+    banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.SET_NULL, null=True, blank=True)
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
     title = models.CharField(max_length=223, null=True)
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
+    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     size = models.ManyToManyField(Size, blank=True)
     # price = models.FloatField(default=0, null=True)
     percentage = models.FloatField(default=0, null=True, blank=True)
