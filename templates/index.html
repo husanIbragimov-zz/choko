@@ -91,7 +91,10 @@
                                     </ul>
                                 </div>
                                 <div style="padding: 0 15px; top: 60px" class="banner-text sales ms-2">
-                                    <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div>
+
+                                    <a class="buy"
+                                       href="{% url 'shop-details' foo.product_id.id %} ">
+                                    <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div></a>
                                 </div>
                             </div>
                         {% endfor %}
