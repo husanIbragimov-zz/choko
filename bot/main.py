@@ -19,10 +19,7 @@ categoryMenu = InlineKeyboardMarkup(
 async def order_product(data):
     User = data[0]['user']
     # photo1 = url + data[0]['photo']
-    photo1 = "http://choko.uz/media/products/Apple_iPhone_14_Pro_%D1%81%D0%B5%D1%80%D0%B5%D0%B1%D1%80%D0%B8%D1%81%D1%82%D1%8B%D0%B9_1_gHZ9MhM.jpg"
     media = []
-
-    media[0].caption = "CAption"
 
     text = f"<b>Yangi Buyurtma</b> \n" \
            f"Telefon raqam: {User} \n" \
