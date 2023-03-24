@@ -124,7 +124,7 @@ def shop_details(request, id):
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
 
-    images = ProductImage.objects.filter(product_id=12)
+    images = ProductImage.objects.filter(product_id=id)
     data = []
     data_ids = []
     for image in images:
