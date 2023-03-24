@@ -76,8 +76,9 @@
                         {% for foo in banner_discounts %}
                             <div class="banner-img banner-1 wow fadeIn animated"
                                  style="visibility: visible; animation-name: fadeIn; margin-bottom: 5px;">
+                            <a href="{% url 'shop-details' foo.product_id.id %} ">
                                 <img class="border-radius-10" src="{{ foo.image.url }}"
-                                     alt="" height="100%" width="370px">
+                                     alt="" height="100%" width="370px"></a>
 
                                 <div class="countdown-box">
                                     <ul class="d-flex">
@@ -92,9 +93,8 @@
                                 </div>
                                 <div style="padding: 0 15px; top: 60px" class="banner-text sales ms-2">
 
-                                    <a class="buy"
-                                       href="{% url 'shop-details' foo.product_id.id %} ">
-                                    <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div></a>
+
+                                    <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div>
                                 </div>
                             </div>
                         {% endfor %}
