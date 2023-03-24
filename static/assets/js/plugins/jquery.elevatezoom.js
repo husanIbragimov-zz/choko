@@ -56,9 +56,9 @@ if ( typeof Object.create !== 'function' ) {
 
 				//Remove alt on hover
 
-				self.$elem.parent().removeAttr('title').removeAttr('alt');
-
-				self.zoomImage = self.imageSrc;
+				// self.$elem.parent().removeAttr('title').removeAttr('alt');
+				//
+				// self.zoomImage = self.imageSrc;
 
 				self.refresh( 1 );
 
