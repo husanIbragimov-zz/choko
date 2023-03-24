@@ -33,5 +33,5 @@ async def order_product(data):
         ))
 
     await bot.send_media_group(chat_id='739412274', media=media)
-    await bot.send_message(chat_id='739412274', message=text, reply_markup=categoryMenu,
+    await bot.send_message(chat_id='739412274', text=text, reply_markup=categoryMenu,
                             parse_mode='html')
