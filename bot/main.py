@@ -20,7 +20,6 @@ async def order_product(data):
     User = data[0]['user']
     # photo1 = url + data[0]['photo']
     media = []
-
     text = f"<b>Yangi Buyurtma</b> \n" \
            f"Telefon raqam: {User} \n" \
 
