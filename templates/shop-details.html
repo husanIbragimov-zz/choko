@@ -171,7 +171,7 @@
                                                     <li class="ml-5 list-form">
                                                         <input class="image_id" id="image_id" name="image_id"
                                                                type="hidden"
-                                                               value="{{ item.id }}">
+                                                               value="{{ item.id }}">{{ item.total_uzs }}
                                                         <a href="#"
                                                            onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
                                                            class="form-submit">
@@ -201,7 +201,14 @@
                                                 {% for variant in variants %}
                                                     <li class="{% if variant.id == active_variant.id %}active{% endif %}">
                                                         <a class="calculate"
-                                                           onclick="calculate({{ variant.duration }}, {{ variant.percent }}, {{ image_objects.first.price_uzs }}, 'variant', {{ variant.id }})"
+                                                           onclick="calculate({
+                                                                   duration:{{ variant.duration }},
+                                                                   percent:{{ variant.percent }},
+                                                                   price:'{{ image_objects.first.price_uzs }}',
+                                                                   status: 'variant',
+                                                                   id:{{ variant.id }}
+                                                                   })"
+
                                                            href="#">{{ variant.duration }} {% trans "oy" %}
                                                             <span class="d-none">{{ variant.id }}</span>
                                                         </a>
@@ -407,7 +414,8 @@
                                                         {% if item.percentage > 0 %}
                                                             <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                             <br>
-                                                            <span class="bg-warning new_price">UZS {{ item.discount_uzs|intcomma }} </span><br>
+                                                            <span class="bg-warning new_price">UZS {{ item.discount_uzs|intcomma }} </span>
+                                                            <br>
                                                             <br>
                                                             <span class="old-price">UZS {{ item.total_uzs|intcomma }}</span>
 
