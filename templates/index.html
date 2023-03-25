@@ -79,6 +79,7 @@
                                 <a href="{% url 'shop-details' foo.product_id.id %}"><img class="border-radius-10" src="{{ foo.image.url }}"
                                      alt="" height="450px" width="370px"></a>
 
+
                                 <div class="countdown-box">
                                     <ul class="d-flex">
                                         <li id="day" class="timer">00</li>
@@ -91,13 +92,13 @@
                                     </ul>
                                 </div>
                                 <div style="padding: 0 15px; top: 60px" class="banner-text sales ms-2">
-                                    <span>{{ foo.category.first }}</span>
 
 {#                                    <h4 class="fs-8">{% trans "tejab qolish" %}#}
 {#                                        <br>{{ foo.title }}</h4>#}
 {#                                    <a class="buy"#}
 {#                                       href="{% url 'shop-details' foo.product_id.id %} ">{% trans "Sotib Olish" %}<i#}
 {#                                            class="fa fa-arrow-right"></i></a>#}
+
                                     <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div>
                                 </div>
                             </div>
@@ -333,9 +334,6 @@
                                 <img class="border-radius-10 ms-4" src="{{ discount.product_images.first.image.url }}"
                                      alt="" height="320px" width="290px">
                                 <div style="padding: 0 15px; top: 60px" class="banner-text sales ms-4">
-                                    <span>{{ discount.category.first.title }}</span>
-                                    <h4>{{ discount.percentage }}% {% trans "tejab qolish" %} <br>{{ discount.title }}
-                                    </h4>
                                     <a class="buy" href="{% url 'shop-details' discount.id %}">{% trans "Sotib olish" %}
                                         <i class="fa fa-arrow-right"></i></a>
 

@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
@@ -123,9 +123,32 @@ def shop_details(request, id):
     product = get_object_or_404(Product, id=id)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
-    images = ProductImage.objects.raw(
-        'SELECT *, count(color_id) as number_colors FROM product_productimage WHERE product_id = %s GROUP BY color_id ORDER By number_colors desc',
-        [id])
+
+    images = ProductImage.objects.filter(product_id=id)
+    data = []
+    data_ids = []
+    for image in images:
+        if image.color_id in data_ids:
+            data.append({
+                "id": image.id,
+                'color': image.color_id
+            })
+            number = [d.get('count') for d in data if d['color'] == image.color_id]
+            data[-1]['count'] = number[0] + 1
+        else:
+            data.append({
+                "id": image.id,
+                'count': 1,
+                'color': image.color_id
+            })
+            data_ids.append(image.color_id)
+    print(data)
+    filtred_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
+    result_data = []
+    for i in filtred_data:
+        res = ProductImage.objects.filter(product_id=id, color_id=i['color']).last()
+        if res not in result_data and res is not None:
+            result_data.append(res)
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
     comments = Rate.objects.filter(product_id=id).order_by('-id')
     category = Category.objects.filter(is_active=True)
@@ -154,7 +177,7 @@ def shop_details(request, id):
     context = {
         'form': form,
         "colors": colors,
-        "images": images,
+        "images": result_data,
         "image_objects": image_objects,
         "product": product,
         "variants": variants,

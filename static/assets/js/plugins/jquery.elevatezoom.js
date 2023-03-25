@@ -41,7 +41,7 @@ if ( typeof Object.create !== 'function' ) {
 				self.elem = elem;
 				self.$elem = $( elem );
 
-				self.imageSrc = self.$elem.data("zoom-image") ? self.$elem.data("zoom-image") : self.$elem.attr("src");
+				self.imageSrc = null
 
 				self.options = $.extend( {}, $.fn.elevateZoom.options, options );
 
@@ -56,9 +56,9 @@ if ( typeof Object.create !== 'function' ) {
 
 				//Remove alt on hover
 
-				self.$elem.parent().removeAttr('title').removeAttr('alt');
-
-				self.zoomImage = self.imageSrc;
+				// self.$elem.parent().removeAttr('title').removeAttr('alt');
+				//
+				// self.zoomImage = self.imageSrc;
 
 				self.refresh( 1 );
 
