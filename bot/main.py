@@ -21,7 +21,7 @@ async def order_product(data):
         inline_keyboard=[
             [
                 InlineKeyboardButton(text="✅ Qabul qilish", callback_data=f"completed-{order_id}"),
-                InlineKeyboardButton(text="❌ Qaytarish", callback_data=f"cancel-{order_id}"),
+                InlineKeyboardButton(text="❌ Qaytarish", callback_data=f"canceled-{order_id}"),
             ],
         ])
 
