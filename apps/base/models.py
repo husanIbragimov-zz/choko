@@ -7,3 +7,10 @@ class BaseAbstractDate(models.Model):
 
     class Meta:
         abstract = True
+
+class Variant(BaseAbstractDate):
+    duration = models.IntegerField()
+    percent = models.IntegerField()
+
+    def __str__(self):
+        return str(self.duration)
