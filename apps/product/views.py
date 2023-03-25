@@ -201,4 +201,5 @@ def shop_images(request):
             data.append({
                 "url": i.image.url
             })
+
     return JsonResponse({"data": data})

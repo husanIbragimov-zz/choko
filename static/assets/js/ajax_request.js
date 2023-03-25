@@ -9,8 +9,6 @@ $(".size_class li").on("click", function () {
 $("#color_class li").on("click", function () {
     // product_image =  document.getElementById("image_id").value;
     product_image = $(this).text();
-    console.log(product_image)
-    // product_image = $('#image_id').val()
 
 });
 

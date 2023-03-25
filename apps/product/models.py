@@ -227,7 +227,6 @@ class ProductImage(BaseAbstractDate):
         variants = Variant.objects.all().order_by('duration')
         active_variant = variants.last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
-
         return round(total, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
