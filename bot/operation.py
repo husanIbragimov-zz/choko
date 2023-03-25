@@ -30,7 +30,7 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
             "status": "Completed",
             "id": id
         }
-        response = requests.request("POST", URL, data=data)
+        response = requests.request("POST", URL_SERVER, data=data)
         if response.status_code == 200:
             await bot.send_message(chat_id, "Buyurtma tasdiqlandi!")
         else:
@@ -41,7 +41,7 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
             "status": "Canceled",
             "id": id
         }
-        response = requests.request("POST", URL, data=data)
+        response = requests.request("POST", URL_SERVER, data=data)
         if response.status_code == 200:
             await bot.send_message(chat_id, "Buyurtma bekor qilindi!")
 
