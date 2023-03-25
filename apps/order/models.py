@@ -1,18 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from apps.base.models import BaseAbstractDate
+from apps.base.models import BaseAbstractDate, Variant
 from apps.product.models import Product, Color, Size, ProductImage
 
 
 # Create your models here.
 
-class Variant(BaseAbstractDate):
-    duration = models.IntegerField()
-    percent = models.IntegerField()
-
-    def __str__(self):
-        return str(self.duration)
 
 
 class Cart(BaseAbstractDate):

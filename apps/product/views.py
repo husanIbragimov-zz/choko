@@ -1,9 +1,10 @@
 from django.utils import timezone
 from django.db.models import Q, Count
 from django.http import JsonResponse
+
+from apps.base.models import Variant
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
-from apps.order.models import Variant
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage, \
     BannerDiscount
 from django.core.paginator import Paginator
@@ -123,7 +124,6 @@ def shop_details(request, id):
     product = get_object_or_404(Product, id=id)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
-
     images = ProductImage.objects.filter(product_id=id)
     data = []
     data_ids = []
@@ -142,7 +142,6 @@ def shop_details(request, id):
                 'color': image.color_id
             })
             data_ids.append(image.color_id)
-    print(data)
     filtred_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
     result_data = []
     for i in filtred_data:
@@ -182,7 +181,7 @@ def shop_details(request, id):
         "product": product,
         "variants": variants,
         "active_variant": active_variant,
-        "default_monthly_price": monthly,
+        "default_monthly_price": round(monthly, 2),
         'comments': comments,
         "new_products": new_products,
         "categories": category,

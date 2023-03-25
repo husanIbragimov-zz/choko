@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import Cart, Wishlist
 import uuid
 from apps.contact.models import Subscribe
+from ..base.models import Variant
 
 from ..product.models import Currency, Category, Product
 
@@ -12,6 +13,8 @@ def cart_renderer(request):
     categories = Category.objects.filter(is_active=True)
     sbb = request.POST.get('sbb')
     subscribe = Subscribe.objects.filter(email=sbb)
+    variants = Variant.objects.all().order_by('duration')
+    active_variant = variants.last()
     if not subscribe.exists():
         if request.method == 'POST':
             Subscribe.objects.create(email=sbb)
@@ -25,6 +28,7 @@ def cart_renderer(request):
 
     return {
         "cart": cart,
+        "active_variant": active_variant,
         "wishlists": wishlists,
         "currency": currency,
         'categories': categories,

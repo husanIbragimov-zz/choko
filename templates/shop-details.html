@@ -176,7 +176,7 @@
                                                            onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
                                                            class="form-submit">
                                                             <img src="{{ item.image.url }}" alt="" width="50"
-                                                                 height="70">
+                                                                 height="50">
                                                             <p class="d-none">{{ item.id }}</p>
                                                         </a>
 
@@ -406,8 +406,13 @@
                                                     <div class="product-price">
                                                         {% if item.percentage > 0 %}
                                                             <span>UZS {{ item.discount_uzs|intcomma }} </span><br>
+                                                            <span class="bg-warning new_price">{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                            <br>
                                                             <span class="old-price">UZS {{ item.price_uzs|intcomma }}</span>
+
                                                         {% else %}
+                                                            <span class="bg-warning new_price">{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                            <br>
                                                             <span>UZS {{ item.price_uzs|intcomma }} UZS</span>
                                                         {% endif %}
                                                     </div>
@@ -440,6 +445,8 @@
                                             {% if item.percentage > 0 %}
                                                 <span class="price mb-0 mt-5">UZS {{ item.discount_uzs|intcomma }} </span>
                                             {% else %}
+                                                <span class="bg-warning new_price">{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                <br>
                                                 <span class="price mb-0 mt-5">UZS {{ item.price_uzs|intcomma }} </span>
                                             {% endif %}
 
