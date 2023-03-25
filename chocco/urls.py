@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.utils.translation import gettext_lazy as _
 from apps.base import views
+from apps.order.api.v1 import views as api_views
 from apps.base.views import set_language
 
 
@@ -31,7 +32,8 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     # lib
     path('base/', include('allauth.urls')),
-
+    # api
+    path('change_status/', api_views.change_status),
     # local apps
     path('', include('apps.product.urls')),
     path('about/', include('apps.about.api.urls')),
