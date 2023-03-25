@@ -38,6 +38,7 @@ def add_to_cart(request):
         if product.product_images.all().exists():
             has_color = True
         if has_color and product_image is not None:
+            print(product_image)
             product_image = product_image.replace(" ", "")
             product_image = ProductImage.objects.get(id=product_image)
 
