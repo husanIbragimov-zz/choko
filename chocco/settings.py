@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'mptt',
     'colorfield',
+    'rest_framework',
 
     # local apps
     'apps.base',
