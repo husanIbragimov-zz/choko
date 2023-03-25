@@ -46,10 +46,10 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
             await bot.send_message(chat_id, "Buyurtma bekor qilindi!")
 
         else:
-            await bot.send_message(chat_id, "Xatolik yuz berdi")
+            await bot.send_message(chat_id, "Xatolik yuz berdi.")
 
     else:
-        await bot.send_message(chat_id, "Xatolik yuz berdi")
+        await bot.send_message(chat_id, "Xatolik yuz berdi!")
 
 
 if __name__ == '__main__':
