@@ -102,7 +102,7 @@ def create_order(request, id):
             order=order.id,
             product=i.product.title,
             variant=i.variant.duration,
-            photo=i.product.product_images.first().image.url
+            photo=i.product_image.image.url
         ))
     print(data)
     asyncio.run(order_product(data))
