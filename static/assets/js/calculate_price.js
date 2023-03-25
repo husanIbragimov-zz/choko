@@ -14,14 +14,14 @@ function calculate(duration, percent, price, status, id) {
             var image_monthly = image_total / duration;
             image_monthly = image_monthly.toFixed(2);
             type_data.image.temp_price = image_total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-            type_data.image.price = image_total
+            type_data.image.price = price
 
         } else {
             var image_total = price + ((type_data.variant.percent * price) / 100);
             var image_monthly = image_total / type_data.variant.duration;
             image_monthly = image_monthly.toFixed(2);
             type_data.image.temp_price = image_total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-            type_data.image.price = image_total
+            type_data.image.price = price
         }
         image_monthly = image_monthly.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         image_monthly = image_monthly + " uzs/oy";
