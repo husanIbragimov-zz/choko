@@ -32,9 +32,9 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
         }
         response = requests.request("POST", URL_SERVER, data=data)
         if response.status_code == 200:
-            await bot.send_message(chat_id, "Buyurtma tasdiqlandi!")
+            await bot.send_message('-1001906730536', "Buyurtma tasdiqlandi!")
         else:
-            await bot.send_message(chat_id, "Xatolik yuz berdi")
+            await bot.send_message('-1001906730536', "Xatolik yuz berdi")
 
     elif text == 'canceled':
         data = {
@@ -43,13 +43,13 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
         }
         response = requests.request("POST", URL_SERVER, data=data)
         if response.status_code == 200:
-            await bot.send_message(chat_id, "Buyurtma bekor qilindi!")
+            await bot.send_message('-1001906730536', "Buyurtma bekor qilindi!")
 
         else:
-            await bot.send_message(chat_id, "Xatolik yuz berdi.")
+            await bot.send_message('-1001906730536', "Xatolik yuz berdi.")
 
     else:
-        await bot.send_message(chat_id, "Xatolik yuz berdi!")
+        await bot.send_message('-1001906730536', "Xatolik yuz berdi!")
 
 
 if __name__ == '__main__':
