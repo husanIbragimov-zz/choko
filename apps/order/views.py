@@ -99,6 +99,7 @@ def create_order(request, id):
     for i in cart_items:
         data.append(dict(
             user=request.user.username,
+            order=order.id,
             product=i.product.title,
             variant=i.variant.duration,
             photo=i.product.product_images.first().image.url
@@ -181,3 +182,4 @@ def create_order_wishlist(request, id):
     wishlist = Wishlist.objects.filter(session_id=session_id, product_id=id).delete()
     url = request.META.get('HTTP_REFERER')
     return redirect(url)
+
