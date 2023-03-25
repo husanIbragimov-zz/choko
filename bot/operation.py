@@ -17,6 +17,8 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
+chat_id = '-1001906730536'
+
 
 @dp.callback_query_handler()
 async def inline_kb_answer_callback_handler(query: types.CallbackQuery):

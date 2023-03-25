@@ -10,6 +10,7 @@ bot = Bot(token=token)
 
 dp = Dispatcher(bot)
 
+chat = '-1001906730536'
 
 
 
@@ -36,6 +37,6 @@ async def order_product(data):
             media=url_server + i['photo']
         ))
 
-    await bot.send_media_group(chat_id='739412274', media=media)
-    await bot.send_message(chat_id='739412274', text=text, reply_markup=categoryMenu,
+    # await bot.send_media_group(chat_id=chat, media=media)
+    await bot.send_message(chat_id=chat, text=text, reply_markup=categoryMenu,
                            parse_mode='html')
