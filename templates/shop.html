@@ -64,7 +64,9 @@
                                             <div class="product-category">
                                                 <a href="{% url "shop-details" product.id %}">{{ product.category.first }}</a>
                                             </div>
-                                            <h2><a href="{% url "shop-details" product.id %}">{{ product.title|slice:'0:25' }}</a></h2>
+                                            <h2>
+                                                <a href="{% url "shop-details" product.id %}">{{ product.title|slice:'0:25' }}</a>
+                                            </h2>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
@@ -97,7 +99,8 @@
                                             </div>
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 15px;" class="far fa-heart"></i></a>
+                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 15px;"
+                                                                                             class="far fa-heart"></i></a>
 
                                             </div>
                                         </div>
@@ -137,26 +140,17 @@
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">{%  trans "Bo'limlar" %}</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
-                                        {% for category in cats %}
-                                            {% for child in cats %}
-                                                {% if child.parent == category %}
-                                                    {% for sub_child in cats %}
-
-                                                        {% if sub_child.parent == child %}
-                                                            <li class="cat-item text-muted">
-                                                            <a href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
-                                                            ({{ sub_child.product_set.count }})
-                                                        {% endif %}
-                                                    {% endfor %}
-
-                                                {% endif %}
-                                            {% endfor %}
+                                        {% for sub_child in cats %}
+                                            <li class="cat-item text-muted">
+                                            <a href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
+                                            ({{ sub_child.product_set.count }})
                                         {% endfor %}
+
 
                                         </li>
                                     </ul>
@@ -239,10 +233,12 @@
                                     <div class="banner-img banner-1 wow fadeIn  animated"
                                          style="visibility: visible; animation-name: fadeIn;">
                                         <img class="border-radius-10 ms-2"
-                                             src="{{ discount.product_images.first.image.url }}" alt="" height="270px" width="290px">
+                                             src="{{ discount.product_images.first.image.url }}" alt="" height="270px"
+                                             width="290px">
                                         <div style="padding: 0 15px; top: 60px" class="banner-text sales">
                                             <span>{{ discount.category.first }}</span>
-                                            <h4 class="fs-8">{{ discount.percentage }}% {% trans "Tejab qolish" %} <br>{{ discount.title|slice:'0:25' }}</h4>
+                                            <h4 class="fs-8">{{ discount.percentage }}% {% trans "Tejab qolish" %}
+                                                <br>{{ discount.title|slice:'0:25' }}</h4>
                                             <a class="buy" href="/">{% trans "Sotib olish" %} <i
                                                     class="fa fa-arrow-right"></i></a>
                                         </div>
