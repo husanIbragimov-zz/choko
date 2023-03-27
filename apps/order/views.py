@@ -38,6 +38,7 @@ def add_to_cart(request):
         if product.product_images.all().exists():
             has_color = True
         if has_color and product_image is not None:
+            print(product_image)
             product_image = product_image.replace(" ", "")
             product_image = ProductImage.objects.get(id=product_image)
 
@@ -99,9 +100,10 @@ def create_order(request, id):
     for i in cart_items:
         data.append(dict(
             user=request.user.username,
+            order=order.id,
             product=i.product.title,
             variant=i.variant.duration,
-            photo=i.product.product_images.first().image.url
+            photo=i.product_image.image.url
         ))
     print(data)
     asyncio.run(order_product(data))
@@ -181,3 +183,4 @@ def create_order_wishlist(request, id):
     wishlist = Wishlist.objects.filter(session_id=session_id, product_id=id).delete()
     url = request.META.get('HTTP_REFERER')
     return redirect(url)
+

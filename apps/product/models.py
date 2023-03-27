@@ -198,11 +198,19 @@ class Product(BaseAbstractDate):
 
         return round(monthly, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
+    @property
+    def total_uzs(self):
+        variants = Variant.objects.all().order_by('duration')
+        active_variant = variants.last()
+        total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
+
+        return round(total, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+
 
 class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
     color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True)
-    image = models.ImageField(upload_to='products', null=True, blank=True)
+    image = models.ImageField(upload_to='products', null=False, blank=False)
     price = models.FloatField(default=0)
     is_active = models.BooleanField(default=True)
 
@@ -213,6 +221,13 @@ class ProductImage(BaseAbstractDate):
     def price_uzs(self):
         price = round(self.price * Currency.objects.last().amount, 2)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
+
+    @property
+    def total_uzs(self):
+        variants = Variant.objects.all().order_by('duration')
+        active_variant = variants.last()
+        total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
+        return round(total, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class AdditionalInfo(BaseAbstractDate):
