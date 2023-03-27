@@ -210,7 +210,7 @@ class Product(BaseAbstractDate):
 class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
     color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True)
-    image = models.ImageField(upload_to='products', null=True, blank=True)
+    image = models.ImageField(upload_to='products', null=False, blank=False)
     price = models.FloatField(default=0)
     is_active = models.BooleanField(default=True)
 

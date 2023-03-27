@@ -10,6 +10,7 @@ bot = Bot(token=token)
 
 dp = Dispatcher(bot)
 
+chat = '-1001906730536'
 
 
 
@@ -34,8 +35,7 @@ async def order_product(data):
                 f"Muddat: {i['variant']} oyga\n"
         media.append(types.InputMediaPhoto(
             media=url_server + i['photo']
-        ))
-
-    await bot.send_media_group(chat_id='-1001906730536', media=media)
-    await bot.send_message(chat_id='-1001906730536', text=text, reply_markup=categoryMenu,
+	))
+    await bot.send_media_group(chat_id=chat, media=media)
+    await bot.send_message(chat_id=chat, text=text, reply_markup=categoryMenu,
                            parse_mode='html')
