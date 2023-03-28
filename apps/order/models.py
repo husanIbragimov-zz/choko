@@ -8,7 +8,6 @@ from apps.product.models import Product, Color, Size, ProductImage
 # Create your models here.
 
 
-
 class Cart(BaseAbstractDate):
     completed = models.BooleanField(default=False)
     session_id = models.CharField(max_length=100)
@@ -65,7 +64,8 @@ class CartItem(BaseAbstractDate):
 
     @property
     def subtotal(self):
-        return self.quantity * self.product_image.price_uzs
+        return self.quantity * (
+                    self.product_image.price_uzs + ((self.variant.percent * self.product_image.price_uzs) / 100))
 
 
 class Wishlist(BaseAbstractDate):
