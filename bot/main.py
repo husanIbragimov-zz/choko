@@ -35,8 +35,7 @@ async def order_product(data):
                 f"Muddat: {i['variant']} oyga\n"
         media.append(types.InputMediaPhoto(
             media=url_server + i['photo']
-        ))
-
-    # await bot.send_media_group(chat_id=chat, media=media)
+	))
+    await bot.send_media_group(chat_id=chat, media=media)
     await bot.send_message(chat_id=chat, text=text, reply_markup=categoryMenu,
                            parse_mode='html')

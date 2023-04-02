@@ -225,7 +225,7 @@
 
                                                 {% endif %}
                                             </div>
-                                            <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
+                                            <div class="product-action-1 show" style="bottom: 15px; right: 25px;">
                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
                                                    href="{% url 'wishlist' product.id %}"><i style="padding-top: 5px"
                                                                                              class="far fa-heart"></i></a>
@@ -272,36 +272,33 @@
                     </li>
                 </ul>
                 <!--End nav-tabs-->
-                <div class="tab-content wow fadeIn animated main__box" id="myTabContent">
+                <div class="tab-content wow fadeIn animated" id="myTabContent">
                     <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
-                        <div class="main_block">
+                        <div class="row product-grid-4">
                             {% for product in objects %}
-                                <div class="main__box-el">
+                                <div class="col-lg-3 col-md-6 col-12 col-sm-5">
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
                                                 <a href="{% url 'shop-details' product.id %}">
-                                                    <img class="default-img default-img-size"
+                                                    <img class="default-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="230px" height="230px">
-                                                    <img class="hover-img default-img-size"
+                                                         width="270px" height="270px">
+                                                    <img class="hover-img"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="230px" height="230px">
+                                                         width="270px" height="270px">
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status.lower }}">{% if product.status %}{{ product.status }}{% endif %}</span>
+                                                <span class="{{ product.status.lower }}">{{ product.status }}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <span class="product-category_fz">{{ product.category.first }}</span>
-                                                </a>
+                                                <a href="{% url 'shop-details' product.id %}">{{ product.category.first }}</a>
                                             </div>
                                             <h2>
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:25' }}</p></a>
+                                                <a href="{% url 'shop-details' product.id %}">{{ product.title|slice:'0:25' }}</a>
                                             </h2>
                                             <div class="product-rate">
                                                 <div class="product-rating"
@@ -333,9 +330,9 @@
                                                     <span class="bg-warning new_price">UZS {{ product.total_uzs|intcomma }}</span>
                                                 {% endif %}
                                             </div>
-                                            <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
+                                            <div class="product-action-1 show">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 5px"
+                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 15px"
                                                                                              class="far fa-heart"></i></a>
 
                                             </div>

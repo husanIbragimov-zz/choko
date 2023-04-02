@@ -22,6 +22,35 @@
             color: white;
             background-color: #5897FB;
         }
+        .main__box{
+            width: 100%;
+          }
+        .main_block{
+              display: flex;
+              flex-wrap: wrap;
+              column-gap: 30px;
+              row-gap: 30px;
+              justify-content: flex-start;
+          }
+
+          .main__box-el{
+              width: 22%;
+  
+          }
+     
+        .default-img-size{
+            width: 220px;
+            height: 220px;
+        }
+          .product-category_fz{
+              font-size: 12px;
+          }
+          .product-content-wrap_fz{
+              color: #000;
+          }
+          .product-content-wrap_fz:hover{
+              color: #5897fb;
+          }
     </style>
 {% endblock %}
 {% block content %}
@@ -37,34 +66,36 @@
         </div>
         <section class="mt-60 mb-60">
             <div class="container">
-                <div class="row flex-row-reverse">
+                <div class="row flex-row-reverse main__box">
                     <div class="col-lg-9">
-                        <div class="row product-grid-3">
+                        <div class="main_block">
 
                             {% for product in products %}
-                                <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                                <div class="main__box-el">
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
                                                 <a href="{% url "shop-details" product.id %}">
-                                                    <img class="default-img"
+                                                    <img class="default-img default-img-size"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="270px" height="270px">
-                                                    <img class="hover-img"
+                                                         width="230px" height="230px">
+                                                    <img class="hover-img default-img-size"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="270px" height="270px">
+                                                         width="230px" height="230px">
                                                 </a>
                                             </div>
 
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status }}">{{ product.status }}</span>
+                                                <span class="{{ product.status }}">{% if product.status %}{{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}">{{ product.category.first }}</a>
+                                                <a href="{% url "shop-details" product.id %}"><span class="product-category_fz">{{ product.category.first }}</span></a></a>
                                             </div>
-                                            <h2><a href="{% url "shop-details" product.id %}">{{ product.title|slice:'0:25' }}</a></h2>
+                                            <div><a href="{% url "shop-details" product.id %}"><p class="product-content-wrap_fz">
+                                                {{ product.title|slice:'0:25' }}
+                                                </p></a></div>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
@@ -95,9 +126,9 @@
                                                     <span class="bg-warning new_price">UZS {{ product.total_uzs|intcomma }} </span>
                                                 {% endif %}
                                             </div>
-                                            <div class="product-action-1 show">
+                                            <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 15px;" class="far fa-heart"></i></a>
+                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 5px;" class="far fa-heart"></i></a>
 
                                             </div>
                                         </div>
@@ -142,21 +173,14 @@
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
-                                        {% for category in cats %}
-                                            {% for child in cats %}
-                                                {% if child.parent == category %}
                                                     {% for sub_child in cats %}
-
-                                                        {% if sub_child.parent == child %}
+                                                        {% if sub_child.parent != None %}
                                                             <li class="cat-item text-muted">
                                                             <a href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
                                                             ({{ sub_child.product_set.count }})
                                                         {% endif %}
                                                     {% endfor %}
 
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endfor %}
 
                                         </li>
                                     </ul>
@@ -200,7 +224,7 @@
                             <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">T{% trans "Eng yaxshi baholanganlar" %}</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Eng yaxshi baholanganlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 {% for top_rate_product in top_rate_products|slice:'0:3' %}

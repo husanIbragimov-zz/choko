@@ -29,7 +29,6 @@ def add_to_cart(request):
         quantity = request.POST['quantity']
         size = request.POST.get('size', None)
         cart = Cart.objects.get(session_id=session_id, completed=False)
-        cart_item = CartItem.objects.filter(cart=cart, product_id=product_id)
         product = Product.objects.get(id=product_id)
         has_size = False
         has_color = False
@@ -38,7 +37,6 @@ def add_to_cart(request):
         if product.product_images.all().exists():
             has_color = True
         if has_color and product_image is not None:
-            print(product_image)
             product_image = product_image.replace(" ", "")
             product_image = ProductImage.objects.get(id=product_image)
 
@@ -60,12 +58,13 @@ def add_to_cart(request):
             variants = Variant.objects.all().order_by('duration')
             variant = variants.last().id
         variant = Variant.objects.get(id=variant)
+        cart_item = CartItem.objects.filter(cart=cart, product_id=product_id, variant=variant)
+
         if cart_item.exists():
             for i in cart_item:
                 i.quantity += int(quantity)
                 i.save()
         else:
-
             cart_item = CartItem.objects.create(
                 cart_id=cart.id,
                 product_id=product_id,
