@@ -88,6 +88,8 @@ def shop_list(request):
     brand = request.GET.get('brand')
     active_cat = False
     active_cat_name = None
+    active_brand = False
+    active_brand_name = False
     if cat:
         active_cat = True
         active_cat_name = cat
@@ -99,6 +101,8 @@ def shop_list(request):
     if advertisement:
         products = products.filter(advertisement__title__contains=advertisement)
     if brand:
+        active_brand = True
+        active_brand_name = brand
         products = products.filter(brand__title__icontains=brand)
 
     query = []
@@ -108,7 +112,7 @@ def shop_list(request):
 
     # paginator
     page_number = request.GET.get('page')
-    paginator = Paginator(products, 20)
+    paginator = Paginator(products, 2)
     paginated_products = paginator.get_page(page_number)
 
     context = {
@@ -118,6 +122,8 @@ def shop_list(request):
         'cats': category,
         'active_cat': active_cat,
         'active_cat_name': active_cat_name,
+        'active_brand': active_brand,
+        'active_brand_name': active_brand_name,
         'brands': brands,
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
