@@ -22,26 +22,29 @@
             color: white;
             background-color: #5897FB;
         }
-        .main__box{
-            width: 100%;
-          }
-        .main_block{
-              display: flex;
-              flex-wrap: wrap;
-              column-gap: 30px;
-              row-gap: 30px;
-              justify-content: flex-start;
-          }
 
-          .main__box-el{
-              width: 22%;
-  
-          }
-     
-        .default-img-size{
+        .main__box {
+            width: 100%;
+        }
+
+        .main_block {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 30px;
+            row-gap: 30px;
+            justify-content: flex-start;
+        }
+
+        .main__box-el {
+            width: 22%;
+
+        }
+
+        .default-img-size {
             width: 220px;
             height: 220px;
         }
+
           .product-category_fz{
               font-size: 12px;
           }
@@ -52,6 +55,7 @@
           .product-content-wrap_fz:hover{
               color: #5897fb;
           }
+
     </style>
 {% endblock %}
 {% block content %}
@@ -87,16 +91,20 @@
                                             </div>
 
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status }}">{% if product.status %}{{ product.status }}{% endif %}</span>
+                                                <span class="{{ product.status }}">{% if product.status %}
+                                                    {{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}"><span class="product-category_fz">{{ product.category.first }}</span></a></a>
+                                                <a href="{% url "shop-details" product.id %}"><span
+                                                        class="product-category_fz">{{ product.category.first }}</span></a></a>
                                             </div>
+
                                             <div><a href="{% url "shop-details" product.id %}"><p class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
                                                 </p></a></div>
+
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
@@ -136,7 +144,8 @@
                                             </div>
                                             <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 5px;" class="far fa-heart"></i></a>
+                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 5px;"
+                                                                                             class="far fa-heart"></i></a>
 
                                             </div>
                                         </div>
@@ -149,22 +158,75 @@
                         <div class="pagination-area mt-10 mb-md-5 mb-lg-0 mb-10">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-start">
-
-                                    {% if products.has_previous %}
-                                        <li class="page-item"><a class="page-link"
-                                                                 href="?page={{ products.previous_page_number }}"><i
-                                                class="fa fa-angle-left mt-15"></i> </a></li>
-                                    {% endif %}
-                                    {% for obj in products.paginator.page_range %}
-                                        {% if products.number == obj %}
-                                            <li class="page-item active"><a class="page-link"
-                                                                            href="?page={{ obj }}">{{ obj }}</a></li>
+                                    {% if active_cat %}
+                                        {% if products.has_previous %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?cat={{ active_cat_name }}&page={{ products.previous_page_number }}"><i
+                                                    class="fa fa-angle-left mt-15"></i></a></li>
                                         {% endif %}
-                                    {% endfor %}
-                                    {% if products.has_next %}
-                                        <li class="page-item"><a class="page-link"
-                                                                 href="?page={{ products.next_page_number }}"><i
-                                                class="fa fa-angle-right mt-15"></i> </a></li>
+                                        {% for obj in products.paginator.page_range %}
+                                            {% if products.number == obj %}
+
+                                                <li class="page-item active"><a class="page-link"
+                                                                                href="?cat={{ active_cat_name }}&page={{ obj }}">{{ obj }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="?cat={{ active_cat_name }}&page={{ obj }}">{{ obj }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if products.has_next %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?cat={{ active_cat_name }}&page={{ products.next_page_number }}"><i
+                                                    class="fa fa-angle-right mt-15"></i></a></li>
+                                        {% endif %}
+                                    {% elif active_brand %}
+                                        {% if products.has_previous %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?brand={{ active_brand_name }}&page={{ products.previous_page_number }}"><i
+                                                    class="fa fa-angle-left mt-15"></i></a></li>
+                                        {% endif %}
+                                        {% for obj in products.paginator.page_range %}
+                                            {% if products.number == obj %}
+
+                                                <li class="page-item active"><a class="page-link"
+                                                                                href="?brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="?brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if products.has_next %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?brand={{ active_brand_name }}&page={{ products.next_page_number }}"><i
+                                                    class="fa fa-angle-right mt-15"></i></a></li>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if products.has_previous %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?page={{ products.previous_page_number }}"><i
+                                                    class="fa fa-angle-left mt-15"></i></a></li>
+                                        {% endif %}
+                                        {% for obj in products.paginator.page_range %}
+                                            {% if products.number == obj %}
+
+                                                <li class="page-item active"><a class="page-link"
+                                                                                href="?page={{ obj }}">{{ obj }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="?page={{ obj }}">{{ obj }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if products.has_next %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?page={{ products.next_page_number }}"><i
+                                                    class="fa fa-angle-right mt-15"></i></a></li>
+                                        {% endif %}
                                     {% endif %}
 
                                 </ul>
@@ -176,18 +238,28 @@
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">{%  trans "Bo'limlar" %}</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
-                                                    {% for sub_child in cats %}
-                                                        {% if sub_child.parent != None %}
-                                                            <li class="cat-item text-muted">
-                                                            <a href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
-                                                            ({{ sub_child.product_set.count }})
-                                                        {% endif %}
-                                                    {% endfor %}
+                                    {% if active_brand %}
+                                        {% for sub_child in cats %}
+                                            {% if sub_child.parent != None %}
+                                                <li class="cat-item text-muted">
+                                                <a href="/shop/?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
+                                                ({{ sub_child.product_set.count }})
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for sub_child in cats %}
+                                            {% if sub_child.parent != None %}
+                                                <li class="cat-item text-muted">
+                                                <a href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                ({{ sub_child.product_set.count }})
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
 
 
                                         </li>
@@ -271,10 +343,12 @@
                                     <div class="banner-img banner-1 wow fadeIn  animated"
                                          style="visibility: visible; animation-name: fadeIn;">
                                         <img class="border-radius-10 ms-2"
-                                             src="{{ discount.product_images.first.image.url }}" alt="" height="270px" width="290px">
+                                             src="{{ discount.product_images.first.image.url }}" alt="" height="270px"
+                                             width="290px">
                                         <div style="padding: 0 15px; top: 60px" class="banner-text sales">
                                             <span>{{ discount.category.first }}</span>
-                                            <h4 class="fs-8">{{ discount.percentage }}% {% trans "Tejab qolish" %} <br>{{ discount.title|slice:'0:25' }}</h4>
+                                            <h4 class="fs-8">{{ discount.percentage }}% {% trans "Tejab qolish" %}
+                                                <br>{{ discount.title|slice:'0:25' }}</h4>
                                             <a class="buy" href="/">{% trans "Sotib olish" %} <i
                                                     class="fa fa-arrow-right"></i></a>
                                         </div>
@@ -291,12 +365,19 @@
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
+                                    {% if active_cat %}
+                                        {% for brand in brands %}
+                                            <li class="cat-item text-muted">
+                                            <a href="/shop/?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
+                                            ({{ brand.product_set.count }})
+                                        {% endfor %}
+                                    {% else %}
                                         {% for brand in brands %}
                                             <li class="cat-item text-muted">
                                             <a href="/shop/?brand={{ brand }}">{{ brand.title }}</a>
                                             ({{ brand.product_set.count }})
-
                                         {% endfor %}
+                                    {% endif %}
 
                                         </li>
                                     </ul>
