@@ -112,7 +112,7 @@ def shop_list(request):
 
     # paginator
     page_number = request.GET.get('page')
-    paginator = Paginator(products, 2)
+    paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
 
     context = {
