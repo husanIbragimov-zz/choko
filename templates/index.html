@@ -61,10 +61,12 @@
         }
         .product-content-wrap_fz{
             color: #000;
+            font-size: 13px;
         }
         .product-content-wrap_fz:hover{
             color: #5897fb;
         }
+        
         
 
 
@@ -187,7 +189,7 @@
                                             <div>
                                                 <a href="{% url 'shop-details' product.id %}">
                                                     <p class="product-content-wrap_fz">
-                                                    {{ product.title|slice:'0:25' }}
+                                                    {{ product.title|slice:'0:45' }}
                                                     </p>
                                                 </a>
                                             </div>
@@ -197,7 +199,7 @@
                                                 <div class="product-rating"
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
                                             </div>
-                                            <div>
+                                            <div class="percentage">
                                                 {% if product.percentage %}
                                                     <span>
                                                         <span>{{ product.percentage }}%</span>
@@ -209,17 +211,22 @@
                                                 {% endif %}
                                             </div>
                                             <div>
+                                                {% if product.title|length < 26 %}
+                                                    <div style="margin-top: 25px;" >
+
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span >{{ product.monthly_uzs }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                    <span >{{ product.monthly_uzs }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }} </span>
                                                     <br>
                                                     <span class="old-price">UZS {{ product.total_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                    <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="bg-warning new_price">UZS {{ product.total_uzs|intcomma }}</span>
 
@@ -299,10 +306,10 @@
                                                     <span class="product-category_fz">{{ product.category.first }}</span>
                                                 </a>
                                             </div>
-                                            <h2>
+                                            <div>
                                                 <a href="{% url 'shop-details' product.id %}">
-                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:25' }}</p></a>
-                                            </h2>
+                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p></a>
+                                                </div>
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
@@ -319,16 +326,21 @@
                                                 {% endif %}
                                             </div>
                                             <div>
+                                                {% if product.title|length < 26 %}
+                                                    <div style="margin-top: 25px;">
+
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span><br>
+                                                    <span> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span><br>
                                                     <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }}</span>
                                                     <br>
-                                                    <span class="old-price">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                    <span class="old-price">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
                                                 {% else %}
-                                                    <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                    <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="bg-warning new_price">UZS {{ product.total_uzs|intcomma }}</span>
                                                 {% endif %}
@@ -391,12 +403,12 @@
                         <div class="product-list-small wow fadeIn animated">
                             {% for qs in last_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
-                                    <figure class="col-md-3 mb-0">
+                                    <figure class="col-md-3 col-6 mb-0">
                                         <a href="{% url 'shop-details' qs.id %}"><img
                                                 src="{{ qs.product_images.first.image.url }}"
                                                 alt=""></a>
                                     </figure>
-                                    <div class="col-md-9 pl-0">
+                                    <div class="col-md-9 col-6 pl-0">
                                         <h4 class="title-small mb-2">
                                             <a href="{% url 'shop-details' qs.id %}">{{ qs.title|slice:'0:20' }}</a>
                                         </h4>
@@ -431,12 +443,12 @@
                         <div class="product-list-small wow fadeIn animated">
                             {% for trp in top_rate_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
-                                    <figure class="col-md-3 mb-0">
+                                    <figure class="col-md-3 col-6 mb-0">
                                         <a href="{% url 'shop-details' trp.id %}"><img
                                                 src="{{ trp.product_images.first.image.url }}"
                                                 alt=""></a>
                                     </figure>
-                                    <div class="col-md-9 pl-0">
+                                    <div class="col-md-9 col-6 pl-0">
                                         <h4 class="title-small mb-2">
                                             <a href="{% url 'shop-details' trp.id %}">{{ trp.title|slice:'0:20' }}</a>
                                         </h4>
@@ -474,12 +486,12 @@
                         <div class="product-list-small wow fadeIn animated">
                             {% for top_viewed_product in top_viewed_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
-                                    <figure class="col-md-3 mb-0">
+                                    <figure class="col-md-3 col-6 mb-0">
                                         <a href="{% url 'shop-details' top_viewed_product.id %}"><img
                                                 src="{{ top_viewed_product.product_images.first.image.url }}"
                                                 alt=""></a>
                                     </figure>
-                                    <div class="col-md-9 pl-0">
+                                    <div class="col-md-9 col-6 pl-0">
 
                                         <h4 class="title-small mb-2">
                                             <a href="{% url 'shop-details' top_viewed_product.id %}">{{ top_viewed_product.title|slice:'0:20' }}</a>

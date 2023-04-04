@@ -377,7 +377,7 @@
                                 </div>
                                 <div class="row">
                                     {% for item in related_products %}
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                        <div class="col-lg-3 col-md-4 col-6 col-sm-6">
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
@@ -397,7 +397,7 @@
                                                                 class="far fa-heart pt-10"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="{{ product.status.lower }}">{{ product.status }}</span>
+                                                        <span class="{{ product.status.lower }}">{% if product.status %}{{ product.status }}{% endif %}</span>
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
