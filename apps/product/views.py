@@ -214,3 +214,27 @@ def shop_images(request):
             })
 
     return JsonResponse({"data": data})
+
+
+async def count_products():
+    product_images = ProductImage.objects.all()
+    number = 0
+    data = [{
+        'color_id': None,
+        'product_id': None
+    }]
+    for i in product_images:
+        res = {
+            'color_id': i.color_id,
+            'product_id': i.product_id,
+        }
+        # if i.color_id != data['color_id'] and i.product_id != data['product_id']:
+        if res not in data:
+            result = product_images.filter(color_id=i.color_id, product_id=i.product_id)
+            data.append(res)
+            if result.exists():
+                number += 1
+    # print(number)
+    # result = ProductImage.objects.values('product', 'color').annotate(dcount=Count('product')).order_by()
+    # print(result)
+    return number

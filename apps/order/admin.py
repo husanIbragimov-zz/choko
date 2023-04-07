@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
+from django.db.models import Count, Sum
 
 from apps.order.models import CartItem, Cart, Order, Wishlist, Variant
 
