@@ -64,8 +64,8 @@ class CartItem(BaseAbstractDate):
 
     @property
     def subtotal(self):
-        return self.quantity * (
-                    self.product_image.price_uzs + ((self.variant.percent * self.product_image.price_uzs) / 100))
+        return round(self.quantity * (
+                self.product_image.price_uzs + ((self.variant.percent * self.product_image.price_uzs) / 100)), 2)
 
 
 class Wishlist(BaseAbstractDate):
