@@ -7,7 +7,7 @@ import logging
 from aiogram.dispatcher.filters.builtin import Command
 from aiogram import Bot, Dispatcher, executor, types
 
-from apps.product.views import count_products
+from .apps.product.views import count_products
 
 API_TOKEN = '5978476855:AAEUfYUTXPDGQsjLzGBmuf21fbz3hgKje7k'
 URL = "http://127.0.0.1:8000/change_status/"

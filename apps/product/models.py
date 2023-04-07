@@ -15,7 +15,7 @@ from apps.base.models import Variant
 
 
 class BannerDiscount(BaseAbstractDate):
-    title = models.CharField(max_length=223, null=True)
+    title = models.TextField(null=True)
     image = models.ImageField(upload_to='sales', null=True)
     deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -123,7 +123,7 @@ class Product(BaseAbstractDate):
     banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.SET_NULL, null=True, blank=True)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
-    title = models.CharField(max_length=223, null=True)
+    title = models.TextField(null=True)
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
