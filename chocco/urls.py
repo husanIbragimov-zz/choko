@@ -34,6 +34,7 @@ urlpatterns = [
     path('base/', include('allauth.urls')),
     # api
     path('change_status/', api_views.change_status),
+    path('count-products/', api_views.count_products),
     # local apps
     path('', include('apps.product.urls')),
     path('about/', include('apps.about.api.urls')),
