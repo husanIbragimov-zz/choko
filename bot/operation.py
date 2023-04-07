@@ -4,8 +4,10 @@ It echoes any incoming text messages.
 """
 import requests as requests
 import logging
-
+from aiogram.dispatcher.filters.builtin import Command
 from aiogram import Bot, Dispatcher, executor, types
+
+from apps.product.views import count_products
 
 API_TOKEN = '5978476855:AAEUfYUTXPDGQsjLzGBmuf21fbz3hgKje7k'
 URL = "http://127.0.0.1:8000/change_status/"
@@ -20,6 +22,13 @@ dp = Dispatcher(bot)
 chat_id = '-1001906730536'
 
 
+@dp.message_handler(Command('count'), state='*')
+async def bot_help(message: types.Message):
+    number = await count_products()
+    text = f"Mahsulotlar soni: <b>{number}</b>"
+
+    await message.answer(text)
+
 @dp.callback_query_handler()
 async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
     answer_data = query.data
@@ -32,26 +41,26 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
             "status": "Completed",
             "id": id
         }
-        response = requests.request("POST", URL, data=data)
+        response = requests.request("POST", URL_SERVER, data=data)
         if response.status_code == 200:
-            await bot.send_message(chat_id, "Buyurtma tasdiqlandi!")
+            await bot.send_message('-1001906730536', "Buyurtma tasdiqlandi!")
         else:
-            await bot.send_message(chat_id, "Xatolik yuz berdi")
+            await bot.send_message('-1001906730536', "Xatolik yuz berdi")
 
     elif text == 'canceled':
         data = {
             "status": "Canceled",
             "id": id
         }
-        response = requests.request("POST", URL, data=data)
+        response = requests.request("POST", URL_SERVER, data=data)
         if response.status_code == 200:
-            await bot.send_message(chat_id, "Buyurtma bekor qilindi!")
+            await bot.send_message('-1001906730536', "Buyurtma bekor qilindi!")
 
         else:
-            await bot.send_message(chat_id, "Xatolik yuz berdi.")
+            await bot.send_message('-1001906730536', "Xatolik yuz berdi.")
 
     else:
-        await bot.send_message(chat_id, "Xatolik yuz berdi!")
+        await bot.send_message('-1001906730536', "Xatolik yuz berdi!")
 
 
 if __name__ == '__main__':

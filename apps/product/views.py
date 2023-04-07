@@ -7,7 +7,7 @@ from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage, \
     BannerDiscount
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger
 
 
 def index(request):
@@ -55,8 +55,8 @@ def index(request):
         'discounts': query[2:3],
         'queryset': query[:2],
 
-        'products': product[:12],
-        'objects': product[12:24],
+        'products': product[:15],
+        'objects': product[16:31],
         'categories': category,
         'brands': brand,
         'banners': banner[:5],
@@ -86,8 +86,11 @@ def shop_list(request):
     search = request.GET.get('search')
     advertisement = request.GET.get('advertisement')
     brand = request.GET.get('brand')
-
+    active_cat = False
+    active_cat_name = None
     if cat:
+        active_cat = True
+        active_cat_name = cat
         products = products.filter(category__title__icontains=cat)
     if search:
         products = products.filter(
@@ -104,15 +107,17 @@ def shop_list(request):
             query.append(qs)
 
     # paginator
-    paginator = Paginator(products, 15)
     page_number = request.GET.get('page')
-    products = paginator.get_page(page_number)
+    paginator = Paginator(products, 20)
+    paginated_products = paginator.get_page(page_number)
 
     context = {
-        'products': products,
+        'products': paginated_products,
         'discounts': query,
-        'page_obj': products,
+        'page_obj': paginated_products,
         'cats': category,
+        'active_cat': active_cat,
+        'active_cat_name': active_cat_name,
         'brands': brands,
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
@@ -203,3 +208,27 @@ def shop_images(request):
             })
 
     return JsonResponse({"data": data})
+
+
+async def count_products():
+    product_images = ProductImage.objects.all()
+    number = 0
+    data = [{
+        'color_id': None,
+        'product_id': None
+    }]
+    for i in product_images:
+        res = {
+            'color_id': i.color_id,
+            'product_id': i.product_id,
+        }
+        # if i.color_id != data['color_id'] and i.product_id != data['product_id']:
+        if res not in data:
+            result = product_images.filter(color_id=i.color_id, product_id=i.product_id)
+            data.append(res)
+            if result.exists():
+                number += 1
+    # print(number)
+    # result = ProductImage.objects.values('product', 'color').annotate(dcount=Count('product')).order_by()
+    # print(result)
+    return number
