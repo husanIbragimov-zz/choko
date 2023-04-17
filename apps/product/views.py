@@ -214,3 +214,5 @@ def shop_images(request):
             })
 
     return JsonResponse({"data": data})
+
+
