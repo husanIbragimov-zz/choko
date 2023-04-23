@@ -1,10 +1,15 @@
 from django.contrib import admin
+from django.dispatch import receiver
 from mptt.admin import DraggableMPTTAdmin
+from import_export.admin import ImportExportModelAdmin
 import admin_thumbnails
 from apps.product.forms import BannerFrom
 from apps.product.models import Category, Brand, Banner, Product, ProductImage, Rate, Advertisement, Color, \
     AdditionalInfo, Currency, Size, BannerDiscount
 from modeltranslation.admin import TranslationAdmin
+from import_export.signals import post_import, post_export
+
+from apps.product.resources import ProductImageResource
 
 
 class BannerAdmin(TranslationAdmin):
@@ -117,6 +122,13 @@ class BannerTranslationAdmin(TranslationAdmin):
         css = {
             'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
         }
+
+
+@admin.register(ProductImage)
+class ProductImageAdmin(ImportExportModelAdmin):
+    list_display = ("id", "color")
+    resource_classes = [ProductImageResource]
+
 
 
 admin.site.register(Category, CategoryAdmin)

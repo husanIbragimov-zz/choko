@@ -192,7 +192,7 @@ def shop_details(request, id):
         "product": product,
         "variants": variants,
         "active_variant": active_variant,
-        "default_monthly_price": round(monthly, 2),
+        "default_monthly_price": int(monthly),
         'comments': comments,
         "new_products": new_products,
         "categories": category,
@@ -214,5 +214,3 @@ def shop_images(request):
             })
 
     return JsonResponse({"data": data})
-
-
