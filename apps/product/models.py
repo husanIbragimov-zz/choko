@@ -15,7 +15,7 @@ from apps.base.models import Variant
 
 
 class BannerDiscount(BaseAbstractDate):
-    title = models.CharField(max_length=223, null=True)
+    title = models.TextField(null=True)
     image = models.ImageField(upload_to='sales', null=True)
     deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -123,7 +123,7 @@ class Product(BaseAbstractDate):
     banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.SET_NULL, null=True, blank=True)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
-    title = models.CharField(max_length=223, null=True)
+    title = models.TextField(null=True)
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
@@ -180,12 +180,12 @@ class Product(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        price = round(self.product_images.first().price * Currency.objects.last().amount, 2)
+        price = int(self.product_images.first().price * Currency.objects.last().amount)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
-        discount = round(self.discount * Currency.objects.last().amount, 2)
+        discount = int(self.discount * Currency.objects.last().amount)
 
         return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
@@ -196,7 +196,7 @@ class Product(BaseAbstractDate):
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         monthly = total / active_variant.duration
 
-        return round(monthly, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+        return int(monthly)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
     @property
     def total_uzs(self):
@@ -204,7 +204,7 @@ class Product(BaseAbstractDate):
         active_variant = variants.last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
 
-        return round(total, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+        return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class ProductImage(BaseAbstractDate):
@@ -219,7 +219,7 @@ class ProductImage(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        price = round(self.price * Currency.objects.last().amount, 2)
+        price = int(self.price * Currency.objects.last().amount)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
@@ -227,7 +227,7 @@ class ProductImage(BaseAbstractDate):
         variants = Variant.objects.all().order_by('duration')
         active_variant = variants.last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
-        return round(total, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+        return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class AdditionalInfo(BaseAbstractDate):

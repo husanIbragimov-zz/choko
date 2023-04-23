@@ -100,9 +100,11 @@
                                                 <a href="{% url "shop-details" product.id %}"><span
                                                         class="product-category_fz">{{ product.category.first }}</span></a></a>
                                             </div>
+
                                             <div><a href="{% url "shop-details" product.id %}"><p class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
                                                 </p></a></div>
+
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
