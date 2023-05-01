@@ -55,8 +55,9 @@ def index(request):
         'discounts': query[2:3],
         'queryset': query[:2],
 
-        'products': product[:15],
-        'objects': product[16:31],
+        'products': product[:20],
+        'objects': product[21:41],
+        'second_objects': product[42:62],
         'categories': category,
         'brands': brand,
         'banners': banner[:5],
