@@ -271,29 +271,65 @@
                         <button type="submit"><i class="far fa-search"></i></button>
                     </form>
                 </div>
-                <div class="mobile-menu-wrap mobile-header-border">
-                    <div class="main-categori-wrap mobile-header-border">
-                        <a class="categori-button-active-2" href="#">
-                            <span class="far fa-bars"></span> {% trans "Bo'limlar" %} <i
-                                class="down far fa-chevron-down"></i>
-                        </a>
-                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
-                            <ul>
-                                {% for cat in categories %}
-                                    {% if cat.parent %}
+                <div class="header-action-right">
+                    <div class="header-action-2">
+                        <div class="header-action-icon-2">
+                            <a href="{% url 'wishlist' %}">
+                                <img class="svgInject" alt="wowy"
+                                     src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}">
+                                <span class="pro-count blue">{{ wishlists.count }}</span>
+                            </a>
+                        </div>
+                        <div class="header-action-icon-2">
+                            <a class="mini-cart-icon" href="{% url 'shop-cart' %}">
+                                <img alt="wowy" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}">
+                                <span class="pro-count blue">{{ cart.cart_items.all.count }}</span>
+                            </a>
+                            <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                <ul>
+                                    {% for item in cart.cart_items.all %}
                                         <li>
-
-                                            <a href="/shop/?cat={{ cat.title }}">{% if cat.icon %}<img src="{{ cat.icon.url }}"
-                                                                            alt="" width="19px"
-                                                                            height="19px"
-                                                                            style="margin-right: 17px">{% else %}
-                                                <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
-
+                                            <div class="shopping-cart-img">
+                                                <a href="{% url 'shop-details' item.product.id %}"><img alt="wowy"
+                                                                                                        src="{{ item.product_image.image.url }}"></a>
+                                            </div>
+                                            <div class="shopping-cart-title">
+                                                <h4>
+                                                    <a href="{% url 'shop-details' item.product.id %}">{{ item.product.title }}</a>
+                                                </h4>
+                                                <h3>
+                                                    <span>{{ item.quantity }} × </span>{{ item.product_image.total_uzs|intcomma }}
+                                                    UZS
+                                                </h3>
+                                            </div>
+                                            <div class="shopping-cart-delete">
+                                                <a
+                                                        href="/order/delete-cart-item/{{ item.id }}" class="text-muted"><i
+                                                        class="far fa-times"
+                                                        onclick="return confirm('{% trans "Siz rostdan ham ushbu mahsulotni o'chirmoqchimisiz" %}')"></i></a>
+                                            </div>
                                         </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                            {#                        <div class="more_categories">{% trans "Ko'proq" %} ...</div>#}
+                                    {% endfor %}
+                                </ul>
+                                <div class="shopping-cart-footer">
+                                    <div class="shopping-cart-total">
+                                        <h4>{% trans "Jami" %} <span>{{ cart.cart_total|intcomma }} UZS</span></h4>
+                                    </div>
+                                    <div class="shopping-cart-button d-flex">
+                                        <a href="{% url 'shop-cart' %}">{% trans "Ko'rish" %}</a>
+                                        <a href="{% url 'create-order' cart.id %}">{% trans "Tasdiqlash" %}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header-action-icon-2">
+                            {% if not user.is_authenticated %}
+                                <a href="{% url 'register' %}">
+                                    <p><a href="{% url 'register' %}">{% trans "Kirish/Ro'yxatdan o'tish" %}</a></p>
+                                </a>
+                            {% else %}
+                                <p><a href="{% url 'my-account' %}">{% trans "Kabinet" %}</a></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
