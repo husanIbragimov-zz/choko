@@ -112,15 +112,18 @@
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
                                                 </div>
-
-
+                                                <div>
                                                     {% if product.percentage %}
                                                         <span>{{ product.percentage }}%</span>
-                                                    {% else %}
-
-                                                        <span>{{ product.percentage }}%</span>
-
                                                     {% endif %}
+                                                </div>
+                                                <div>
+                                                    {% if product.title|length <= 26 %}
+                                                        <div style="margin-top: 25px;">
+
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
 
                                             </div>
                                             <div class="product-price">
