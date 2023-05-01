@@ -204,19 +204,9 @@
                                                     <span>
                                                         <span>{{ product.percentage }}%</span>
                                                     </span>
-{#                                                {% else %}#}
-{#                                                    <span>#}
-{#                                                        <span>{{ product.percentage }}%</span>#}
-{#                                                    </span>#}
                                                 {% endif %}
                                             </div>
-                                            <div>
-                                                {% if product.title|length < 26 %}
-                                                    <div style="margin-top: 25px;" >
 
-                                                    </div>
-                                                {% endif %}
-                                            </div>
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
