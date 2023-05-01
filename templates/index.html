@@ -412,11 +412,11 @@
                                         <h4 class="title-small mb-2">
                                             <a href="{% url 'shop-details' qs.id %}">{{ qs.title|slice:'0:20' }}</a>
                                         </h4>
-                                        <pre class="d-inline p-2"><code><i
+                                        <p class="d-inline p-2"><code><i
                                                 class="fa fa-star-half-alt"></i> {% if qs.mid_rate %}
-                                            {{ qs.mid_rate }}{% else %}0.0{% endif %}</code></pre>
-                                        <pre class="d-inline p-2"><code><i
-                                                class="fa fa-eye"></i> {{ qs.view }}</code></pre>
+                                            {{ qs.mid_rate }}{% else %}0.0{% endif %}</code></p>
+                                        <p class="d-inline"><code><i
+                                                class="fa fa-eye"></i> {{ qs.view }}</code></p>
                                         <div class="product-price">
                                             {% if qs.discount > 0 %}
 
@@ -453,12 +453,12 @@
                                             <a href="{% url 'shop-details' trp.id %}">{{ trp.title|slice:'0:20' }}</a>
                                         </h4>
 
-                                        <pre class="d-inline p-2"><code><i
+                                        <p class="d-inline p-2"><code><i
                                                 class="fa fa-star-half-alt"></i> {% if trp.mid_rate %}
-                                            {{ trp.mid_rate }}{% else %}0.0{% endif %}</code></pre>
+                                            {{ trp.mid_rate }}{% else %}0.0{% endif %}</code></p>
 
-                                        <pre class="d-inline p-2"><code><i
-                                                class="fa fa-eye"></i> {{ trp.view }}</code></pre>
+                                        <p class="d-inline"><code><i
+                                                class="fa fa-eye"></i> {{ trp.view }}</code></p>
                                         <div class="product-price">
                                             <div class="product-price">
                                                 {% if trp.discount > 0 %}
@@ -496,11 +496,11 @@
                                         <h4 class="title-small mb-2">
                                             <a href="{% url 'shop-details' top_viewed_product.id %}">{{ top_viewed_product.title|slice:'0:20' }}</a>
                                         </h4>
-                                        <pre class="d-inline p-2"><code><i
+                                        <p class="d-inline p-2"><code><i
                                                 class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}
-                                            {{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></pre>
-                                        <pre class="d-inline p-2"><code><i
-                                                class="fa fa-eye"></i> {{ top_viewed_product.view }}</code></pre>
+                                            {{ top_viewed_product.mid_rate }}{% else %}0.0{% endif %}</code></p>
+                                        <p class="d-inline"><code><i
+                                                class="fa fa-eye"></i> {{ top_viewed_product.view }}</code></p>
                                         <div class="product-price">
                                             <div class="product-price">
                                                 {% if top_viewed_product.discount > 0 %}

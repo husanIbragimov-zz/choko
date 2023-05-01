@@ -177,7 +177,6 @@ def create_order_wishlist(request, id):
         product=product,
         quantity=1,
         cart=cart
-
     )
     wishlist = Wishlist.objects.filter(session_id=session_id, product_id=id).delete()
     url = request.META.get('HTTP_REFERER')

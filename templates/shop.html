@@ -45,16 +45,18 @@
             height: 220px;
         }
 
-          .product-category_fz{
-              font-size: 12px;
-          }
-          .product-content-wrap_fz{
+        .product-category_fz {
+            font-size: 12px;
+        }
+
+        .product-content-wrap_fz {
             font-size: 13px;
             color: #000;
-          }
-          .product-content-wrap_fz:hover{
-              color: #5897fb;
-          }
+        }
+
+        .product-content-wrap_fz:hover {
+            color: #5897fb;
+        }
 
     </style>
 {% endblock %}
@@ -95,42 +97,34 @@
                                                     {{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
-                                        <div class="product-content-wrap">
+                                        <div class="product-content-wrap p-10 pt-5">
                                             <div class="product-category">
                                                 <a href="{% url "shop-details" product.id %}"><span
                                                         class="product-category_fz">{{ product.category.first }}</span></a></a>
                                             </div>
 
-                                            <div><a href="{% url "shop-details" product.id %}"><p class="product-content-wrap_fz">
+                                            <div><a href="{% url "shop-details" product.id %}"><p
+                                                    class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
-                                                </p></a></div>
+                                            </p></a></div>
 
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
                                                      style="width:{{ product.mid_rate_percent }}%">
                                                 </div>
-                                            </div>
-                                            <div>
-                                                {% if product.percentage %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% else %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% endif %}
-                                            </div>
-                                            <div>
-                                                {% if product.title|length < 25 %}
-                                                    <div style="margin-top: 25px;" >
 
-                                                    </div>
-                                                {% endif %}
+
+                                                    {% if product.percentage %}
+                                                        <span>{{ product.percentage }}%</span>
+                                                    {% else %}
+
+                                                        <span>{{ product.percentage }}%</span>
+
+                                                    {% endif %}
+
                                             </div>
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
-
                                                     <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }} </span>
@@ -170,10 +164,6 @@
                                                 <li class="page-item active"><a class="page-link"
                                                                                 href="?cat={{ active_cat_name }}&page={{ obj }}">{{ obj }}</a>
                                                 </li>
-                                            {% else %}
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="?cat={{ active_cat_name }}&page={{ obj }}">{{ obj }}</a>
-                                                </li>
                                             {% endif %}
                                         {% endfor %}
                                         {% if products.has_next %}
@@ -193,10 +183,6 @@
                                                 <li class="page-item active"><a class="page-link"
                                                                                 href="?brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
                                                 </li>
-                                            {% else %}
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="?brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
-                                                </li>
                                             {% endif %}
                                         {% endfor %}
                                         {% if products.has_next %}
@@ -215,10 +201,6 @@
 
                                                 <li class="page-item active"><a class="page-link"
                                                                                 href="?page={{ obj }}">{{ obj }}</a>
-                                                </li>
-                                            {% else %}
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="?page={{ obj }}">{{ obj }}</a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
@@ -243,15 +225,15 @@
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
-                                    {% if active_brand %}
-                                        {% for sub_child in cats %}
-                                            {% if sub_child.parent != None %}
-                                                <li class="cat-item text-muted">
-                                                <a href="/shop/?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
-                                                ({{ sub_child.product_set.count }})
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% else %}
+                                        {% if active_brand %}
+                                            {% for sub_child in cats %}
+                                                {% if sub_child.parent != None %}
+                                                    <li class="cat-item text-muted">
+                                                    <a href="/shop/?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
+                                                    ({{ sub_child.product_set.count }})
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
                                         {% for sub_child in cats %}
                                             {% if sub_child.parent != None %}
                                                 <li class="cat-item text-muted">
@@ -259,7 +241,7 @@
                                                 ({{ sub_child.product_set.count }})
                                             {% endif %}
                                         {% endfor %}
-                                    {% endif %}
+                                        {% endif %}
 
 
                                         </li>
@@ -365,19 +347,19 @@
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
-                                    {% if active_cat %}
-                                        {% for brand in brands %}
-                                            <li class="cat-item text-muted">
-                                            <a href="/shop/?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
-                                            ({{ brand.product_set.count }})
-                                        {% endfor %}
-                                    {% else %}
+                                        {% if active_cat %}
+                                            {% for brand in brands %}
+                                                <li class="cat-item text-muted">
+                                                <a href="/shop/?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
+                                                ({{ brand.product_set.count }})
+                                            {% endfor %}
+                                        {% else %}
                                         {% for brand in brands %}
                                             <li class="cat-item text-muted">
                                             <a href="/shop/?brand={{ brand }}">{{ brand.title }}</a>
                                             ({{ brand.product_set.count }})
                                         {% endfor %}
-                                    {% endif %}
+                                        {% endif %}
 
                                         </li>
                                     </ul>
