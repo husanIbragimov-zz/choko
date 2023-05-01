@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger
 
 def index(request):
     advertisements = Advertisement.objects.all().order_by('-id')
-    product = Product.objects.filter(is_active=True).order_by('-id')
+    product = Product.objects.filter(is_active=True).order_by('?')
     category = Category.objects.filter(is_active=True)
     brand = Brand.objects.all().order_by('-id')
     banner = Banner.objects.all()
@@ -55,8 +55,9 @@ def index(request):
         'discounts': query[2:3],
         'queryset': query[:2],
 
-        'products': product[:15],
-        'objects': product[16:31],
+        'products': product[:20],
+        'objects': product[21:41],
+        'second_objects': product[42:62],
         'categories': category,
         'brands': brand,
         'banners': banner[:5],
@@ -74,7 +75,7 @@ def about(request):
 
 
 def shop_list(request):
-    products = Product.objects.filter(is_active=True).order_by('-id')
+    products = Product.objects.filter(is_active=True).order_by('?')
     category = Category.objects.filter(is_active=True)
     brands = Brand.objects.all().order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)

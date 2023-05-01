@@ -43,7 +43,8 @@
                                                     href="{% url "shop-details" item.product.id %}">{{ item.product.title }}</a>
                                             </p>
                                         </td>
-                                        <td class="price" data-title="Price"><span>{{ item.product_image.total_uzs|intcomma }} UZS</span></td>
+                                        <td class="price" data-title="Price">
+                                            <span>{{ item.product_image.total_uzs|intcomma }} UZS</span></td>
                                         <td class="text-center" data-title="Stock">
                                             <div class="detail-qty border radius  m-auto">
                                                 <a href="#" class="qty-down"></a>
@@ -52,7 +53,7 @@
                                             </div>
                                         </td>
                                         <td class="text-right" data-title="Cart">
-                                            <span>{{ item.variant.duration}} {% trans "oy" %}</span>
+                                            <span>{{ item.variant.duration }} {% trans "oy" %}</span>
                                         </td>
                                         <td class="text-right" data-title="Cart">
                                             <span>{{ item.subtotal|intcomma }} UZS</span>
@@ -68,7 +69,8 @@
                             </table>
                         </div>
                         <div class="cart-action text-end">
-                            <a class="btn btn-rounded mr-10 mt-5" href="{% url "products_filter" %}"><i class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
+                            <a class="btn btn-rounded mr-10 mt-5" href="{% url "products_filter" %}"><i
+                                    class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
                             <a class="btn btn-rounded mt-5" href="{% url "create-order" cart.id %}"><i
                                     class="far fa-cart-plus mr-5"></i>{% trans "Davom etish" %}</a>
 
@@ -85,15 +87,64 @@
                                         <table class="table">
                                             <tbody>
                                             <tr>
-                                                <td class="cart_total_label">{% trans "Umumiy" %}</td>
+                                                <td class="cart_total_label fs-6">{% trans "Umumiy" %}</td>
                                                 <td class="cart_total_amount"><strong><span
-                                                        class="font-xl fw-900 text-brand">{{ cart.cart_total|intcomma }} UZS</span></strong></td>
+                                                        class="font-xl fw-900 text-brand">{{ cart.cart_total|intcomma }} UZS</span></strong>
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <a href="{% url "create-order" cart.id %}" class="btn btn-rounded"> <i class="fa fa-share-square mr-10"></i>
-                                        {% trans "Buyurtmani tasdiqlash" %}</a>
+                                    {#                                    <div class="cart-action text-end">#}
+                                    {#                                        <a href="{% url "create-order" cart.id %}" class="btn btn-rounded mr-10 mt-5">#}
+                                    {#                                            <i class="fa fa-share-square mr-10"></i>#}
+                                    {#                                            {% trans "Buyurtmani tasdiqlash" %}</a>#}
+                                    {#                                        <a href="{% url "create-order" cart.id %}" class="btn btn-rounded mt-5"> <i#}
+                                    {#                                                class="fa fa-share-square mr-10"></i>#}
+                                    {#                                            {% trans "Buyurtmani tasdiqlash" %}</a>#}
+                                    {#                                    </div>#}
+                                    <div class="cart-action text-end">
+                                        <a class="btn btn-rounded mr-12 fa-6 mt-5"
+                                           href="{% url "create-order" cart.id %}"><i
+                                                class="fa fa-share-square mr-10"></i>{% trans "Buyurtmani tasdiqlash" %}
+                                        </a>
+                                        <button type="button" class="btn btn-rounded mt-5"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal" data-bs-whatever="+998"><i
+                                                class="far fa-phone-plus mr-5"></i>{% trans "Hoziroq oling" %}
+                                        </button>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">New
+                                                            message</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form>
+                                                            <div class="mb-3">
+                                                                <label for="recipient-name"
+                                                                       class="col-form-label fs-6">{% trans "Telefon raqamingizni kiriting" %}:</label>
+                                                                <input type="text" class="form-control"
+                                                                       id="recipient-name"
+                                                                       placeholder="+998 99 418 71 00">
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">Send message
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -102,4 +153,26 @@
             </div>
         </section>
     </main>
+{% endblock %}
+{% block script %}
+    <script>
+        const exampleModal = document.getElementById('exampleModal')
+        if (exampleModal) {
+            exampleModal.addEventListener('show.bs.modal', event => {
+                // Button that triggered the modal
+                const button = event.relatedTarget
+                // Extract info from data-bs-* attributes
+                const recipient = button.getAttribute('data-bs-whatever')
+                // If necessary, you could initiate an Ajax request here
+                // and then do the updating in a callback.
+
+                // Update the modal's content.
+                const modalTitle = exampleModal.querySelector('.modal-title')
+                const modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+                modalTitle.textContent = `New message to ${recipient}`
+                modalBodyInput.value = recipient
+            })
+        }
+    </script>
 {% endblock %}
