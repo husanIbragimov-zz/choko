@@ -22,11 +22,13 @@
             color: white;
             background-color: #5897FB;
         }
+
         .countdown-box {
             position: relative;
             bottom: 75px;
             left: 30px;
         }
+
         .timer {
             background-color: #5897FB;
             margin: 10px;
@@ -35,39 +37,43 @@
             color: #fff;
             font-size: 17px;
         }
+
         .double-dot {
             margin-top: 15px;
             color: #5897FB;
             font-size: 17px;
         }
-        .main__box{
-          width: 100%;
+
+        .main__box {
+            width: 100%;
         }
-        .main_block{
+
+        .main_block {
             display: flex;
             flex-wrap: wrap;
             column-gap: 30px;
             row-gap: 30px;
             justify-content: flex-start;
         }
-        .main__box-el{
+
+        .main__box-el {
             width: 18%;
 
         }
-   
 
-        .product-category_fz{
+
+        .product-category_fz {
             font-size: 12px;
         }
-        .product-content-wrap_fz{
+
+        .product-content-wrap_fz {
             color: #000;
             font-size: 13px;
         }
-        .product-content-wrap_fz:hover{
+
+        .product-content-wrap_fz:hover {
             color: #5897fb;
         }
-        
-        
 
 
     </style>
@@ -106,8 +112,10 @@
                         {% for foo in banner_discounts %}
                             <div class="banner-img banner-1 wow fadeIn animated"
                                  style="visibility: visible; animation-name: fadeIn; margin-bottom: 5px;">
-                                <a href="{% url 'shop-details' foo.product_id.id %}"><img class="border-radius-10" src="{{ foo.image.url }}"
-                                     alt="" height="450px" width="370px"></a>
+                                <a href="{% url 'shop-details' foo.product_id.id %}"><img class="border-radius-10"
+                                                                                          src="{{ foo.image.url }}"
+                                                                                          alt="" height="450px"
+                                                                                          width="370px"></a>
 
 
                                 <div class="countdown-box">
@@ -123,11 +131,11 @@
                                 </div>
                                 <div style="padding: 0 15px; top: 60px" class="banner-text sales ms-2">
 
-{#                                    <h4 class="fs-8">{% trans "tejab qolish" %}#}
-{#                                        <br>{{ foo.title }}</h4>#}
-{#                                    <a class="buy"#}
-{#                                       href="{% url 'shop-details' foo.product_id.id %} ">{% trans "Sotib Olish" %}<i#}
-{#                                            class="fa fa-arrow-right"></i></a>#}
+                                    {#                                    <h4 class="fs-8">{% trans "tejab qolish" %}#}
+                                    {#                                        <br>{{ foo.title }}</h4>#}
+                                    {#                                    <a class="buy"#}
+                                    {#                                       href="{% url 'shop-details' foo.product_id.id %} ">{% trans "Sotib Olish" %}<i#}
+                                    {#                                            class="fa fa-arrow-right"></i></a>#}
 
                                     <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div>
                                 </div>
@@ -178,22 +186,22 @@
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status.lower }}">{% if product.status %}{{ product.status }}{% endif %}</span>
+                                                <span class="{{ product.status.lower }}">{% if product.status %}
+                                                    {{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a  href="{% url 'shop-details' product.id %}">
+                                                <a href="{% url 'shop-details' product.id %}">
                                                     <span class="product-category_fz">{{ product.category.first }}</span></a>
                                             </div>
                                             <div>
                                                 <a href="{% url 'shop-details' product.id %}">
                                                     <p class="product-content-wrap_fz">
-                                                    {{ product.title|slice:'0:45' }}
+                                                        {{ product.title|slice:'0:45' }}
                                                     </p>
                                                 </a>
                                             </div>
-                                            
 
                                             <div class="product-rate">
                                                 <div class="product-rating"
@@ -206,11 +214,18 @@
                                                     </span>
                                                 {% endif %}
                                             </div>
+                                            <div>
+                                                {% if product.title|length < 26 %}
+                                                    <div style="margin-top: 25px;">
+
+                                                    </div>
+                                                {% endif %}
+                                            </div>
 
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span >{{ product.monthly_uzs }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
+                                                    <span>{{ product.monthly_uzs }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }} </span>
                                                     <br>
@@ -287,7 +302,8 @@
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status.lower }}">{% if product.status %}{{ product.status }}{% endif %}</span>
+                                                <span class="{{ product.status.lower }}">{% if product.status %}
+                                                    {{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
@@ -298,18 +314,15 @@
                                             </div>
                                             <div>
                                                 <a href="{% url 'shop-details' product.id %}">
-                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p></a>
-                                                </div>
+                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p>
+                                                </a>
+                                            </div>
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
                                             </div>
                                             <div>
                                                 {% if product.percentage %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% else %}
                                                     <span>
                                                         <span>{{ product.percentage }}%</span>
                                                     </span>
@@ -325,7 +338,8 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span><br>
+                                                    <span> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
+                                                    <br>
                                                     <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }}</span>
                                                     <br>
                                                     <span class="old-price">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
@@ -399,7 +413,8 @@
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status.lower }}">{% if product.status %}{{ product.status }}{% endif %}</span>
+                                                <span class="{{ product.status.lower }}">{% if product.status %}
+                                                    {{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
@@ -410,18 +425,15 @@
                                             </div>
                                             <div>
                                                 <a href="{% url 'shop-details' product.id %}">
-                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p></a>
-                                                </div>
+                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p>
+                                                </a>
+                                            </div>
                                             <div class="product-rate">
                                                 <div class="product-rating"
                                                      style="width:{{ product.mid_rate_percent }}%"></div>
                                             </div>
                                             <div>
                                                 {% if product.percentage %}
-                                                    <span>
-                                                        <span>{{ product.percentage }}%</span>
-                                                    </span>
-                                                {% else %}
                                                     <span>
                                                         <span>{{ product.percentage }}%</span>
                                                     </span>
@@ -437,7 +449,8 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span><br>
+                                                    <span> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
+                                                    <br>
                                                     <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }}</span>
                                                     <br>
                                                     <span class="old-price">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
@@ -590,7 +603,8 @@
                                             <div class="product-price">
                                                 {% if top_viewed_product.discount > 0 %}
 
-                                                    <span>{{ top_viewed_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span><br>
+                                                    <span>{{ top_viewed_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                    <br>
                                                     <span class="bg-warning new_price">UZS {{ top_viewed_product.discount_uzs|intcomma }}</span>
                                                     <br>
                                                     <span style="font-size: 12px"
