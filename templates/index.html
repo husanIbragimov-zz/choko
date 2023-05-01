@@ -380,6 +380,101 @@
 
             </div>
         </section>
+        <section class="product-tabs pt-30 pb-30 wow fadeIn animated">
+            <div class="container">
+                <ul class="nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one"
+                                type="button" role="tab" aria-controls="tab-one"
+                                aria-selected="true">{% trans "Maxsus" %}
+                        </button>
+                    </li>
+                </ul>
+                <!--End nav-tabs-->
+                <div class="tab-content wow fadeIn animated main__box" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                        <div class="main_block">
+                            {% for product in second_objects %}
+                                <div class="main__box-el">
+                                    <div class="product-cart-wrap mb-30">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="{% url 'shop-details' product.id %}">
+                                                    <img class="default-img default-img-size"
+                                                         src="{{ product.product_images.first.image.url }}" alt=""
+                                                         width="230px" height="230px">
+                                                    <img class="hover-img default-img-size"
+                                                         src="{{ product.product_images.first.image.url }}" alt=""
+                                                         width="230px" height="230px">
+                                                </a>
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="{{ product.status.lower }}">{% if product.status %}{{ product.status }}{% endif %}</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="{% url 'shop-details' product.id %}">
+                                                    <span class="product-category_fz">{{ product.category.first }}</span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a href="{% url 'shop-details' product.id %}">
+                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p></a>
+                                                </div>
+                                            <div class="product-rate">
+                                                <div class="product-rating"
+                                                     style="width:{{ product.mid_rate_percent }}%"></div>
+                                            </div>
+                                            <div>
+                                                {% if product.percentage %}
+                                                    <span>
+                                                        <span>{{ product.percentage }}%</span>
+                                                    </span>
+                                                {% else %}
+                                                    <span>
+                                                        <span>{{ product.percentage }}%</span>
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                {% if product.title|length < 26 %}
+                                                    <div style="margin-top: 25px;">
+
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="product-price">
+                                                {% if product.discount > 0 %}
+
+                                                    <span> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span><br>
+                                                    <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }}</span>
+                                                    <br>
+                                                    <span class="old-price">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
+                                                {% else %}
+                                                    <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
+                                                    <br>
+                                                    <span class="bg-warning new_price">UZS {{ product.total_uzs|intcomma }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
+                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 5px"
+                                                                                             class="far fa-heart"></i></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!--End product-grid-4-->
+                    </div>
+                </div>
+                <!--End tab-content-->
+            </div>
+        </section>
+
 
         <section class="mtb-60">
             <div class="container">
