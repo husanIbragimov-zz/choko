@@ -104,10 +104,41 @@ def create_order(request, id):
             variant=i.variant.duration,
             photo=i.product_image.image.url
         ))
-    print(data)
     asyncio.run(order_product(data))
 
     return redirect('/')
+
+
+def confirm_order(request):
+    id = request.POST.get("id", False)
+    phone_number = request.POST.get("phone_number", False)
+
+    cart = get_object_or_404(Cart, id=id)
+    cart_items = cart.cart_items.all()
+
+    user = request.user
+    order = Order.objects.create(
+        phone_number=user
+    )
+    for item in cart_items:
+        item.order = order
+        item.save()
+
+    cart.completed = True
+    cart.save()
+    data = []
+    for i in cart_items:
+        data.append(dict(
+            user=phone_number,
+            order=order.id,
+            product=i.product.title,
+            variant=i.variant.duration,
+            photo=i.product_image.image.url
+        ))
+    asyncio.run(order_product(data))
+
+    return redirect('/')
+
 
 
 @login_required(login_url='/login')
