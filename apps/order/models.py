@@ -32,11 +32,14 @@ class Order(BaseAbstractDate):
         ('Completed', 'Completed'),
         ('Canceled', 'Canceled'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS, default='New')
 
     def __str__(self):
-        return f"{self.user.username}"
+        if self.user:
+            return f"{self.user.username}"
+        return self.phone_number
 
     @property
     def num_of_items(self):
