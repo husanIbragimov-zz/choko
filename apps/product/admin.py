@@ -119,16 +119,19 @@ class BannerTranslationAdmin(TranslationAdmin):
             'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
             'modeltranslation/js/tabbed_translation_fields.js',
         )
-        css = {
-            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        css = {            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
         }
 
 
 @admin.register(ProductImage)
 class ProductImageAdmin(ImportExportModelAdmin):
-    list_display = ("id", "color")
+    list_display = ("id", "color", "price")
     resource_classes = [ProductImageResource]
 
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.order_by('color__name', 'product__id','-id').distinct("color__name", "product__id")
 
 
 admin.site.register(Category, CategoryAdmin)
