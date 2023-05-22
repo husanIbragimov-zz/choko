@@ -17,15 +17,18 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.utils.translation import gettext_lazy as _
 from apps.base import views
 from apps.order.api.v1 import views as api_views
 from apps.base.views import set_language
+from django.views.static import serve
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 
 ] + i18n_patterns(
     # language
@@ -45,11 +48,13 @@ urlpatterns = [
     path('register/', views.register, name="register"),
     path('login/', views.login_func, name="login"),
     path('logout/', views.logout_func, name="logout"),
+
+
     prefix_default_language=False,
 )
 
 if settings.DEBUG:
+    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = "chocco.errors.page_not_found_view"
