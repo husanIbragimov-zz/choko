@@ -31,13 +31,12 @@ ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
-
+    'modeltranslation',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.humanize',
 
@@ -148,6 +147,24 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
+
+# Internationalization
+# https://docs.djangoproject.com/en/3.2/topics/i18n/
+
+LANGUAGE_CODE = 'uz'
+
+TIME_ZONE = 'Asia/Tashkent'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+# language
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+
 LANGUAGES = [
     ('uz', _('Uzbek')),
     ('ru', _('Russian'))
@@ -157,21 +174,20 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+MODELTRANSLATION_LANGUAGE = ('ru',)
 # MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'ru'
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'uz', },  # Uzbek
+        {'code': 'ru', },  # Russian
+    ),
+    'default': {
+        'fallbacks': ['uz'],
+        'hide_untranslated': False,
+    }
+}
 
-LANGUAGE_CODE = 'uz-uz'
-
-TIME_ZONE = 'Asia/Tashkent'
-
-USE_I18N = True
-
-# USE_L10N = True
-
-USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
