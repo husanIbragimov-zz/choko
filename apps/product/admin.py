@@ -43,12 +43,11 @@ class ProductImageStackedInline(admin.StackedInline):
     extra = 1
 
 
-class AdditionalInfoAdmin(admin.StackedInline, ):
+class AdditionalInfoAdmin(admin.StackedInline):
     model = AdditionalInfo
     extra = 1
     list_display = ['id', "title", 'product', "description"]
     list_filter = ['prodcut', 'created_at']
-
 
 
 class ProductAdmin(TranslationAdmin):
@@ -59,9 +58,10 @@ class ProductAdmin(TranslationAdmin):
     list_display = (
         'title', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
         'id')
+    search_fields = ('title', )
     readonly_fields = ('mid_rate', 'get_discount_price',)
-    list_filter = ('status', 'brand', 'updated_at', 'created_at')
-    list_per_page = 20
+    list_filter = ('is_active', 'status', 'brand', 'updated_at', 'created_at')
+    list_per_page = 50
 
     group_fieldsets = True
 
@@ -119,8 +119,8 @@ class BannerTranslationAdmin(TranslationAdmin):
             'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
             'modeltranslation/js/tabbed_translation_fields.js',
         )
-        css = {            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
-        }
+        css = {'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+               }
 
 
 @admin.register(ProductImage)
@@ -128,10 +128,9 @@ class ProductImageAdmin(ImportExportModelAdmin):
     list_display = ("id", "color", "price")
     resource_classes = [ProductImageResource]
 
-
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.order_by('color__name', 'product__id','-id').distinct("color__name", "product__id")
+        return queryset.order_by('color__name', 'product__id', '-id').distinct("color__name", "product__id")
 
 
 admin.site.register(Category, CategoryAdmin)
