@@ -50,7 +50,7 @@ urlpatterns = [
     path('logout/', views.logout_func, name="logout"),
 
 
-    # prefix_default_language=False,
+    prefix_default_language=False,
 )
 
 if settings.DEBUG:
