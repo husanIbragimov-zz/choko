@@ -11,6 +11,7 @@ class CartItemAdmin(admin.TabularInline):
     model = CartItem
     list_display = ['id', "title", 'variant', 'product', "description"]
     list_filter = ['prodcut', 'variant', 'created_at']
+    readonly_fields = ('cart', 'order', 'product', 'variant', 'product_image', 'size', 'quantity')
 
 
 class CartAdmin(admin.ModelAdmin):
