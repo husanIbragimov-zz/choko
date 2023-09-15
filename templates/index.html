@@ -137,7 +137,7 @@
                                     {#                                       href="{% url 'shop-details' foo.product_id.id %} ">{% trans "Sotib Olish" %}<i#}
                                     {#                                            class="fa fa-arrow-right"></i></a>#}
 
-                                    <div id="event-box" class="hidden">{{ foo.deadline|date:'M d, Y H:i:s' }}</div>
+                                    <div id="event-box" class="hidden">{{ foo.deadline|date:'m.d.y, H:m:s' }}</div>
                                 </div>
                             </div>
                         {% endfor %}
