@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m2!utmzv^8h@k)^a5elg^h4*d$xow(@z9(i3n=qe5)s&$a!ts5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,8 +46,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'ckeditor',
     'mptt',
+    'django_filters',
     'colorfield',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
     'import_export',
 
     # local apps
@@ -106,24 +109,24 @@ WSGI_APPLICATION = 'chocco.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # ================================================== PostgresSQL =======================================================
-DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'choko',
-         'USER': 'choko',
-         'PASSWORD': 'choko',
-         'HOST': 'localhost',
-         'PORT': 5432,
-     }
-}
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.postgresql',
+#          'NAME': 'choko',
+#          'USER': 'choko',
+#          'PASSWORD': 'choko',
+#          'HOST': 'localhost',
+#          'PORT': 5432,
+#      }
+# }
 
 
 # Password validation

@@ -56,10 +56,10 @@ class ProductAdmin(TranslationAdmin):
     filter_horizontal = ('category', 'size')
     list_display_links = ('id', 'title')
     list_display = (
-        'title', 'percentage', 'discount', 'get_discount_price', 'mid_rate', 'view', 'is_active',
-        'id')
+        'title', 'percentage', 'discount_uzs', 'mid_rate', 'view', 'is_active', 'id'
+    )
     search_fields = ('title', )
-    readonly_fields = ('mid_rate', 'get_discount_price',)
+    readonly_fields = ('mid_rate', 'discount_uzs', 'discount', 'view', 'get_discount_price')
     list_filter = ('is_active', 'status', 'brand', 'updated_at', 'created_at')
     list_per_page = 50
 
