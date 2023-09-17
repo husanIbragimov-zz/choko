@@ -1,6 +1,6 @@
 from .serializers import CategoryListSerializer, CategoryCreateSerializer, BrandSerializer, ColorSerializer, \
-    CurrencySerializer, BannerDiscountSerializer, AdvertisementSerializer
-from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement
+    CurrencySerializer, BannerDiscountSerializer, AdvertisementSerializer, BannerSerializer, SizeSerializer
+from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size
 from rest_framework import generics, viewsets, views, mixins, status, filters
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -83,3 +83,21 @@ class AdvertisementViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mix
 
     def get_queryset(self):
         return Advertisement.objects.all().order_by('-id')
+
+
+class BannerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
+                    mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = BannerSerializer
+    ordering_fields = ['created_at']
+
+    def get_queryset(self):
+        return Banner.objects.all().order_by('-id')
+
+
+class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
+                  mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = SizeSerializer
+    ordering_fields = ['created_at']
+
+    def get_queryset(self):
+        return Size.objects.all().order_by('-id')
