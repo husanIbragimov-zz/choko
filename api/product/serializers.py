@@ -109,6 +109,13 @@ class ProductListSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'title', 'status', 'category', 'price_uzs', 'discount_uzs', 'is_active']
 
+    def validate(self, attrs):
+        currency = Currency.objects.last()
+        if currency is None:
+            return serializers.ValidationError('Currency not found')
+        return attrs
+
+
     @staticmethod
     def get_price_uzs(obj):
         if obj.product_images.first().price:
