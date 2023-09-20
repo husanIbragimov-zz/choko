@@ -18,7 +18,7 @@ class GetInTouchViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins
     permission_classes = [IsSuperUser]
 
     def get_permissions(self):
-        if self.action == 'list' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'list' or self.action == 'update' or self.action == 'partial_update' or self.action == 'retrieve':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
