@@ -1,3 +1,5 @@
+from rest_framework.parsers import MultiPartParser, FormParser
+
 from .serializers import CategoryListSerializer, CategoryCreateSerializer, BrandSerializer, ColorSerializer, \
     CurrencySerializer, BannerDiscountSerializer, AdvertisementSerializer, BannerSerializer, SizeSerializer, \
     ProductImageCreateSerializer, ProductImageListSerializer, ProductCreateSerializer, ProductDetailSerializer, \
@@ -169,6 +171,7 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
                           mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = ProductImageListSerializer
     ordering_fields = ['created_at']
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
         return ProductImage.objects.all().order_by('-id')
