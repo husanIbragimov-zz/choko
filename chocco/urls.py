@@ -49,6 +49,8 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     path('api/v1/', include('api.product.urls')),
+    path('api/v1/', include('api.account.urls')),
+    path('api/v1/', include('api.contact.urls')),
 
 ] + i18n_patterns(
     # language

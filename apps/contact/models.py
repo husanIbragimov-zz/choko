@@ -20,6 +20,13 @@ class GetInTouch(BaseAbstractDate):
             return self.first_name
         return f'No name'
 
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if self.status is None:
+            self.status = 1
+        super().save(force_insert, force_update, using, update_fields)
+
 
 class Location(BaseAbstractDate):
     name = models.CharField(max_length=223, null=True, blank=True)
