@@ -119,6 +119,7 @@ class BannerDiscountViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
                             mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = BannerDiscountSerializer
     ordering_fields = ['created_at']
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
         return BannerDiscount.objects.all().order_by('-id')
@@ -135,6 +136,8 @@ class AdvertisementViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mix
                            mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = AdvertisementSerializer
     ordering_fields = ['created_at']
+    parser_classes = [MultiPartParser, FormParser]
+
 
     def get_queryset(self):
         return Advertisement.objects.all().order_by('-id')
@@ -151,6 +154,8 @@ class BannerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cre
                     mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = BannerSerializer
     ordering_fields = ['created_at']
+    parser_classes = [MultiPartParser, FormParser]
+
 
     def get_queryset(self):
         return Banner.objects.all().order_by('-id')
