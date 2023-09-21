@@ -4,9 +4,10 @@ from .serializers import CategoryListSerializer, CategoryCreateSerializer, Brand
     CurrencySerializer, BannerDiscountSerializer, AdvertisementSerializer, BannerSerializer, SizeSerializer, \
     ProductImageCreateSerializer, ProductImageListSerializer, ProductCreateSerializer, ProductDetailSerializer, \
     ProductListSerializer, AdditionalInfoListSerializer, AdditionalInfoCreateSerializer, RateCreateSerializer, \
-    RateListSerializer
+    RateListSerializer, VariantSerializer
 from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
     ProductImage, Product, AdditionalInfo, Rate
+from apps.base.models import Variant
 from api.account.permissions import IsSuperUser
 from rest_framework import viewsets, mixins, status, filters, permissions
 from rest_framework.response import Response
@@ -53,6 +54,17 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
+
+
+class VariantViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
+                     mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = VariantSerializer
+    ordering_fields = ['created_at']
+    queryset = Variant.objects.all()
+    permission_classes = [IsSuperUser]
+
+    def get_queryset(self):
+        return Category.objects.filter(is_active=True).order_by('-id')
 
 
 class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,

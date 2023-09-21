@@ -2,6 +2,13 @@ from django.db.models import Avg
 from rest_framework import serializers
 from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
     ProductImage, Product, Rate, AdditionalInfo
+from apps.base.models import Variant
+
+
+class VariantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Variant
+        fields = ['id', 'duration', 'percent']
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):

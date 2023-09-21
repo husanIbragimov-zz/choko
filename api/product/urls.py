@@ -3,11 +3,12 @@ from rest_framework.routers import DefaultRouter
 
 from .views import CategoryViewSet, BrandViewSet, ColorViewSet, CurrencyViewSet, BannerDiscountViewSet, \
     AdvertisementViewSet, BannerViewSet, SizeViewSet, ProductImageViewSet, ProductViewSet, AdditionalInfoViewSet, \
-    RateViewSet
+    RateViewSet, VariantViewSet
 
 router = DefaultRouter()
 
 router.register('category', CategoryViewSet, basename='category')
+router.register('variant', VariantViewSet, basename='variant')
 router.register('brand', BrandViewSet, basename='brand')
 router.register('color', ColorViewSet, basename='color')
 router.register('currency', CurrencyViewSet, basename='currency')
