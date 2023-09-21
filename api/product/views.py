@@ -21,6 +21,7 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
     ordering_fields = ['created_at']
     queryset = Category.objects.all()
     permission_classes = [IsSuperUser]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
         return Category.objects.filter(is_active=True).order_by('-id')
