@@ -16,7 +16,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                      mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                      mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = CategoryListSerializer
     ordering_fields = ['created_at']
     queryset = Category.objects.all()
@@ -50,7 +50,7 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
         return Response(sz.data)
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -58,7 +58,7 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
 
 
 class VariantViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                     mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                     mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = VariantSerializer
     ordering_fields = ['created_at']
     queryset = Variant.objects.all()
@@ -69,7 +69,7 @@ class VariantViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
 
 class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                   mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = BrandSerializer
     ordering_fields = ['created_at']
 
@@ -77,7 +77,7 @@ class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
         return Brand.objects.all().order_by('title')
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -85,7 +85,7 @@ class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
 
 
 class ColorViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                   mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = ColorSerializer
     ordering_fields = ['created_at']
 
@@ -93,7 +93,7 @@ class ColorViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
         return Color.objects.all().order_by('title')
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -101,7 +101,7 @@ class ColorViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
 
 
 class CurrencyViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                      mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                      mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = CurrencySerializer
     ordering_fields = ['created_at']
 
@@ -109,7 +109,7 @@ class CurrencyViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
         return Currency.objects.all().order_by('-id')
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -117,7 +117,7 @@ class CurrencyViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
 
 
 class BannerDiscountViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                            mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                            mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = BannerDiscountSerializer
     ordering_fields = ['created_at']
     parser_classes = [MultiPartParser, FormParser]
@@ -126,7 +126,7 @@ class BannerDiscountViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
         return BannerDiscount.objects.all().order_by('-id')
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -134,17 +134,16 @@ class BannerDiscountViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
 
 
 class AdvertisementViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                           mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                           mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = AdvertisementSerializer
     ordering_fields = ['created_at']
     parser_classes = [MultiPartParser, FormParser]
-
 
     def get_queryset(self):
         return Advertisement.objects.all().order_by('-id')
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -152,17 +151,16 @@ class AdvertisementViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mix
 
 
 class BannerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                    mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                    mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = BannerSerializer
     ordering_fields = ['created_at']
     parser_classes = [MultiPartParser, FormParser]
-
 
     def get_queryset(self):
         return Banner.objects.all().order_by('-id')
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -170,7 +168,7 @@ class BannerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cre
 
 
 class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                  mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                  mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = SizeSerializer
     ordering_fields = ['created_at']
 
@@ -178,7 +176,7 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
         return Size.objects.all().order_by('-id')
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -186,7 +184,7 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
 
 
 class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                          mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                          mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = ProductImageListSerializer
     ordering_fields = ['created_at']
     parser_classes = [MultiPartParser, FormParser]
@@ -210,7 +208,7 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
         return Response(sz.data)
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -218,7 +216,7 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
 
 
 class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                     mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                     mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = ProductListSerializer
     ordering_fields = ['created_at']
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -245,7 +243,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
         return Response(sz.data)
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -253,7 +251,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
 
 class AdditionalInfoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                            mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                            mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = AdditionalInfoListSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['created_at']
@@ -268,7 +266,7 @@ class AdditionalInfoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
         return AdditionalInfoListSerializer
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
@@ -276,7 +274,7 @@ class AdditionalInfoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
 
 
 class RateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                  mixins.UpdateModelMixin, viewsets.GenericViewSet):
+                  mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = RateListSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['created_at']
@@ -299,7 +297,7 @@ class RateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_permissions(self):
-        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permission_classes = [IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
