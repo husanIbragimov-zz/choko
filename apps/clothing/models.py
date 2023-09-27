@@ -20,7 +20,7 @@ class Clothing(BaseAbstractDate):
     title = models.CharField(max_length=200, null=True)
     description = RichTextField(null=True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True, related_name='clothing_brand')
-    sizes = models.ManyToManyField(Size, related_name='clothing_sizes', blank=True)
+    size = models.ManyToManyField(Size, related_name='clothing_sizes', blank=True)
     tags = models.ManyToManyField(Tag, related_name='clothing_tags', blank=True)
     view = models.PositiveIntegerField(default=0)
     availability = models.PositiveIntegerField()
