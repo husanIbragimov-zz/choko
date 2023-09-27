@@ -8,6 +8,13 @@ from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
 
+STATUS = (
+    ('NEW', 'NEW'),
+    ('HOT', 'HOT'),
+    ('BEST SELL', 'BEST SELL'),
+    ('SALE', 'SALE'),
+)
+
 
 class BannerDiscount(BaseAbstractDate):
     title = models.TextField(null=True)
@@ -108,13 +115,6 @@ class Size(BaseAbstractDate):
 
 
 class Product(BaseAbstractDate):
-    STATUS = (
-        ('NEW', 'NEW'),
-        ('HOT', 'HOT'),
-        ('BEST SELL', 'BEST SELL'),
-        ('SALE', 'SALE'),
-    )
-
     banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.SET_NULL, null=True, blank=True)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)

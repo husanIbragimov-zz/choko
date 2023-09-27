@@ -24,7 +24,7 @@ from django.views.static import serve
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView, TokenVerifyView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -48,9 +48,9 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('docs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('api/v1/', include('api.product.urls')),
-    path('api/v1/', include('api.account.urls')),
-    path('api/v1/', include('api.contact.urls')),
+    path('api/v1/', include('api.product.urls'), name='product'),
+    path('api/v1/', include('api.account.urls'), name='account'),
+    path('api/v1/', include('api.contact.urls'), name='contact'),
 
     # tokens
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
