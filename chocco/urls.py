@@ -41,28 +41,32 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('chocolate-admin/', admin.site.urls),
+
+] + i18n_patterns(
+    # media
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-
-    # swagger
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('docs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-
-    path('api/v1/', include('api.product.urls'), name='product'),
-    path('api/v1/', include('api.account.urls'), name='account'),
-    path('api/v1/', include('api.contact.urls'), name='contact'),
 
     # tokens
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
-] + i18n_patterns(
     # language
     path('i18n/', include('django.conf.urls.i18n')),
     # lib
     path('base/', include('allauth.urls')),
+
+    # swagger
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('docs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+
     # api
+    path('api/v1/', include('api.product.urls'), name='product'),
+    path('api/v1/', include('api.account.urls'), name='account'),
+    path('api/v1/', include('api.contact.urls'), name='contact'),
+
     path('change_status/', api_views.change_status),
     path('count-products/', api_views.count_products),
     # local apps
