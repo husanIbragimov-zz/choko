@@ -575,7 +575,7 @@
 
             $.ajax({
                 method: 'POST',
-                url: "/shop-images/",
+                url: "{% url 'shop-images' %}",
                 data: {
                     "product_id": product_id,
                     "image_id": image_id,
