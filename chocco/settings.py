@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'apps.contact',
     'apps.order',
     'apps.product',
+    'apps.clothing',
 ]
 
 # AUTH_USER_MODEL = 'base.User'
