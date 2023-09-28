@@ -8,7 +8,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
+                    <a href="{% url 'index' %}" rel="nofollow">{% trans "Bosh sahifa" %}</a>
                     <span></span> {% trans "Mahsulotlar" %}
                     <span></span> {% trans "Sevimlilar" %}
 
@@ -49,7 +49,7 @@
 {#                                        </td>#}
 
                                         <td class="action" data-title="Remove">
-                                            <a href="/order/delete-wishlist/{{ item.id }}"><i
+                                            <a href="{% url 'delete-wishlist' item.id %}"><i
                                                     class="fa fa-trash-alt"
                                                     onclick="return confirm('{% trans "Siz rostdan ham ushbu mahsulotni o'chirmoqchimisiz" %}')"></i></a>
                                         </td>

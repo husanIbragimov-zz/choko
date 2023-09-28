@@ -72,7 +72,6 @@
                             <a class="btn btn-rounded mr-10 mt-5" href="{% url "products_filter" %}"><i
                                     class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
                             <a class="btn btn-rounded mt-5" href="
-
                                     {% if cart.cart_items.all.count > 0 %}{% url 'create-order' cart.id %}{% else %}{% url 'index' %}{% endif %}"><i
                                     class="far fa-cart-plus mr-5"></i>{% trans "Davom etish" %}</a>
 
