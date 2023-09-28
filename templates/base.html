@@ -195,7 +195,7 @@
                         <ul>
                             <li><a href="tel:+99899-418-7100">+998 (99)-418-7100</a></li>
                             <li><i class="fa fa-map-marker-alt mr-5"></i><a target="_blank"
-                                                                            href="/">{% trans 'Bizning joylashuv' %}</a>
+                                                                            href="{% url 'index' %}">{% trans 'Bizning joylashuv' %}</a>
                             </li>
                         </ul>
                     </div>
@@ -236,9 +236,9 @@
                                     value="Submit"
                                     style="padding: 12px 10px">
                                 {% if language.code == 'uz' %}
-                                    <img src="{% static '' %}assets/uz.png" alt="" width="20px">
+                                    <img src="{% static '' %}assets/uz.png" alt="choko_lang" width="20px">
                                 {% else %}
-                                    <img src="{% static '' %}assets/ru.png" alt="" width="20px">
+                                    <img src="{% static '' %}assets/ru.png" alt="choko_lang" width="20px">
                                 {% endif %}{{ language.code }}
                             </button>
                         {% endfor %}
@@ -252,7 +252,7 @@
         <div class="container">
             <div class="header-wrap header-space-between">
                 <div class="logo logo-width-1">
-                    <a href="/"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="logo"></a>
+                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="choko_logo"></a>
                 </div>
                 <div class="search-style-2">
                     <form action="{% url 'products_filter' %}" method="get">
@@ -275,14 +275,14 @@
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
                             <a href="{% url 'wishlist' %}">
-                                <img class="svgInject" alt="wowy"
+                                <img class="svgInject" alt="choko"
                                      src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}">
                                 <span class="pro-count blue">{{ wishlists.count }}</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{% url 'shop-cart' %}">
-                                <img alt="wowy" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}">
+                                <img alt="choko" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}">
                                 <span class="pro-count blue">{{ cart.cart_items.all.count }}</span>
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
@@ -290,7 +290,7 @@
                                     {% for item in cart.cart_items.all %}
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="{% url 'shop-details' item.product.id %}"><img alt="wowy"
+                                                <a href="{% url 'shop-details' item.product.id %}"><img alt="choko"
                                                                                                         src="{{ item.product_image.image.url }}"></a>
                                             </div>
                                             <div class="shopping-cart-title">
@@ -304,7 +304,7 @@
                                             </div>
                                             <div class="shopping-cart-delete">
                                                 <a
-                                                        href="/order/delete-cart-item/{{ item.id }}" class="text-muted"><i
+                                                        href="{% url 'delete-cart-item' item.id %}" class="text-muted"><i
                                                         class="far fa-times"
                                                         onclick="return confirm('{% trans "Siz rostdan ham ushbu mahsulotni o'chirmoqchimisiz" %}')"></i></a>
                                             </div>
@@ -340,7 +340,7 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative main-nav">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="/"><img src="{% static 'assets/imgs/theme/whitechokoicon.png' %}"
+                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/whitechokoicon.png' %}"
                                      alt="logo"></a>
                 </div>
                 <div class="main-categori-wrap d-none d-lg-block">
@@ -355,7 +355,7 @@
                                 {% if not cat.parent %}
                                     <li class="has-children">
                                         <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
-                                                                          alt="" width="19px"
+                                                                          alt="choko" width="19px"
                                                                           height="19px"
                                                                           style="margin-right: 17px">{% else %}
                                             <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
@@ -368,13 +368,13 @@
                                                                 <li class="col col-6 col-md-4 mega-menu-col">
                                                                     <ul>
                                                                         <li><span><a class="submenu-title"
-                                                                                     href="/shop/?cat={{ child }}">{{ child }}</a></span>
+                                                                                     href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
                                                                         </li>
                                                                         {% for sub_child in categories %}
                                                                             {% if sub_child.parent == child %}
                                                                                 <li>
                                                                                 <a class="dropdown-item nav-link nav_item"
-                                                                                   href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                   href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
                                                                             {% endif %}
                                                                         {% endfor %}
                                                                         </li>
@@ -397,7 +397,7 @@
                                         {% if not cat.parent %}
                                             <li class="has-children">
                                                 <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
-                                                                                  alt="" width="19px"
+                                                                                  alt="choko" width="19px"
                                                                                   height="19px"
                                                                                   style="margin-right: 17px">{% else %}
                                                     <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
@@ -410,13 +410,13 @@
                                                                         <li class="col col-6 col-md-4 mega-menu-col">
                                                                             <ul>
                                                                                 <li><span><a class="submenu-title"
-                                                                                             href="/shop/?cat={{ child }}">{{ child }}</a></span>
+                                                                                             href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
                                                                                 </li>
                                                                                 {% for sub_child in hide_categories %}
                                                                                     {% if sub_child.parent == child %}
                                                                                         <li>
                                                                                         <a class="dropdown-item nav-link nav_item"
-                                                                                           href="/shop/?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                           href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
                                                                                     {% endif %}
                                                                                 {% endfor %}
                                                                                 </li>
@@ -443,7 +443,7 @@
                 <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block main-menu-light-white hover-boder hover-boder-white">
                     <nav>
                         <ul>
-                            <li><a class="active" href="/">{% trans "Bosh sahifa" %}</a>
+                            <li><a class="active" href="{% url 'index' %}">{% trans "Bosh sahifa" %}</a>
                             </li>
                             {#                            <li>#}
                             {##}
@@ -469,13 +469,13 @@
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
                             <a href="{% url 'wishlist' %}">
-                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-heart-white.svg">
+                                <img alt="choko" src="{% static '' %}assets/imgs/theme/icons/icon-heart-white.svg">
                                 <span class="pro-count white">{{ wishlists.count }}</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{% url 'shop-cart' %}">
-                                <img alt="wowy" src="{% static '' %}assets/imgs/theme/icons/icon-cart-white.svg">
+                                <img alt="choko" src="{% static '' %}assets/imgs/theme/icons/icon-cart-white.svg">
                                 <span class="pro-count white">{{ cart.cart_items.all.count }}</span>
                             </a>
                         </div>
@@ -495,7 +495,7 @@
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="/"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="logo"></a>
+                <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="logo"></a>
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -522,8 +522,8 @@
                             {% for cat in categories %}
                                 {% if cat.parent %}
                                     <li>
-                                        <a href="/shop/?cat={{ cat.title }}">{% if cat.icon %}
-                                            <img src="{{ cat.icon.url }}" alt="" width="19px" height="19px"
+                                        <a href="{% url 'products_filter' %}?cat={{ cat.title }}">{% if cat.icon %}
+                                            <img src="{{ cat.icon.url }}" alt="choko" width="19px" height="19px"
                                                  style="margin-right: 17px">{% else %}
                                             <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
 
@@ -538,7 +538,7 @@
 
                 <nav>
                     <ul class="mobile-menu">
-                        <li><a class="active" href="/">{% trans "Bosh sahifa" %}</a>
+                        <li><a class="active" href="{% url 'index' %}">{% trans "Bosh sahifa" %}</a>
                         </li>
                         {#                        <li>#}
                         {#                            <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>#}
@@ -567,7 +567,7 @@
                             {% for lang in language %}
                                 <li>
                                     {% if lang.code == 'uz' %}
-                                        <a href="#" {% if lang.code == LANGUAGE_CODE %}
+                                        <a href="/" {% if lang.code == LANGUAGE_CODE %}
                                            id="salom" {% endif %}>{{ lang.code }}</a>
                                     {% else %}
                                         <a hreflang="" href="/{{ lang.code }}/" {% if lang.code == LANGUAGE_CODE %}
@@ -596,7 +596,7 @@
                 <a class="facebook" href="#"><i class="fab fa-facebook-f"></i></a>
                 <a class="twitter" href="#"><i class="fab fa-twitter"></i></a>
                 <a class="tumblr" href="#"><i class="fab fa-tumblr"></i></a>
-                <a class="instagram" href="#"><i class="fab fa-instagram"></i></a>
+                <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
     </div>
@@ -614,7 +614,7 @@
                 <div class="col-lg-7 mb-md-3 mb-lg-0">
                     <div class="row align-items-center">
                         <div class="col flex-horizontal-center">
-                            <img class="icon-email" src="{% static 'assets/imgs/theme/icons/icon-email.svg' %}" alt="">
+                            <img class="icon-email" src="{% static 'assets/imgs/theme/icons/icon-email.svg' %}" alt="choko">
                             <h4 class="font-size-20 mb-0 ml-3">{% trans "Yangiliklardan xabardor bo'lish" %}</h4>
                         </div>
                     </div>
@@ -640,7 +640,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="widget-about font-md mb-md-5">
                         <div class="logo logo-width-1 wow fadeIn animated">
-                            <a href="/"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}"
+                            <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}"
                                              alt="logo"></a>
                         </div>
                         <h4 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">{% trans "Aloqa" %}</h4>
@@ -658,7 +658,7 @@
                             <a class="facebook" href="#"><i class="fab fa-facebook-f pt-10"></i></a>
                             <a class="twitter" href="#"><i class="fab fa-twitter pt-10"></i></a>
                             <a class="tumblr" href="#"><i class="fab fa-tumblr pt-10"></i></a>
-                            <a class="instagram" href="#"><i class="fab fa-instagram pt-10"></i></a>
+                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i class="fab fa-instagram pt-10"></i></a>
                         </div>
                     </div>
                 </div>
