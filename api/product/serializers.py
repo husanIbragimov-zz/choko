@@ -19,6 +19,12 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
 class CategoryListSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
+    icon= serializers.SerializerMethodField()
+
+    def get_icon(self, obj):
+        if obj.icon:
+            return obj.icon.url
+        return ''
 
     class Meta:
         model = Category
@@ -26,7 +32,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_children(obj):
-        return CategoryListSerializer(obj.children.all(), many=True).data
+        return CategoryCreateSerializer(obj.children.all(), many=True).data
 
 
 class BrandSerializer(serializers.ModelSerializer):

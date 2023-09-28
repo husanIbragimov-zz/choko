@@ -66,6 +66,7 @@ urlpatterns = [
     path('api/v1/', include('api.product.urls'), name='product'),
     path('api/v1/', include('api.account.urls'), name='account'),
     path('api/v1/', include('api.contact.urls'), name='contact'),
+    path('aapi/v1/', include('api.book.urls'), name='book'),
 
     path('change_status/', api_views.change_status),
     path('count-products/', api_views.count_products),
