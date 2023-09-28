@@ -15,6 +15,41 @@ STATUS = (
     ('SALE', 'SALE'),
 )
 
+LANGUAGE = (
+    ('krill', 'krill'),
+    ('english', 'english'),
+    ('russian', 'russian'),
+    ('uzbek', 'uzbek'),
+)
+
+YOZUV = (
+    ('krill', 'krill'),
+    ('english', 'english'),
+    ('russian', 'russian'),
+    ('uzbek', 'uzbek'),
+
+)
+
+MUQOVA = (
+    ('qattiq', 'qattiq'),
+    ('yumshoq', 'yumshoq'),
+)
+
+FORMAT = (
+    ('a5', 'A5'),
+    ('a4', 'A4'),
+    ('a3', 'A3'),
+    ('a2', 'A2'),
+    ('a1', 'A1'),
+    ('a0', 'A0'),
+)
+
+PRODUCT_TYPE = (
+    ('book', 'Book'),
+    ('clothing', 'Clothing'),
+    ('product', 'Product')
+)
+
 
 class BannerDiscount(BaseAbstractDate):
     title = models.TextField(null=True)
@@ -114,7 +149,29 @@ class Size(BaseAbstractDate):
         return self.name
 
 
+class Author(BaseAbstractDate):
+    name = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Printed(BaseAbstractDate):
+    name = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Tag(BaseAbstractDate):
+    title = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Product(BaseAbstractDate):
+    # product and clothing
     banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.SET_NULL, null=True, blank=True)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
@@ -123,7 +180,6 @@ class Product(BaseAbstractDate):
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     size = models.ManyToManyField(Size, blank=True)
-    # price = models.FloatField(default=0, null=True)
     percentage = models.FloatField(default=0, null=True, blank=True)
     discount = models.FloatField(default=0, null=True, blank=True)
     view = models.IntegerField(default=0, null=True, blank=True)
@@ -131,6 +187,20 @@ class Product(BaseAbstractDate):
     availability = models.IntegerField(default=0, null=True, blank=True)
     has_size = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
+
+    # book
+    isbn = models.CharField(max_length=25, null=True, blank=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='product_author')
+    lang = models.CharField(max_length=25, choices=LANGUAGE, null=True, blank=True)
+    script = models.CharField(max_length=25, choices=YOZUV, null=True, blank=True)
+    total_pages = models.PositiveIntegerField(null=True, blank=True)
+    printed = models.ForeignKey(Printed, on_delete=models.CASCADE, null=True, blank=True,
+                                related_name='product_publish')
+    wrapper = models.CharField(max_length=25, choices=MUQOVA, null=True, blank=True, verbose_name='Muqova')
+    format = models.CharField(max_length=25, choices=FORMAT, null=True, blank=True)
+    year_of_creation = models.DateField(null=True, blank=True)
+    tags = models.ManyToManyField(Tag, related_name='product_tags', blank=True)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product', null=True, blank=True)
 
     @property
     def mid_rate(self):

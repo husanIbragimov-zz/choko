@@ -53,7 +53,7 @@ class AdditionalInfoAdmin(admin.StackedInline):
 class ProductAdmin(TranslationAdmin):
     actions = ['make_published']
     inlines = [ProductImageInline, AdditionalInfoAdmin]
-    filter_horizontal = ('category', 'size')
+    filter_horizontal = ('category', 'size', 'tags')
     list_display_links = ('id', 'title')
     list_display = (
         'title', 'percentage', 'discount_uzs', 'mid_rate', 'view', 'is_active', 'id'
