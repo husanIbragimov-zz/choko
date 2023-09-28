@@ -310,7 +310,7 @@
                                                 {% else %}
                                                     <span>{{ top_rate_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                     <br>
-                                                    <span class="bg-warning new_price">${{ top_rate_product.total_uzs }} </span>
+                                                    <span class="bg-warning new_price">UZS {{ top_rate_product.total_uzs|intcomma }} </span>
                                                 {% endif %}
                                             </div>
                                             <div class="product-rate">
