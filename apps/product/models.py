@@ -196,11 +196,10 @@ class Product(BaseAbstractDate):
     total_pages = models.PositiveIntegerField(null=True, blank=True)
     printed = models.ForeignKey(Printed, on_delete=models.CASCADE, null=True, blank=True,
                                 related_name='product_publish')
-    wrapper = models.CharField(max_length=25, choices=MUQOVA, null=True, blank=True, verbose_name='Muqova')
     format = models.CharField(max_length=25, choices=FORMAT, null=True, blank=True)
     year_of_creation = models.DateField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='product_tags', blank=True)
-    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product', null=True, blank=True)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     @property
     def mid_rate(self):
@@ -273,8 +272,9 @@ class Product(BaseAbstractDate):
 
 
 class ProductImage(BaseAbstractDate):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
+    wrapper = models.CharField(max_length=25, choices=MUQOVA, null=True, blank=True, verbose_name='Muqova')
     image = models.ImageField(upload_to='products', null=False, blank=False)
     price = models.FloatField(default=0)
     is_active = models.BooleanField(default=True)
