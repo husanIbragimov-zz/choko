@@ -1,7 +1,7 @@
 from django.db.models import Avg
 from rest_framework import serializers
 from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
-    ProductImage, Product, Rate, AdditionalInfo
+    ProductImage, Product, Rate, AdditionalInfo, Tag
 from apps.base.models import Variant
 
 
@@ -107,6 +107,12 @@ class AdditionalInfoListSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'title', 'description']
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'title']
+
+
 class ProductListSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title', read_only=True)
     price_uzs = serializers.SerializerMethodField()
@@ -114,14 +120,13 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'status', 'category', 'price_uzs', 'discount_uzs', 'is_active']
+        fields = ['id', 'title', 'product_type', 'status', 'category', 'price_uzs', 'discount_uzs', 'is_active']
 
     def validate(self, attrs):
         currency = Currency.objects.last()
         if currency is None:
             return serializers.ValidationError('Currency not found')
         return attrs
-
 
     @staticmethod
     def get_price_uzs(obj):
@@ -157,8 +162,8 @@ class ProductImageListSerializer(serializers.ModelSerializer):
 class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'title', 'category', 'status', 'advertisement', 'banner_discount', 'brand', 'size',
-                  'percentage', 'description', 'availability', 'has_size', 'is_active']
+        fields = ['id', 'product_type', 'title', 'category', 'status', 'advertisement', 'banner_discount', 'brand',
+                  'size', 'percentage', 'description', 'availability', 'has_size', 'is_active', 'tags']
 
 
 class ProductImagesSerializer(serializers.ModelSerializer):
@@ -187,12 +192,14 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     price_uzs = serializers.SerializerMethodField()
     discount_uzs = serializers.SerializerMethodField()
     additional_info = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True)
 
     class Meta:
         model = Product
         fields = [
-            'id', 'title', 'category', 'brand', 'size', 'percentage', 'price_uzs', 'discount_uzs', 'view',
-            'mid_rate', 'mid_rate_percent', 'availability', 'description', 'product_images', 'additional_info'
+            'id', 'product_type', 'title', 'category', 'brand', 'size', 'percentage', 'price_uzs', 'discount_uzs',
+            'view', 'mid_rate', 'mid_rate_percent', 'availability', 'description', 'product_images', 'additional_info',
+            'tags'
         ]
 
     @staticmethod
@@ -237,4 +244,3 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_additional_info(obj):
         return AdditionalInfoListSerializer(obj.additional_info.all(), many=True).data
-

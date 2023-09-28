@@ -5,7 +5,7 @@ from import_export.admin import ImportExportModelAdmin
 import admin_thumbnails
 from apps.product.forms import BannerFrom
 from apps.product.models import Category, Brand, Banner, Product, ProductImage, Rate, Advertisement, Color, \
-    AdditionalInfo, Currency, Size, BannerDiscount
+    AdditionalInfo, Currency, Size, BannerDiscount, Tag, Author, Printed
 from modeltranslation.admin import TranslationAdmin
 from import_export.signals import post_import, post_export
 
@@ -133,6 +133,9 @@ class ProductImageAdmin(ImportExportModelAdmin):
         return queryset.order_by('color__name', 'product__id', '-id').distinct("color__name", "product__id")
 
 
+admin.site.register(Tag)
+admin.site.register(Author)
+admin.site.register(Printed)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand, BrandTranslationAdmin)
 admin.site.register(AdditionalInfo)

@@ -1,12 +1,13 @@
+from django.db.models import Q
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from .serializers import CategoryListSerializer, CategoryCreateSerializer, BrandSerializer, ColorSerializer, \
     CurrencySerializer, BannerDiscountSerializer, AdvertisementSerializer, BannerSerializer, SizeSerializer, \
     ProductImageCreateSerializer, ProductImageListSerializer, ProductCreateSerializer, ProductDetailSerializer, \
     ProductListSerializer, AdditionalInfoListSerializer, AdditionalInfoCreateSerializer, RateCreateSerializer, \
-    RateListSerializer, VariantSerializer
+    RateListSerializer, VariantSerializer, TagSerializer
 from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
-    ProductImage, Product, AdditionalInfo, Rate
+    ProductImage, Product, AdditionalInfo, Rate, Tag
 from apps.base.models import Variant
 from api.account.permissions import IsSuperUser
 from rest_framework import viewsets, mixins, status, filters, permissions
@@ -51,7 +52,7 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -78,7 +79,7 @@ class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -94,7 +95,7 @@ class ColorViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -127,7 +128,7 @@ class BannerDiscountViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -144,7 +145,7 @@ class AdvertisementViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mix
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -161,7 +162,7 @@ class BannerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cre
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [permissions.IsAdminUser | IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -177,10 +178,20 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [permissions.IsAdminUser | IsSuperUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
+
+
+class TagViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
+                 mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    serializer_class = TagSerializer
+    ordering_fields = ['created_at']
+    permission_classes = [IsSuperUser | permissions.IsAdminUser]
+
+    def get_queryset(self):
+        return Tag.objects.all().order_by('-id')
 
 
 class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
@@ -209,7 +220,7 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -224,10 +235,11 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
     search_fields = ['title', 'description']
 
     def get_queryset(self):
-        return Product.objects.filter(is_active=True).order_by('-id')
+        return Product.objects.filter(
+            Q(is_active=True) & Q(Q(product_type='clothing') | Q(product_type='product'))).order_by('-id')
 
     def get_serializer_class(self):
-        if self.action == 'create' or self.action == 'update':
+        if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
             return ProductCreateSerializer
         if self.action == 'retrieve':
             return ProductDetailSerializer
@@ -244,7 +256,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -267,7 +279,7 @@ class AdditionalInfoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
@@ -279,7 +291,7 @@ class RateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['created_at']
     search_fields = ['rate', 'comment']
-    permission_classes = [IsSuperUser]
+    permission_classes = []
 
     def get_queryset(self):
         return Rate.objects.filter(product__is_active=True).order_by('-id')
@@ -298,7 +310,7 @@ class RateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
-            permission_classes = [IsSuperUser]
+            permission_classes = [IsSuperUser | permissions.IsAdminUser]
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
