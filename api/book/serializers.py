@@ -21,11 +21,12 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ['id', 'title']
+        ref_name = 'Product Tag'
 
 class BookImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['id', 'image', 'wrapper', 'price', 'is_active']
+        fields = ['id', 'product','image', 'wrapper', 'price', 'is_active']
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,7 +35,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    images = serializers.SerializerMethodField(read_only=True)
     tags  = TagSerializer(many=True, read_only=True)
     author = serializers.CharField(source='author.title', read_only=True)
     advertisement = serializers.CharField(source='advertisement.title', read_only=True)
@@ -43,13 +43,10 @@ class BookSerializer(serializers.ModelSerializer):
     product_images = serializers.ManyRelatedField(child_relation=BookImageSerializer(), read_only=True)
 
 
-    def get_images(self, obj):
-        return BookImageSerializer(obj.product_images.all(), many=True).data
-
     class Meta:
         model = Product
         fields = ['id', 'title','product_images', 'banner_discount', 'advertisement', 'status', 'category',
-                  'author', 'description', 'images', 'availability', 'brand',
+                  'author', 'description',  'availability', 'brand',
                   'percentage', 'discount', 'view', 'isbn', 'author', 'lang', 'script', 'total_pages',
                   'printed', 'format', 'year_of_creation', 'tags', 'product_type', 'created_at', 'updated_at', 'is_active']
 
