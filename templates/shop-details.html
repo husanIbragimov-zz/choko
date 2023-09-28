@@ -79,7 +79,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
+                    <a href="{% url 'index' %}" rel="nofollow">{% trans "Bosh sahifa" %}</a>
                     <span></span> {{ product.category.first }}
                     <span></span> {{ product.title }}
                 </div>
@@ -115,7 +115,7 @@
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
                                                 <span> {% trans "Brand" %}: <a
-                                                        href="/shop/?brand={{ product.brand }}">{{ product.brand }}</a></span>
+                                                        href="{% url 'products_filter' %}?brand={{ product.brand }}">{{ product.brand }}</a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">

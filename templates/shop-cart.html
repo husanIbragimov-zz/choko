@@ -9,7 +9,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
+                    <a href="{% url 'index' %}" rel="nofollow">{% trans "Bosh sahifa" %}</a>
                     <span></span> {% trans "Mahsulotlar" %}
                     <span></span> {% trans "Sizning savatchangiz" %}
                 </div>
@@ -59,7 +59,7 @@
                                             <span>{{ item.subtotal|intcomma }} UZS</span>
                                         </td>
                                         <td class="action" data-title="Remove"><a
-                                                href="/order/delete-cart-item/{{ item.id }}" class="text-muted"><i
+                                                href="{% url 'delete-cart-item' item.id %}" class="text-muted"><i
                                                 class="fa fa-trash-alt"
                                                 onclick="return confirm('{% trans "Rostdan ham ushbu mahsulotni o'chirmoqchimisiz?" %}')"></i></a>
                                         </td>
@@ -71,7 +71,8 @@
                         <div class="cart-action text-end">
                             <a class="btn btn-rounded mr-10 mt-5" href="{% url "products_filter" %}"><i
                                     class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
-                            <a class="btn btn-rounded mt-5" href="{% url "create-order" cart.id %}"><i
+                            <a class="btn btn-rounded mt-5" href="
+                                    {% if cart.cart_items.all.count > 0 %}{% url 'create-order' cart.id %}{% else %}{% url 'index' %}{% endif %}"><i
                                     class="far fa-cart-plus mr-5"></i>{% trans "Davom etish" %}</a>
 
                         </div>
@@ -105,7 +106,7 @@
                                     {#                                    </div>#}
                                     <div class="cart-action text-end">
                                         <a class="btn btn-rounded mr-12 fa-6 mt-5"
-                                           href="{% url "create-order" cart.id %}"><i
+                                           href="{% url 'create-order' cart.id %}"><i
                                                 class="fa fa-share-square mr-10"></i>{% trans "Buyurtmani tasdiqlash" %}
                                         </a>
                                         <button type="button" class="btn btn-rounded mt-5"
@@ -121,30 +122,32 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                     </div>
-                                                        <form action="{% url 'confirm-order' %}" method="post">
-                                                            {% csrf_token %}
-                                                    <div class="modal-body" >
+                                                    <form action="{% url 'confirm-order' %}" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <input type="hidden" value="{{ cart.id }}" name="id">
                                                                 <label for="recipient-name"
                                                                        class="col-form-label fs-6 text-left">{% trans "Telefon raqamingizni kiriting" %}:</label>
-                                                                <input type="text" class="form-control"
+                                                                <input type="tel" class="form-control"
                                                                        id="recipient-name"
                                                                        required
-                                                                       value=""
                                                                        name="phone_number"
-                                                                       placeholder="+998 90 123 45 67">
+                                                                       pattern="+[0-9]{3}[0-9]{2}[0-9]{3}[0-9]{4}"
+                                                                       placeholder="+998 (99)-418-7100">
+                                                                <span id="phone-error" class="error"></span>
                                                             </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">{% trans "Bekor qilish" %}
-                                                        </button>
-                                                        <button type="submit" class="btn btn-primary">{% trans "Yuborish" %}
-                                                        </button>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">{% trans "Bekor qilish" %}
+                                                            </button>
+                                                            <button type="submit"
+                                                                    class="btn btn-primary">{% trans "Yuborish" %}
+                                                            </button>
 
-                                                    </div>
-                                                            </form>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

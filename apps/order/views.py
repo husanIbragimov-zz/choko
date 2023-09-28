@@ -87,7 +87,8 @@ def create_order(request, id):
     cart_items = cart.cart_items.all()
     user = request.user
     order = Order.objects.create(
-        user=user
+        user=user,
+        phone_number=user.username
     )
     for item in cart_items:
         item.order = order
@@ -117,9 +118,15 @@ def confirm_order(request):
     cart_items = cart.cart_items.all()
 
     user = request.user
-    order = Order.objects.create(
-        phone_number=user
-    )
+    if user.is_authenticated:
+        order = Order.objects.create(
+            user=user,
+            phone_number=f"{user} | {phone_number}"
+        )
+    else:
+        order = Order.objects.create(
+            phone_number=phone_number
+        )
     for item in cart_items:
         item.order = order
         item.save()
