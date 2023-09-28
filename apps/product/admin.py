@@ -128,9 +128,9 @@ class ProductImageAdmin(ImportExportModelAdmin):
     list_display = ("id", "color", "price")
     resource_classes = [ProductImageResource]
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.order_by('color__name', 'product__id', '-id').distinct("color__name", "product__id")
+    # def get_queryset(self, request):
+    #     queryset = super().get_queryset(request)
+    #     return queryset.order_by('color__name', 'product__id', '-id').distinct("color__name", "product__id")
 
 
 admin.site.register(Tag)
