@@ -24,8 +24,7 @@ class CartAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = [CartItemAdmin]
-    list_display = ('user', 'num_of_items', 'cart_total', 'status',
-                    'id')
+    list_display = ('phone_number', 'num_of_items', 'cart_total', 'status', 'id')
     list_filter = ('status', 'created_at')
     list_per_page = 20
 
