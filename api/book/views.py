@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from apps.product.models import *
 from .serializers import AuthorSerializer, BookCreateSerializer, BookImageSerializer, BookListSerializer, \
     BookSerializer, PrintedSerializer
-from rest_framework import mixins, generics, status, viewsets, response
+from rest_framework import mixins, status, viewsets, response, parsers
 from rest_framework.decorators import action
 
 
@@ -14,14 +14,17 @@ class BookModelViewSet(mixins.CreateModelMixin,
     queryset = Product.objects.all()
     serializer_class = BookSerializer
     lookup_field = 'id'
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 
     def get_serializer_class(self):
         if self.action == 'list':
             return BookListSerializer
         elif self.action == 'retrieve':
             return BookSerializer
-        elif self.action == 'create':
+        elif self.action in ['create', 'update', 'partial_update']:
             return BookCreateSerializer
+        elif self.action == 'image_price':
+            return None
         return BookSerializer
 
     def create(self, request, *args, **kwargs):
@@ -52,6 +55,16 @@ class BookModelViewSet(mixins.CreateModelMixin,
         images = ProductImage.objects.filter(wrapper=wrapper, product=product)
         images.delete()
         return response.Response({'data': 'removed'}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['put'], detail=False)
+    def image_price(self, request):
+        wrapper = request.GET.get('wrapper')
+        product = request.GET.get('product')
+        price = request.GET.get('price')
+        product = get_object_or_404(Product, id=product)
+        images = ProductImage.objects.filter(wrapper=wrapper, product=product)
+        images.update(price=price)
+        return response.Response({'data': 'updated'}, status=status.HTTP_200_OK)
 
 
 class ProductImageModelViewSet(viewsets.ModelViewSet):
