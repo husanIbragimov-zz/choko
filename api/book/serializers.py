@@ -28,10 +28,7 @@ class BookImageSerializer(serializers.ModelSerializer):
         model = ProductImage
         fields = ['id', 'product','image', 'wrapper', 'price', 'is_active']
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['id', 'title', 'icon', 'parent']
+
 
 
 class BookSerializer(serializers.ModelSerializer):
