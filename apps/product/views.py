@@ -140,24 +140,43 @@ def shop_details(request, id):
     data = []
     data_ids = []
     for image in images:
-        if image.color_id in data_ids:
-            data.append({
-                "id": image.id,
-                'color': image.color_id
-            })
-            number = [d.get('count') for d in data if d['color'] == image.color_id]
-            data[-1]['count'] = number[0] + 1
+        if product.product_type == 'book':
+            if image.wrapper in data_ids:
+                data.append({
+                    "id": image.id,
+                    'wrapper': image.wrapper
+                })
+                number = [d.get('count') for d in data if d['wrapper'] == image.wrapper]
+                data[-1]['count'] = number[0] + 1
+            else:
+                data.append({
+                    "id": image.id,
+                    'count': 1,
+                    'wrapper': image.wrapper
+                })
+                data_ids.append(image.wrapper)
         else:
-            data.append({
-                "id": image.id,
-                'count': 1,
-                'color': image.color_id
-            })
-            data_ids.append(image.color_id)
+            if image.color_id in data_ids:
+                data.append({
+                    "id": image.id,
+                    'color': image.color_id
+                })
+                number = [d.get('count') for d in data if d['color'] == image.color_id]
+                data[-1]['count'] = number[0] + 1
+            else:
+                data.append({
+                    "id": image.id,
+                    'count': 1,
+                    'color': image.color_id
+                })
+                data_ids.append(image.color_id)
     filtred_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
     result_data = []
     for i in filtred_data:
-        res = ProductImage.objects.filter(product_id=id, color_id=i['color']).last()
+        if product.product_type == 'book':
+            res = ProductImage.objects.filter(product_id=id, wrapper__exact=i['wrapper']).first()
+        else:
+            res = ProductImage.objects.filter(product_id=id, color_id=i['color']).first()
         if res not in result_data and res is not None:
             result_data.append(res)
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
