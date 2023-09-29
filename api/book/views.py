@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from api.book.helper import LargeResultsSetPagination
 from apps.product.models import *
 from .serializers import AuthorSerializer, BookCreateSerializer, BookImageSerializer, BookListSerializer, \
     BookSerializer, PrintedSerializer
@@ -13,6 +14,7 @@ class BookModelViewSet(mixins.CreateModelMixin,
                        viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = BookSerializer
+    pagination_class = LargeResultsSetPagination
     lookup_field = 'id'
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 
@@ -20,11 +22,14 @@ class BookModelViewSet(mixins.CreateModelMixin,
         if self.action == 'list':
             return BookListSerializer
         elif self.action == 'retrieve':
+            self.pagination_class = None
             return BookSerializer
         elif self.action in ['create', 'update', 'partial_update']:
+            self.pagination_class = None
             return BookCreateSerializer
         
         return BookSerializer
+    
 
     def create(self, request, *args, **kwargs):
         data = request.data
