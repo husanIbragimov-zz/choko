@@ -217,6 +217,8 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
             return self.get_paginated_response(sz.data)
         sz = self.get_serializer(queryset, many=True)
         return Response(sz.data)
+    
+
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
@@ -253,6 +255,27 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
             return self.get_paginated_response(sz.data)
         sz = self.get_serializer(queryset, many=True)
         return Response(sz.data)
+    
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        sz_ = ProductCreateSerializer(data=data)
+        sz_.is_valid(raise_exception=True)
+        sz_.save()
+        images = {
+
+        }
+        files = request.FILES
+        for file in files:
+            images[file] = []
+            for i in files.getlist(file):
+                sz = ProductImageCreateSerializer(data={'image': i, 'color': int(file), 'product': sz_.data['id'],
+                                               'price': data[f'price_{str(file)}']})
+                sz.is_valid(raise_exception=True)
+                sz.save()
+                images[file].append(sz.data)
+
+        return Response({'data': sz_.data, 'images': images}, status=status.HTTP_201_CREATED)
+
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':

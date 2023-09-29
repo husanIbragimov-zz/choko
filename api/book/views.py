@@ -23,8 +23,7 @@ class BookModelViewSet(mixins.CreateModelMixin,
             return BookSerializer
         elif self.action in ['create', 'update', 'partial_update']:
             return BookCreateSerializer
-        elif self.action == 'image_price':
-            return None
+        
         return BookSerializer
 
     def create(self, request, *args, **kwargs):
