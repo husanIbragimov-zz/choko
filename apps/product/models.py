@@ -156,20 +156,6 @@ class Author(BaseAbstractDate):
         return self.name
 
 
-class Printed(BaseAbstractDate):
-    name = models.CharField(max_length=255, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Tag(BaseAbstractDate):
-    title = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.title
-
-
 class Product(BaseAbstractDate):
     # product and clothing
     banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.SET_NULL, null=True, blank=True)
@@ -189,16 +175,7 @@ class Product(BaseAbstractDate):
     is_active = models.BooleanField(default=True)
 
     # book
-    isbn = models.CharField(max_length=25, null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='product_author')
-    lang = models.CharField(max_length=25, choices=LANGUAGE, null=True, blank=True)
-    script = models.CharField(max_length=25, choices=YOZUV, null=True, blank=True)
-    total_pages = models.PositiveIntegerField(null=True, blank=True)
-    printed = models.ForeignKey(Printed, on_delete=models.CASCADE, null=True, blank=True,
-                                related_name='product_publish')
-    format = models.CharField(max_length=25, choices=FORMAT, null=True, blank=True)
-    year_of_creation = models.DateField(null=True, blank=True)
-    tags = models.ManyToManyField(Tag, related_name='product_tags', blank=True)
     product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     @property

@@ -5,8 +5,8 @@ from import_export.admin import ImportExportModelAdmin
 import admin_thumbnails
 from apps.product.forms import BannerFrom
 from apps.product.models import Category, Brand, Banner, Product, ProductImage, Rate, Advertisement, Color, \
-    AdditionalInfo, Currency, Size, BannerDiscount, Tag, Author, Printed
-from modeltranslation.admin import TranslationAdmin
+    AdditionalInfo, Currency, Size, BannerDiscount, Author
+from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 from import_export.signals import post_import, post_export
 
 from apps.product.resources import ProductImageResource
@@ -43,7 +43,7 @@ class ProductImageStackedInline(admin.StackedInline):
     extra = 1
 
 
-class AdditionalInfoAdmin(admin.StackedInline):
+class AdditionalInfoAdmin(TranslationTabularInline):
     model = AdditionalInfo
     extra = 1
     list_display = ['id', "title", 'product', "description"]
@@ -71,8 +71,8 @@ class ProductAdmin(TranslationAdmin):
 
     class Media:
         js = (
-            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
             'modeltranslation/js/tabbed_translation_fields.js',
         )
         css = {
@@ -133,9 +133,7 @@ class ProductImageAdmin(ImportExportModelAdmin):
     #     return queryset.order_by('color__name', 'product__id', '-id').distinct("color__name", "product__id")
 
 
-admin.site.register(Tag)
 admin.site.register(Author)
-admin.site.register(Printed)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand, BrandTranslationAdmin)
 admin.site.register(AdditionalInfo)

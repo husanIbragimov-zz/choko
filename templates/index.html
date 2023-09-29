@@ -155,14 +155,14 @@
                                 aria-selected="true">{% trans "Maxsus" %}
                         </button>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link {% if status_index == 'popular' %}active{% endif %}" href="/?status=popular"
+                        <a class="nav-link {% if status_index == 'popular' %}active{% endif %}" href="{% url 'index' %}?status=popular"
                            id="nav-tab-two"
                            type="button">{% trans "Mashhurlar" %}
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link {% if status_index == 'top_rated' %}active{% endif %}"
-                           href="/?status=top_rated" id="nav-tab-three"
+                           href="{% url 'index' %}?status=top_rated" id="nav-tab-three"
                            type="button">{% trans "Eng Yaxshilar" %}
                         </a>
                     </li>
@@ -265,7 +265,7 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
+                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -375,7 +375,7 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="/shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
+                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>

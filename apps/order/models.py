@@ -37,9 +37,9 @@ class Order(BaseAbstractDate):
     status = models.CharField(max_length=10, choices=STATUS, default='New')
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.username}"
-        return self.phone_number
+        if self.phone_number:
+            return f"{self.phone_number}"
+        return self.user.username
 
     @property
     def num_of_items(self):
