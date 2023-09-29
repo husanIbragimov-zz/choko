@@ -5,9 +5,9 @@ from .serializers import CategoryListSerializer, CategoryCreateSerializer, Brand
     CurrencySerializer, BannerDiscountSerializer, AdvertisementSerializer, BannerSerializer, SizeSerializer, \
     ProductImageCreateSerializer, ProductImageListSerializer, ProductCreateSerializer, ProductDetailSerializer, \
     ProductListSerializer, AdditionalInfoListSerializer, AdditionalInfoCreateSerializer, RateCreateSerializer, \
-    RateListSerializer, VariantSerializer, TagSerializer
+    RateListSerializer, VariantSerializer
 from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
-    ProductImage, Product, AdditionalInfo, Rate, Tag
+    ProductImage, Product, AdditionalInfo, Rate
 from apps.base.models import Variant
 from api.account.permissions import IsSuperUser
 from rest_framework import viewsets, mixins, status, filters, permissions
@@ -184,14 +184,6 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
         return [permission() for permission in permission_classes]
 
 
-class TagViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
-                 mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
-    serializer_class = TagSerializer
-    ordering_fields = ['created_at']
-    permission_classes = [IsSuperUser | permissions.IsAdminUser]
-
-    def get_queryset(self):
-        return Tag.objects.all().order_by('-id')
 
 
 class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
@@ -265,6 +257,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
         }
         files = request.FILES
+        product_type  = data
         for file in files:
             images[file] = []
             for i in files.getlist(file):

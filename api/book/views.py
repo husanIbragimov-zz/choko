@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from api.book.helper import LargeResultsSetPagination
 from apps.product.models import *
 from .serializers import AuthorSerializer, BookCreateSerializer, BookImageSerializer, BookListSerializer, \
-    BookSerializer, PrintedSerializer
+    BookSerializer
 from rest_framework import mixins, status, viewsets, response, parsers
 from rest_framework.decorators import action
 
@@ -83,7 +83,3 @@ class AuthorModelViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
 
 
-class PrintedModelViewSet(viewsets.ModelViewSet):
-    queryset = Printed.objects.all()
-    serializer_class = PrintedSerializer
-    lookup_field = 'id'

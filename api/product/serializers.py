@@ -1,7 +1,7 @@
 from django.db.models import Avg
 from rest_framework import serializers
 from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
-    ProductImage, Product, Rate, AdditionalInfo, Tag
+    ProductImage, Product, Rate, AdditionalInfo
 from apps.base.models import Variant
 
 
@@ -113,10 +113,6 @@ class AdditionalInfoListSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'title', 'description']
 
 
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['id', 'title']
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -198,7 +194,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     price_uzs = serializers.SerializerMethodField()
     discount_uzs = serializers.SerializerMethodField()
     additional_info = serializers.SerializerMethodField()
-    tags = TagSerializer(many=True)
 
     class Meta:
         model = Product
