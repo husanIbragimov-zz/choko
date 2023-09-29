@@ -41,15 +41,14 @@ class BookSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'title', 'images', 'banner_discount', 'advertisement', 'status', 'category',
                   'author', 'description', 'availability', 'brand',
-                  'percentage', 'discount', 'view', 'isbn', 'author', 'lang', 'script', 'total_pages',
-                  'printed', 'format', 'year_of_creation', 'tags', 'product_type', 'created_at', 'updated_at',
+                  'percentage', 'discount', 'view',  'product_type', 'created_at', 'updated_at',
                   'is_active']
 
 
 class BookListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'title', 'author', 'isbn']
+        fields = ['id', 'title', 'brand', 'isbn']
 
 
 class BookCreateSerializer(serializers.ModelSerializer):

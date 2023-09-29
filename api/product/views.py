@@ -1,5 +1,9 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
+from api.book.helper import LargeResultsSetPagination
+
+from api.book.serializers import BookImageSerializer
 
 from .serializers import CategoryListSerializer, CategoryCreateSerializer, BrandSerializer, ColorSerializer, \
     CurrencySerializer, BannerDiscountSerializer, AdvertisementSerializer, BannerSerializer, SizeSerializer, \
@@ -41,7 +45,8 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset().filter(parent__isnull=True))
+        queryset = self.filter_queryset(
+            self.get_queryset().filter(parent__isnull=True))
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -184,8 +189,6 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
         return [permission() for permission in permission_classes]
 
 
-
-
 class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                           mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = ProductImageListSerializer
@@ -201,7 +204,8 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
         return ProductImageListSerializer
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset().filter(product__is_active=True))
+        queryset = self.filter_queryset(
+            self.get_queryset().filter(product__is_active=True))
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -209,8 +213,6 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
             return self.get_paginated_response(sz.data)
         sz = self.get_serializer(queryset, many=True)
         return Response(sz.data)
-    
-
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
@@ -223,14 +225,33 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
 class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                      mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = ProductListSerializer
+    queryset = Product.objects.filter(is_active=True).order_by('-id')
     ordering_fields = ['created_at']
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['category', 'brand', 'size', 'banner_discount']
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
+   
     search_fields = ['title', 'description']
+    pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
-        return Product.objects.filter(
-            Q(is_active=True) & Q(Q(product_type='clothing') | Q(product_type='product'))).order_by('-id')
+        qs = self.queryset.all()
+        
+        category = self.request.GET.get('category')
+        brand = self.request.GET.get('brand')
+        size = self.request.GET.get('size')
+        banner_discount = self.request.GET.get('banner_discount')
+        product_type = self.request.GET.get('product_type')
+        if category:
+            qs = qs.filter(category__title__icontains=category )
+        if brand:
+            qs = qs.filter(brand__title__icontains=brand)
+        if size:
+            qs = qs.filter(size=size)
+        if banner_discount:
+            qs = qs.filter(banner_discount__title__icontains=banner_discount)
+        if product_type:
+            qs = qs.filter(product_type__icontains=product_type)
+        return qs
 
     def get_serializer_class(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update':
@@ -240,14 +261,14 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
         return ProductListSerializer
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset().filter(is_active=True))
+        queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
         if page is not None:
             sz = self.get_serializer(page, many=True)
             return self.get_paginated_response(sz.data)
         sz = self.get_serializer(queryset, many=True)
         return Response(sz.data)
-    
+
     def create(self, request, *args, **kwargs):
         data = request.data
         sz_ = ProductCreateSerializer(data=data)
@@ -257,18 +278,46 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
         }
         files = request.FILES
-        product_type  = data
+        product_type = sz_.data['product_type']
         for file in files:
             images[file] = []
             for i in files.getlist(file):
-                sz = ProductImageCreateSerializer(data={'image': i, 'color': int(file), 'product': sz_.data['id'],
-                                               'price': data[f'price_{str(file)}']})
+                sz = None
+                if product_type == 'book':
+                    sz = BookImageSerializer(data={'image': i, 'wrapper': str(file), 'product': sz_.data['id'],
+                                                   'price': data[f'price_{str(file)}']})
+                else:
+                    sz = ProductImageCreateSerializer(data={'image': i, 'color': int(file), 'product': sz_.data['id'],
+                                                            'price': data[f'price_{str(file)}']})
                 sz.is_valid(raise_exception=True)
                 sz.save()
                 images[file].append(sz.data)
 
         return Response({'data': sz_.data, 'images': images}, status=status.HTTP_201_CREATED)
 
+    @action(methods=['delete'], detail=False)
+    def remove_image(self, request):
+        color = request.GET.get('color')
+        wrapper = request.GET.get('wrapper')
+        product = request.GET.get('product')
+        product = get_object_or_404(Product, id=product)
+        images = product.product_images.filter(
+            Q(wrapper=wrapper) | Q(color=color))
+        images.delete()
+        return Response({'data': 'removed'}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['put'], detail=False)
+    def image_price(self, request):
+        color = request.GET.get('color')
+        wrapper = request.GET.get('wrapper')
+        product = request.GET.get('product')
+        price = request.GET.get('price')
+        product = get_object_or_404(Product, id=product)
+        images = product.product_images.filter(
+            Q(wrapper=wrapper) | Q(color=color))
+
+        images.update(price=price)
+        return Response({'data': 'updated'}, status=status.HTTP_200_OK)
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
@@ -281,7 +330,8 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 class AdditionalInfoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                             mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = AdditionalInfoListSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['created_at']
     search_fields = ['title']
 
@@ -304,7 +354,8 @@ class AdditionalInfoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
 class RateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = RateListSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['created_at']
     search_fields = ['rate', 'comment']
     permission_classes = []

@@ -19,7 +19,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
 class CategoryListSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
-    icon= serializers.SerializerMethodField()
+    icon = serializers.SerializerMethodField()
 
     def get_icon(self, obj):
         if obj.icon:
@@ -113,16 +113,15 @@ class AdditionalInfoListSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'title', 'description']
 
 
-
-
 class ProductListSerializer(serializers.ModelSerializer):
-    category = serializers.CharField(source='category.title', read_only=True)
     price_uzs = serializers.SerializerMethodField()
     discount_uzs = serializers.SerializerMethodField()
+    brand = serializers.CharField(source='brand.title', read_only=True)
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'product_type', 'status', 'category', 'price_uzs', 'discount_uzs', 'is_active']
+        fields = ['id', 'title', 'product_type', 'brand', 'status',
+                  'category', 'price_uzs', 'discount_uzs', 'is_active']
 
     def validate(self, attrs):
         currency = Currency.objects.last()
@@ -140,7 +139,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     def get_discount_uzs(obj):
         if obj.percentage:
             discount_sell = obj.product_images.first().price - (
-                    obj.product_images.first().price * (obj.percentage / 100))
+                obj.product_images.first().price * (obj.percentage / 100))
             return discount_sell * Currency.objects.last().amount
         return 0
 
@@ -165,7 +164,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'product_type', 'title', 'category', 'status', 'advertisement', 'banner_discount', 'brand',
-                  'size', 'percentage', 'description', 'availability', 'has_size', 'is_active', 'tags']
+                  'size', 'percentage', 'description', 'availability', 'has_size', 'is_active']
 
 
 class ProductImagesSerializer(serializers.ModelSerializer):
@@ -185,7 +184,7 @@ class ProductImagesSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    category = serializers.CharField(source='category.title', read_only=True)
+    category = serializers.SerializerMethodField()
     brand = serializers.CharField(source='brand.title', read_only=True)
     size = SizeSerializer(many=True)
     mid_rate = serializers.SerializerMethodField()
@@ -198,10 +197,12 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
-            'id', 'product_type', 'title', 'category', 'brand', 'size', 'percentage', 'price_uzs', 'discount_uzs',
+            'id', 'product_type', 'title', 'brand', 'category', 'brand', 'size', 'percentage', 'price_uzs', 'discount_uzs',
             'view', 'mid_rate', 'mid_rate_percent', 'availability', 'description', 'product_images', 'additional_info',
-            'tags'
         ]
+
+    def get_category(self, obj):
+        return CategoryListSerializer(obj.category.all(), many=True).data
 
     @staticmethod
     def get_size(obj):
@@ -209,7 +210,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_mid_rate(obj):
-        result = Rate.objects.filter(product=obj.id).aggregate(avarage=Avg("rate"))
+        result = Rate.objects.filter(
+            product=obj.id).aggregate(avarage=Avg("rate"))
         if result['avarage']:
             return round(result['avarage'], 1)
         else:
@@ -217,7 +219,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_mid_rate_percent(obj):
-        result = Rate.objects.filter(product=obj.id).aggregate(avarage=Avg("rate"))
+        result = Rate.objects.filter(
+            product=obj.id).aggregate(avarage=Avg("rate"))
         if result['avarage']:
             percent = result['avarage'] * 100 / 5
             return percent
@@ -238,7 +241,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     def get_discount_uzs(obj):
         if obj.percentage:
             discount_sell = obj.product_images.first().price - (
-                    obj.product_images.first().price * (obj.percentage / 100))
+                obj.product_images.first().price * (obj.percentage / 100))
             return discount_sell * Currency.objects.last().amount
         return 0
 
