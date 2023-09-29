@@ -445,14 +445,15 @@
                         <ul>
                             <li><a class="active" href="{% url 'index' %}">{% trans "Bosh sahifa" %}</a>
                             </li>
-                            {#                            <li>#}
-                            {##}
-                            {#                                <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>#}
-                            {#                            </li>#}
                             <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                             </li>
-                            <li>
-                                <a href="{% url 'contact' %}">{% trans "Aloqa" %}</a>
+                            <li><a href="{% url 'appliances' %}">{% trans "Texnikalar" %}</a>
+                            </li>
+                            <li><a href="{% url 'books' %}">{% trans "Kitoblar" %}</a>
+                            </li>
+                            <li><a href="{% url 'clothes' %}">{% trans "Kiyimlar" %}</a>
+                            </li>
+                            <li><a href="{% url 'contact' %}">{% trans "Aloqa" %}</a>
                             </li>
 
                             {#                            <li><a href="#">My Account</a></li>#}
