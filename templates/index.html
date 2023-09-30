@@ -149,20 +149,20 @@
             <div class="container">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {% if status_index == 'featured' %}active{% endif %}" id="nav-tab-one"
+                        <button class="nav-link {% if status_index == 'product' %}active{% endif %}" id="nav-tab-one"
                                 data-bs-toggle="tab" data-bs-target="#tab-one"
                                 type="button" role="tab" aria-controls="tab-one"
                                 aria-selected="true">{% trans "Maxsus" %}
                         </button>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link {% if status_index == 'popular' %}active{% endif %}" href="{% url 'index' %}?status=popular"
+                        <a class="nav-link {% if status_index == 'clothing' %}active{% endif %}" href="{% url 'index' %}?status=clothing"
                            id="nav-tab-two"
                            type="button">{% trans "Mashhurlar" %}
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link {% if status_index == 'top_rated' %}active{% endif %}"
-                           href="{% url 'index' %}?status=top_rated" id="nav-tab-three"
+                        <a class="nav-link {% if status_index == 'books' %}active{% endif %}"
+                           href="{% url 'index' %}?status=books" id="nav-tab-three"
                            type="button">{% trans "Eng Yaxshilar" %}
                         </a>
                     </li>

@@ -32,12 +32,12 @@ def index(request):
     if cat:
         product = product.filter(category__title__icontains=cat)
     if status:
-        if status == "popular":
-            product = sorted(product, key=lambda t: t.mid_rate, reverse=True)
-            status_index = 'popular'
-        elif status == "top_rated":
-            product = product.order_by('-view')
-            status_index = 'top_rated'
+        if status == "clothes":
+            product = product.filter(product_type='clothing')
+            status_index = 'clothes'
+        elif status == "books":
+            product = product.filter(product_type='books')
+            status_index = 'books'
     if search:
         product = product.filter(Q(title__icontains=search) | Q(category__title__icontains=search))
 
