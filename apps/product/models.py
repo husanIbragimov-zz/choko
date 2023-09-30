@@ -172,10 +172,7 @@ class Product(BaseAbstractDate):
     description = RichTextField(null=True, blank=True)
     availability = models.IntegerField(default=0, null=True, blank=True)
     has_size = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
-
-    # book
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='product_author')
+    is_active = models.BooleanField(default=True, db_index=True)
     product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     @property

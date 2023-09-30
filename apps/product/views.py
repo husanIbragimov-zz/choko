@@ -20,10 +20,9 @@ def index(request):
     top_rated_products = sorted(product, key=lambda t: t.mid_rate, reverse=True)
     top_viewed_products = product.order_by('-view')
     banner_discounts = BannerDiscount.objects.filter(product__isnull=False, is_active=True)
-    query = []
-    for qs in product:
-        if qs.percentage > 20:
-            query.append(qs)
+
+    # Generate the query list using list comprehension.
+    query = [qs for qs in product if qs.percentage > 20]
 
     # filters
     cat = request.GET.get('cat')
@@ -90,7 +89,7 @@ def shop_list(request):
     active_cat = False
     active_cat_name = None
     active_brand = False
-    active_brand_name = False
+    active_brand_name = None
     if cat:
         active_cat = True
         active_cat_name = cat
@@ -106,15 +105,15 @@ def shop_list(request):
         active_brand_name = brand
         products = products.filter(brand__title__icontains=brand)
 
-    query = []
-    for qs in products:
-        if qs.percentage > 20:
-            query.append(qs)
-
     # paginator
     page_number = request.GET.get('page')
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
+
+    query = []
+    for qs in products:
+        if qs.percentage > 20:
+            query.append(qs)
 
     context = {
         'products': paginated_products,
@@ -132,6 +131,180 @@ def shop_list(request):
     return render(request, 'shop.html', context)
 
 
+def shop_appliances(request):
+    products = Product.objects.filter(is_active=True, product_type='product').order_by('?')
+    category = Category.objects.filter(is_active=True)
+    brands = Brand.objects.all().order_by('-id')
+    top_rate_products = sorted(products, key=lambda t: t.mid_rate)
+    last_3_products = products.order_by('-view')
+
+    # filter
+    cat = request.GET.get('cat')
+    top_rated = request.GET.get('top_rated')
+    search = request.GET.get('search')
+    advertisement = request.GET.get('advertisement')
+    brand = request.GET.get('brand')
+    active_cat = False
+    active_cat_name = None
+    active_brand = False
+    active_brand_name = None
+    if cat:
+        active_cat = True
+        active_cat_name = cat
+        products = products.filter(category__title__icontains=cat)
+    if search:
+        products = products.filter(
+            Q(title__icontains=search) | Q(status__contains=search) | Q(brand__title__icontains=search) | Q(
+                description=search))
+    if advertisement:
+        products = products.filter(advertisement__title__contains=advertisement)
+    if brand:
+        active_brand = True
+        active_brand_name = brand
+        products = products.filter(brand__title__icontains=brand)
+
+    # paginator
+    page_number = request.GET.get('page')
+    paginator = Paginator(products, 20)
+    paginated_products = paginator.get_page(page_number)
+
+    query = []
+    for qs in products:
+        if qs.percentage > 20:
+            query.append(qs)
+
+    context = {
+        'products': paginated_products,
+        'discounts': query,
+        'page_obj': paginated_products,
+        'cats': category,
+        'active_cat': active_cat,
+        'active_cat_name': active_cat_name,
+        'active_brand': active_brand,
+        'active_brand_name': active_brand_name,
+        'brands': brands,
+        'last_3_products': last_3_products[:3],
+        'top_rate_products': top_rate_products
+    }
+    return render(request, 'shop-appliance.html', context)
+
+
+def shop_books(request):
+    products = Product.objects.filter(is_active=True, product_type='book').order_by('?')
+    category = Category.objects.filter(is_active=True)
+    brands = Brand.objects.all().order_by('-id')
+    top_rate_products = sorted(products, key=lambda t: t.mid_rate)
+    last_3_products = products.order_by('-view')
+
+    # filter
+    cat = request.GET.get('cat')
+    top_rated = request.GET.get('top_rated')
+    search = request.GET.get('search')
+    advertisement = request.GET.get('advertisement')
+    brand = request.GET.get('brand')
+    active_cat = False
+    active_cat_name = None
+    active_brand = False
+    active_brand_name = None
+    if cat:
+        active_cat = True
+        active_cat_name = cat
+        products = products.filter(category__title__icontains=cat)
+    if search:
+        products = products.filter(
+            Q(title__icontains=search) | Q(status__contains=search) | Q(brand__title__icontains=search) | Q(
+                description=search))
+    if advertisement:
+        products = products.filter(advertisement__title__contains=advertisement)
+    if brand:
+        active_brand = True
+        active_brand_name = brand
+        products = products.filter(brand__title__icontains=brand)
+
+    # paginator
+    page_number = request.GET.get('page')
+    paginator = Paginator(products, 20)
+    paginated_products = paginator.get_page(page_number)
+
+    query = []
+    for qs in products:
+        if qs.percentage > 20:
+            query.append(qs)
+
+    context = {
+        'products': paginated_products,
+        'discounts': query,
+        'page_obj': paginated_products,
+        'cats': category,
+        'active_cat': active_cat,
+        'active_cat_name': active_cat_name,
+        'active_brand': active_brand,
+        'active_brand_name': active_brand_name,
+        'brands': brands,
+        'last_3_products': last_3_products[:3],
+        'top_rate_products': top_rate_products
+    }
+    return render(request, 'shop-book.html', context)
+
+
+def shop_clothes(request):
+    products = Product.objects.filter(is_active=True, product_type='clothing').order_by('?')
+    category = Category.objects.filter(is_active=True)
+    brands = Brand.objects.all().order_by('-id')
+    top_rate_products = sorted(products, key=lambda t: t.mid_rate)
+    last_3_products = products.order_by('-view')
+
+    # filter
+    cat = request.GET.get('cat')
+    top_rated = request.GET.get('top_rated')
+    search = request.GET.get('search')
+    advertisement = request.GET.get('advertisement')
+    brand = request.GET.get('brand')
+    active_cat = False
+    active_cat_name = None
+    active_brand = False
+    active_brand_name = None
+    if cat:
+        active_cat = True
+        active_cat_name = cat
+        products = products.filter(category__title__icontains=cat)
+    if search:
+        products = products.filter(
+            Q(title__icontains=search) | Q(status__contains=search) | Q(brand__title__icontains=search) | Q(
+                description=search))
+    if advertisement:
+        products = products.filter(advertisement__title__contains=advertisement)
+    if brand:
+        active_brand = True
+        active_brand_name = brand
+        products = products.filter(brand__title__icontains=brand)
+
+    # paginator
+    page_number = request.GET.get('page')
+    paginator = Paginator(products, 20)
+    paginated_products = paginator.get_page(page_number)
+
+    query = []
+    for qs in products:
+        if qs.percentage > 20:
+            query.append(qs)
+
+    context = {
+        'products': paginated_products,
+        'discounts': query,
+        'page_obj': paginated_products,
+        'cats': category,
+        'active_cat': active_cat,
+        'active_cat_name': active_cat_name,
+        'active_brand': active_brand,
+        'active_brand_name': active_brand_name,
+        'brands': brands,
+        'last_3_products': last_3_products[:3],
+        'top_rate_products': top_rate_products
+    }
+    return render(request, 'shop-clothing.html', context)
+
+
 def shop_details(request, id):
     product = get_object_or_404(Product, id=id)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
@@ -140,24 +313,43 @@ def shop_details(request, id):
     data = []
     data_ids = []
     for image in images:
-        if image.color_id in data_ids:
-            data.append({
-                "id": image.id,
-                'color': image.color_id
-            })
-            number = [d.get('count') for d in data if d['color'] == image.color_id]
-            data[-1]['count'] = number[0] + 1
+        if product.product_type == 'book':
+            if image.wrapper in data_ids:
+                data.append({
+                    "id": image.id,
+                    'wrapper': image.wrapper
+                })
+                number = [d.get('count') for d in data if d['wrapper'] == image.wrapper]
+                data[-1]['count'] = number[0] + 1
+            else:
+                data.append({
+                    "id": image.id,
+                    'count': 1,
+                    'wrapper': image.wrapper
+                })
+                data_ids.append(image.wrapper)
         else:
-            data.append({
-                "id": image.id,
-                'count': 1,
-                'color': image.color_id
-            })
-            data_ids.append(image.color_id)
+            if image.color_id in data_ids:
+                data.append({
+                    "id": image.id,
+                    'color': image.color_id
+                })
+                number = [d.get('count') for d in data if d['color'] == image.color_id]
+                data[-1]['count'] = number[0] + 1
+            else:
+                data.append({
+                    "id": image.id,
+                    'count': 1,
+                    'color': image.color_id
+                })
+                data_ids.append(image.color_id)
     filtred_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
     result_data = []
     for i in filtred_data:
-        res = ProductImage.objects.filter(product_id=id, color_id=i['color']).last()
+        if product.product_type == 'book':
+            res = ProductImage.objects.filter(product_id=id, wrapper__exact=i['wrapper']).first()
+        else:
+            res = ProductImage.objects.filter(product_id=id, color_id=i['color']).first()
         if res not in result_data and res is not None:
             result_data.append(res)
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]

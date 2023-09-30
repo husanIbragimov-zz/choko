@@ -14,17 +14,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
-class PrintedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Printed
-        fields = ['id', 'name']
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['id', 'title']
-        ref_name = 'Product Tag'
 
 
 class BookImageSerializer(serializers.ModelSerializer):
@@ -35,7 +24,6 @@ class BookImageSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField(read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
     author = serializers.CharField(source='author.title', read_only=True)
     advertisement = serializers.CharField(source='advertisement.title', read_only=True)
     banner_discount = serializers.CharField(source='banner_discount.title', read_only=True)
@@ -53,15 +41,14 @@ class BookSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'title', 'images', 'banner_discount', 'advertisement', 'status', 'category',
                   'author', 'description', 'availability', 'brand',
-                  'percentage', 'discount', 'view', 'isbn', 'author', 'lang', 'script', 'total_pages',
-                  'printed', 'format', 'year_of_creation', 'tags', 'product_type', 'created_at', 'updated_at',
+                  'percentage', 'discount', 'view',  'product_type', 'created_at', 'updated_at',
                   'is_active']
 
 
 class BookListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'title', 'author', 'description', 'isbn']
+        fields = ['id', 'title', 'brand', 'isbn']
 
 
 class BookCreateSerializer(serializers.ModelSerializer):
