@@ -8,7 +8,6 @@ from apps.product.models import Product, Color, Size, ProductImage
 # Create your models here.
 
 
-
 class Cart(BaseAbstractDate):
     completed = models.BooleanField(default=False)
     session_id = models.CharField(max_length=100)
@@ -33,11 +32,14 @@ class Order(BaseAbstractDate):
         ('Completed', 'Completed'),
         ('Canceled', 'Canceled'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS, default='New')
 
     def __str__(self):
-        return f"{self.user.username}"
+        if self.phone_number:
+            return f"{self.phone_number}"
+        return self.user.username
 
     @property
     def num_of_items(self):
@@ -65,7 +67,8 @@ class CartItem(BaseAbstractDate):
 
     @property
     def subtotal(self):
-        return self.quantity * self.product_image.price_uzs
+        return round(self.quantity * (
+                self.product_image.price_uzs + ((self.variant.percent * self.product_image.price_uzs) / 100)), 2)
 
 
 class Wishlist(BaseAbstractDate):

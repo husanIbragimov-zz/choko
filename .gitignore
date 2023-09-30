@@ -135,6 +135,7 @@ apps/base/migrations/
 apps/contact/migrations/
 apps/product/migrations/
 apps/order/migrations/
+chocco/settings.py/
 
 media/
 staticfiles/

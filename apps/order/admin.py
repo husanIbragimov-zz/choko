@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
+from django.db.models import Count, Sum
 
 from apps.order.models import CartItem, Cart, Order, Wishlist, Variant
 
@@ -9,6 +11,7 @@ class CartItemAdmin(admin.TabularInline):
     model = CartItem
     list_display = ['id', "title", 'variant', 'product', "description"]
     list_filter = ['prodcut', 'variant', 'created_at']
+    readonly_fields = ('cart', 'order', 'product', 'variant', 'product_image', 'size', 'quantity')
 
 
 class CartAdmin(admin.ModelAdmin):
@@ -21,8 +24,7 @@ class CartAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = [CartItemAdmin]
-    list_display = ('user', 'num_of_items', 'cart_total', 'status',
-                    'id')
+    list_display = ('phone_number', 'num_of_items', 'cart_total', 'status', 'id')
     list_filter = ('status', 'created_at')
     list_per_page = 20
 

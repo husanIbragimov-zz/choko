@@ -1,21 +1,58 @@
 from django.contrib.auth.models import User
-from django.contrib.humanize.templatetags.humanize import intcomma
-from django.core.validators import validate_image_file_extension
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.db.models import Avg
-from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
-from apps.base.models import BaseAbstractDate
+from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
 
-from apps.base.models import Variant
+STATUS = (
+    ('NEW', 'NEW'),
+    ('HOT', 'HOT'),
+    ('BEST SELL', 'BEST SELL'),
+    ('SALE', 'SALE'),
+)
+
+LANGUAGE = (
+    ('krill', 'krill'),
+    ('english', 'english'),
+    ('russian', 'russian'),
+    ('uzbek', 'uzbek'),
+)
+
+YOZUV = (
+    ('krill', 'krill'),
+    ('english', 'english'),
+    ('russian', 'russian'),
+    ('uzbek', 'uzbek'),
+
+)
+
+MUQOVA = (
+    ('qattiq', 'qattiq'),
+    ('yumshoq', 'yumshoq'),
+)
+
+FORMAT = (
+    ('a5', 'A5'),
+    ('a4', 'A4'),
+    ('a3', 'A3'),
+    ('a2', 'A2'),
+    ('a1', 'A1'),
+    ('a0', 'A0'),
+)
+
+PRODUCT_TYPE = (
+    ('book', 'Book'),
+    ('clothing', 'Clothing'),
+    ('product', 'Product')
+)
 
 
 class BannerDiscount(BaseAbstractDate):
-    title = models.CharField(max_length=223, null=True)
+    title = models.TextField(null=True)
     image = models.ImageField(upload_to='sales', null=True)
     deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -112,30 +149,31 @@ class Size(BaseAbstractDate):
         return self.name
 
 
-class Product(BaseAbstractDate):
-    STATUS = (
-        ('NEW', 'NEW'),
-        ('HOT', 'HOT'),
-        ('BEST SELL', 'BEST SELL'),
-        ('SALE', 'SALE'),
-    )
+class Author(BaseAbstractDate):
+    name = models.CharField(max_length=255, null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
+
+class Product(BaseAbstractDate):
+    # product and clothing
     banner_discount = models.ForeignKey(BannerDiscount, on_delete=models.SET_NULL, null=True, blank=True)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(choices=STATUS, default='NEW', max_length=10, null=True, blank=True)
-    title = models.CharField(max_length=223, null=True)
+    title = models.TextField(null=True)
     category = models.ManyToManyField(Category, blank=True,
                                       limit_choices_to={'is_active': True, 'parent__isnull': False})
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     size = models.ManyToManyField(Size, blank=True)
-    # price = models.FloatField(default=0, null=True)
     percentage = models.FloatField(default=0, null=True, blank=True)
     discount = models.FloatField(default=0, null=True, blank=True)
     view = models.IntegerField(default=0, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     availability = models.IntegerField(default=0, null=True, blank=True)
     has_size = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, db_index=True)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     @property
     def mid_rate(self):
@@ -180,12 +218,12 @@ class Product(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        price = round(self.product_images.first().price * Currency.objects.last().amount, 2)
+        price = int(self.product_images.first().price * Currency.objects.last().amount)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
-        discount = round(self.discount * Currency.objects.last().amount, 2)
+        discount = int(self.discount * Currency.objects.last().amount)
 
         return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
@@ -196,13 +234,22 @@ class Product(BaseAbstractDate):
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         monthly = total / active_variant.duration
 
-        return round(monthly, 2)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+        return int(monthly)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+
+    @property
+    def total_uzs(self):
+        variants = Variant.objects.all().order_by('duration')
+        active_variant = variants.last()
+        total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
+
+        return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class ProductImage(BaseAbstractDate):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True)
-    image = models.ImageField(upload_to='products', null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
+    wrapper = models.CharField(max_length=25, choices=MUQOVA, null=True, blank=True, verbose_name='Muqova')
+    image = models.ImageField(upload_to='products', null=False, blank=False)
     price = models.FloatField(default=0)
     is_active = models.BooleanField(default=True)
 
@@ -211,8 +258,15 @@ class ProductImage(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        price = round(self.price * Currency.objects.last().amount, 2)
+        price = int(self.price * Currency.objects.last().amount)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
+
+    @property
+    def total_uzs(self):
+        variants = Variant.objects.all().order_by('duration')
+        active_variant = variants.last()
+        total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
+        return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
 class AdditionalInfo(BaseAbstractDate):

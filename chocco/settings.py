@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
+
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,13 +34,12 @@ ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
-
+    'modeltranslation',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.humanize',
 
@@ -47,7 +49,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'ckeditor',
     'mptt',
+    'django_filters',
     'colorfield',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
+    'drf_yasg',
+    'import_export',
 
     # local apps
     'apps.base',
@@ -60,6 +68,7 @@ INSTALLED_APPS = [
 # AUTH_USER_MODEL = 'base.User'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -101,28 +110,69 @@ SITE_ID = 1
 
 WSGI_APPLICATION = 'chocco.wsgi.application'
 
+
+# rest_framework
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+    ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend',],
+}
+
+# swagger ->
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+
+# cors headers ->
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = [
+    '*'
+]
+
+CORS_ALLOW_HEADERS = [
+    '*'
+]
+CORS_ALLOW_CREDENTIALS = True
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-#DATABASES = {
-#   'default': {
-#       'ENGINE': 'django.db.backends.sqlite3',
-#       'NAME': BASE_DIR / 'db.sqlite3',
-#   }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # ================================================== PostgresSQL =======================================================
-DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.postgresql',
-          'NAME': 'choko',
-          'USER': 'choko',
-          'PASSWORD': 'choko',
-          'HOST': 'localhost',
-          'PORT': 5432,
-      }
-  }
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.postgresql',
+#          'NAME': 'choko',
+#          'USER': 'choko',
+#          'PASSWORD': 'choko',
+#          'HOST': 'localhost',
+#          'PORT': 5432,
+#      }
+# }
 
 
 # Password validation
@@ -146,6 +196,24 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
+
+# Internationalization
+# https://docs.djangoproject.com/en/3.2/topics/i18n/
+
+LANGUAGE_CODE = 'uz'
+
+TIME_ZONE = 'Asia/Tashkent'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+# language
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+
 LANGUAGES = [
     ('uz', _('Uzbek')),
     ('ru', _('Russian'))
@@ -155,21 +223,20 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+MODELTRANSLATION_LANGUAGE = ('ru',)
 # MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'ru'
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'uz', },  # Uzbek
+        {'code': 'ru', },  # Russian
+    ),
+    'default': {
+        'fallbacks': ['uz'],
+        'hide_untranslated': False,
+    }
+}
 
-LANGUAGE_CODE = 'uz-uz'
-
-TIME_ZONE = 'Asia/Tashkent'
-
-USE_I18N = True
-
-# USE_L10N = True
-
-USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -192,6 +259,49 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# jwt configuration
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": settings.SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    "JTI_CLAIM": "jti",
+
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+
+    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
+
+
+# ckeditor
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'

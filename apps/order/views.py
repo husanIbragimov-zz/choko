@@ -29,8 +29,8 @@ def add_to_cart(request):
         quantity = request.POST['quantity']
         size = request.POST.get('size', None)
         cart = Cart.objects.get(session_id=session_id, completed=False)
-        cart_item = CartItem.objects.filter(cart=cart, product_id=product_id)
         product = Product.objects.get(id=product_id)
+        print(product_image)
         has_size = False
         has_color = False
         if product.size.all().exists():
@@ -59,12 +59,13 @@ def add_to_cart(request):
             variants = Variant.objects.all().order_by('duration')
             variant = variants.last().id
         variant = Variant.objects.get(id=variant)
+        cart_item = CartItem.objects.filter(cart=cart, product_id=product_id, variant=variant)
+
         if cart_item.exists():
             for i in cart_item:
                 i.quantity += int(quantity)
                 i.save()
         else:
-
             cart_item = CartItem.objects.create(
                 cart_id=cart.id,
                 product_id=product_id,
@@ -87,7 +88,8 @@ def create_order(request, id):
     cart_items = cart.cart_items.all()
     user = request.user
     order = Order.objects.create(
-        user=user
+        user=user,
+        phone_number=user.username
     )
     for item in cart_items:
         item.order = order
@@ -99,14 +101,52 @@ def create_order(request, id):
     for i in cart_items:
         data.append(dict(
             user=request.user.username,
+            order=order.id,
             product=i.product.title,
             variant=i.variant.duration,
-            photo=i.product.product_images.first().image.url
+            photo=i.product_image.image.url
         ))
-    print(data)
     asyncio.run(order_product(data))
 
     return redirect('/')
+
+
+def confirm_order(request):
+    id = request.POST.get("id", False)
+    phone_number = request.POST.get("phone_number", False)
+
+    cart = get_object_or_404(Cart, id=id)
+    cart_items = cart.cart_items.all()
+
+    user = request.user
+    if user.is_authenticated:
+        order = Order.objects.create(
+            user=user,
+            phone_number=f"{user} | {phone_number}"
+        )
+    else:
+        order = Order.objects.create(
+            phone_number=phone_number
+        )
+    for item in cart_items:
+        item.order = order
+        item.save()
+
+    cart.completed = True
+    cart.save()
+    data = []
+    for i in cart_items:
+        data.append(dict(
+            user=phone_number,
+            order=order.id,
+            product=i.product.title,
+            variant=i.variant.duration,
+            photo=i.product_image.image.url
+        ))
+    asyncio.run(order_product(data))
+
+    return redirect('/')
+
 
 
 @login_required(login_url='/login')
@@ -176,8 +216,8 @@ def create_order_wishlist(request, id):
         product=product,
         quantity=1,
         cart=cart
-
     )
     wishlist = Wishlist.objects.filter(session_id=session_id, product_id=id).delete()
     url = request.META.get('HTTP_REFERER')
     return redirect(url)
+

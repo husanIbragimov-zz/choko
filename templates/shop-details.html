@@ -79,7 +79,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">{% trans "Bosh sahifa" %}</a>
+                    <a href="{% url 'index' %}" rel="nofollow">{% trans "Bosh sahifa" %}</a>
                     <span></span> {{ product.category.first }}
                     <span></span> {{ product.title }}
                 </div>
@@ -115,7 +115,7 @@
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
                                                 <span> {% trans "Brand" %}: <a
-                                                        href="/shop/?brand={{ product.brand }}">{{ product.brand }}</a></span>
+                                                        href="{% url 'products_filter' %}?brand={{ product.brand }}">{{ product.brand }}</a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -138,7 +138,7 @@
                                                     <div>
                                                         <p>{% trans "Narx" %}:</p>
                                                         <span style="font-size: 20px" id="origin_price"
-                                                        >{{ image_objects.first.price_uzs|intcomma }} uzs</span>
+                                                        >{{ image_objects.first.total_uzs|intcomma }} uzs</span>
 
                                                     </div>
 
@@ -150,10 +150,10 @@
                                                                    class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
-                                                    <div>
+                                                    <div class="mt-15">
                                                         <p>{% trans "Narx" %}:</p>
-                                                        <span style="font-size: 20px" id="origin_price"
-                                                        >{{ image_objects.first.price_uzs|intcomma }} uzs</span>
+                                                        <span style="font-size: 15px" id="origin_price"
+                                                        >{{ image_objects.first.total_uzs|intcomma }} uzs</span>
 
                                                     </div>
                                                 {% endif %}
@@ -163,27 +163,51 @@
                                         <div class="short-desc mb-30">
                                             {{ product.description|safe|truncatewords:40 }}
                                         </div>
-                                        <div class="attr-detail attr-color mb-15">
-                                            <strong class="mr-10">{% trans "Rang" %}:</strong>
-                                            <ul class="list-filter color-filter" id="color_class">
-                                                {% for item in images %}
-                                                    {% csrf_token %}
-                                                    <li class="ml-5 list-form">
-                                                        <input class="image_id" id="image_id" name="image_id"
-                                                               type="hidden"
-                                                               value="{{ item.id }}">
-                                                        <a href="#"
-                                                           onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
-                                                           class="form-submit">
-                                                            <img src="{{ item.image.url }}" alt="" width="50"
-                                                                 height="50">
-                                                            <p class="d-none">{{ item.id }}</p>
-                                                        </a>
+                                        {% if product.product_type == 'book' %}
+                                            <div class="attr-detail attr-color mb-15">
+                                                <strong class="mr-10">{% trans "Rang" %}:</strong>
+                                                <ul class="list-filter color-filter" id="color_class">
+                                                    {% for item in images %}
+                                                        {% csrf_token %}
+                                                        <li class="ml-5 list-form">
+                                                            <input class="image_id" id="image_id" name="image_id"
+                                                                   type="hidden"
+                                                                   value="{{ item.id }}">
+                                                            <a href="#"
+                                                               onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
+                                                               class="form-submit">
+                                                                <img src="{{ item.image.url }}" alt="" width="50"
+                                                                     height="50">
+                                                                <p class="d-none">{{ item.id }}</p>
+                                                            </a>
 
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            <div class="attr-detail attr-color mb-15">
+                                                <strong class="mr-10">{% trans "Rang" %}:</strong>
+                                                <ul class="list-filter color-filter" id="color_class">
+                                                    {% for item in images %}
+                                                        {% csrf_token %}
+                                                        <li class="ml-5 list-form">
+                                                            <input class="image_id" id="image_id" name="image_id"
+                                                                   type="hidden"
+                                                                   value="{{ item.id }}">
+                                                            <a href="#"
+                                                               onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
+                                                               class="form-submit">
+                                                                <img src="{{ item.image.url }}" alt="" width="50"
+                                                                     height="50">
+                                                                <p class="d-none">{{ item.id }}</p>
+                                                            </a>
+
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
                                         {% if product.size.all %}
                                             <div class="attr-detail attr-size mb-15">
                                                 <strong class="mr-10">{% trans "O'lcham" %}</strong>
@@ -201,7 +225,14 @@
                                                 {% for variant in variants %}
                                                     <li class="{% if variant.id == active_variant.id %}active{% endif %}">
                                                         <a class="calculate"
-                                                           onclick="calculate({{ variant.duration }}, {{ variant.percent }}, {{ image_objects.first.price_uzs }}, 'variant', {{ variant.id }})"
+                                                           onclick="calculate({
+                                                                   duration:{{ variant.duration }},
+                                                                   percent:{{ variant.percent }},
+                                                                   price:'{{ image_objects.first.price_uzs }}',
+                                                                   status: 'variant',
+                                                                   id:{{ variant.id }}
+                                                                   })"
+
                                                            href="#">{{ variant.duration }} {% trans "oy" %}
                                                             <span class="d-none">{{ variant.id }}</span>
                                                         </a>
@@ -370,7 +401,7 @@
                                 </div>
                                 <div class="row">
                                     {% for item in related_products %}
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                        <div class="col-lg-3 col-md-4 col-6 col-sm-6">
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
@@ -390,7 +421,8 @@
                                                                 class="far fa-heart pt-10"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="{{ product.status.lower }}">{{ product.status }}</span>
+                                                        <span class="{{ product.status.lower }}">{% if product.status %}
+                                                            {{ product.status }}{% endif %}</span>
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
@@ -405,15 +437,17 @@
                                                     </div>
                                                     <div class="product-price">
                                                         {% if item.percentage > 0 %}
-                                                            <span>UZS {{ item.discount_uzs|intcomma }} </span><br>
-                                                            <span class="bg-warning new_price">{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                            <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                             <br>
-                                                            <span class="old-price">UZS {{ item.price_uzs|intcomma }}</span>
+                                                            <span class="bg-warning new_price">UZS {{ item.discount_uzs|intcomma }} </span>
+                                                            <br>
+                                                            <br>
+                                                            <span class="old-price">UZS {{ item.total_uzs|intcomma }}</span>
 
                                                         {% else %}
-                                                            <span class="bg-warning new_price">{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                            <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                             <br>
-                                                            <span>UZS {{ item.price_uzs|intcomma }} UZS</span>
+                                                            <span class="bg-warning new_price">UZS {{ item.total_uzs|intcomma }} UZS</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -443,11 +477,13 @@
                                             </h5>
 
                                             {% if item.percentage > 0 %}
-                                                <span class="price mb-0 mt-5">UZS {{ item.discount_uzs|intcomma }} </span>
-                                            {% else %}
-                                                <span class="bg-warning new_price">{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                 <br>
-                                                <span class="price mb-0 mt-5">UZS {{ item.price_uzs|intcomma }} </span>
+                                                <span class="price mb-0 mt-5 bg-warning new_price">UZS {{ item.discount_uzs|intcomma }} </span>
+                                            {% else %}
+                                                <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                <br>
+                                                <span class="price mb-0 mt-5 bg-warning new_price">UZS {{ item.total_uzs|intcomma }} </span>
                                             {% endif %}
 
                                             <div class="product-rate">
@@ -555,6 +591,7 @@
 
         function send_val(item_id, pro_id, price) {
             calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
+            console.log(item_id, pro_id, price)
             let image_id = item_id;
             let product_id = pro_id;
 
@@ -564,7 +601,7 @@
 
             $.ajax({
                 method: 'POST',
-                url: "/shop-images/",
+                url: "{% url 'shop-images' %}",
                 data: {
                     "product_id": product_id,
                     "image_id": image_id,

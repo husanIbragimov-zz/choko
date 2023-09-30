@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -11,6 +13,16 @@ def register(request):
         username = request.POST['username']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
+
+        username_regex = r'^\+998\d{2}\d{3}\d{2}\d{2}$'
+        username_regex2 = r'^\+998\d{2}\d{3}\d{2}\d{2}$'
+        username_regex3 = r'^\d{2}\d{3}\d{2}\d{2}$'
+
+        if not re.match(username_regex, username):
+            if not re.match(username_regex2, username):
+                if not re.match(username_regex3, username):
+                    messages.warning(request, "Invalid phone number! The phone number must be +998994187100 characters!")
+                    return redirect('register')
 
         user = User.objects.filter(username=username)
         if user.exists():
@@ -81,9 +93,9 @@ def set_language(request, language):
 def selectlanguage(request):
     if request.method == 'POST':  # check post
         cur_language = translation.get_language()
-        lasturl= request.META.get('HTTP_REFERER')
+        lasturl = request.META.get('HTTP_REFERER')
         lang = request.POST['language']
         translation.activate(lang)
-        request.session[translation.LANGUAGE_SESSION_KEY]=lang
-        #return HttpResponse(lang)
-        return HttpResponseRedirect("/"+lang)
+        request.session[translation.LANGUAGE_SESSION_KEY] = lang
+        # return HttpResponse(lang)
+        return HttpResponseRedirect("/" + lang)
