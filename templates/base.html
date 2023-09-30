@@ -368,13 +368,13 @@
                                                                 <li class="col col-6 col-md-4 mega-menu-col">
                                                                     <ul>
                                                                         <li><span><a class="submenu-title"
-                                                                                     href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
+                                                                                     href="{{ request.path }}?cat={{ child }}">{{ child }}</a></span>
                                                                         </li>
                                                                         {% for sub_child in categories %}
                                                                             {% if sub_child.parent == child %}
                                                                                 <li>
                                                                                 <a class="dropdown-item nav-link nav_item"
-                                                                                   href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                   href="{{ request.path }}?cat={{ sub_child }}">{{ sub_child }}</a>
                                                                             {% endif %}
                                                                         {% endfor %}
                                                                         </li>
@@ -447,7 +447,7 @@
                             </li>
                             <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                             </li>
-                            <li><a href="{% url 'appliances' %}">{% trans "Texnikalar" %}</a>
+                            <li><a href="{% url 'techniques' %}">{% trans "Texnikalar" %}</a>
                             </li>
                             <li><a href="{% url 'books' %}">{% trans "Kitoblar" %}</a>
                             </li>

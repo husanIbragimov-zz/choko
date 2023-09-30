@@ -172,7 +172,7 @@ class Product(BaseAbstractDate):
     description = RichTextField(null=True, blank=True)
     availability = models.IntegerField(default=0, null=True, blank=True)
     has_size = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, db_index=True)
     product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     @property

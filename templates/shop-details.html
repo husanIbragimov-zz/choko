@@ -163,27 +163,51 @@
                                         <div class="short-desc mb-30">
                                             {{ product.description|safe|truncatewords:40 }}
                                         </div>
-                                        <div class="attr-detail attr-color mb-15">
-                                            <strong class="mr-10">{% trans "Rang" %}:</strong>
-                                            <ul class="list-filter color-filter" id="color_class">
-                                                {% for item in images %}
-                                                    {% csrf_token %}
-                                                    <li class="ml-5 list-form">
-                                                        <input class="image_id" id="image_id" name="image_id"
-                                                               type="hidden"
-                                                               value="{{ item.id }}">
-                                                        <a href="#"
-                                                           onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
-                                                           class="form-submit">
-                                                            <img src="{{ item.image.url }}" alt="" width="50"
-                                                                 height="50">
-                                                            <p class="d-none">{{ item.id }}</p>
-                                                        </a>
+                                        {% if product.product_type == 'book' %}
+                                            <div class="attr-detail attr-color mb-15">
+                                                <strong class="mr-10">{% trans "Rang" %}:</strong>
+                                                <ul class="list-filter color-filter" id="color_class">
+                                                    {% for item in images %}
+                                                        {% csrf_token %}
+                                                        <li class="ml-5 list-form">
+                                                            <input class="image_id" id="image_id" name="image_id"
+                                                                   type="hidden"
+                                                                   value="{{ item.id }}">
+                                                            <a href="#"
+                                                               onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
+                                                               class="form-submit">
+                                                                <img src="{{ item.image.url }}" alt="" width="50"
+                                                                     height="50">
+                                                                <p class="d-none">{{ item.id }}</p>
+                                                            </a>
 
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            <div class="attr-detail attr-color mb-15">
+                                                <strong class="mr-10">{% trans "Rang" %}:</strong>
+                                                <ul class="list-filter color-filter" id="color_class">
+                                                    {% for item in images %}
+                                                        {% csrf_token %}
+                                                        <li class="ml-5 list-form">
+                                                            <input class="image_id" id="image_id" name="image_id"
+                                                                   type="hidden"
+                                                                   value="{{ item.id }}">
+                                                            <a href="#"
+                                                               onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
+                                                               class="form-submit">
+                                                                <img src="{{ item.image.url }}" alt="" width="50"
+                                                                     height="50">
+                                                                <p class="d-none">{{ item.id }}</p>
+                                                            </a>
+
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
                                         {% if product.size.all %}
                                             <div class="attr-detail attr-size mb-15">
                                                 <strong class="mr-10">{% trans "O'lcham" %}</strong>
@@ -397,7 +421,8 @@
                                                                 class="far fa-heart pt-10"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="{{ product.status.lower }}">{% if product.status %}{{ product.status }}{% endif %}</span>
+                                                        <span class="{{ product.status.lower }}">{% if product.status %}
+                                                            {{ product.status }}{% endif %}</span>
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
@@ -566,6 +591,7 @@
 
         function send_val(item_id, pro_id, price) {
             calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
+            console.log(item_id, pro_id, price)
             let image_id = item_id;
             let product_id = pro_id;
 
