@@ -125,8 +125,9 @@ class BannerTranslationAdmin(TranslationAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(ImportExportModelAdmin):
-    list_display = ("id", "color", "price")
+    list_display = ("id", "color", "wrapper", "price")
     resource_classes = [ProductImageResource]
+    list_editable = ["price", "color", "wrapper"]
 
     # def get_queryset(self, request):
     #     queryset = super().get_queryset(request)

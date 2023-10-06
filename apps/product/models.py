@@ -219,29 +219,26 @@ class Product(BaseAbstractDate):
     @property
     def price_uzs(self):
         price = int(self.product_images.first().price * Currency.objects.last().amount)
+        print(price)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
         discount = int(self.discount * Currency.objects.last().amount)
-
         return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
     @property
     def monthly_uzs(self):
-        variants = Variant.objects.all().order_by('duration')
-        active_variant = variants.last()
+        active_variant = Variant.objects.all().last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
+        print(total)
         monthly = total / active_variant.duration
-
         return int(monthly)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
     @property
     def total_uzs(self):
-        variants = Variant.objects.all().order_by('duration')
-        active_variant = variants.last()
-        total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
-
+        active_variant = Variant.objects.last().percent
+        total = self.price_uzs + ((active_variant * self.price_uzs) / 100)
         return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
