@@ -22,7 +22,7 @@ def index(request):
     banner_discounts = BannerDiscount.objects.filter(product__isnull=False, is_active=True)
 
     # Generate the query list using list comprehension.
-    query = [qs for qs in product if qs.percentage > 20]
+    query = [qs for qs in product if qs.percentage >= 10]
 
     # filters
     cat = request.GET.get('cat')
@@ -133,8 +133,8 @@ def shop_list(request):
 
 def shop_appliances(request):
     products = Product.objects.filter(is_active=True, product_type='product').order_by('?')
-    category = Category.objects.filter(is_active=True)
-    brands = Brand.objects.all().order_by('-id')
+    category = Category.objects.filter(is_active=True, product_type='product')
+    brands = Brand.objects.filter(product_type='product').order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
 
@@ -186,13 +186,13 @@ def shop_appliances(request):
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
     }
-    return render(request, 'shop-appliance.html', context)
+    return render(request, 'shop-2.html', context)
 
 
 def shop_books(request):
     products = Product.objects.filter(is_active=True, product_type='book').order_by('?')
-    category = Category.objects.filter(is_active=True)
-    brands = Brand.objects.all().order_by('-id')
+    category = Category.objects.filter(is_active=True, product_type='book')
+    brands = Brand.objects.filter(product_type='book').order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
 
@@ -249,8 +249,8 @@ def shop_books(request):
 
 def shop_clothes(request):
     products = Product.objects.filter(is_active=True, product_type='clothing').order_by('?')
-    category = Category.objects.filter(is_active=True)
-    brands = Brand.objects.all().order_by('-id')
+    category = Category.objects.filter(is_active=True, product_type='clothing')
+    brands = Brand.objects.filter(product_type='clothing').order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
 

@@ -92,6 +92,7 @@ class Category(MPTTModel, BaseAbstractDate):
                                related_name='children', null=True, blank=True, )
     title = models.CharField(max_length=50)
     icon = models.ImageField(upload_to='category', null=True, blank=True)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
     is_active = models.BooleanField(default=True)
 
     class MPTTMeta:
@@ -114,6 +115,7 @@ class Banner(BaseAbstractDate):
 
 class Brand(BaseAbstractDate):
     title = models.CharField(max_length=223)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     def __str__(self):
         return self.title
@@ -144,6 +146,7 @@ class Color(BaseAbstractDate):
 
 class Size(BaseAbstractDate):
     name = models.CharField(max_length=50)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     def __str__(self):
         return self.name
@@ -219,7 +222,6 @@ class Product(BaseAbstractDate):
     @property
     def price_uzs(self):
         price = int(self.product_images.first().price * Currency.objects.last().amount)
-        print(price)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
