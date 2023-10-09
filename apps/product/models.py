@@ -249,7 +249,7 @@ class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
     color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
     wrapper = models.CharField(max_length=25, choices=MUQOVA, null=True, blank=True, verbose_name='Muqova')
-    image = models.ImageField(upload_to='products', null=False, blank=False)
+    image = models.FileField(upload_to='products', null=False, blank=False)
     price = models.FloatField(default=0)
     is_active = models.BooleanField(default=True)
 
