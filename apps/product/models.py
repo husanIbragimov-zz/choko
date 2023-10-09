@@ -92,6 +92,7 @@ class Category(MPTTModel, BaseAbstractDate):
                                related_name='children', null=True, blank=True, )
     title = models.CharField(max_length=50)
     icon = models.ImageField(upload_to='category', null=True, blank=True)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
     is_active = models.BooleanField(default=True)
 
     class MPTTMeta:
@@ -114,6 +115,7 @@ class Banner(BaseAbstractDate):
 
 class Brand(BaseAbstractDate):
     title = models.CharField(max_length=223)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     def __str__(self):
         return self.title
@@ -144,6 +146,7 @@ class Color(BaseAbstractDate):
 
 class Size(BaseAbstractDate):
     name = models.CharField(max_length=50)
+    product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     def __str__(self):
         return self.name
@@ -172,7 +175,7 @@ class Product(BaseAbstractDate):
     description = RichTextField(null=True, blank=True)
     availability = models.IntegerField(default=0, null=True, blank=True)
     has_size = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, db_index=True)
     product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
 
     @property
@@ -224,24 +227,20 @@ class Product(BaseAbstractDate):
     @property
     def discount_uzs(self):
         discount = int(self.discount * Currency.objects.last().amount)
-
         return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
     @property
     def monthly_uzs(self):
-        variants = Variant.objects.all().order_by('duration')
-        active_variant = variants.last()
+        active_variant = Variant.objects.all().last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
+        print(total)
         monthly = total / active_variant.duration
-
         return int(monthly)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
     @property
     def total_uzs(self):
-        variants = Variant.objects.all().order_by('duration')
-        active_variant = variants.last()
-        total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
-
+        active_variant = Variant.objects.last().percent
+        total = self.price_uzs + ((active_variant * self.price_uzs) / 100)
         return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
 
