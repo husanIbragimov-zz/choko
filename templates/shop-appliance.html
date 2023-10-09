@@ -158,58 +158,58 @@
                                     {% if active_cat %}
                                         {% if products.has_previous %}
                                             <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?cat={{ active_cat_name }}&page={{ products.previous_page_number }}"><i
+                                                                     href="{% url 'techniques' %}?cat={{ active_cat_name }}&page={{ products.previous_page_number }}"><i
                                                     class="fa fa-angle-left mt-15"></i></a></li>
                                         {% endif %}
                                         {% for obj in products.paginator.page_range %}
                                             {% if products.number == obj %}
 
                                                 <li class="page-item active"><a class="page-link"
-                                                                                href="{% url 'products_filter' %}?cat={{ active_cat_name }}&page={{ obj }}">{{ obj }}</a>
+                                                                                href="{% url 'techniques' %}?cat={{ active_cat_name }}&page={{ obj }}">{{ obj }}</a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
                                         {% if products.has_next %}
                                             <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?cat={{ active_cat_name }}&page={{ products.next_page_number }}"><i
+                                                                     href="{% url 'techniques' %}?cat={{ active_cat_name }}&page={{ products.next_page_number }}"><i
                                                     class="fa fa-angle-right mt-15"></i></a></li>
                                         {% endif %}
                                     {% elif active_brand %}
                                         {% if products.has_previous %}
                                             <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?brand={{ active_brand_name }}&page={{ products.previous_page_number }}"><i
+                                                                     href="{% url 'techniques' %}?brand={{ active_brand_name }}&page={{ products.previous_page_number }}"><i
                                                     class="fa fa-angle-left mt-15"></i></a></li>
                                         {% endif %}
                                         {% for obj in products.paginator.page_range %}
                                             {% if products.number == obj %}
 
                                                 <li class="page-item active"><a class="page-link"
-                                                                                href="{% url 'products_filter' %}?brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
+                                                                                href="{% url 'techniques' %}?brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
                                         {% if products.has_next %}
                                             <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?brand={{ active_brand_name }}&page={{ products.next_page_number }}"><i
+                                                                     href="{% url 'techniques' %}?brand={{ active_brand_name }}&page={{ products.next_page_number }}"><i
                                                     class="fa fa-angle-right mt-15"></i></a></li>
                                         {% endif %}
                                     {% else %}
                                         {% if products.has_previous %}
                                             <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?page={{ products.previous_page_number }}"><i
+                                                                     href="{% url 'techniques' %}?page={{ products.previous_page_number }}"><i
                                                     class="fa fa-angle-left mt-15"></i></a></li>
                                         {% endif %}
                                         {% for obj in products.paginator.page_range %}
                                             {% if products.number == obj %}
 
                                                 <li class="page-item active"><a class="page-link"
-                                                                                href="{% url 'products_filter' %}?page={{ obj }}">{{ obj }}</a>
+                                                                                href="{% url 'techniques' %}?page={{ obj }}">{{ obj }}</a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
                                         {% if products.has_next %}
                                             <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?page={{ products.next_page_number }}"><i
+                                                                     href="{% url 'techniques' %}?page={{ products.next_page_number }}"><i
                                                     class="fa fa-angle-right mt-15"></i></a></li>
                                         {% endif %}
                                     {% endif %}
@@ -232,7 +232,7 @@
                                             {% for sub_child in cats %}
                                                 {% if sub_child.parent != None %}
                                                     <li class="cat-item text-muted">
-                                                    <a href="{% url 'products_filter' %}?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
+                                                    <a href="{% url 'techniques' %}?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
                                                     ({{ sub_child.product_set.count }})
                                                 {% endif %}
                                             {% endfor %}
@@ -240,7 +240,7 @@
                                         {% for sub_child in cats %}
                                             {% if sub_child.parent != None %}
                                                 <li class="cat-item text-muted">
-                                                <a href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                <a href="{% url 'techniques' %}?cat={{ sub_child }}">{{ sub_child }}</a>
                                                 ({{ sub_child.product_set.count }})
                                             {% endif %}
                                         {% endfor %}
@@ -353,13 +353,13 @@
                                         {% if active_cat %}
                                             {% for brand in brands %}
                                                 <li class="cat-item text-muted">
-                                                <a href="{% url 'products_filter' %}?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
+                                                <a href="{% url 'techniques' %}?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
                                                 ({{ brand.product_set.count }})
                                             {% endfor %}
                                         {% else %}
                                         {% for brand in brands %}
                                             <li class="cat-item text-muted">
-                                            <a href="{% url 'products_filter' %}?brand={{ brand }}">{{ brand.title }}</a>
+                                            <a href="{% url 'techniques' %}?brand={{ brand }}">{{ brand.title }}</a>
                                             ({{ brand.product_set.count }})
                                         {% endfor %}
                                         {% endif %}

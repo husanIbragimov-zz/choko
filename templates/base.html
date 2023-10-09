@@ -21,7 +21,7 @@
     })(window, document, 'script', 'dataLayer', 'GTM-KT2Z9NH');</script>
     <!-- End Google Tag Manager -->
     <meta charset="utf-8">
-    <title>Choko Market — Интернет-магазин</title>
+    <title>Azbo Online Market — Интернет-магазин</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description"
           content="choko uz, choko ,choko online market, choko internet dukani, choko solfy, solfy karta, https://choko.uz/static/assets/imgs/theme/favicon.ico, choko kredit, kridit choko, telefonlar, noutbooklar, televizorlar">
@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/alertify.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" type="text/css">
+    {% block head %} {% endblock %}
     {% block style %} {% endblock %}
     {% block topscript %} {% endblock %}
     <style>
@@ -195,7 +196,7 @@
                         <ul>
                             <li><a href="tel:+99899-418-7100">+998 (99)-418-7100</a></li>
                             <li><i class="fa fa-map-marker-alt mr-5"></i><a target="_blank"
-                                                                            href="{% url 'index' %}">{% trans 'Bizning joylashuv' %}</a>
+                                                                            href="{% url 'contact' %}">{% trans 'Bizning joylashuv' %}</a>
                             </li>
                         </ul>
                     </div>
@@ -252,7 +253,7 @@
         <div class="container">
             <div class="header-wrap header-space-between">
                 <div class="logo logo-width-1">
-                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="choko_logo"></a>
+                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbo.png' %}" alt="choko_logo"></a>
                 </div>
                 <div class="search-style-2">
                     <form action="{% url 'products_filter' %}" method="get">
@@ -340,7 +341,7 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative main-nav">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/whitechokoicon.png' %}"
+                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbowhite.png' %}"
                                      alt="logo"></a>
                 </div>
                 <div class="main-categori-wrap d-none d-lg-block">
@@ -368,13 +369,13 @@
                                                                 <li class="col col-6 col-md-4 mega-menu-col">
                                                                     <ul>
                                                                         <li><span><a class="submenu-title"
-                                                                                     href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
+                                                                                     href="{{ request.path }}?cat={{ child }}">{{ child }}</a></span>
                                                                         </li>
                                                                         {% for sub_child in categories %}
                                                                             {% if sub_child.parent == child %}
                                                                                 <li>
                                                                                 <a class="dropdown-item nav-link nav_item"
-                                                                                   href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                   href="{{ request.path }}?cat={{ sub_child }}">{{ sub_child }}</a>
                                                                             {% endif %}
                                                                         {% endfor %}
                                                                         </li>
@@ -445,14 +446,15 @@
                         <ul>
                             <li><a class="active" href="{% url 'index' %}">{% trans "Bosh sahifa" %}</a>
                             </li>
-                            {#                            <li>#}
-                            {##}
-                            {#                                <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>#}
-                            {#                            </li>#}
                             <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                             </li>
-                            <li>
-                                <a href="{% url 'contact' %}">{% trans "Aloqa" %}</a>
+                            <li><a href="{% url 'techniques' %}">{% trans "Texnikalar" %}</a>
+                            </li>
+                            <li><a href="{% url 'books' %}">{% trans "Kitoblar" %}</a>
+                            </li>
+                            <li><a href="{% url 'clothes' %}">{% trans "Kiyimlar" %}</a>
+                            </li>
+                            <li><a href="{% url 'contact' %}">{% trans "Aloqa" %}</a>
                             </li>
 
                             {#                            <li><a href="#">My Account</a></li>#}
@@ -495,7 +497,7 @@
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}" alt="logo"></a>
+                <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbo.png' %}" alt="logo"></a>
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -580,7 +582,7 @@
                     </div>
                 </div>
                 <div class="single-mobile-header-info mt-30">
-                    <a target="_blank" href="#"> {% trans "Bizning joylashuv" %} </a>
+                    <a target="_blank" href="{% url 'contact' %}"> {% trans "Bizning joylashuv" %} </a>
                 </div>
 
                 <div class="single-mobile-header-info">
@@ -640,7 +642,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="widget-about font-md mb-md-5">
                         <div class="logo logo-width-1 wow fadeIn animated">
-                            <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/blackchokoicon.png' %}"
+                            <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbo.png' %}"
                                              alt="logo"></a>
                         </div>
                         <h4 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">{% trans "Aloqa" %}</h4>

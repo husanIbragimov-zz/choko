@@ -58,7 +58,7 @@ class ProductAdmin(TranslationAdmin):
     list_display = (
         'title', 'percentage', 'discount_uzs', 'mid_rate', 'view', 'is_active', 'id'
     )
-    search_fields = ('title', )
+    search_fields = ('title',)
     readonly_fields = ('mid_rate', 'discount_uzs', 'discount', 'view', 'get_discount_price')
     list_filter = ('is_active', 'status', 'brand', 'updated_at', 'created_at')
     list_per_page = 50
@@ -125,12 +125,18 @@ class BannerTranslationAdmin(TranslationAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(ImportExportModelAdmin):
-    list_display = ("id", "color", "price")
+    list_display = ("id", "color", "wrapper", "price")
     resource_classes = [ProductImageResource]
+    list_editable = ["price", "color", "wrapper"]
 
     # def get_queryset(self, request):
     #     queryset = super().get_queryset(request)
     #     return queryset.order_by('color__name', 'product__id', '-id').distinct("color__name", "product__id")
+
+
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'product_type']
+    list_editable = ['name', 'product_type']
 
 
 admin.site.register(Author)
@@ -138,7 +144,7 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand, BrandTranslationAdmin)
 admin.site.register(AdditionalInfo)
 admin.site.register(Color)
-admin.site.register(Size)
+admin.site.register(Size, SizeAdmin)
 admin.site.register(Banner, BannerTranslationAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Rate)
