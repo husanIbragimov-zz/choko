@@ -33,7 +33,7 @@ class CategoryAdmin(DraggableMPTTAdmin, TranslationAdmin):
     list_display = ('tree_actions', 'indented_title', 'created_at', 'is_active', 'id')
 
     list_display_links = ('indented_title', 'id')
-    list_filter = ('is_active', 'created_at')
+    list_filter = ('product_type', 'is_active', 'created_at')
     search_fields = ('title',)
     list_per_page = 25
 
@@ -60,7 +60,7 @@ class ProductAdmin(TranslationAdmin):
     )
     search_fields = ('title',)
     readonly_fields = ('mid_rate', 'discount_uzs', 'discount', 'view', 'get_discount_price')
-    list_filter = ('is_active', 'status', 'brand', 'updated_at', 'created_at')
+    list_filter = ('product_type', 'is_active', 'status', 'brand', 'updated_at', 'created_at')
     list_per_page = 50
 
     group_fieldsets = True

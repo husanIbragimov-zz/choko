@@ -6668,9 +6668,7 @@ h6.post-title {
   content: '\f105';
   font-family: "Font Awesome 5 Pro";
   position: absolute;
-  right: 30px;
-  top: 50%;
-  margin-top: -10px;
+  left: 250px;
 }
 
 .categori-dropdown-wrap ul li.has-children .dropdown-menu {
