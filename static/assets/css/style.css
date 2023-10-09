@@ -3,7 +3,7 @@
 }
 
 .buy {
-    border: 1px solid #5897FB;
+    border: 1px solid #15916D;
     border-radius: 20px;
     padding: 10px 20px;
 }
@@ -13,7 +13,7 @@
     border-radius: 20px;
     padding: 10px 20px;
     color: white;
-    background-color: #5897FB;
+    background-color: #15916D;
 }
 
 .countdown-box {
@@ -23,7 +23,7 @@
 }
 
 .timer {
-    background-color: #5897FB;
+    background-color: #15916D;
     margin: 10px;
     padding: 7px 10px;
     border-radius: 5px;
@@ -33,6 +33,6 @@
 
 .double-dot {
     margin-top: 15px;
-    color: #5897FB;
+    color: #15916D;
     font-size: 17px;
 }
