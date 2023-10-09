@@ -48,5 +48,4 @@ class BrandAPITest(TestCase):
             destroy_url = reverse(self.url, kwargs={'pk': brand.pk})
             response = self.client.delete(destroy_url)
             self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-            print(self.user, response)
             self.assertEqual(Brand.objects.count(), 0)
