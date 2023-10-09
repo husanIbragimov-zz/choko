@@ -38,9 +38,7 @@ def count_products(request, *args, **kwargs):
             data.append(res)
             if result.exists():
                 number += 1
-    # print(number)
     # result = ProductImage.objects.values('product', 'color').annotate(dcount=Count('product')).order_by()
-    # print(result)
     return Response({
         "msg": number,
         "status": 200
