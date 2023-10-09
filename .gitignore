@@ -130,12 +130,12 @@ dmypy.json
 .idea/
 
 #migration files
-apps/about/migrations/
-apps/base/migrations/
-apps/contact/migrations/
-apps/product/migrations/
-apps/order/migrations/
-chocco/settings.py/
+#apps/about/migrations/
+#apps/base/migrations/
+#apps/contact/migrations/
+#apps/product/migrations/
+#apps/order/migrations/
+#chocco/settings.py/
 
 media/
 staticfiles/
