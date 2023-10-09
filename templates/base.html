@@ -175,6 +175,13 @@
                 max-width: 65%;
             }
         }
+        a {
+            color: #15916D;
+        }
+
+        a:hover {
+            color: #0c4128;
+        }
 
     </style>
 
@@ -207,8 +214,7 @@
                             <ul>
                                 <li>
                                     <i class="fa fa-angle-double-right mr-5"></i> {% trans 'Eng yaxshi qurilmalarni 50% chegirmagacha ol' %}
-                                    <a
-                                            class="active" href="{% url 'products_filter' %}">{% trans 'Batafsil' %}</a>
+                                    <a class="active" href="{% url 'products_filter' %}">{% trans 'Batafsil' %}</a>
                                 </li>
                                 <li><i class="fa fa-asterisk mr-5"></i><b>{% trans 'Super narxdagi kelishuvlar' %}</b>
                                 </li>
@@ -253,7 +259,8 @@
         <div class="container">
             <div class="header-wrap header-space-between">
                 <div class="logo logo-width-1">
-                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbo.png' %}" alt="choko_logo"></a>
+                    <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbo.png' %}"
+                                                     alt="choko_logo"></a>
                 </div>
                 <div class="search-style-2">
                     <form action="{% url 'products_filter' %}" method="get">
@@ -305,7 +312,8 @@
                                             </div>
                                             <div class="shopping-cart-delete">
                                                 <a
-                                                        href="{% url 'delete-cart-item' item.id %}" class="text-muted"><i
+                                                        href="{% url 'delete-cart-item' item.id %}"
+                                                        class="text-muted"><i
                                                         class="far fa-times"
                                                         onclick="return confirm('{% trans "Siz rostdan ham ushbu mahsulotni o'chirmoqchimisiz" %}')"></i></a>
                                             </div>
@@ -342,7 +350,7 @@
             <div class="header-wrap header-space-between position-relative main-nav">
                 <div class="logo logo-width-1 d-block d-lg-none">
                     <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbowhite.png' %}"
-                                     alt="logo"></a>
+                                                     alt="logo"></a>
                 </div>
                 <div class="main-categori-wrap d-none d-lg-block">
                     <a class="categori-button-active" href="#">
@@ -351,92 +359,94 @@
                             class="up far fa-chevron-up"></i>
                     </a>
                     <div class="categori-dropdown-wrap categori-dropdown-active-large">
-                        <ul>
-                            {% for cat in categories %}
-                                {% if not cat.parent %}
-                                    <li class="has-children">
-                                        <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
-                                                                          alt="choko" width="19px"
-                                                                          height="19px"
-                                                                          style="margin-right: 17px">{% else %}
-                                            <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
-                                        <div class="dropdown-menu">
-                                            <ul class="mega-menu d-lg-flex">
-                                                <li class="mega-menu-col col">
-                                                    <ul class="d-lg-flex row row-cols-3">
-                                                        {% for child in categories %}
-                                                            {% if child.parent == cat %}
-                                                                <li class="col col-6 col-md-4 mega-menu-col">
-                                                                    <ul>
-                                                                        <li><span><a class="submenu-title"
-                                                                                     href="{{ request.path }}?cat={{ child }}">{{ child }}</a></span>
-                                                                        </li>
-                                                                        {% for sub_child in categories %}
-                                                                            {% if sub_child.parent == child %}
-                                                                                <li>
-                                                                                <a class="dropdown-item nav-link nav_item"
-                                                                                   href="{{ request.path }}?cat={{ sub_child }}">{{ sub_child }}</a>
-                                                                            {% endif %}
-                                                                        {% endfor %}
-                                                                        </li>
-                                                                    </ul>
-                                                                </li>
+                        <div style="width: 68vw; position: relative">
+                            <ul style="width: 300px; height: 100vh; border-right: solid 1px grey;">
+                                {% for cat in categories %}
+                                    {% if not cat.parent %}
+                                        <li class="has-children" style="position: static;">
+                                            <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
+                                                                              alt="choko" width="19px"
+                                                                              height="19px"
+                                                                              style="margin-right: 17px">{% else %}
+                                                {% endif %}{{ cat }}</a>
+                                            <div class="dropdown-menu" style="left: 300px; width: 1000px">
+                                                <ul class="mega-menu d-lg-flex">
+                                                    <li class="mega-menu-col col">
+                                                        <ul class="d-lg-flex row row-cols-3">
+                                                            {% for child in categories %}
+                                                                {% if child.parent == cat %}
+                                                                    <li class="col col-6 col-md-4 mega-menu-col">
+                                                                        <ul>
+                                                                            <li><span><a class="submenu-title"
+                                                                                         href="{{ request.path }}?cat={{ child }}">{{ child }}</a></span>
+                                                                            </li>
+                                                                            {% for sub_child in categories %}
+                                                                                {% if sub_child.parent == child %}
+                                                                                    <li>
+                                                                                    <a class="dropdown-item nav-link nav_item"
+                                                                                       href="{{ request.path }}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
 
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+
+                                {% endfor %}
+                                <li>
+                                    <ul class="more_slide_open" style="display: none;">
+                                        {% for cat in hide_categories %}
+                                            {% if not cat.parent %}
+                                                <li class="has-children">
+                                                    <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
+                                                                                      alt="choko" width="19px"
+                                                                                      height="19px"
+                                                                                      style="margin-right: 17px">{% else %}
+                                                        <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
+                                                    <div class="dropdown-menu">
+                                                        <ul class="mega-menu d-lg-flex">
+                                                            <li class="mega-menu-col col">
+                                                                <ul class="d-lg-flex row row-cols-3">
+                                                                    {% for child in hide_categories %}
+                                                                        {% if child.parent == cat %}
+                                                                            <li class="col col-6 col-md-4 mega-menu-col">
+                                                                                <ul>
+                                                                                    <li><span><a class="submenu-title"
+                                                                                                 href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
+                                                                                    </li>
+                                                                                    {% for sub_child in hide_categories %}
+                                                                                        {% if sub_child.parent == child %}
+                                                                                            <li>
+                                                                                            <a class="dropdown-item nav-link nav_item"
+                                                                                               href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                        {% endif %}
+                                                                                    {% endfor %}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </li>
+
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
 
-                            {% endfor %}
-                            <li>
-                                <ul class="more_slide_open" style="display: none;">
-                                    {% for cat in hide_categories %}
-                                        {% if not cat.parent %}
-                                            <li class="has-children">
-                                                <a href="#">{% if cat.icon %}<img src="{{ cat.icon.url }}"
-                                                                                  alt="choko" width="19px"
-                                                                                  height="19px"
-                                                                                  style="margin-right: 17px">{% else %}
-                                                    <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
-                                                <div class="dropdown-menu">
-                                                    <ul class="mega-menu d-lg-flex">
-                                                        <li class="mega-menu-col col">
-                                                            <ul class="d-lg-flex row row-cols-3">
-                                                                {% for child in hide_categories %}
-                                                                    {% if child.parent == cat %}
-                                                                        <li class="col col-6 col-md-4 mega-menu-col">
-                                                                            <ul>
-                                                                                <li><span><a class="submenu-title"
-                                                                                             href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
-                                                                                </li>
-                                                                                {% for sub_child in hide_categories %}
-                                                                                    {% if sub_child.parent == child %}
-                                                                                        <li>
-                                                                                        <a class="dropdown-item nav-link nav_item"
-                                                                                           href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
-                                                                                    {% endif %}
-                                                                                {% endfor %}
-                                                                                </li>
-                                                                            </ul>
-                                                                        </li>
-
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-                        </ul>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
 
                         <div class="more_categories">{% trans "Ko'proq" %}...</div>
                     </div>
@@ -616,7 +626,8 @@
                 <div class="col-lg-7 mb-md-3 mb-lg-0">
                     <div class="row align-items-center">
                         <div class="col flex-horizontal-center">
-                            <img class="icon-email" src="{% static 'assets/imgs/theme/icons/icon-email.svg' %}" alt="choko">
+                            <img class="icon-email" src="{% static 'assets/imgs/theme/icons/icon-email.svg' %}"
+                                 alt="choko">
                             <h4 class="font-size-20 mb-0 ml-3">{% trans "Yangiliklardan xabardor bo'lish" %}</h4>
                         </div>
                     </div>
@@ -643,7 +654,7 @@
                     <div class="widget-about font-md mb-md-5">
                         <div class="logo logo-width-1 wow fadeIn animated">
                             <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbo.png' %}"
-                                             alt="logo"></a>
+                                                             alt="logo"></a>
                         </div>
                         <h4 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">{% trans "Aloqa" %}</h4>
                         <p class="wow fadeIn animated">
@@ -660,7 +671,8 @@
                             <a class="facebook" href="#"><i class="fab fa-facebook-f pt-10"></i></a>
                             <a class="twitter" href="#"><i class="fab fa-twitter pt-10"></i></a>
                             <a class="tumblr" href="#"><i class="fab fa-tumblr pt-10"></i></a>
-                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i class="fab fa-instagram pt-10"></i></a>
+                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i
+                                    class="fab fa-instagram pt-10"></i></a>
                         </div>
                     </div>
                 </div>
