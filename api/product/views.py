@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.book.helper import LargeResultsSetPagination
-
+from .filter import BrandFilter, CategoryFilter, ProductFilter, SizeFilter
 from api.book.serializers import BookImageSerializer
 
 from .serializers import CategoryListSerializer, CategoryCreateSerializer, BrandSerializer, ColorSerializer, \
@@ -27,6 +27,8 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
     queryset = Category.objects.all()
     permission_classes = [IsSuperUser]
     parser_classes = [MultiPartParser, FormParser]
+    filterset_class = CategoryFilter
+    pagination_class = None
 
     def get_queryset(self):
         return Category.objects.filter(is_active=True).order_by('-id')
@@ -69,6 +71,7 @@ class VariantViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
     ordering_fields = ['created_at']
     queryset = Variant.objects.all()
     permission_classes = [IsSuperUser]
+    pagination_class = None
 
     def get_queryset(self):
         return Category.objects.filter(is_active=True).order_by('-id')
@@ -78,6 +81,8 @@ class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
                    mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = BrandSerializer
     ordering_fields = ['created_at']
+    filterset_class = BrandFilter
+    pagination_class = None
 
     def get_queryset(self):
         return Brand.objects.all().order_by('title')
@@ -94,6 +99,7 @@ class ColorViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Crea
                    mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = ColorSerializer
     ordering_fields = ['created_at']
+    pagination_class = None
 
     def get_queryset(self):
         return Color.objects.all().order_by('title')
@@ -110,6 +116,7 @@ class CurrencyViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
                       mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = CurrencySerializer
     ordering_fields = ['created_at']
+    pagination_class = None
 
     def get_queryset(self):
         return Currency.objects.all().order_by('-id')
@@ -127,6 +134,7 @@ class BannerDiscountViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mi
     serializer_class = BannerDiscountSerializer
     ordering_fields = ['created_at']
     parser_classes = [MultiPartParser, FormParser]
+    pagination_class = None
 
     def get_queryset(self):
         return BannerDiscount.objects.all().order_by('-id')
@@ -161,6 +169,7 @@ class BannerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cre
     serializer_class = BannerSerializer
     ordering_fields = ['created_at']
     parser_classes = [MultiPartParser, FormParser]
+    pagination_class = None
 
     def get_queryset(self):
         return Banner.objects.all().order_by('-id')
@@ -177,6 +186,9 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = SizeSerializer
     ordering_fields = ['created_at']
+    filterset_class = SizeFilter
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    pagination_class = None
 
     def get_queryset(self):
         return Size.objects.all().order_by('-id')
@@ -227,6 +239,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
     serializer_class = ProductListSerializer
     queryset = Product.objects.filter(is_active=True).order_by('-id')
     ordering_fields = ['created_at']
+    filterset_class = ProductFilter
     filter_backends = [DjangoFilterBackend,
                        filters.SearchFilter, filters.OrderingFilter]
    
