@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/alertify.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" type="text/css">
+    {% block head %} {% endblock %}
     {% block style %} {% endblock %}
     {% block topscript %} {% endblock %}
     <style>
@@ -195,7 +196,7 @@
                         <ul>
                             <li><a href="tel:+99899-418-7100">+998 (99)-418-7100</a></li>
                             <li><i class="fa fa-map-marker-alt mr-5"></i><a target="_blank"
-                                                                            href="{% url 'index' %}">{% trans 'Bizning joylashuv' %}</a>
+                                                                            href="{% url 'contact' %}">{% trans 'Bizning joylashuv' %}</a>
                             </li>
                         </ul>
                     </div>
@@ -581,7 +582,7 @@
                     </div>
                 </div>
                 <div class="single-mobile-header-info mt-30">
-                    <a target="_blank" href="#"> {% trans "Bizning joylashuv" %} </a>
+                    <a target="_blank" href="{% url 'contact' %}"> {% trans "Bizning joylashuv" %} </a>
                 </div>
 
                 <div class="single-mobile-header-info">
