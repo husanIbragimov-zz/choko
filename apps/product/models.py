@@ -16,17 +16,14 @@ STATUS = (
 )
 
 LANGUAGE = (
-    ('krill', 'krill'),
     ('english', 'english'),
     ('russian', 'russian'),
     ('uzbek', 'uzbek'),
 )
 
 YOZUV = (
-    ('krill', 'krill'),
-    ('english', 'english'),
-    ('russian', 'russian'),
-    ('uzbek', 'uzbek'),
+    ('krill', 'Krill'),
+    ('lotin', 'Lotin'),
 
 )
 
@@ -35,14 +32,7 @@ MUQOVA = (
     ('yumshoq', 'yumshoq'),
 )
 
-FORMAT = (
-    ('a5', 'A5'),
-    ('a4', 'A4'),
-    ('a3', 'A3'),
-    ('a2', 'A2'),
-    ('a1', 'A1'),
-    ('a0', 'A0'),
-)
+
 
 PRODUCT_TYPE = (
     ('book', 'Book'),
@@ -177,6 +167,10 @@ class Product(BaseAbstractDate):
     has_size = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True, db_index=True)
     product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
+    # book
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True)
+    language = models.CharField(max_length=25, choices=LANGUAGE, default='uzbek')
+    yozuv = models.CharField(max_length=25, choices=YOZUV, default='lotin')
 
     @property
     def mid_rate(self):

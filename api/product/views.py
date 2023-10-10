@@ -186,11 +186,8 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = SizeSerializer
     ordering_fields = ['created_at']
-<<<<<<< HEAD
-=======
     filterset_class = SizeFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
->>>>>>> 74e44130c3c4608f3d32f96cd4da5e83494b03c7
     pagination_class = None
 
     def get_queryset(self):
