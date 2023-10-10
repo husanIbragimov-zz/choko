@@ -305,7 +305,10 @@ def product_post_save(sender, instance, created, **kwargs):
     input_image_path = instance.image.path
     input_image = Image.open(input_image_path)
     output_image = remove(input_image)
-    background_color = (255, 255, 255)  # RGB color for white
-    output_with_background = Image.new("RGB", output_image.size, background_color)
+    
+    # Use pure white for the background color in RGB mode
+    background_color = (247,243,230)
+    
+    output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
     output_with_background.paste(output_image, (0, 0))
     output_with_background.save(input_image_path)
