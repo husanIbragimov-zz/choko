@@ -155,24 +155,24 @@ CORS_ALLOW_CREDENTIALS = True
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # ================================================== PostgresSQL =======================================================
-DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'choko',
-         'USER': 'choko',
-         'PASSWORD': 'choko',
-         'HOST': 'localhost',
-         'PORT': 5432,
-     }
-}
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.postgresql',
+#          'NAME': 'choko',
+#          'USER': 'choko',
+#          'PASSWORD': 'choko',
+#          'HOST': 'localhost',
+#          'PORT': 5432,
+#      }
+# }
 
 
 # Password validation
