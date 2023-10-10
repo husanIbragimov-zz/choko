@@ -7,11 +7,10 @@ from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from rembg import remove 
-from PIL import Image 
-
+from rembg import remove
+from PIL import Image
 
 STATUS = (
     ('NEW', 'NEW'),
@@ -36,8 +35,6 @@ MUQOVA = (
     ('qattiq', 'qattiq'),
     ('yumshoq', 'yumshoq'),
 )
-
-
 
 PRODUCT_TYPE = (
     ('book', 'Book'),
@@ -297,18 +294,15 @@ class Rate(BaseAbstractDate):
         return round(self.rate * 100 / 5, 1)
 
 
-    
-from PIL import Image
-import numpy as np
 @receiver(post_save, sender=ProductImage)
 def product_post_save(sender, instance, created, **kwargs):
     input_image_path = instance.image.path
     input_image = Image.open(input_image_path)
     output_image = remove(input_image)
-    
+
     # Use pure white for the background color in RGB mode
-    background_color = (247,243,230)
-    
+    background_color = (247, 243, 230)
+
     output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
     output_with_background.paste(output_image, (0, 0))
     output_with_background.save(input_image_path)
