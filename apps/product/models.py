@@ -227,7 +227,6 @@ class Product(BaseAbstractDate):
     def monthly_uzs(self):
         active_variant = Variant.objects.all().last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
-        print(total)
         monthly = total / active_variant.duration
         return int(monthly)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 

@@ -221,7 +221,7 @@
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="widget-area">
                             <!--Widget categories-->
-                            <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
+                            <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10" style="position: sticky; height: 80vh; left: 0; overflow-y: scroll;">
                                 <div class="widget-header position-relative mb-20 pb-10">
                                     <h5 class="widget-title mb-10">{% trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
@@ -348,7 +348,7 @@
                                     <h5 class="widget-title mb-10">{% trans "Ishlab chiqaruvchilar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                <div class="">
+                                <div class="" style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <ul class="categor-list">
                                         {% if active_cat %}
                                             {% for brand in brands %}

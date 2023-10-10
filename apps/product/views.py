@@ -32,9 +32,9 @@ def index(request):
     if cat:
         product = product.filter(category__title__icontains=cat)
     if status:
-        if status == "clothes":
+        if status == "clothing":
             product = product.filter(product_type='clothing')
-            status_index = 'clothes'
+            status_index = 'clothing'
         elif status == "books":
             product = product.filter(product_type='books')
             status_index = 'books'

@@ -305,7 +305,7 @@
                                     <h5 class="widget-title mb-10">{% trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                <div class="">
+                                <div class="" style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <ul class="categor-list">
                                         {% if active_brand %}
                                             {% for sub_child in cats %}
@@ -337,21 +337,26 @@
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class="">
-                                    <div class="range_container">
-                                        <div class="sliders_control">
-                                            <input id="fromSlider" type="range" value="10" min="0" max="100"/>
-                                            <input id="toSlider" type="range" value="40" min="0" max="100"/>
-                                        </div>
-                                        <div class="form_control">
-                                            <div class="form_control_container">
-                                                <div class="form_control_container__time">Min</div>
-                                                <input class="form_control_container__time__input" type="number"
-                                                       id="fromInput" value="10" min="0" max="100"/>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div id="slider-range"></div>
                                             </div>
-                                            <div class="form_control_container">
-                                                <div class="form_control_container__time">Max</div>
-                                                <input class="form_control_container__time__input" type="number"
-                                                       id="toInput" value="40" min="0" max="100"/>
+                                        </div>
+                                        <div class="row slider-labels">
+                                            <div class="col-xs-6 caption">
+                                                <strong>Min:</strong> <span id="slider-range-value1"></span>
+                                            </div>
+                                            <div class="col-xs-6 text-right caption">
+                                                <strong>Max:</strong> <span id="slider-range-value2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <form>
+                                                    <input type="hidden" name="min-value" value="">
+                                                    <input type="hidden" name="max-value" value="">
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -454,7 +459,7 @@
                                     <h5 class="widget-title mb-10">{% trans "Ishlab chiqaruvchilar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                <div class="">
+                                <div class="" style="position: sticky; height: 51vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <ul class="categor-list">
                                         {% if active_cat %}
                                             {% for brand in brands %}

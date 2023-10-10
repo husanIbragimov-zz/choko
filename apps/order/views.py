@@ -30,7 +30,6 @@ def add_to_cart(request):
         size = request.POST.get('size', None)
         cart = Cart.objects.get(session_id=session_id, completed=False)
         product = Product.objects.get(id=product_id)
-        print(product_image)
         has_size = False
         has_color = False
         if product.size.all().exists():
