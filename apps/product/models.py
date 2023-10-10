@@ -7,6 +7,11 @@ from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
+from rembg import remove 
+from PIL import Image 
+
 
 STATUS = (
     ('NEW', 'NEW'),
@@ -290,3 +295,17 @@ class Rate(BaseAbstractDate):
     @property
     def rate_percent(self):
         return round(self.rate * 100 / 5, 1)
+
+
+    
+from PIL import Image
+import numpy as np
+@receiver(post_save, sender=ProductImage)
+def product_post_save(sender, instance, created, **kwargs):
+    input_image_path = instance.image.path
+    input_image = Image.open(input_image_path)
+    output_image = remove(input_image)
+    background_color = (255, 255, 255)  # RGB color for white
+    output_with_background = Image.new("RGB", output_image.size, background_color)
+    output_with_background.paste(output_image, (0, 0))
+    output_with_background.save(input_image_path)
