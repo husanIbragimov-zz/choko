@@ -114,14 +114,15 @@ class AdditionalInfoListSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source='author.name', read_only=True)
     price_uzs = serializers.SerializerMethodField()
     discount_uzs = serializers.SerializerMethodField()
     brand = serializers.CharField(source='brand.title', read_only=True)
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'product_type', 'brand', 'status',
-                  'category', 'price_uzs', 'discount_uzs', 'is_active']
+        fields = ['id', 'title','author', 'product_type', 'brand', 'status',
+                  'category', 'price_uzs', 'discount_uzs', 'is_active','language','yozuv']
 
     def validate(self, attrs):
         currency = Currency.objects.last()
@@ -163,8 +164,8 @@ class ProductImageListSerializer(serializers.ModelSerializer):
 class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'product_type', 'title', 'category', 'status', 'advertisement', 'banner_discount', 'brand',
-                  'size', 'percentage', 'description', 'availability', 'has_size', 'is_active']
+        fields = ['id', 'product_type','author', 'title', 'category', 'status', 'advertisement', 'banner_discount', 'brand',
+                  'size', 'percentage', 'description','language','yozuv', 'availability', 'has_size', 'is_active']
 
 
 class ProductImagesSerializer(serializers.ModelSerializer):

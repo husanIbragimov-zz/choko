@@ -186,6 +186,7 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = SizeSerializer
     ordering_fields = ['created_at']
+
     filterset_class = SizeFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     pagination_class = None
@@ -331,6 +332,8 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
         images.update(price=price)
         return Response({'data': 'updated'}, status=status.HTTP_200_OK)
+    
+
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
