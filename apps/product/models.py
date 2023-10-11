@@ -296,19 +296,19 @@ class Rate(BaseAbstractDate):
     def rate_percent(self):
         return round(self.rate * 100 / 5, 1)
 
-
-    
-from PIL import Image
-import numpy as np
 @receiver(post_save, sender=ProductImage)
 def product_post_save(sender, instance, created, **kwargs):
-    input_image_path = instance.image.path
-    input_image = Image.open(input_image_path)
-    output_image = remove(input_image)
-    
-    # Use pure white for the background color in RGB mode
-    background_color = (247,243,230)
-    
-    output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
-    output_with_background.paste(output_image, (0, 0))
-    output_with_background.save(input_image_path)
+    try:
+        input_image_path = instance.image.path
+        input_image = Image.open(input_image_path)
+        output_image = remove(input_image)
+        
+        # Use pure white for the background color in RGB mode
+        background_color = (247,243,230)
+
+        output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
+        output_with_background.paste(output_image, (0, 0),output_image)
+        output_with_background.save(input_image_path)
+        
+    except Exception as e:
+        return f'{e}'
