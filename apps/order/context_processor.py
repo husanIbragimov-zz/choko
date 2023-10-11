@@ -4,8 +4,32 @@ from .models import Cart, Wishlist
 import uuid
 from apps.contact.models import Subscribe
 from ..base.models import Variant
-
+from django.http import JsonResponse
 from ..product.models import Currency, Category, Product
+
+
+def ajax_renderer(request):
+    if request.method == 'POST':
+        # Retrieve data from the request
+        min_value = request.POST.get('min')
+        max_value = request.POST.get('max')
+
+        products = Product.objects.filter(product_images__price__gte=min_value,
+                                          product_images__price__lte=max_value).distinct()
+        product_list = []
+        for product in products:
+            product_data = {
+                'name': product.name,
+                'price': product.price,
+                # Add other fields as needed
+            }
+            product_list.append(product_data)
+
+        context = {
+            'products': product_list,
+        }
+        return JsonResponse(context, status=200)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
 def cart_renderer(request):

@@ -193,14 +193,14 @@ def shop_books(request):
     products = Product.objects.filter(is_active=True, product_type='book').order_by('?')
     category = Category.objects.filter(is_active=True, product_type='book')
     brands = Brand.objects.filter(product_type='book').order_by('-id')
-    top_rate_products = sorted(products, key=lambda t: t.mid_rate)
-    last_3_products = products.order_by('-view')
     authors = Author.objects.all().order_by('name')
 
     # filter
     cat = request.GET.get('cat')
-    top_rated = request.GET.get('top_rated')
     search = request.GET.get('search')
+    lang = request.GET.get('lang')
+    inscription = request.GET.get('inscription')
+    wrapper = request.GET.get('wrapper')
     advertisement = request.GET.get('advertisement')
     brand = request.GET.get('brand')
     active_cat = False
@@ -217,6 +217,13 @@ def shop_books(request):
                 description=search))
     if advertisement:
         products = products.filter(advertisement__title__contains=advertisement)
+    if lang:
+        products = products.filter(language__iexact=lang)
+    if inscription:
+        products = products.filter(yozuv__iexact=inscription)
+    if wrapper:
+        products = products.filter(product_images__wrapper__exact=wrapper)
+
     if brand:
         active_brand = True
         active_brand_name = brand
@@ -243,8 +250,6 @@ def shop_books(request):
         'active_brand': active_brand,
         'active_brand_name': active_brand_name,
         'brands': brands,
-        'last_3_products': last_3_products[:3],
-        'top_rate_products': top_rate_products
     }
     return render(request, 'shop-book.html', context)
 
