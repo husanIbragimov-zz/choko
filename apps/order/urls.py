@@ -1,6 +1,7 @@
 from django.urls import path
 from apps.order.views import add_to_cart, review, shop_cart, delete_cart_item, create_order, wishlist, delete_wishlist, \
     wishlist_list, create_order_wishlist, account, confirm_order
+from .context_processor import ajax_renderer
 
 urlpatterns = [
     path('my-account/', account, name="my-account"),
@@ -13,5 +14,6 @@ urlpatterns = [
     path('delete-wishlist/<int:id>', delete_wishlist, name="delete-wishlist"),
     path('delete-cart-item/<int:id>', delete_cart_item, name="delete-cart-item"),
     path('create_order_wishlist/<int:id>', create_order_wishlist, name="create_order_wishlist"),
-    path('review/', review, name="review")
+    path('review/', review, name="review"),
+    path('ajax-renderer/', ajax_renderer, name="ajax-renderer"),
 ]
