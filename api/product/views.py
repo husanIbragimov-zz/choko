@@ -293,6 +293,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
         }
         files = request.FILES
         product_type = sz_.data['product_type']
+        errors = []
         for file in files:
             images[file] = []
             for i in files.getlist(file):
@@ -306,8 +307,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
                 sz.is_valid(raise_exception=True)
                 sz.save()
                 images[file].append(sz.data)
-
-        return Response({'data': sz_.data, 'images': images}, status=status.HTTP_201_CREATED)
+        return Response({'data': sz_.data, 'images': images,'errors':errors}, status=status.HTTP_201_CREATED)
 
     @action(methods=['delete'], detail=False)
     def remove_image(self, request):
