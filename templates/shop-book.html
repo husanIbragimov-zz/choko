@@ -58,6 +58,8 @@
             color: #15916D;
         }
 
+
+
     </style>
 {% endblock %}
 {% block content %}
@@ -100,7 +102,7 @@
                                         <div class="product-content-wrap p-10 pt-5">
                                             <div class="product-category">
                                                 <a href="{% url "shop-details" product.id %}"><span
-                                                        class="product-category_fz">{{ product.category.first }}</span></a></a>
+                                                        class="product-category_fz">{{ product.category.first }}</span></a>
                                             </div>
 
                                             <div><a href="{% url "shop-details" product.id %}"><p
@@ -226,7 +228,8 @@
                                     <h5 class="widget-title mb-10">{% trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                <div class="" style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
+                                <div class=""
+                                     style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <ul class="categor-list">
                                         {% if active_brand %}
                                             {% for sub_child in cats %}
@@ -251,122 +254,111 @@
                                     </ul>
                                 </div>
                             </div>
-                            <!-- Product sidebar Widget -->
-                            <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
+                            <!-- Product sidebar Lang -->
+                            <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">{% trans "Eng ko'p ko'rilgan mahsulotlar" %}</h5>
+                                    <h5 class="widget-title mb-10">{% trans "Til" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                {% for last_3_product in last_3_products %}
-                                    <div class="single-post clearfix">
-                                        <div class="image">
-                                            <img src="{{ last_3_product.product_images.first.image.url }}" alt="#">
-                                        </div>
-                                        <div class="content pt-10">
-                                            <h5>
-                                                <a href="{% url "shop-details" last_3_product.id %}">{{ last_3_product.title|slice:'0:25' }}</a>
-                                            </h5>
-                                            <div class="product-price">
-                                                {% if last_3_product.discount > 0 %}
-                                                    <span>{{ last_3_product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
-                                                    <br>
-                                                    <span class="bg-warning new_price">UZS {{ last_3_product.discount_uzs|intcomma }}</span>
-                                                {% else %}
-                                                    <span>{{ last_3_product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
-                                                    <br>
-                                                    <span class="bg-warning new_price">UZS {{ last_3_product.total_uzs|intcomma }}</span>
-                                                {% endif %}
-                                            </div>
-                                            <div class="product-rate">
-                                                <div class="product-rating"
-                                                     style="width:{{ last_3_product.mid_rate }}%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                {% endfor %}
-                            </div>
-                            <!-- Product sidebar Widget -->
-                            <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
-                                <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">{% trans "Eng yaxshi baholanganlar" %}</h5>
-                                    <div class="bt-1 border-color-1"></div>
-                                </div>
-                                {% for top_rate_product in top_rate_products|slice:'0:3' %}
-                                    <div class="single-post clearfix">
-                                        <div class="image">
-                                            <img src="{{ top_rate_product.product_images.first.image.url }}" alt="#">
-                                        </div>
-                                        <div class="content pt-10">
-                                            <h5>
-                                                <a href="{% url "shop-details" top_rate_product.id %}">{{ top_rate_product.title|slice:'0:25' }}</a>
-                                            </h5>
-                                            <div class="product-price">
-                                                {% if top_rate_product.discount > 0 %}
-
-                                                    <span>{{ top_rate_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
-                                                    <br>
-                                                    <span class="bg-warning new_price">${{ top_rate_product.discount_uzs }} </span>
-                                                {% else %}
-                                                    <span>{{ top_rate_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
-                                                    <br>
-                                                    <span class="bg-warning new_price">UZS {{ top_rate_product.total_uzs|intcomma }} </span>
-                                                {% endif %}
-                                            </div>
-                                            <div class="product-rate">
-                                                <div class="product-rating"
-                                                     style="width:{{ top_rate_product.mid_rate_percent }}%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                {% endfor %}
-                            </div>
-                            <!--Widget ads-->
-                            <div class="sidebar-widget widget-ads mb-30">
-                                {% for discount in discounts|slice:'0:1' %}
-                                    <div class="banner-img banner-1 wow fadeIn  animated"
-                                         style="visibility: visible; animation-name: fadeIn;">
-                                        <img class="border-radius-10 ms-2"
-                                             src="{{ discount.product_images.first.image.url }}" alt="" height="270px"
-                                             width="290px">
-                                        <div style="padding: 0 15px; top: 60px" class="banner-text sales">
-                                            <span>{{ discount.category.first }}</span>
-                                            <h4 class="fs-8">{{ discount.percentage }}% {% trans "Tejab qolish" %}
-                                                <br>{{ discount.title|slice:'0:25' }}</h4>
-                                            <a class="buy" href="{% url 'index' %}">{% trans "Sotib olish" %} <i
-                                                    class="fa fa-arrow-right"></i></a>
-                                        </div>
-                                    </div>
-
-                                {% endfor %}
-
-                            </div>
-                            <!--Widget categories-->
-                            <div class="sidebar-widget widget_categories mb-50 p-30 bg-grey border-radius-10">
-                                <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">{% trans "Ishlab chiqaruvchilar" %}</h5>
-                                    <div class="bt-1 border-color-1"></div>
-                                </div>
-                                <div class="" style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
+                                <div class="">
                                     <ul class="categor-list">
-                                        {% if active_cat %}
-                                            {% for brand in brands %}
-                                                <li class="cat-item text-muted">
-                                                <a href="{% url 'books' %}?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
-                                                ({{ brand.product_set.count }})
-                                            {% endfor %}
-                                        {% else %}
-                                        {% for brand in brands %}
-                                            <li class="cat-item text-muted">
-                                            <a href="{% url 'books' %}?brand={{ brand }}">{{ brand.title }}</a>
-                                            ({{ brand.product_set.count }})
-                                        {% endfor %}
-                                        {% endif %}
-
-                                        </li>
+                                        <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?lang=uzbek">O'zbekcha</a></li>
+                                        <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?lang=russian">Ruscha</a></li>
+                                        <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?lang=english">Inglizcha</a></li>
                                     </ul>
                                 </div>
+                            </div>
+                            <!-- Product sidebar Wrapper -->
+                            <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
+                                <div class="widget-header position-relative mb-20 pb-10">
+                                    <h5 class="widget-title mb-10">{% trans "Muqova" %}</h5>
+                                    <div class="bt-1 border-color-1"></div>
+                                </div>
+                                <div class="">
+                                    <ul class="categor-list">
+                                        <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?wrapper=qattiq">Qattiq</a></li>
+                                        <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?wrapper=yumshoq">Yumshoq</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Product sidebar Inscription -->
+                            <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
+                                <div class="widget-header position-relative mb-20 pb-10">
+                                    <h5 class="widget-title mb-10">{% trans "Yozuv" %}</h5>
+                                    <div class="bt-1 border-color-1"></div>
+                                </div>
+                                <div class="">
+                                    <ul class="categor-list">
+                                        <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?inscription=krill">Krill</a></li>
+                                        <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?inscription=lotin">Lotin</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Product sidebar Authors -->
+{#                            <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">#}
+{#                                <div class="widget-header position-relative mb-20 pb-10">#}
+{#                                    <h5 class="widget-title mb-10">{% trans "Muallif" %}</h5>#}
+{#                                </div>#}
+{#                                <div class="">#}
+{#                                    <div><input type="checkbox" name="startingReserves" value="starting"#}
+{#                                                id="starting"><label for="starting">Starting</label></div>#}
+{#                                    <div><input type="checkbox" name="startingReserves" value="reserves"#}
+{#                                                id="reserves"><label for="reserves">Reserves</label></div>#}
+{#                                </div>#}
+{#                            </div>#}
+                        </div>
+                        <!-- Product sidebar Widget -->
+                        <div class="sidebar-widget widget-ads mb-30">
+                            {% for discount in discounts|slice:'0:1' %}
+                                <div class="banner-img banner-1 wow fadeIn  animated"
+                                     style="visibility: visible; animation-name: fadeIn;">
+                                    <img class="border-radius-10 ms-2"
+                                         src="{{ discount.product_images.first.image.url }}" alt="" height="270px"
+                                         width="290px">
+                                    <div style="padding: 0 15px; top: 60px" class="banner-text sales">
+                                        <span>{{ discount.category.first }}</span>
+                                        <h4 class="fs-8">{{ discount.percentage }}% {% trans "Tejab qolish" %}
+                                            <br>{{ discount.title|slice:'0:25' }}</h4>
+                                        <a class="buy" href="{% url 'index' %}">{% trans "Sotib olish" %} <i
+                                                class="fa fa-arrow-right"></i></a>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+                        <!--Widget categories-->
+                        <div class="sidebar-widget widget_categories mb-50 p-30 bg-grey border-radius-10">
+                            <div class="widget-header position-relative mb-20 pb-10">
+                                <h5 class="widget-title mb-10">{% trans "Ishlab chiqaruvchilar" %}</h5>
+                                <div class="bt-1 border-color-1"></div>
+                            </div>
+                            <div class=""
+                                 style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
+                                <ul class="categor-list">
+                                    {% if active_cat %}
+                                        {% for brand in brands %}
+                                            <li class="cat-item text-muted">
+                                            <a href="{% url 'books' %}?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
+                                            ({{ brand.product_set.count }})
+                                        {% endfor %}
+                                    {% else %}
+                                    {% for brand in brands %}
+                                        <li class="cat-item text-muted">
+                                        <a href="{% url 'books' %}?brand={{ brand }}">{{ brand.title }}</a>
+                                        ({{ brand.product_set.count }})
+                                    {% endfor %}
+                                    {% endif %}
+
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -374,4 +366,18 @@
             </div>
         </section>
     </main>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $('.product-action-1').hide();
+            $('.product-cart-wrap').hover(function () {
+                $(this).find('.product-action-1').show();
+            }, function () {
+                $(this).find('.product-action-1').hide();
+            });
+        });
+    </script>
+
 {% endblock %}

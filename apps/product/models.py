@@ -7,11 +7,10 @@ from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from rembg import remove 
-from PIL import Image 
-
+from rembg import remove
+from PIL import Image
 
 STATUS = (
     ('NEW', 'NEW'),
@@ -36,8 +35,6 @@ MUQOVA = (
     ('qattiq', 'qattiq'),
     ('yumshoq', 'yumshoq'),
 )
-
-
 
 PRODUCT_TYPE = (
     ('book', 'Book'),
@@ -312,3 +309,4 @@ def product_post_save(sender, instance, created, **kwargs):
         
     except Exception as e:
         return f'{e}'
+
