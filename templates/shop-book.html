@@ -299,19 +299,20 @@
                                             {% for sub_child in cats %}
                                                 {% if sub_child.parent != None %}
                                                     <li class="cat-item text-muted">
-                                                    <a href="{% url 'books' %}?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
-                                                        ({{ sub_child.product_set.count }})</li>
+                                                        <a href="{% url 'books' %}?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
+                                                        ({{ sub_child.product_set.count }})
+                                                    </li>
                                                 {% endif %}
                                             {% endfor %}
                                         {% else %}
-                                        {% for sub_child in cats %}
-                                            {% if sub_child.parent != None %}
-                                                <li class="cat-item text-muted">
-                                                <a href="{% url 'books' %}?cat={{ sub_child }}">{{ sub_child }}</a>
-                                                ({{ sub_child.product_set.count }})
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {% for sub_child in cats %}
+                                                {% if sub_child.parent != None %}
+                                                    <li class="cat-item text-muted">
+                                                        <a href="{% url 'books' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                        ({{ sub_child.product_set.count }})
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
                                         {% endif %}
                                     </ul>
                                 </div>
@@ -372,7 +373,7 @@
                                     {% for author in authors %}
 
                                         <div class="box">
-                                            <input onchange="" id="{{ author.name }}"
+                                            <input onchange='handleCheckbox("{{ author.name }}")' id="{{ author.name }}"
                                                    value="{{ author.name }}"
                                                    name="{{ author.name }}" type="checkbox">
                                             <span class="check"></span>
@@ -439,6 +440,7 @@
 
 {% block script %}
     <script>
+        var token = $("input[name=csrfmiddlewaretoken]").val();
         $(document).ready(function () {
             $('.product-action-1').hide();
             $('.product-cart-wrap').hover(function () {
@@ -447,6 +449,31 @@
                 $(this).find('.product-action-1').hide();
             });
         });
+        const author = [];
+        let timeout;
+
+        function handleCheckbox(name) {
+            if (document.getElementById(name).checked) {
+                author.push(document.getElementById(name).value);
+            } else {
+                author.splice(document.getElementById(name).value, 1);
+            }
+            console.log(author);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: `{% url "books" %}?author=${author}`,
+            data: {
+                'csrfmiddlewaretoken': token,
+                'author': author
+            },
+            success: function (data) {
+                $('.main_block').html(data.html);
+            }
+        });
+
+
     </script>
 
 {% endblock %}
