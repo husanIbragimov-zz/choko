@@ -203,6 +203,9 @@ def shop_books(request):
     wrapper = request.GET.get('wrapper')
     advertisement = request.GET.get('advertisement')
     brand = request.GET.get('brand')
+    author_list = [author.split(',') for author in request.GET.getlist('author')]
+    print(author_list)
+
     active_cat = False
     active_cat_name = None
     active_brand = False
@@ -223,6 +226,10 @@ def shop_books(request):
         products = products.filter(yozuv__iexact=inscription)
     if wrapper:
         products = products.filter(product_images__wrapper__exact=wrapper)
+
+    if author_list:
+        products = products.filter(author__name__in=author_list[0])
+        print(products)
 
     if brand:
         active_brand = True

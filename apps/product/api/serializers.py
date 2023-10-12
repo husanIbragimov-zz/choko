@@ -88,6 +88,12 @@ class RateSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'rate', 'comment', 'rate_percent')
 
 
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('id', 'author')
+
+
 class ProductSerializer(serializers.ModelSerializer):
     banner_discount = BannerDiscountSerializer(read_only=True)
     advertisement = AdvertisementSerializer(read_only=True)
