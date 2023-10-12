@@ -6,7 +6,7 @@ from apps.base.models import Variant
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage, \
-    BannerDiscount, Author
+    BannerDiscount, Author, Size
 from django.core.paginator import Paginator, PageNotAnInteger
 
 
@@ -204,7 +204,6 @@ def shop_books(request):
     advertisement = request.GET.get('advertisement')
     brand = request.GET.get('brand')
     author_list = [author.split(',') for author in request.GET.getlist('author')]
-    print(author_list)
 
     active_cat = False
     active_cat_name = None
@@ -229,7 +228,6 @@ def shop_books(request):
 
     if author_list:
         products = products.filter(author__name__in=author_list[0])
-        print(products)
 
     if brand:
         active_brand = True
@@ -267,6 +265,8 @@ def shop_clothes(request):
     brands = Brand.objects.filter(product_type='clothing').order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
+    colors = Color.objects.all()
+    sizes = Size.objects.all()
 
     # filter
     cat = request.GET.get('cat')
@@ -304,6 +304,8 @@ def shop_clothes(request):
             query.append(qs)
 
     context = {
+        'sizes': sizes,
+        'colors': colors,
         'products': paginated_products,
         'discounts': query,
         'page_obj': paginated_products,
