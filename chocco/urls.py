@@ -73,6 +73,7 @@ urlpatterns = [
     path('', include('apps.product.urls')),
     path('order/', include('apps.order.urls')),
     path('contact/', include('apps.contact.urls')),
+    path('app/v1/', include('apps.product.api.urls')),
 
     # login & register
     path('register/', views.register, name="register"),
