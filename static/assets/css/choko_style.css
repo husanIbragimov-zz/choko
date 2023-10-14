@@ -1,0 +1,616 @@
+.new_price {
+    font-size: 12px !important;
+    color: black !important;
+    font-weight: normal !important;
+    padding: 3px 5px !important;
+    border-radius: 4px !important;
+}
+
+.product-content-wrap {
+    height: 205px;
+}
+
+@media screen and (max-width: 1389px) {
+    .main__box-el {
+        width: 17%;
+    }
+
+    .main_block {
+        column-gap: 41px;
+        row-gap: 5px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .main__box-el {
+        width: 30%;
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+    .main__box-el {
+        width: 25%;
+    }
+
+    .main_block {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 30px;
+        justify-content: space-between;
+    }
+
+    .default-img-size {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .main__box-el {
+        width: 30%;
+    }
+
+    .main_block {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 30px;
+        column-gap: 1px;
+    }
+
+    .default-img-size {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .main__box-el {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .main__box-el {
+        width: 48%;
+    }
+
+    .main_block {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 30px;
+        column-gap: 1px;
+    }
+
+    .new_price {
+        font-size: 8px !important;
+        max-width: 65%;
+    }
+
+    .product-cart-wrap .product-content-wrap .product-price span {
+        font-size: 12px;
+        max-width: 40%;
+    }
+
+}
+
+@media screen and (max-width: 390px) {
+    .main_block {
+        column-gap: 10px;
+        row-gap: 5px;
+    }
+
+    .main__box-el {
+        width: 48%;
+    }
+
+    .default-img-size {
+        width: 150px;
+        height: 150px;
+    }
+
+    .product-category_fz {
+        font-size: 12px;
+    }
+
+    .product-content-wrap_fz {
+        font-size: 14px;
+        max-width: 90%;
+
+    }
+
+    .product-cart-wrap .product-content-wrap .product-price span {
+        font-size: 11px;
+        max-width: 40%;
+    }
+
+    .new_price {
+        font-size: 9px !important;
+        max-width: 65%;
+    }
+}
+
+a {
+    color: #15916D;
+}
+
+a:hover {
+    color: #0c4128;
+}
+
+.box {
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.box label {
+    padding-top: 7px;
+    font-size: 16px;
+    color: #4d4d4d;
+    position: absolute;
+    z-index: 10;
+    padding-left: 30px;
+    cursor: pointer;
+}
+
+.box input {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+
+.box input:checked ~ .check {
+    border-color: #15916D;
+    box-shadow: 0px 0px 0px 15px #15916D inset;
+}
+
+.box input:checked ~ .check::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.box .check {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 50px;
+    background-color: #fff;
+    border: 2px solid #15916D;
+    box-shadow: 0px 0px 0px 0px #15916D inset;
+    transition: all 0.15s cubic-bezier(0, 1.05, 0.72, 1.07);
+}
+
+.box .check::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 4;
+    position: absolute;
+    transform: scale(0);
+    background-size: 50%;
+    background-image: url('https://s6.picofile.com/d/8392306668/bacc888c-bed7-41a9-bf24-f6ff0718f471/checkmark.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-delay: 0.2s !important;
+    transition: all 0.25s cubic-bezier(0, 1.05, 0.72, 1.07);
+}
+
+.sales {
+    margin-top: 0;
+}
+
+.buy {
+    border: 1px solid #15916D;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.buy:hover {
+    border: 1px solid #fff;
+    border-radius: 20px;
+    padding: 10px 20px;
+    color: white;
+    background-color: #15916D;
+}
+
+.main__box {
+    width: 100%;
+}
+
+.main_block {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 30px;
+    row-gap: 30px;
+    justify-content: flex-start;
+}
+
+.main__box-el {
+    width: 22%;
+
+}
+
+.default-img-size {
+    width: 220px;
+    height: 220px;
+}
+
+.product-category_fz {
+    font-size: 12px;
+}
+
+.product-content-wrap_fz {
+    font-size: 13px;
+    color: #000;
+}
+
+.product-content-wrap_fz:hover {
+    color: #15916D;
+}
+
+
+.noUi-target, .noUi-target * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -ms-touch-action: none;
+    touch-action: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.noUi-target {
+    position: relative;
+    direction: ltr;
+}
+
+.noUi-base {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    /* Fix 401 */
+}
+
+.noUi-origin {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.noUi-handle {
+    position: relative;
+    z-index: 1;
+}
+
+.noUi-stacking .noUi-handle {
+    /* This class is applied to the lower origin when
+       its values is > 50%. */
+    z-index: 10;
+}
+
+.noUi-state-tap .noUi-origin {
+    -webkit-transition: left 0.3s, top .3s;
+    transition: left 0.3s, top .3s;
+}
+
+.noUi-state-drag * {
+    cursor: inherit !important;
+}
+
+/* Painting and performance;
+ * Browsers can paint handles in their own layer.
+ */
+.noUi-base, .noUi-handle {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Slider size and handle placement;
+ */
+.noUi-horizontal {
+    height: 4px;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    left: -7px;
+    top: -7px;
+    background-color: #345DBB;
+}
+
+/* Styling;
+ */
+.noUi-background {
+    background: #D6D7D9;
+}
+
+.noUi-connect {
+    background: #345DBB;
+    -webkit-transition: background 450ms;
+    transition: background 450ms;
+}
+
+.noUi-origin {
+    border-radius: 2px;
+}
+
+.noUi-target {
+    border-radius: 2px;
+}
+
+.noUi-target.noUi-connect {
+}
+
+/* Handles and cursors;
+ */
+.noUi-draggable {
+    cursor: w-resize;
+}
+
+.noUi-vertical .noUi-draggable {
+    cursor: n-resize;
+}
+
+.noUi-handle {
+    cursor: default;
+    -webkit-box-sizing: content-box !important;
+    -moz-box-sizing: content-box !important;
+    box-sizing: content-box !important;
+}
+
+.noUi-handle:active {
+    border: 8px solid #345DBB;
+    border: 8px solid rgba(53, 93, 187, 0.38);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    left: -14px;
+    top: -14px;
+}
+
+/* Disabled state;
+ */
+[disabled].noUi-connect, [disabled] .noUi-connect {
+    background: #B8B8B8;
+}
+
+[disabled].noUi-origin, [disabled] .noUi-handle {
+    cursor: not-allowed;
+}
+
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+.form-submit {
+    padding: 4px !important;
+    border: 0px !important;
+    background-color: #ffffff !important;
+    border-radius: 0px !important;
+}
+
+.loader {
+    display: none;
+}
+
+
+fieldset, label {
+    margin: 0;
+    padding: 0;
+}
+
+/****** Style Star Rating Widget *****/
+
+.rating {
+    border: none;
+    float: left;
+}
+
+.rating > input {
+    display: none;
+}
+
+.rating > label:before {
+    margin: 5px;
+    font-size: 1.25em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+}
+
+.rating > .half:before {
+    content: "\f089";
+    position: absolute;
+}
+
+.rating > label {
+    color: #ddd;
+    float: right;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label {
+    color: #FFD700;
+}
+
+/* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label {
+    color: #FFED85;
+}
+
+.dot {
+    height: 30px;
+    width: 30px;
+    border: 1px solid #15916D;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.square {
+    height: 40px;
+    width: 40px;
+    border: 1px solid #15916D;
+    border-radius: 70%;
+    display: inline-block;
+}
+
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+.noUi-target, .noUi-target * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -ms-touch-action: none;
+    touch-action: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.noUi-target {
+    position: relative;
+    direction: ltr;
+}
+
+.noUi-base {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    /* Fix 401 */
+}
+
+.noUi-origin {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.noUi-handle {
+    position: relative;
+    z-index: 1;
+}
+
+.noUi-stacking .noUi-handle {
+    /* This class is applied to the lower origin when
+       its values is > 50%. */
+    z-index: 10;
+}
+
+.noUi-state-tap .noUi-origin {
+    -webkit-transition: left 0.3s, top .3s;
+    transition: left 0.3s, top .3s;
+}
+
+.noUi-state-drag * {
+    cursor: inherit !important;
+}
+
+/* Painting and performance;
+ * Browsers can paint handles in their own layer.
+ */
+.noUi-base, .noUi-handle {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Slider size and handle placement;
+ */
+.noUi-horizontal {
+    height: 4px;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    left: -7px;
+    top: -7px;
+    background-color: #15916D;
+}
+
+/* Styling;
+ */
+.noUi-background {
+    background: #D6D7D9;
+}
+
+.noUi-connect {
+    background: #15916D;
+    -webkit-transition: background 450ms;
+    transition: background 450ms;
+}
+
+.noUi-origin {
+    border-radius: 2px;
+}
+
+.noUi-target {
+    border-radius: 2px;
+}
+
+.noUi-target.noUi-connect {
+}
+
+/* Handles and cursors;
+ */
+.noUi-draggable {
+    cursor: w-resize;
+}
+
+.noUi-vertical .noUi-draggable {
+    cursor: n-resize;
+}
+
+.noUi-handle {
+    cursor: default;
+    -webkit-box-sizing: content-box !important;
+    -moz-box-sizing: content-box !important;
+    box-sizing: content-box !important;
+}
+
+.noUi-handle:active {
+    border: 8px solid #15916D;
+    border: 8px solid rgba(53, 187, 75, 0.38);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    left: -14px;
+    top: -14px;
+}
+
+/* Disabled state;
+ */
+[disabled].noUi-connect, [disabled] .noUi-connect {
+    background: #B8B8B8;
+}
+
+[disabled].noUi-origin, [disabled] .noUi-handle {
+    cursor: not-allowed;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    display: none;
+}
