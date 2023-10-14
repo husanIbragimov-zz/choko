@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.product.models import BannerDiscount, Currency, Advertisement, Category, Banner, Brand, Color, Size, \
+from apps.product.models import Author, BannerDiscount, Currency, Advertisement, Category, Banner, Brand, Color, Size, \
     Product, ProductImage, AdditionalInfo, Rate
 
 
@@ -92,8 +92,8 @@ class AppRateSerializer(serializers.ModelSerializer):
 
 class AppAuthorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ('id', 'author')
+        model = Author
+        fields = ('id', 'name')
 
 
 class AppProductSerializer(serializers.ModelSerializer):
