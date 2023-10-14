@@ -12,13 +12,7 @@ class AppProductFilter(django_filters.FilterSet):
     product_type = django_filters.ChoiceFilter(choices=PRODUCT_TYPE, field_name='product_type', lookup_expr='exact')
     author = django_filters.ModelChoiceFilter(queryset=Author.objects.all(), field_name='author', lookup_expr='exact')
     size = django_filters.ModelMultipleChoiceFilter(queryset=Size.objects.all())
-    color = filters.ModelMultipleChoiceFilter(queryset=Color.objects.all(), method='filter_color')
-
-    def filter_color(self, queryset, name, value):
-        colors = ProductImage.objects.filter(color_id__in=value)
-        qs = queryset.filter(product_images__in=colors)
-        return qs
 
     class Meta:
         model = Product
-        fields = ['title', 'category', 'brand', 'size', 'color', 'author', 'product_type']
+        fields = ['title', 'category', 'brand', 'size', 'author', 'product_type']
