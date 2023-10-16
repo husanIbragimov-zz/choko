@@ -1,14 +1,17 @@
 from django.utils import timezone
 from django.db.models import Q, Count
 from django.http import JsonResponse
+from api.product.serializers import VariantSerializer
 
 from apps.base.models import Variant
+from apps.product.api.serializers import AppProductSerializer, ProductRetrieveSerializer
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage, \
     BannerDiscount, Author, Size
 from django.core.paginator import Paginator, PageNotAnInteger
-
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.response import Response
 
 def index(request):
     advertisements = Advertisement.objects.all().order_by('-id')
@@ -206,8 +209,6 @@ def shop_books(request):
     author_name = author_list
     active_page = page_number
 
-    print(inscription_name)
-    print(inscription_name)
     products = products.filter(
         Q(category__title__contains=active_cat_name) | Q(brand__title__contains=active_brand_name) |
         Q(language__exact=lang_name) | 
@@ -221,7 +222,6 @@ def shop_books(request):
     if wrapper_name:
         products = products.filter(Q(product_images__wrapper=wrapper_name))
 
-    print(products, '\n', len(products))
 
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
@@ -410,3 +410,19 @@ def shop_images(request):
             })
 
     return JsonResponse({"data": data})
+
+
+
+class PorductDetail(RetrieveAPIView):
+    queryset = Product.objects.all()    
+    serializer_class = ProductRetrieveSerializer
+    
+    def retrieve(self, request, *args, **kwargs):
+        product = self.get_object()
+        qs = self.queryset.filter(~Q(id=product.id), is_active=True)
+        data = ProductRetrieveSerializer(product,many = False).data
+        footer =AppProductSerializer( qs.filter( category__in=[i.id for i in product.category.all()],),many = True).data
+        sidebar = AppProductSerializer(qs.order_by('-created_at')[:5],many = True).data
+        variant = VariantSerializer(Variant.objects.filter(product_type = product.product_type),many =True).data
+        
+        return Response({'data':data,'footer':footer,'sidebar':sidebar,'variant':variant})

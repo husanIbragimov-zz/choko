@@ -8,7 +8,7 @@ from apps.base.models import Variant
 class VariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variant
-        fields = ['id', 'duration', 'percent']
+        fields = '__all__'
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):

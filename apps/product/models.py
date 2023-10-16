@@ -261,6 +261,10 @@ class ProductImage(BaseAbstractDate):
         active_variant = variants.last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+    
+    @property
+    def image_url(self):
+        return self.image.url 
 
 
 class AdditionalInfo(BaseAbstractDate):
