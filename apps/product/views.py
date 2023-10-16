@@ -22,7 +22,7 @@ def index(request):
     banner_discounts = BannerDiscount.objects.filter(product__isnull=False, is_active=True)
 
     # Generate the query list using list comprehension.
-    query = [qs for qs in product if qs.percentage >= 10]
+    query = [qs for qs in product if qs.percentage >= 20]
 
     # filters
     cat = request.GET.get('cat')
@@ -110,10 +110,8 @@ def shop_list(request):
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
 
-    query = []
-    for qs in products:
-        if qs.percentage > 20:
-            query.append(qs)
+    # Generate the query list using list comprehension.
+    query = [qs for qs in products if qs.percentage >= 20]
 
     context = {
         'products': paginated_products,
@@ -139,49 +137,39 @@ def shop_appliances(request):
     last_3_products = products.order_by('-view')
 
     # filter
-    cat = request.GET.get('cat')
-    top_rated = request.GET.get('top_rated')
-    search = request.GET.get('search')
-    advertisement = request.GET.get('advertisement')
-    brand = request.GET.get('brand')
-    active_cat = False
-    active_cat_name = None
-    active_brand = False
-    active_brand_name = None
-    if cat:
-        active_cat = True
-        active_cat_name = cat
-        products = products.filter(category__title__icontains=cat)
-    if search:
-        products = products.filter(
-            Q(title__icontains=search) | Q(status__contains=search) | Q(brand__title__icontains=search) | Q(
-                description=search))
-    if advertisement:
-        products = products.filter(advertisement__title__contains=advertisement)
-    if brand:
-        active_brand = True
-        active_brand_name = brand
-        products = products.filter(brand__title__icontains=brand)
-
+    cat = request.GET.get('cat', '')
+    search = request.GET.get('search', '')
+    advertisement = request.GET.get('advertisement', '')
+    brand = request.GET.get('brand', '')
     # paginator
-    page_number = request.GET.get('page')
+    page_number = request.GET.get('page', '')
+
+    active_cat_name = cat
+    active_brand_name = brand
+    active_page = page_number
+    search_name = search
+
+    products = products.filter(
+        Q(category__title__contains=active_cat_name) |
+        Q(Q(title__contains=search_name) | Q(status__contains=search_name) | Q(brand__title__contains=search_name) |
+          Q(description__contains=search_name)) | Q(brand__title__exact=active_brand_name)
+    )
+
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
 
-    query = []
-    for qs in products:
-        if qs.percentage > 20:
-            query.append(qs)
+    # Generate the query list using list comprehension.
+    query = [qs for qs in products if qs.percentage >= 20]
 
     context = {
         'products': paginated_products,
         'discounts': query,
         'page_obj': paginated_products,
         'cats': category,
-        'active_cat': active_cat,
         'active_cat_name': active_cat_name,
-        'active_brand': active_brand,
+        'search_name': search_name,
         'active_brand_name': active_brand_name,
+        'active_page': active_page,
         'brands': brands,
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
@@ -196,53 +184,50 @@ def shop_books(request):
     authors = Author.objects.all().order_by('name')
 
     # filter
-    cat = request.GET.get('cat')
-    search = request.GET.get('search')
-    lang = request.GET.get('lang')
-    inscription = request.GET.get('inscription')
-    wrapper = request.GET.get('wrapper')
-    advertisement = request.GET.get('advertisement')
-    brand = request.GET.get('brand')
-    author_list = [author.split(',') for author in request.GET.getlist('author')]
-
-    active_cat = False
-    active_cat_name = None
-    active_brand = False
-    active_brand_name = None
-    if cat:
-        active_cat = True
-        active_cat_name = cat
-        products = products.filter(category__title__icontains=cat)
-    if search:
-        products = products.filter(
-            Q(title__icontains=search) | Q(status__contains=search) | Q(brand__title__icontains=search) | Q(
-                description=search))
-    if advertisement:
-        products = products.filter(advertisement__title__contains=advertisement)
-    if lang:
-        products = products.filter(language__iexact=lang)
-    if inscription:
-        products = products.filter(yozuv__iexact=inscription)
-    if wrapper:
-        products = products.filter(product_images__wrapper__exact=wrapper)
-
-    if author_list:
-        products = products.filter(author__name__in=author_list[0])
-
-    if brand:
-        active_brand = True
-        active_brand_name = brand
-        products = products.filter(brand__title__icontains=brand)
+    cat = request.GET.get('cat', '')
+    search = request.GET.get('search', '')
+    lang = request.GET.get('lang', '')
+    inscription = request.GET.get('inscription', '')
+    wrapper = request.GET.get('wrapper', '')
+    advertisement = request.GET.get('advertisement', '')
+    brand = request.GET.get('brand', '')
+    author_list = request.GET.get('author', '')
+    #  [author.split(',') for author in request.GET.getlist('author', '')]
 
     # paginator
-    page_number = request.GET.get('page')
+    page_number = request.GET.get('page', '')
+
+    active_cat_name = cat
+    active_brand_name = brand
+    search_name = search
+    lang_name = lang
+    inscription_name = inscription
+    wrapper_name = wrapper
+    author_name = author_list
+    active_page = page_number
+
+    print(inscription_name)
+    print(inscription_name)
+    products = products.filter(
+        Q(category__title__contains=active_cat_name) | Q(brand__title__contains=active_brand_name) |
+        Q(language__exact=lang_name) | 
+        Q(Q(title__contains=search_name) | Q(status__contains=search_name) | Q(brand__title__contains=search_name) |
+          Q(description__contains=search_name)) | Q(brand__title__exact=active_brand_name)
+    )
+
+    if inscription_name:
+        products = products.filter(Q(yozuv=inscription_name))
+
+    if wrapper_name:
+        products = products.filter(Q(product_images__wrapper=wrapper_name))
+
+    print(products, '\n', len(products))
+
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
 
-    query = []
-    for qs in products:
-        if qs.percentage > 20:
-            query.append(qs)
+    # Generate the query list using list comprehension.
+    query = [qs for qs in products if qs.percentage >= 20]
 
     context = {
         'authors': authors,
@@ -250,10 +235,14 @@ def shop_books(request):
         'discounts': query,
         'page_obj': paginated_products,
         'cats': category,
-        'active_cat': active_cat,
         'active_cat_name': active_cat_name,
-        'active_brand': active_brand,
         'active_brand_name': active_brand_name,
+        'search_name': search_name,
+        'lang_name': lang_name,
+        'inscription_name': inscription_name,
+        'wrapper_name': wrapper_name,
+        'author_name': author_name,
+        'active_page': active_page,
         'brands': brands,
     }
     return render(request, 'shop-book.html', context)
@@ -298,10 +287,8 @@ def shop_clothes(request):
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
 
-    query = []
-    for qs in products:
-        if qs.percentage > 20:
-            query.append(qs)
+    # Generate the query list using list comprehension.
+    query = [qs for qs in products if qs.percentage >= 20]
 
     context = {
         'sizes': sizes,
