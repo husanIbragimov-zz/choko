@@ -157,15 +157,14 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 DATABASES = {
-    'default': {
+     'default': {
          'ENGINE': 'django.db.backends.postgresql',
          'NAME': 'choco',
          'USER': 'postgres',
-         'PASSWORD': 'password',
+         'PASSWORD': 'choco',
          'HOST': 'localhost',
          'PORT': 5432,
      }
-
 }
 
 # ================================================== PostgresSQL =======================================================

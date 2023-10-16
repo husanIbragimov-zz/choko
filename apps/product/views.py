@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Min, Max, Sum, F
 from django.http import JsonResponse
 
 from apps.base.models import Variant
@@ -135,14 +135,22 @@ def shop_appliances(request):
     brands = Brand.objects.filter(product_type='product').order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
+    max_price = ProductImage.objects.latest('price')
+    min_price = ProductImage.objects.earliest('price')
 
+    print(max_price.price, min_price.price)
     # filter
+    selected_range = request.GET.get('selected_range', None)
+    min_value = request.GET.get('min-value')
+    max_value = request.GET.get('max-value')
     cat = request.GET.get('cat', '')
     search = request.GET.get('search', '')
     advertisement = request.GET.get('advertisement', '')
     brand = request.GET.get('brand', '')
     # paginator
     page_number = request.GET.get('page', '')
+
+    # print("##################", float(min_value), max_value, "#######################")
 
     active_cat_name = cat
     active_brand_name = brand
@@ -154,6 +162,11 @@ def shop_appliances(request):
         Q(Q(title__contains=search_name) | Q(status__contains=search_name) | Q(brand__title__contains=search_name) |
           Q(description__contains=search_name)) | Q(brand__title__exact=active_brand_name)
     )
+    if min_value and min_value:
+        for i in products:
+            if i.total_uzs<= float(min_value) or i.total_uzs>=float(max_value):
+                print(1234567890)
+                products.exclude(id = i.id)
 
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
@@ -170,6 +183,9 @@ def shop_appliances(request):
         'search_name': search_name,
         'active_brand_name': active_brand_name,
         'active_page': active_page,
+        'selected_range': selected_range,
+        'max_price': max_price,
+        'min_price': min_price,
         'brands': brands,
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
@@ -210,7 +226,7 @@ def shop_books(request):
     print(inscription_name)
     products = products.filter(
         Q(category__title__contains=active_cat_name) | Q(brand__title__contains=active_brand_name) |
-        Q(language__exact=lang_name) | 
+        Q(language__exact=lang_name) |
         Q(Q(title__contains=search_name) | Q(status__contains=search_name) | Q(brand__title__contains=search_name) |
           Q(description__contains=search_name)) | Q(brand__title__exact=active_brand_name)
     )
