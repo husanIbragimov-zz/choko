@@ -75,7 +75,7 @@ class VariantViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
     pagination_class = None
 
     def get_queryset(self):
-        return Category.objects.filter(is_active=True).order_by('-id')
+        return self.queryset.order_by('-id')
 
 
 class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
