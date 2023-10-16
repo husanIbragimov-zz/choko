@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.book.helper import LargeResultsSetPagination
-from apps.product.api.serializers import AuthorSerializer
+from .serializers import AuthorSerializer
 from .filter import BrandFilter, CategoryFilter, ProductFilter, SizeFilter
 from api.book.serializers import BookImageSerializer
 

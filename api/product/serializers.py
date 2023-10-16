@@ -1,6 +1,6 @@
 from django.db.models import Avg
 from rest_framework import serializers
-from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
+from apps.product.models import Author, Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
     ProductImage, Product, Rate, AdditionalInfo
 from apps.base.models import Variant
 
@@ -111,6 +111,11 @@ class AdditionalInfoListSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdditionalInfo
         fields = ['id', 'product', 'title', 'description']
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'name']
 
 
 class ProductListSerializer(serializers.ModelSerializer):
