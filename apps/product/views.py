@@ -1,12 +1,17 @@
 from django.utils import timezone
 from django.db.models import Q, Min
 from django.http import JsonResponse
+from rest_framework.generics import RetrieveAPIView
+
+from api.product.serializers import VariantSerializer
 from apps.base.models import Variant
+from apps.product.api.serializers import AppProductSerializer, ProductRetrieveSerializer
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage, \
-    BannerDiscount, Author, Size, Currency
+    Currency, BannerDiscount, Author, Size
 from django.core.paginator import Paginator
+from rest_framework.response import Response
 
 
 def range_filter(high, low, products):
@@ -331,7 +336,7 @@ def shop_clothes(request):
         products = products.filter(advertisement__title__contains=advertisement)
 
     # paginator
-    paginator = Paginator(products, 20)
+    paginator = Paginator(products.distinct(), 20)
     paginated_products = paginator.get_page(page_number)
 
     # Generate the query list using list comprehension.
@@ -460,3 +465,18 @@ def shop_images(request):
             })
 
     return JsonResponse({"data": data})
+
+
+class PorductDetail(RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductRetrieveSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        product = self.get_object()
+        qs = self.queryset.filter(~Q(id=product.id), is_active=True)
+        data = ProductRetrieveSerializer(product, many=False).data
+        footer = AppProductSerializer(qs.filter(category__in=[i.id for i in product.category.all()], ), many=True).data
+        sidebar = AppProductSerializer(qs.order_by('-created_at')[:5], many=True).data
+        variant = VariantSerializer(Variant.objects.filter(product_type=product.product_type), many=True).data
+
+        return Response({'data': data, 'footer': footer, 'sidebar': sidebar, 'variant': variant})

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.product.models import BannerDiscount, Currency, Advertisement, Category, Banner, Brand, Color, Size, \
+from apps.product.models import Author, BannerDiscount, Currency, Advertisement, Category, Banner, Brand, Color, Size, \
     Product, ProductImage, AdditionalInfo, Rate
 
 
@@ -92,8 +92,8 @@ class AppRateSerializer(serializers.ModelSerializer):
 
 class AppAuthorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ('id', 'author')
+        model = Author
+        fields = ('id', 'name')
 
 
 class AppProductSerializer(serializers.ModelSerializer):
@@ -132,3 +132,25 @@ class AppProductDetailSerializer(serializers.ModelSerializer):
             'discount', 'view', 'mid_rate_percent', 'description', 'availability', 'has_size', 'product_images',
             'additional_info', 'rate', 'author'
         )
+
+class ProductRetrieveSerializer(serializers.ModelSerializer):
+    category = AppCategoryChildSerializer(many=True, read_only=True)
+    brand = serializers.CharField(source='brand.title', read_only=True)
+    size = AppSizeSerializer(many=True, read_only=True)
+    product_images = AppProductImageSerializer(many=True, read_only=True)
+    additional_info = AppAdditionalInfoSerializer(many=True, read_only=True)
+    rate = AppRateSerializer(many=True, read_only=True)
+    author = AppAuthorSerializer(read_only=True)
+    colors = serializers.SerializerMethodField(read_only = True)
+    
+    
+    
+    def get_colors(self,obj):
+        if obj.product_type == 'book':
+            return  obj.product_images.distinct('wrapper').values('id','image')
+        else:
+            return  obj.product_images.distinct('color').values('id','image')
+    
+    class Meta:
+        model = Product
+        fields = ('id','status','author','rate','product_type','additional_info','title','category', 'brand', 'mid_rate_percent', 'size', 'percentage', 'product_images','colors')
