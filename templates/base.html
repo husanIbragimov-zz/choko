@@ -112,7 +112,6 @@
                                 {% endif %}{{ language.code }}
                             </button>
                         {% endfor %}
-                        {#                        </ul>#}
                     </div>
                 </div>
             </div>
@@ -415,9 +414,6 @@
                     <ul class="mobile-menu">
                         <li><a class="active" href="{% url 'index' %}">{% trans "Bosh sahifa" %}</a>
                         </li>
-                        {#                        <li>#}
-                        {#                            <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>#}
-                        {#                        </li>#}
                         <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                         </li>
                         <li>

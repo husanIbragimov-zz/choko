@@ -1,11 +1,10 @@
-from django.contrib import messages
-
+from django.db.models import Min
 from .models import Cart, Wishlist
 import uuid
 from apps.contact.models import Subscribe
 from ..base.models import Variant
 from django.http import JsonResponse
-from ..product.models import Currency, Category, Product
+from ..product.models import Currency, Category, Product, ProductImage
 
 
 def ajax_renderer(request):
@@ -38,6 +37,8 @@ def cart_renderer(request):
     sbb = request.POST.get('sbb')
     subscribe = Subscribe.objects.filter(email=sbb)
     variants = Variant.objects.all().order_by('duration')
+    max_price = ProductImage.objects.latest('price')
+    min_price = ProductImage.objects.earliest('price')
     active_variant = variants.last()
     if not subscribe.exists():
         if request.method == 'POST':
@@ -56,6 +57,6 @@ def cart_renderer(request):
         "wishlists": wishlists,
         "currency": currency,
         'categories': categories,
-        # 'products': products,
-        # 'hide_categories': categories
+        'max_price': max_price,
+        'min_price': min_price,
     }

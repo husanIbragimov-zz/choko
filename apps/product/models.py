@@ -148,7 +148,9 @@ class Author(BaseAbstractDate):
     name = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        return 'No name'
 
 
 class Product(BaseAbstractDate):
