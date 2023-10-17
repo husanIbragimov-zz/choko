@@ -1,13 +1,22 @@
 from django.utils import timezone
-from django.db.models import Q, Count, Min, Max, Sum, F
+from django.db.models import Q, Min
 from django.http import JsonResponse
-
 from apps.base.models import Variant
 from apps.product.forms import CommentForm
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.product.models import Category, Banner, Brand, Product, Rate, Advertisement, Color, ProductImage, \
-    BannerDiscount, Author, Size
-from django.core.paginator import Paginator, PageNotAnInteger
+    BannerDiscount, Author, Size, Currency
+from django.core.paginator import Paginator
+
+
+def range_filter(high, low, products):
+    currency = Currency.objects.last().amount
+    active_variant = Variant.objects.last().percent
+
+    products = products.annotate(min_price=Min('product_images__price') * currency + active_variant).filter(
+        min_price__gte=low, min_price__lte=high)
+
+    return products
 
 
 def index(request):
@@ -82,7 +91,6 @@ def shop_list(request):
 
     # filter
     cat = request.GET.get('cat')
-    top_rated = request.GET.get('top_rated')
     search = request.GET.get('search')
     advertisement = request.GET.get('advertisement')
     brand = request.GET.get('brand')
@@ -135,38 +143,38 @@ def shop_appliances(request):
     brands = Brand.objects.filter(product_type='product').order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
-    max_price = ProductImage.objects.latest('price')
-    min_price = ProductImage.objects.earliest('price')
 
-    print(max_price.price, min_price.price)
     # filter
     selected_range = request.GET.get('selected_range', None)
-    min_value = request.GET.get('min-value')
-    max_value = request.GET.get('max-value')
+    min_value = request.GET.get('min-value', 0)
+    max_value = request.GET.get('max-value', 0)
     cat = request.GET.get('cat', '')
     search = request.GET.get('search', '')
-    advertisement = request.GET.get('advertisement', '')
-    brand = request.GET.get('brand', '')
+    brand = request.GET.get('brand')
     # paginator
     page_number = request.GET.get('page', '')
-
-    # print("##################", float(min_value), max_value, "#######################")
 
     active_cat_name = cat
     active_brand_name = brand
     active_page = page_number
     search_name = search
+    high = max_value
+    low = min_value
 
-    products = products.filter(
-        Q(category__title__contains=active_cat_name) |
-        Q(Q(title__contains=search_name) | Q(status__contains=search_name) | Q(brand__title__contains=search_name) |
-          Q(description__contains=search_name)) | Q(brand__title__exact=active_brand_name)
-    )
-    if min_value and min_value:
-        for i in products:
-            if i.total_uzs<= float(min_value) or i.total_uzs>=float(max_value):
-                print(1234567890)
-                products.exclude(id = i.id)
+    if float(max_value) > 0 or float(min_value) > 0:
+        # range filter
+        products = range_filter(high, low, products)
+
+    if cat or brand:
+        products = products.filter(
+            Q(category__title=active_cat_name) | Q(brand__title=active_brand_name)
+        )
+
+    if search_name:
+        products = products.filter(
+            Q(title__icontains=search_name) | Q(status__contains=search_name) | Q(
+                brand__title__icontains=search_name) | Q(
+                description=search_name))
 
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
@@ -184,8 +192,8 @@ def shop_appliances(request):
         'active_brand_name': active_brand_name,
         'active_page': active_page,
         'selected_range': selected_range,
-        'max_price': max_price,
-        'min_price': min_price,
+        'high': high,
+        'low': low,
         'brands': brands,
         'last_3_products': last_3_products[:3],
         'top_rate_products': top_rate_products
@@ -199,6 +207,8 @@ def shop_books(request):
     brands = Brand.objects.filter(product_type='book').order_by('-id')
     authors = Author.objects.all().order_by('name')
 
+    authors_data = list(map(int, request.POST.getlist('authors')))
+
     # filter
     cat = request.GET.get('cat', '')
     search = request.GET.get('search', '')
@@ -208,10 +218,14 @@ def shop_books(request):
     advertisement = request.GET.get('advertisement', '')
     brand = request.GET.get('brand', '')
     author_list = request.GET.get('author', '')
-    #  [author.split(',') for author in request.GET.getlist('author', '')]
-
     # paginator
     page_number = request.GET.get('page', '')
+    min_value = request.GET.get('min-value', 0)
+    max_value = request.GET.get('max-value', 0)
+    if min_value == '':
+        min_value = 0
+    if max_value == '':
+        max_value = 0
 
     active_cat_name = cat
     active_brand_name = brand
@@ -221,23 +235,24 @@ def shop_books(request):
     wrapper_name = wrapper
     author_name = author_list
     active_page = page_number
+    high = max_value
+    low = min_value
 
-    print(inscription_name)
-    print(inscription_name)
-    products = products.filter(
-        Q(category__title__contains=active_cat_name) | Q(brand__title__contains=active_brand_name) |
-        Q(language__exact=lang_name) |
-        Q(Q(title__contains=search_name) | Q(status__contains=search_name) | Q(brand__title__contains=search_name) |
-          Q(description__contains=search_name)) | Q(brand__title__exact=active_brand_name)
-    )
+    if float(max_value) > 0 or float(min_value) > 0:
+        # range filter
+        products = range_filter(high, low, products)
+
+    if cat or brand or lang or inscription or author_list or len(authors_data) > 0:
+        products = products.filter(
+            Q(category__title=active_cat_name) | Q(brand__title=active_brand_name) |
+            Q(language=lang_name) | Q(yozuv__exact=inscription_name) | Q(author__id__in=authors_data)
+        )
 
     if inscription_name:
         products = products.filter(Q(yozuv=inscription_name))
 
     if wrapper_name:
         products = products.filter(Q(product_images__wrapper=wrapper_name))
-
-    print(products, '\n', len(products))
 
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
@@ -250,6 +265,7 @@ def shop_books(request):
         'products': paginated_products,
         'discounts': query,
         'page_obj': paginated_products,
+        'authors_data': authors_data,
         'cats': category,
         'active_cat_name': active_cat_name,
         'active_brand_name': active_brand_name,
@@ -260,6 +276,9 @@ def shop_books(request):
         'author_name': author_name,
         'active_page': active_page,
         'brands': brands,
+        'high': high,
+        'low': low
+
     }
     return render(request, 'shop-book.html', context)
 
@@ -270,36 +289,48 @@ def shop_clothes(request):
     brands = Brand.objects.filter(product_type='clothing').order_by('-id')
     top_rate_products = sorted(products, key=lambda t: t.mid_rate)
     last_3_products = products.order_by('-view')
-    colors = Color.objects.all()
+    colors = Color.objects.all().order_by('title').distinct('title')
     sizes = Size.objects.all()
 
-    # filter
+    colors_ids = list(map(int, request.POST.getlist('colors')))
+    sizes_ids = list(map(int, request.POST.getlist('sizes')))
+
+    page_number = request.GET.get('page')
     cat = request.GET.get('cat')
-    top_rated = request.GET.get('top_rated')
     search = request.GET.get('search')
     advertisement = request.GET.get('advertisement')
     brand = request.GET.get('brand')
-    active_cat = False
-    active_cat_name = None
-    active_brand = False
-    active_brand_name = None
-    if cat:
-        active_cat = True
-        active_cat_name = cat
-        products = products.filter(category__title__icontains=cat)
+    min_value = request.GET.get('min-value', 0)
+    max_value = request.GET.get('max-value', 0)
+    if min_value == '':
+        min_value = 0
+    if max_value == '':
+        max_value = 0
+
+    active_cat_name = cat
+    active_brand_name = brand
+    high = max_value
+    low = min_value
+    active_page = page_number
+
+    if float(max_value) > 0 or float(min_value) > 0:
+        # range filter
+        products = range_filter(high, low, products)
+
+    if cat or brand or len(colors_ids) > 0 or len(sizes_ids) > 0:
+        products = products.filter(
+            Q(category__title=active_cat_name) | Q(brand__title=active_brand_name) |
+            Q(product_images__color__in=colors_ids) | Q(size__in=sizes_ids)
+        )
+
     if search:
         products = products.filter(
             Q(title__icontains=search) | Q(status__contains=search) | Q(brand__title__icontains=search) | Q(
                 description=search))
     if advertisement:
         products = products.filter(advertisement__title__contains=advertisement)
-    if brand:
-        active_brand = True
-        active_brand_name = brand
-        products = products.filter(brand__title__icontains=brand)
 
     # paginator
-    page_number = request.GET.get('page')
     paginator = Paginator(products, 20)
     paginated_products = paginator.get_page(page_number)
 
@@ -307,15 +338,18 @@ def shop_clothes(request):
     query = [qs for qs in products if qs.percentage >= 20]
 
     context = {
+        'high': high,
+        'low': low,
+        'active_page': active_page,
         'sizes': sizes,
         'colors': colors,
+        'colors_ids': colors_ids,
+        'sizes_ids': sizes_ids,
         'products': paginated_products,
         'discounts': query,
         'page_obj': paginated_products,
         'cats': category,
-        'active_cat': active_cat,
         'active_cat_name': active_cat_name,
-        'active_brand': active_brand,
         'active_brand_name': active_brand_name,
         'brands': brands,
         'last_3_products': last_3_products[:3],
@@ -324,11 +358,11 @@ def shop_clothes(request):
     return render(request, 'shop-clothing.html', context)
 
 
-def shop_details(request, id):
-    product = get_object_or_404(Product, id=id)
+def shop_details(request, pk):
+    product = get_object_or_404(Product, id=pk)
     related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
                                               is_active=True)
-    images = ProductImage.objects.filter(product_id=id)
+    images = ProductImage.objects.filter(product_id=pk)
     data = []
     data_ids = []
     for image in images:
@@ -362,23 +396,23 @@ def shop_details(request, id):
                     'color': image.color_id
                 })
                 data_ids.append(image.color_id)
-    filtred_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
+    filtered_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
     result_data = []
-    for i in filtred_data:
+    for i in filtered_data:
         if product.product_type == 'book':
-            res = ProductImage.objects.filter(product_id=id, wrapper__exact=i['wrapper']).first()
+            res = ProductImage.objects.filter(product_id=pk, wrapper__exact=i['wrapper']).first()
         else:
-            res = ProductImage.objects.filter(product_id=id, color_id=i['color']).first()
+            res = ProductImage.objects.filter(product_id=pk, color_id=i['color']).first()
         if res not in result_data and res is not None:
             result_data.append(res)
     new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
-    comments = Rate.objects.filter(product_id=id).order_by('-id')
+    comments = Rate.objects.filter(product_id=pk).order_by('-id')
     category = Category.objects.filter(is_active=True)
     colors = Color.objects.all()
     if product.id:
         product.view += 1
         product.save()
-    image_objects = ProductImage.objects.filter(product_id=id, color=images[0].color)
+    image_objects = ProductImage.objects.filter(product_id=pk, color=images[0].color)
     # comments
     comment = None
     if request.method == "POST":

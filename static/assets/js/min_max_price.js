@@ -9,7 +9,6 @@ $(document).ready(function () {
     var minVal = parseFloat(getMinVal.innerHTML);
     var getMaxVal = document.getElementById('max_value');
     var maxVal = parseFloat(getMaxVal.innerHTML);
-    console.log(minVal, maxVal)
     var rangeSlider = document.getElementById('slider-range');
     var moneyFormat = wNumb({
         decimals: 0,
@@ -1285,7 +1284,7 @@ $(document).ready(function () {
             console.log(location.href)
             setTimeout(() => {
                 setPrice(p1, p2)
-                location.href = `/techniques/?min-value=${min}&max-value=${max}`
+                    location.href = `/techniques/?min-value=${min}&max-value=${max}`
 
             }, 3000);
             console.log(p1, p2)
@@ -2065,3 +2064,5 @@ $(document).ready(function () {
     /** @export */
     window.wNumb = wNumb;
 }());
+
+

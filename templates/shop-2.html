@@ -107,20 +107,19 @@
 
                                     {% if products.has_previous %}
                                         <li class="page-item"><a class="page-link"
-                                                                 href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&page={{ products.previous_page_number }}"><i
+                                                                 href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ products.previous_page_number }}"><i
                                                 class="fa fa-angle-left mt-15"></i></a></li>
                                     {% endif %}
                                     {% for obj in products.paginator.page_range %}
                                         {% if products.number == obj %}
-
                                             <li class="page-item active"><a class="page-link"
-                                                                            href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
+                                                                            href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ obj }}">{{ obj }}</a>
                                             </li>
                                         {% endif %}
                                     {% endfor %}
                                     {% if products.has_next %}
                                         <li class="page-item"><a class="page-link"
-                                                                 href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&page={{ products.next_page_number }}"><i
+                                                                 href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ products.next_page_number }}"><i
                                                 class="fa fa-angle-right mt-15"></i></a></li>
                                     {% endif %}
 
@@ -144,7 +143,7 @@
                                         {% for sub_child in cats %}
                                             {% if sub_child.parent != None %}
                                                 <li class="cat-item text-muted">
-                                                <a href="{% url 'techniques' %}?search={{ search_name }}&cat={{ sub_child }}&brand={{ active_brand_name }}&page={{ active_page }}">{{ sub_child }}</a>
+                                                <a href="{% url 'techniques' %}?search={{ search_name }}&cat={{ sub_child }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ active_page }}">{{ sub_child }}</a>
                                                 ({{ sub_child.product_set.count }})
                                             {% endif %}
                                         {% endfor %}
@@ -295,7 +294,7 @@
 
                                         {% for brand in brands %}
                                             <li class="cat-item text-muted">
-                                            <a href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ brand }}&page={{ active_page }}">{{ brand.title }}</a>
+                                            <a href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ brand }}&min-value={{ low }}&max-value={{ high }}&page={{ active_page }}">{{ brand.title }}</a>
                                             ({{ brand.product_set.count }})
                                         {% endfor %}
 
