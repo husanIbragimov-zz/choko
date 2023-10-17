@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import CategoryViewSet, BrandViewSet, ColorViewSet, CurrencyViewSet, BannerDiscountViewSet, \
     AdvertisementViewSet, BannerViewSet, SizeViewSet, ProductImageViewSet, ProductViewSet, AdditionalInfoViewSet, \
-    RateViewSet, VariantViewSet
+    RateViewSet, VariantViewSet, AuthorModelViewSet
 
 router = DefaultRouter()
 
@@ -20,5 +20,6 @@ router.register('product/image', ProductImageViewSet, basename='product-image')
 router.register('product', ProductViewSet, basename='product')
 router.register('additional-info', AdditionalInfoViewSet, basename='additional-info')
 router.register('rate', RateViewSet, basename='rate')
+router.register('author',AuthorModelViewSet)
 
 urlpatterns = router.urls
