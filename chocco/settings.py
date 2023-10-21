@@ -154,14 +154,13 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-
+CSRF_TRUSTED_ORIGINS = ['https://oqdev.fibo.cloud',]
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'choco',
+         'NAME':'choco',
          'USER': 'postgres',
-         'PASSWORD': 'choco',
+         'PASSWORD': 'password',
          'HOST': 'localhost',
          'PORT': 5432,
      }
