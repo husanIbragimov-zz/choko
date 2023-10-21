@@ -318,7 +318,6 @@ def shop_clothes(request):
     low = min_value
     active_page = page_number
 
-
     if float(max_value) > 0 or float(min_value) > 0:
         # range filter
         products = range_filter(high, low, products)
