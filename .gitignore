@@ -140,3 +140,5 @@ dmypy.json
 media/
 staticfiles/
 /staticfiles/
+/apps/product/migrations/
+/apps/base/migrations/
