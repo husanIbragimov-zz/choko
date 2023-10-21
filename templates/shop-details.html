@@ -4,13 +4,117 @@
 {% load i18n %}
 {% block style %}
     <style>
+        #example {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            margin-top: 100px;
+        }
+
+        ul.list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        ul.list li {
+            display: flex;
+            padding: 15px;
+            flex-direction: column;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 10px;
+            background-color: #fff;
+            border-left: 4px solid #fff;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        ul.list li .title {
+            font-weight: bold;
+            font-size: 18px;
+            position: relative;
+            z-index: 1;
+            line-height: 24px;
+        }
+
+        ul.list li .subtitle {
+            position: relative;
+            z-index: 1;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        ul.list li:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        ul.list li:hover {
+            color: #fff;
+        }
+
+        ul.list li:hover:after {
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        /* Personal */
+        ul.list li.personal:after {
+            background: linear-gradient(102deg, #00cc88 0%, #1096b7 100%);
+        }
+
+        ul.list li.personal {
+            border-left-color: #00cc88;
+        }
 
     </style>
 {% endblock %}
 {% block content %}
 
 
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="hidden" value="{{ cart.id }}" name="id">
+                            <label for="recipient-name"
+                                   class="col-form-label fs-6 text-left">{% trans "Telefon raqamingizni kiriting" %}:</label>
+                            <input type="tel" class="form-control"
+                                   id="recipient-name"
+                                   required
+                                   name="phone_number"
+                                   pattern="+[0-9]{3}[0-9]{2}[0-9]{3}[0-9]{4}"
+                                   placeholder="+998 (99)-418-7100">
+                            <span id="phone-error" class="error"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary"
+                                data-bs-dismiss="modal">{% trans "Bekor qilish" %}
+                        </button>
+                        <button type="submit"
+                                class="btn btn-primary">{% trans "Yuborish" %}
+                        </button>
 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <main class="main">
         <div class="page-header breadcrumb-wrap">
@@ -67,51 +171,29 @@
                                             {{ product.description|safe|truncatewords:40 }}
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
-                                        {% if product.product_type == 'book' %}
-                                            <div class="attr-detail attr-color mb-10">
-                                                <strong class="mr-10">{% trans "Rang" %}:</strong>
-                                                <ul class="list-filter color-filter" id="color_class">
-                                                    {% for item in images %}
-                                                        {% csrf_token %}
-                                                        <li class="ml-5 list-form">
-                                                            <input class="image_id" id="image_id" name="image_id"
-                                                                   type="hidden"
-                                                                   value="{{ item.id }}">
-                                                            <a href="#"
-                                                               onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
-                                                               class="form-submit">
-                                                                <img src="{{ item.image.url }}" alt="" width="50"
-                                                                     height="50">
-                                                                <p class="d-none">{{ item.id }}</p>
-                                                            </a>
 
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% else %}
-                                            <div class="attr-detail attr-color mb-10">
-                                                <strong class="mr-10">{% trans "Rang" %}:</strong>
-                                                <ul class="list-filter color-filter" id="color_class">
-                                                    {% for item in images %}
-                                                        {% csrf_token %}
-                                                        <li class="ml-5 list-form">
-                                                            <input class="image_id" id="image_id" name="image_id"
-                                                                   type="hidden"
-                                                                   value="{{ item.id }}">
-                                                            <a href="#"
-                                                               onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
-                                                               class="form-submit">
-                                                                <img src="{{ item.image.url }}" alt="" width="50"
-                                                                     height="50">
-                                                                <p class="d-none">{{ item.id }}</p>
-                                                            </a>
+                                        <div class="attr-detail attr-color mb-10">
+                                            <strong class="mr-10">{% trans "Rang" %}:</strong>
+                                            <ul class="list-filter color-filter" id="color_class">
+                                                {% for item in images %}
+                                                    {% csrf_token %}
+                                                    <li class="ml-5 list-form">
+                                                        <input class="image_id" id="image_id" name="image_id"
+                                                               type="hidden"
+                                                               value="{{ item.id }}">
+                                                        <a href="#"
+                                                           onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
+                                                           class="form-submit">
+                                                            <span class="d-none">{{ item.id }}</span>
+                                                            <img src="{{ item.image.url }}" alt="" width="50"
+                                                                 height="50">
+                                                            <p class="d-none">{{ item.id }}</p>
+                                                        </a>
 
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
 
                                         {% if product.size.all %}
                                             <div class="attr-detail attr-size mb-15">
@@ -124,28 +206,28 @@
                                             </div>
 
                                         {% endif %}
-                                        <div class="attr-detail attr-size mt-15 mb-15">
-                                            <strong class="mr-10">{% trans "Bo'lib to'lash" %}:</strong>
-                                            <ul class="list-filter size-filter font-small variant_class">
-                                                {% for variant in variants %}
-                                                    <li class="{% if variant.id == active_variant.id %}active{% endif %}">
-                                                        <a class="calculate"
-                                                           onclick="calculate({
-                                                                   duration:{{ variant.duration }},
-                                                                   percent:{{ variant.percent }},
-                                                                   price:'{{ image_objects.first.price_uzs }}',
-                                                                   status: 'variant',
-                                                                   id:{{ variant.id }}
-                                                                   })"
-
-                                                           href="#">{{ variant.duration }} {% trans "oy" %}
-                                                            <span class="d-none">{{ variant.id }}</span>
-                                                        </a>
-                                                    </li>
-
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
+                                        {#                                        <div class="attr-detail attr-size mt-15 mb-15">#}
+                                        {#                                            <strong class="mr-10">{% trans "Bo'lib to'lash" %}:</strong>#}
+                                        {#                                            <ul class="list-filter size-filter font-small variant_class">#}
+                                        {#                                                {% for variant in variants %}#}
+                                        {#                                                    <li class="{% if variant.id == active_variant.id %}active{% endif %}">#}
+                                        {#                                                        <a class="calculate"#}
+                                        {#                                                           onclick="calculate({#}
+                                        {#                                                                   duration:{{ variant.duration }},#}
+                                        {#                                                                   percent:{{ variant.percent }},#}
+                                        {#                                                                   price:'{{ image_objects.first.price_uzs }}',#}
+                                        {#                                                                   status: 'variant',#}
+                                        {#                                                                   id:{{ variant.id }}#}
+                                        {#                                                                   })"#}
+                                        {##}
+                                        {#                                                           href="#">{{ variant.duration }} {% trans "oy" %}#}
+                                        {#                                                            <span class="d-none">{{ variant.id }}</span>#}
+                                        {#                                                        </a>#}
+                                        {#                                                    </li>#}
+                                        {##}
+                                        {#                                                {% endfor %}#}
+                                        {#                                            </ul>#}
+                                        {#                                        </div>#}
 
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left d-flex">
@@ -184,19 +266,28 @@
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
 
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-                                        <div class="detail-extralink">
-                                            <div class="border radius">
-                                                {% csrf_token %}
-                                                <input class="prod_id" type="hidden" value="{{ product.id }}">
-                                                <input class="qty-input" type="number" min="1" value="1">
+                                        <div class="detail-extralink d-flex justify-content-between flex-wrap">
+                                            <div class="w-100 d-flex justify-content-start">
+                                                <div class=" d-flex align-items-center">
+                                                    {% csrf_token %}
+                                                    <label for="miqdor"
+                                                           class="text-success fs-6 mr-20">{% trans "Miqdori" %}:</label>
+                                                    <input class="prod_id w-50" type="hidden" value="{{ product.id }}">
+                                                    <input id="miqdor" class="qty-input fs-6 w-50" type="number" min="1"
+                                                           value="1">
+                                                    <label for="total" class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
+                                                </div>
+
                                             </div>
-                                            <div class="product-extra-link2">
-                                                <button style="border-radius: 30px" type="button"
-                                                        class="button button-add-to-cart addToCartBtn">{% trans "Savatchaga qo'shish" %}
+                                            <div class="product-extra-link2 mt-3">
+                                                <button type="button"
+                                                        class="button fs-6 button-add-to-cart addToCartBtn rounded-pill">{% trans "Savatchaga qo'shish" %}
+                                                </button>
+                                                <button type="button" class="button fs-6 rounded-pill"
+                                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                    1 Click
                                                 </button>
                                             </div>
-
-
                                         </div>
                                     </div>
                                     <!-- Detail Info -->
@@ -402,12 +493,42 @@
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="widget-area">
                             <!-- Product sidebar Widget -->
+                            <div class="sidebar-widget product-sidebar mb-30 p-20 bg-grey border-radius-10">
+                                <div class="widget-header position-relative mb-20 pb-10">
+                                    <h5 class="widget-title mb-10">{% trans "To'lovlar" %}</h5>
+                                    <div class="bt-1 border-color-1"></div>
+                                </div>
+                                <div id="example list-group">
+                                    <ul class="list">
+                                        {% for variant in variants %}
+                                            {% if variant.product_type == product.product_type %}
+                                                <li class="personal calculate" id="personal calculate"
+                                                    onclick="calculate({
+                                                            duration:{{ variant.duration }},
+                                                            percent:{{ variant.percent }},
+                                                            price:'{{ image_objects.first.price_uzs }}',
+                                                            status: 'variant',
+                                                            id:{{ variant.id }}
+                                                            })">
+                                                    <span class="d-none">{{ variant.id }}</span>
+                                                    <span class="title">{{ variant.name }}</span>
+                                                    <span class="subtitle">{{ variant.duration }} {% trans "oy" %} </span>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--Widget categories-->
+                        </div>
+                        <div class="widget-area">
+                            <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
                                     <h5 class="widget-title mb-10">{% trans "So'ngi mahsulotlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                {% for item in new_products|slice:'0:8' %}
+                                {% for item in new_products %}
                                     <div class="single-post clearfix">
                                         <div class="image">
                                             <img src="{{ item.product_images.first.image.url }}" alt="#">
@@ -438,23 +559,7 @@
                             </div>
                             <!--Widget categories-->
                         </div>
-                        <div class="widget-area">
-                            <!-- Product sidebar Widget -->
-                            <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
-                                <div class="widget-header position-relative mb-20 pb-10">
-                                    <h5 class="widget-title mb-10">{% trans "So'ngi mahsulotlar" %}</h5>
-                                    <div class="bt-1 border-color-1"></div>
-                                </div>
-                                <ul class="list-group">
-                                    <li class="list-group-item active" aria-current="true">An active item</li>
-                                    <li class="list-group-item">A second item</li>
-                                    <li class="list-group-item">A third item</li>
-                                    <li class="list-group-item">A fourth item</li>
-                                    <li class="list-group-item">And a fifth one</li>
-                                </ul>
-                            </div>
-                            <!--Widget categories-->
-                        </div>
+                        <!--Widget categories-->
                     </div>
 
                 </div>
@@ -467,10 +572,65 @@
     <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
 
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
-    <script src="{% static 'assets/js/ajax_request.js' %}"></script>
-    <script src="{% static 'assets/js/calculate_price.js' %}"></script>
+    {#    <script src="{% static 'assets/js/ajax_request.js' %}"></script>#}
+{#    <script src="{% static 'assets/js/calculate_price.js' %}"></script>#}
     <script src="{% static 'assets/js/change_photo.js' %}"></script>
+    <script>
 
+        $(document).ready(function () {
+            var size = undefined
+            var product_image = undefined
+            var variant = undefined
+
+            $('.size_class li').click(function () {
+                size = $(this).text();
+                console.log(size)
+            });
+
+            $('.form-submit').click(function (e) {
+                e.preventDefault(); // Prevent the default behavior of the anchor link
+                var spanText = $(this).find('span.d-none').text(); // Get the text inside the span
+                product_image = spanText
+            });
+
+
+            $('.personal.calculate').click(function () {
+                variant = $(this).find('span.d-none').text();
+            });
+
+
+            $('.addToCartBtn').click(function () {
+                var product_id = $('.prod_id').val()
+                var quantity = $('.qty-input').val()
+                var token = $("input[name=csrfmiddlewaretoken]").val();
+
+
+                $.ajax({
+                    method: 'POST',
+                    url: "/order/add-to-cart/",
+                    data: {
+                        "product_id": product_id,
+                        "quantity": quantity,
+                        "size": size,
+                        "variant": variant,
+                        "product_image": product_image,
+                        csrfmiddlewaretoken: token
+                    },
+                    success: function (response) {
+                        if (response.status) {
+                            alertify.success(response.msg)
+                            location.reload();
+                        } else {
+                            alertify.error(response.msg)
+                        }
+                    }
+                })
+
+            });
+
+
+        });
+    </script>
     <script>
         let status = {
             image: 0,
@@ -563,6 +723,7 @@
                 data: {
                     "product_id": product_id,
                     "image_id": image_id,
+                    "variant": 2,
                     csrfmiddlewaretoken: token
                 },
                 success: function (response) {
@@ -570,6 +731,182 @@
                 }
             })
         }
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+                var cardid = undefined
+
+            var size = undefined
+                var product_image = undefined
+                var variant = undefined
+
+                $('.size_class li').click(function () {
+                    size = $(this).text();
+                });
+
+                $('.form-submit').click(function (e) {
+                    e.preventDefault(); // Prevent the default behavior of the anchor link
+                    var spanText = $(this).find('span.d-none').text(); // Get the text inside the span
+                    product_image = spanText
+                    console.log(product_image)
+                });
+
+
+                $('.personal.calculate').click(function () {
+                    variant = $(this).find('span.d-none').text();
+                });
+
+            $('.btn.btn-primary').click(function () {
+                var product_id = $('.prod_id').val()
+                var quantity = $('.qty-input').val()
+                var token = $("input[name=csrfmiddlewaretoken]").val();
+               $.ajax({
+                    method: 'POST',
+                   dataType:"json",
+                    url: "/order/add-to-cart/",
+
+                    data: {
+                        "product_id": product_id,
+                        "quantity": quantity,
+                        "size": size,
+                        "variant": variant,
+                        "product_image": product_image,
+                        csrfmiddlewaretoken: token
+                    },
+                    success: function (response) {
+                        $.ajax(
+                    {
+                        method: 'POST',
+                        url: "/order/create-order/"+response.card,
+                        data: {
+                            "phone_number": $('#recipient-name').val(),
+                            csrfmiddlewaretoken: token
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            if (response.status) {
+                                alertify.success(response.msg)
+                            } else {
+                                alertify.error(response.msg)
+                            }
+                        }
+                    }
+                );
+                        cardid = response['card']
+                        if (response.status) {
+                            alertify.success(response.msg)
+                        } else {
+                            alertify.error(response.msg)
+                        }
+                    }})
+
+                })
+
+
+
+        });
+    </script>
+
+
+    <script>
+    var type_data = {
+    variant: 0,
+    image: 0,
+};
+function calculate(duration, percent, price, status, id) {
+    if (status === "images") {
+        type_data.image = {
+            id: id,
+            price: price,
+            temp_price: price,
+        }
+        if (type_data.variant === 0) {
+            var image_total = price + ((percent * price) / 100);
+            var image_monthly = image_total / duration;
+            image_monthly = Math.trunc(image_monthly);
+            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+            type_data.image.price = price
+
+        } else {
+            var image_total = price + ((type_data.variant.percent * price) / 100);
+            var image_monthly = image_total / type_data.variant.duration;
+            image_monthly = Math.trunc(image_monthly);
+            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+            type_data.image.price = price
+        }
+        image_monthly = Math.trunc(image_monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        image_monthly = image_monthly + " uzs/oy";
+        price = type_data.image.temp_price + " uzs";
+        $("#monthly").text(image_monthly);
+        $("#origin_price").text(price);
+    } else {
+        type_data.variant = {
+            id: duration.id,
+            duration: duration.duration,
+            percent: duration.percent
+        }
+
+        if (type_data.image === 0) {
+            var total = parseFloat(duration.price) + ((duration.percent * parseFloat(duration.price)) / 100);
+            var monthly = total / duration.duration;
+            monthly = monthly.toFixed(2);
+            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";
+        } else {
+            var total = parseFloat(type_data.image.price) + ((duration.percent * parseFloat(type_data.image.price)) / 100);
+            var monthly = total / duration.duration;
+            monthly = Math.trunc(monthly);
+            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";
+        }
+        monthly = Math.trunc(monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        monthly = monthly + " uzs/oy";
+
+        $("#monthly").text(monthly);
+        $("#origin_price").text(price);
+    }
+}
+
+// ================================================ Banner Deadline ====================================================
+
+const eventBox = document.getElementById('event-box');
+const dayBox = document.getElementById('day');
+const hourBox = document.getElementById('hour');
+const minBox = document.getElementById('min');
+const secBox = document.getElementById('sec');
+// console.log(eventBox.textContent);
+
+const evenDate = Date.parse(eventBox.textContent);
+// console.log(evenDate);
+
+setInterval(() => {
+    const now = new Date().getTime();
+    // console.log(now);
+
+    const diff = evenDate - now;
+    // console.log(diff);
+
+    const d = Math.floor(evenDate / (1000 * 60 * 60 * 24) - (now / (1000 * 60 * 60 * 24)));
+    const h = Math.floor((evenDate / (1000 * 60 * 60) - (now / (1000 * 60 * 60))) % 24);
+    const m = Math.floor((evenDate / (1000 * 60) - (now / (1000 * 60))) % 60);
+    const s = Math.floor((evenDate / (1000) - (now / (1000))) % 60);
+    // console.log(m);
+    // console.log(s);
+
+    if (diff >= 0) {
+        // countdownBox.innerHTML = `${d.toString().padStart(2, '0')} : ${h.toString().padStart(2, '0')} : ${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
+        dayBox.innerHTML = `${d.toString().padStart(2, '0')}`;
+        hourBox.innerHTML = `${h.toString().padStart(2, '0')}`;
+        minBox.innerHTML = `${m.toString().padStart(2, '0')}`;
+        secBox.innerHTML = `${s.toString().padStart(2, '0')}`;
+        // console.log(countdownBox.innerHTML);
+    }
+
+}, 1000);
+
+
+
 
     </script>
 
