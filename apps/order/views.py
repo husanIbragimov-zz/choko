@@ -22,14 +22,12 @@ def account(request):
 
 def add_to_cart(request):
     if request.method == "POST":
-        print(123456, request.POST)
         session_id = request.session['nonuser']
         product_id = request.POST['product_id']
         product_image = request.POST.get('product_image', None)
         variant = request.POST.get('variant', None)
         quantity = request.POST['quantity']
         size = request.POST.get('size', None)
-        print(variant, "variant")
         cart = get_object_or_404(Cart, session_id=session_id, completed=False)
         product = get_object_or_404(Product, id=product_id)
         has_size = False
@@ -55,7 +53,6 @@ def add_to_cart(request):
             variant = variants.last().id
         variant = get_object_or_404(Variant, id=variant)
         cart_item = CartItem.objects.filter(cart=cart, product_id=product_id, variant=variant)
-        print(cart_item, "cart_item")
         ids = 0
         if cart_item.exists():
             for i in cart_item:
@@ -83,23 +80,16 @@ def add_to_cart(request):
 @login_required(login_url='/login')
 def create_order(request, id):
     phone_number = request.POST.get("phone_number", False)
-    print(phone_number)
-    print(12345999999999999999999)
     cart = get_object_or_404(Cart, id=id)
-    print(cart)
     cart_items = cart.cart_items.all()
-    print(cart_items, "cart_items")
     user = request.user
-    print(user)
     order = Order.objects.create(
         user=user,
         phone_number=user.username
     )
-    print(cart_items)
     for item in cart_items:
         item.order = order
         item.save()
-        print(item)
 
     cart.completed = True
     cart.save()
@@ -119,10 +109,7 @@ def create_order(request, id):
 
 def one_click_order(request):
     phone_number = request.POST.get("phone_number", False)
-    print(phone_number)
-    print(1234567890)
     cart = get_object_or_404(Cart, id=id)
-    print(cart)
     cart_items = cart.cart_items.all()
     user = request.user
     order = Order.objects.create(
