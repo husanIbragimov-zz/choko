@@ -6,6 +6,77 @@
 {% block style %}
     <style>
 
+        .sales {
+            margin-top: 0;
+        }
+
+        .buy {
+            border: 1px solid #5897FB;
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+
+        .buy:hover {
+            border: 1px solid #fff;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #5897FB;
+        }
+
+        .countdown-box {
+            position: relative;
+            bottom: 75px;
+            left: 30px;
+        }
+
+        .timer {
+            background-color: #5897FB;
+            margin: 10px;
+            padding: 7px 10px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 17px;
+        }
+
+        .double-dot {
+            margin-top: 15px;
+            color: #5897FB;
+            font-size: 17px;
+        }
+
+        .main__box {
+            width: 100%;
+        }
+
+        .main_block {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 30px;
+            row-gap: 30px;
+            justify-content: flex-start;
+        }
+
+        .main__box-el {
+            width: 18%;
+
+        }
+
+
+        .product-category_fz {
+            font-size: 12px;
+        }
+
+        .product-content-wrap_fz {
+            color: #000;
+            font-size: 13px;
+        }
+
+        .product-content-wrap_fz:hover {
+            color: #5897fb;
+        }
+
+
     </style>
 {% endblock %}
 {% block content %}
@@ -85,7 +156,8 @@
                                 aria-selected="true">{% trans "Elektronikalar" %}
                         </button>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link {% if status_index == 'clothing' %}active{% endif %}" href="{% url 'index' %}?status=clothing"
+                        <a class="nav-link {% if status_index == 'clothing' %}active{% endif %}"
+                           href="{% url 'index' %}?status=clothing"
                            id="nav-tab-two"
                            type="button">{% trans "Kiyimlar" %}
                         </a>
@@ -195,7 +267,8 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
+                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}"
+                               class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -305,7 +378,8 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
+                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}"
+                               class="btn">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>

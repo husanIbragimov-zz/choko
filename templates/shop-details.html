@@ -272,10 +272,13 @@
                                                     {% csrf_token %}
                                                     <label for="miqdor"
                                                            class="text-success fs-6 mr-20">{% trans "Miqdori" %}:</label>
-                                                    <input class="prod_id w-50" type="hidden" value="{{ product.id }}">
-                                                    <input id="miqdor" class="qty-input fs-6 w-50" type="number" min="1"
+                                                    <input class="prod_id w-50" name="prod_id" type="hidden"
+                                                           value="{{ product.id }}">
+                                                    <input id="miqdor" class="qty-input fs-6 w-50" name="qty-input"
+                                                           type="number" min="1"
                                                            value="1">
-                                                    <label for="total" class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
+                                                    <label for="total"
+                                                           class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
                                                 </div>
 
                                             </div>
@@ -502,7 +505,7 @@
                                     <ul class="list">
                                         {% for variant in variants %}
                                             {% if variant.product_type == product.product_type %}
-                                                <li class="personal calculate" id="personal calculate"
+                                                <li class="active-sale personal calculate" id="personal calculate"
                                                     onclick="calculate({
                                                             duration:{{ variant.duration }},
                                                             percent:{{ variant.percent }},
@@ -573,18 +576,18 @@
 
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
     {#    <script src="{% static 'assets/js/ajax_request.js' %}"></script>#}
-{#    <script src="{% static 'assets/js/calculate_price.js' %}"></script>#}
+    {#    <script src="{% static 'assets/js/calculate_price.js' %}"></script>#}
     <script src="{% static 'assets/js/change_photo.js' %}"></script>
     <script>
 
         $(document).ready(function () {
+
             var size = undefined
             var product_image = undefined
             var variant = undefined
 
             $('.size_class li').click(function () {
                 size = $(this).text();
-                console.log(size)
             });
 
             $('.form-submit').click(function (e) {
@@ -604,10 +607,9 @@
                 var quantity = $('.qty-input').val()
                 var token = $("input[name=csrfmiddlewaretoken]").val();
 
-
                 $.ajax({
                     method: 'POST',
-                    url: "/order/add-to-cart/",
+                    url: "{% url 'add-to-cart' %}",
                     data: {
                         "product_id": product_id,
                         "quantity": quantity,
@@ -619,7 +621,7 @@
                     success: function (response) {
                         if (response.status) {
                             alertify.success(response.msg)
-                            location.reload();
+                            {#location.reload();#}
                         } else {
                             alertify.error(response.msg)
                         }
@@ -709,7 +711,6 @@
 
         function send_val(item_id, pro_id, price) {
             calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
-            console.log(item_id, pro_id, price)
             let image_id = item_id;
             let product_id = pro_id;
 
@@ -737,38 +738,40 @@
 
     <script>
         $(document).ready(function () {
-                var cardid = undefined
-
             var size = undefined
-                var product_image = undefined
-                var variant = undefined
+            var product_image = undefined
+            var variant = undefined
 
-                $('.size_class li').click(function () {
-                    size = $(this).text();
-                });
+            $('.size_class li').click(function () {
+                size = $(this).text();
+            });
 
-                $('.form-submit').click(function (e) {
-                    e.preventDefault(); // Prevent the default behavior of the anchor link
-                    var spanText = $(this).find('span.d-none').text(); // Get the text inside the span
-                    product_image = spanText
-                    console.log(product_image)
-                });
+            $('.form-submit').click(function (e) {
+                e.preventDefault(); // Prevent the default behavior of the anchor link
+                var spanText = $(this).find('span.d-none').text(); // Get the text inside the span
+                product_image = spanText
+            });
 
 
-                $('.personal.calculate').click(function () {
-                    variant = $(this).find('span.d-none').text();
-                });
+            $('.personal.calculate').click(function () {
+                variant = $(this).find('span.d-none').text();
+            });
 
             $('.btn.btn-primary').click(function () {
+                var phone_number = $("input[name='phone_number']").val()
                 var product_id = $('.prod_id').val()
                 var quantity = $('.qty-input').val()
+                var size = $('.size_class').val()
+                var product_image = $('.image_id').val()
                 var token = $("input[name=csrfmiddlewaretoken]").val();
-               $.ajax({
-                    method: 'POST',
-                   dataType:"json",
-                    url: "/order/add-to-cart/",
 
+
+                $.ajax({
+                    method: 'POST',
+                    dataType: "json",
+                    url: "{% url 'one-click-order' %}",
                     data: {
+                        "phone_number": phone_number,
                         "product_id": product_id,
                         "quantity": quantity,
                         "size": size,
@@ -777,136 +780,78 @@
                         csrfmiddlewaretoken: token
                     },
                     success: function (response) {
-                        $.ajax(
-                    {
-                        method: 'POST',
-                        url: "/order/create-order/"+response.card,
-                        data: {
-                            "phone_number": $('#recipient-name').val(),
-                            csrfmiddlewaretoken: token
-                        },
-                        success: function (response) {
-                            console.log(response)
-                            if (response.status) {
-                                alertify.success(response.msg)
-                            } else {
-                                alertify.error(response.msg)
-                            }
-                        }
-                    }
-                );
-                        cardid = response['card']
                         if (response.status) {
                             alertify.success(response.msg)
+                            location.reload();
                         } else {
                             alertify.error(response.msg)
                         }
-                    }})
-
+                    }
                 })
-
-
-
+            })
         });
     </script>
 
 
     <script>
-    var type_data = {
-    variant: 0,
-    image: 0,
-};
-function calculate(duration, percent, price, status, id) {
-    if (status === "images") {
-        type_data.image = {
-            id: id,
-            price: price,
-            temp_price: price,
-        }
-        if (type_data.variant === 0) {
-            var image_total = price + ((percent * price) / 100);
-            var image_monthly = image_total / duration;
-            image_monthly = Math.trunc(image_monthly);
-            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-            type_data.image.price = price
-
-        } else {
-            var image_total = price + ((type_data.variant.percent * price) / 100);
-            var image_monthly = image_total / type_data.variant.duration;
-            image_monthly = Math.trunc(image_monthly);
-            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-            type_data.image.price = price
-        }
-        image_monthly = Math.trunc(image_monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        image_monthly = image_monthly + " uzs/oy";
-        price = type_data.image.temp_price + " uzs";
-        $("#monthly").text(image_monthly);
-        $("#origin_price").text(price);
-    } else {
-        type_data.variant = {
-            id: duration.id,
-            duration: duration.duration,
-            percent: duration.percent
-        }
-
-        if (type_data.image === 0) {
-            var total = parseFloat(duration.price) + ((duration.percent * parseFloat(duration.price)) / 100);
-            var monthly = total / duration.duration;
-            monthly = monthly.toFixed(2);
-            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";
-        } else {
-            var total = parseFloat(type_data.image.price) + ((duration.percent * parseFloat(type_data.image.price)) / 100);
-            var monthly = total / duration.duration;
-            monthly = Math.trunc(monthly);
-            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";
-        }
-        monthly = Math.trunc(monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        monthly = monthly + " uzs/oy";
-
-        $("#monthly").text(monthly);
-        $("#origin_price").text(price);
-    }
-}
-
-// ================================================ Banner Deadline ====================================================
-
-const eventBox = document.getElementById('event-box');
-const dayBox = document.getElementById('day');
-const hourBox = document.getElementById('hour');
-const minBox = document.getElementById('min');
-const secBox = document.getElementById('sec');
-// console.log(eventBox.textContent);
-
-const evenDate = Date.parse(eventBox.textContent);
-// console.log(evenDate);
-
-setInterval(() => {
-    const now = new Date().getTime();
-    // console.log(now);
-
-    const diff = evenDate - now;
-    // console.log(diff);
-
-    const d = Math.floor(evenDate / (1000 * 60 * 60 * 24) - (now / (1000 * 60 * 60 * 24)));
-    const h = Math.floor((evenDate / (1000 * 60 * 60) - (now / (1000 * 60 * 60))) % 24);
-    const m = Math.floor((evenDate / (1000 * 60) - (now / (1000 * 60))) % 60);
-    const s = Math.floor((evenDate / (1000) - (now / (1000))) % 60);
-    // console.log(m);
-    // console.log(s);
-
-    if (diff >= 0) {
-        // countdownBox.innerHTML = `${d.toString().padStart(2, '0')} : ${h.toString().padStart(2, '0')} : ${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
-        dayBox.innerHTML = `${d.toString().padStart(2, '0')}`;
-        hourBox.innerHTML = `${h.toString().padStart(2, '0')}`;
-        minBox.innerHTML = `${m.toString().padStart(2, '0')}`;
-        secBox.innerHTML = `${s.toString().padStart(2, '0')}`;
-        // console.log(countdownBox.innerHTML);
-    }
-
-}, 1000);
 
 
-
+        {#var type_data = {#}
+        {#    variant: 0,#}
+        {#    image: 0,#}
+        //};
+        {##}
+        {#function calculate(duration, percent, price, status, id) {#}
+        {#    if (status === "images") {#}
+        {#        type_data.image = {#}
+        {#            id: id,#}
+        {#            price: price,#}
+        {#            temp_price: price,#}
+        {#        }#}
+        {#        if (type_data.variant === 0) {#}
+        {#            var image_total = price + ((percent * price) / 100);#}
+        {#            var image_monthly = image_total / duration;#}
+        {#            image_monthly = Math.trunc(image_monthly);#}
+        {#            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")#}
+        {#            type_data.image.price = price#}
+        {##}
+        {#        } else {#}
+        {#            var image_total = price + ((type_data.variant.percent * price) / 100);#}
+        {#            var image_monthly = image_total / type_data.variant.duration;#}
+        {#            image_monthly = Math.trunc(image_monthly);#}
+        {#            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")#}
+        {#            type_data.image.price = price#}
+        {#        }#}
+        {#        image_monthly = Math.trunc(image_monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");#}
+        {#        image_monthly = image_monthly + " uzs/oy";#}
+        {#        price = type_data.image.temp_price + " uzs";#}
+        {#        $("#monthly").text(image_monthly);#}
+        {#        $("#origin_price").text(price);#}
+        {#    } else {#}
+        {#        type_data.variant = {#}
+        {#            id: duration.id,#}
+        {#            duration: duration.duration,#}
+        {#            percent: duration.percent#}
+        {#        }#}
+        {##}
+        {#        if (type_data.image === 0) {#}
+        {#            var total = parseFloat(duration.price) + ((duration.percent * parseFloat(duration.price)) / 100);#}
+        {#            var monthly = total / duration.duration;#}
+        {#            monthly = monthly.toFixed(2);#}
+        {#            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";#}
+        {#        } else {#}
+        {#            var total = parseFloat(type_data.image.price) + ((duration.percent * parseFloat(type_data.image.price)) / 100);#}
+        {#            var monthly = total / duration.duration;#}
+        {#            monthly = Math.trunc(monthly);#}
+        {#            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";#}
+        {#        }#}
+        {#        monthly = Math.trunc(monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");#}
+        {#        monthly = monthly + " uzs/oy";#}
+        {##}
+        {#        $("#monthly").text(monthly);#}
+        {#        $("#origin_price").text(price);#}
+        {#    }#}
+        //}
 
     </script>
 
