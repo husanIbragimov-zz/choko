@@ -1,11 +1,10 @@
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from apps.base.models import Variant
 from apps.order.models import Cart, CartItem, Order, Wishlist
-from apps.product.models import Product, Rate, Color, Category, Size, ProductImage
+from apps.product.models import Product, Rate, Category, Size, ProductImage
 from bot.main import order_product
 import asyncio
 
@@ -26,6 +25,7 @@ def add_to_cart(request):
         product_id = request.POST['product_id']
         product_image = request.POST.get('product_image', None)
         variant = request.POST.get('variant', None)
+        print(variant)
         quantity = request.POST['quantity']
         size = request.POST.get('size', None)
         cart = get_object_or_404(Cart, session_id=session_id, completed=False)
@@ -48,7 +48,7 @@ def add_to_cart(request):
         elif has_size and size is None:
             return JsonResponse({"msg": "Iltimos! o'lcham tanlang", "status": False})
 
-        else:
+        elif variant is None:
             variants = Variant.objects.all().order_by('duration')
             variant = variants.last().id
         variant = get_object_or_404(Variant, id=variant)
@@ -108,32 +108,52 @@ def create_order(request, id):
 
 
 def one_click_order(request):
-    phone_number = request.POST.get("phone_number", False)
-    cart = get_object_or_404(Cart, id=id)
-    cart_items = cart.cart_items.all()
-    user = request.user
-    order = Order.objects.create(
-        user=user,
-        phone_number=user.username
-    )
-    for item in cart_items:
-        item.order = order
-        item.save()
+    print(request.POST)
 
-    cart.completed = True
-    cart.save()
-    data = []
-    for i in cart_items:
-        data.append(dict(
-            user=request.user.username,
-            order=order.id,
-            product=i.product.title,
-            variant=i.variant.duration,
-            photo=i.product_image.image.url
-        ))
+    phone_number = request.POST.get("phone_number", None)
+    product_id = request.POST.get("product_id", None)
+    quantity = request.POST.get("quantity", None)
+    variant = request.POST.get("variant", None)
+    size = request.POST.get("size", None)
+    product_image = request.POST.get("product_image", None)
+    user = request.user
+    print(user, phone_number, product_id, quantity, variant, size, product_image)
+    cart = Cart.objects.create(
+        session_id=request.session['nonuser'],
+        completed=True
+    )
+    print(cart)
+    order = Order()
+    if user.is_authenticated:
+        order.user = user
+        order.phone_number = phone_number
+    else:
+        order.phone_number = phone_number
+    order.save()
+    print(order)
+
+    product = get_object_or_404(Product, id=product_id)
+    variant = get_object_or_404(Variant, id=variant)
+    print(variant)
+    print(product)
+    if size:
+        size = get_object_or_404(Size, name=size)
+    if product_image:
+        product_image = get_object_or_404(ProductImage, id=product_image)
+    cart_item = CartItem.objects.create(
+        cart=cart,
+        order=order,
+        product=product,
+        quantity=quantity,
+        variant=variant,
+        size=size,
+        product_image=product_image
+    )
+    cart_item.save()
+    print(cart_item)
     # asyncio.run(order_product(data))
 
-    return redirect('/')
+    return redirect('http://127.0.0.1:8000/')
 
 
 def confirm_order(request):
