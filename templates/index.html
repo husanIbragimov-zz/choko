@@ -75,9 +75,9 @@
                 </div>
             </div>
         </section>
-        <section class="product-tabs pt-30 pb-30 wow fadeIn animated">
+        <section class="product-tabs pt-30 pb-30 wow fadeIn animated res-top">
             <div class="container">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs index-nav" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {% if status_index == 'product' %}active{% endif %}" id="nav-tab-one"
                                 data-bs-toggle="tab" data-bs-target="#tab-one"
@@ -85,7 +85,8 @@
                                 aria-selected="true">{% trans "Elektronikalar" %}
                         </button>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link {% if status_index == 'clothing' %}active{% endif %}" href="{% url 'index' %}?status=clothing"
+                        <a class="nav-link {% if status_index == 'clothing' %}active{% endif %}"
+                           href="{% url 'index' %}?status=clothing"
                            id="nav-tab-two"
                            type="button">{% trans "Kiyimlar" %}
                         </a>
@@ -195,7 +196,8 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
+                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}"
+                               class="btn btn-green">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -305,7 +307,8 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}" class="btn">{% trans "Batafsil" %} <i
+                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}"
+                               class="btn btn-green">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>

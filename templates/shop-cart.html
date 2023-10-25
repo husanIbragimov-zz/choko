@@ -3,6 +3,23 @@
 {% load humanize %}
 {% load i18n %}
 
+{% block style %}
+    <style>
+        .cart-item {
+            padding: 14px 20px;
+            {#background-color: #15916D;#}
+            color: #15916D;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .cart-data {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
     <main class="main">
@@ -26,6 +43,7 @@
                                     <th scope="col">{% trans "Rasm" %}</th>
                                     <th scope="col">{% trans "Nomi" %}</th>
                                     <th scope="col">{% trans "Narxi" %}</th>
+                                    <th scope="col">{% trans "To'lov turi" %}</th>
                                     <th scope="col">{% trans "Miqdori" %}</th>
                                     <th scope="col">{% trans "Muddati" %}</th>
                                     <th scope="col">{% trans "Jami" %}</th>
@@ -38,27 +56,31 @@
                                         <td class="image product-thumbnail"><img
                                                 src="{{ item.product_image.image.url }}"
                                                 alt="#"></td>
-                                        <td class="product-des product-name">
+                                        <td class="product-des product-name cart-data">
                                             <p class="product-name"><a
                                                     href="{% url "shop-details" item.product.id %}">{{ item.product.title }}</a>
                                             </p>
                                         </td>
-                                        <td class="price" data-title="Price">
-                                            <span>{{ item.product_image.total_uzs|intcomma }} UZS</span></td>
-                                        <td class="text-center" data-title="Stock">
+                                        <td class="price cart-data" data-title="{% trans 'Narxi' %}">
+                                            <span>{{ item.product_image.total_uzs|intcomma }} UZS</span>
+                                        </td>
+                                        <td class="payment_option cart-data" data-title='{% trans "To'lov turi" %}'>
+                                            <span class="cart-item" style="border-radius: 5px">{{ item.variant.name }}</span>
+                                        </td>
+                                        <td class="text-center cart-data" data-title="{% trans 'Miqdori' %}">
                                             <div class="detail-qty border radius  m-auto">
                                                 <a href="#" class="qty-down"></a>
                                                 <span class="qty-val">{{ item.quantity }}</span>
                                                 <a href="#" class="qty-up"></a>
                                             </div>
                                         </td>
-                                        <td class="text-right" data-title="Cart">
+                                        <td style="right: 30px" class="text-righ cart-datat" data-title="{% trans 'Muddati' %}">
                                             <span>{{ item.variant.duration }} {% trans "oy" %}</span>
                                         </td>
-                                        <td class="text-right" data-title="Cart">
+                                        <td class="text-right cart-data" data-title="{% trans "Jami" %}">
                                             <span>{{ item.subtotal|intcomma }} UZS</span>
                                         </td>
-                                        <td class="action" data-title="Remove"><a
+                                        <td class="action" data-title='{% trans "O`chirish" %}'><a
                                                 href="{% url 'delete-cart-item' item.id %}" class="text-muted"><i
                                                 class="fa fa-trash-alt"
                                                 onclick="return confirm('{% trans "Rostdan ham ushbu mahsulotni o'chirmoqchimisiz?" %}')"></i></a>
@@ -69,9 +91,9 @@
                             </table>
                         </div>
                         <div class="cart-action text-end">
-                            <a class="btn btn-rounded mr-10 mt-5" href="{% url "products_filter" %}"><i
+                            <a class="btn button btn-rounded mr-10 mt-5" href="{% url "products_filter" %}"><i
                                     class="far fa-retweet mr-5"></i>{% trans "Savatchani yangilash" %}</a>
-                            <a class="btn btn-rounded mt-5" href="
+                            <a class="btn button btn-rounded mt-5" href="
                                     {% if cart.cart_items.all.count > 0 %}{% url 'create-order' cart.id %}{% else %}{% url 'index' %}{% endif %}"><i
                                     class="far fa-cart-plus mr-5"></i>{% trans "Davom etish" %}</a>
 
@@ -96,20 +118,12 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    {#                                    <div class="cart-action text-end">#}
-                                    {#                                        <a href="{% url "create-order" cart.id %}" class="btn btn-rounded mr-10 mt-5">#}
-                                    {#                                            <i class="fa fa-share-square mr-10"></i>#}
-                                    {#                                            {% trans "Buyurtmani tasdiqlash" %}</a>#}
-                                    {#                                        <a href="{% url "create-order" cart.id %}" class="btn btn-rounded mt-5"> <i#}
-                                    {#                                                class="fa fa-share-square mr-10"></i>#}
-                                    {#                                            {% trans "Buyurtmani tasdiqlash" %}</a>#}
-                                    {#                                    </div>#}
                                     <div class="cart-action text-end">
-                                        <a class="btn btn-rounded mr-12 fa-6 mt-5"
+                                        <a class="btn button btn-rounded mr-12 fa-6 mt-5"
                                            href="{% url 'create-order' cart.id %}"><i
                                                 class="fa fa-share-square mr-10"></i>{% trans "Buyurtmani tasdiqlash" %}
                                         </a>
-                                        <button type="button" class="btn btn-rounded mt-5"
+                                        <button type="button" class="button btn btn-rounded mt-5"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal" data-bs-whatever="+998"><i
                                                 class="far fa-phone-plus mr-5"></i>{% trans "Hoziroq oling" %}

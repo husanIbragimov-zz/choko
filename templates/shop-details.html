@@ -1,4 +1,4 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
 {% load i18n %}
@@ -74,6 +74,10 @@
         ul.list li.personal {
             border-left-color: #00cc88;
         }
+        .active-pay {
+            color: #fff;
+            background: linear-gradient(102deg, #00cc88 0%, #1096b7 100%) !important;
+        }
 
     </style>
 {% endblock %}
@@ -136,10 +140,10 @@
         <section class="mt-60 mb-60">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-9 tel-ress">
                         <div class="product-detail accordion-detail">
-                            <div class="row mb-50">
-                                <div class="col-md-6 col-sm-12 col-xs-12" style="height: 70%; width: 471px;">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 res-col-left tel-col">
                                     <div class="detail-gallery">
                                         <!-- MAIN SLIDES -->
                                         <div class="product-image-slider" id="main_slider_image">
@@ -150,7 +154,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-md-6 col-sm-12 col-xs-12 res-col-right">
                                     <div class="detail-info">
                                         <h2 class="title-detail">{{ product.title }}</h2>
                                         <div class="product-detail-rating">
@@ -234,7 +238,7 @@
                                                 {% if product.percentage > 0 %}
                                                     <div class="mr-50">
                                                         <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
-                                                        <ins><span id="monthly" style="font-size: 20px"
+                                                        <ins><span id="monthly"
                                                                    class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
@@ -249,7 +253,7 @@
                                                 {% else %}
                                                     <div class="mr-50">
                                                         <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
-                                                        <ins><span id="monthly" style="font-size: 20px"
+                                                        <ins><span id="monthly"
                                                                    class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
@@ -272,18 +276,21 @@
                                                     {% csrf_token %}
                                                     <label for="miqdor"
                                                            class="text-success fs-6 mr-20">{% trans "Miqdori" %}:</label>
-                                                    <input class="prod_id w-50" type="hidden" value="{{ product.id }}">
-                                                    <input id="miqdor" class="qty-input fs-6 w-50" type="number" min="1"
+                                                    <input class="prod_id w-50" name="prod_id" type="hidden"
+                                                           value="{{ product.id }}">
+                                                    <input id="miqdor" class="qty-input fs-6 w-50" name="qty-input"
+                                                           type="number" min="1"
                                                            value="1">
-                                                    <label for="total" class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
+                                                    <label for="total"
+                                                           class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
                                                 </div>
 
                                             </div>
                                             <div class="product-extra-link2 mt-3">
                                                 <button type="button"
-                                                        class="button fs-6 button-add-to-cart addToCartBtn rounded-pill">{% trans "Savatchaga qo'shish" %}
+                                                        class="button fs-6 button-add-to-cart addToCartBtn rounded-pill res-left">{% trans "Savatchaga qo'shish" %}
                                                 </button>
-                                                <button type="button" class="button fs-6 rounded-pill"
+                                                <button type="button" class="button fs-6 rounded-pill res-right"
                                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                                     1 Click
                                                 </button>
@@ -294,17 +301,17 @@
                                 </div>
                             </div>
                             <div class="tab-style3">
-                                <ul class="nav nav-tabs text-uppercase">
+                                <ul class="nav nav-tabs text-uppercase detail-text">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="Description-tab" data-bs-toggle="tab"
+                                        <a class="nav-link active mobile-fs" id="Description-tab" data-bs-toggle="tab"
                                            href="#Description">{% trans "Tafsilotlar" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab"
+                                        <a class="nav-link mobile-fs" id="Additional-info-tab" data-bs-toggle="tab"
                                            href="#Additional-info">{% trans "Qo'shimcha ma'lumotlar" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab"
+                                        <a class="nav-link mobile-fs" id="Reviews-tab" data-bs-toggle="tab"
                                            href="#Reviews">{% trans "Baholar" %}
                                             ({{ product.product_rate.all.count }})</a>
                                     </li>
@@ -431,7 +438,7 @@
                                 <div class="col-12">
                                     <h3 class="section-title style-1 mb-30">{% trans "O'xshash Mahsulotlar" %}</h3>
                                 </div>
-                                <div class="row">
+                                <div class="row scrollmenu">
                                     {% for item in related_products %}
                                         <div class="col-lg-3 col-md-4 col-6 col-sm-6">
                                             <div class="product-cart-wrap small hover-up">
@@ -502,7 +509,8 @@
                                     <ul class="list">
                                         {% for variant in variants %}
                                             {% if variant.product_type == product.product_type %}
-                                                <li class="personal calculate" id="personal calculate"
+                                                <li class="active-sale personal calculate pay-list" id="personal calculate"
+                                                    data-id="{{ variant.id }}"
                                                     onclick="calculate({
                                                             duration:{{ variant.duration }},
                                                             percent:{{ variant.percent }},
@@ -573,18 +581,18 @@
 
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
     {#    <script src="{% static 'assets/js/ajax_request.js' %}"></script>#}
-{#    <script src="{% static 'assets/js/calculate_price.js' %}"></script>#}
+    {#    <script src="{% static 'assets/js/calculate_price.js' %}"></script>#}
     <script src="{% static 'assets/js/change_photo.js' %}"></script>
     <script>
 
         $(document).ready(function () {
+
             var size = undefined
             var product_image = undefined
             var variant = undefined
 
             $('.size_class li').click(function () {
                 size = $(this).text();
-                console.log(size)
             });
 
             $('.form-submit').click(function (e) {
@@ -604,10 +612,9 @@
                 var quantity = $('.qty-input').val()
                 var token = $("input[name=csrfmiddlewaretoken]").val();
 
-
                 $.ajax({
                     method: 'POST',
-                    url: "/order/add-to-cart/",
+                    url: "{% url 'add-to-cart' %}",
                     data: {
                         "product_id": product_id,
                         "quantity": quantity,
@@ -632,191 +639,13 @@
         });
     </script>
     <script>
-        let status = {
-            image: 0,
-            variant: 0,
-        }
-        {% for image in image_objects %}
-            <!-- MAIN_SLIDES -->
-            var main_img = document.createElement("img");
-            main_img.src = "{{ image.image.url }}";
-            main_img.id = "main_slide_image_id-{{ forloop.counter0 }}";
-            var main_div = document.createElement("div");
-            main_div.id = 'main_div_image-{{ forloop.counter0 }}';
-            main_div.appendChild(main_img);
-            document.getElementById("main_slider_image").appendChild(main_div);
-
-            <!-- THUMBNAILS -->
-            var img = document.createElement("img");
-            img.src = "{{ image.image.url }}";
-            img.id = "slide_image_id-{{ forloop.counter0 }}";
-            var div = document.createElement("div");
-            div.id = 'div_image-{{ forloop.counter0 }}';
-            div.appendChild(img);
-            document.getElementById("slider_image").appendChild(div);
-        {% endfor %}
-        function generate(data) {
-            {% for image in image_objects %}
-                <!-- MAIN_SLIDES -->
-                var main_text = "main_slide_image_id-" + {{ forloop.counter0 }};
-                var main_text_div = "main_div_image-" + {{ forloop.counter0 }};
-                <!-- THUMBNAILS -->
-                var text = "slide_image_id-" + {{ forloop.counter0 }};
-                var text_div = "div_image-" + {{ forloop.counter0 }};
-                if (data.length > {{ forloop.counter0 }}) {
-                    <!-- MAIN_SLIDES -->
-                    document.getElementById(main_text).remove();
-                    var main_img = document.createElement("img");
-                    main_img.src = data[{{ forloop.counter0 }}].url;
-                    main_img.id = "main_slide_image_id-" + {{ forloop.counter0 }};
-                    var main_div = document.createElement("div");
-                    main_div.id = 'main_div_image_slide';
-                    main_div.appendChild(main_img);
-                    document.getElementById(main_text_div).appendChild(main_div);
-                    <!-- THUMBNAILS -->
-                    document.getElementById(text).remove();
-                    var img = document.createElement("img");
-                    img.src = data[{{ forloop.counter0 }}].url;
-                    img.id = "slide_image_id-" + {{ forloop.counter0 }};
-                    var div = document.createElement("div");
-                    div.id = 'div_image_slide';
-                    div.appendChild(img);
-                    document.getElementById(text_div).appendChild(div);
-                } else {
-                    <!-- MAIN_SLIDES -->
-                    var main_imge = document.getElementById(main_text);
-                    main_imge.src = "";
-                    main_imge.id = "main_slide_image_id-" + {{ forloop.counter0 }};
-                    var main_dive = document.createElement("div");
-                    main_dive.id = 'main_div_image_slide';
-                    main_dive.appendChild(main_imge);
-                    document.getElementById(main_text_div).appendChild(main_dive);
-                    <!-- THUMBNAILS -->
-                    var imge = document.getElementById(text);
-                    imge.src = "";
-                    imge.id = "slide_image_id-" + {{ forloop.counter0 }};
-                    var dive = document.createElement("div");
-                    dive.id = 'div_image_slide';
-                    dive.appendChild(imge);
-                    document.getElementById(text_div).appendChild(dive);
-                    // Expected output: ReferenceError: nonExistentFunction is not defined
-                    // (Note: the exact output may be browser-dependent)
-                }
-
-            {% endfor %}
-        }
-
-
-        function send_val(item_id, pro_id, price) {
-            calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
-            console.log(item_id, pro_id, price)
-            let image_id = item_id;
-            let product_id = pro_id;
-
-
-            var token = $("input[name=csrfmiddlewaretoken]").val();
-
-
-            $.ajax({
-                method: 'POST',
-                url: "{% url 'shop-images' %}",
-                data: {
-                    "product_id": product_id,
-                    "image_id": image_id,
-                    "variant": 2,
-                    csrfmiddlewaretoken: token
-                },
-                success: function (response) {
-                    generate(response.data)
-                }
-            })
-        }
-
-    </script>
-
-
-    <script>
-        $(document).ready(function () {
-                var cardid = undefined
-
-            var size = undefined
-                var product_image = undefined
-                var variant = undefined
-
-                $('.size_class li').click(function () {
-                    size = $(this).text();
-                });
-
-                $('.form-submit').click(function (e) {
-                    e.preventDefault(); // Prevent the default behavior of the anchor link
-                    var spanText = $(this).find('span.d-none').text(); // Get the text inside the span
-                    product_image = spanText
-                    console.log(product_image)
-                });
-
-
-                $('.personal.calculate').click(function () {
-                    variant = $(this).find('span.d-none').text();
-                });
-
-            $('.btn.btn-primary').click(function () {
-                var product_id = $('.prod_id').val()
-                var quantity = $('.qty-input').val()
-                var token = $("input[name=csrfmiddlewaretoken]").val();
-               $.ajax({
-                    method: 'POST',
-                   dataType:"json",
-                    url: "/order/add-to-cart/",
-
-                    data: {
-                        "product_id": product_id,
-                        "quantity": quantity,
-                        "size": size,
-                        "variant": variant,
-                        "product_image": product_image,
-                        csrfmiddlewaretoken: token
-                    },
-                    success: function (response) {
-                        $.ajax(
-                    {
-                        method: 'POST',
-                        url: "/order/create-order/"+response.card,
-                        data: {
-                            "phone_number": $('#recipient-name').val(),
-                            csrfmiddlewaretoken: token
-                        },
-                        success: function (response) {
-                            console.log(response)
-                            if (response.status) {
-                                alertify.success(response.msg)
-                            } else {
-                                alertify.error(response.msg)
-                            }
-                        }
-                    }
-                );
-                        cardid = response['card']
-                        if (response.status) {
-                            alertify.success(response.msg)
-                        } else {
-                            alertify.error(response.msg)
-                        }
-                    }})
-
-                })
-
-
-
-        });
-    </script>
-
-
-    <script>
     var type_data = {
     variant: 0,
     image: 0,
 };
 function calculate(duration, percent, price, status, id) {
+    $('.pay-list').removeClass('active-pay')
+    $( `li[data-id='${duration.id}']` ).addClass('active-pay');
     if (status === "images") {
         type_data.image = {
             id: id,
@@ -905,9 +734,169 @@ setInterval(() => {
 
 }, 1000);
 
+    </script>
+    <script>
+        let status = {
+            image: 0,
+            variant: 0,
+        }
+        {% for image in image_objects %}
+            <!-- MAIN_SLIDES -->
+            var main_img = document.createElement("img");
+            main_img.src = "{{ image.image.url }}";
+            main_img.id = "main_slide_image_id-{{ forloop.counter0 }}";
+            var main_div = document.createElement("div");
+            main_div.id = 'main_div_image-{{ forloop.counter0 }}';
+            main_div.appendChild(main_img);
+            document.getElementById("main_slider_image").appendChild(main_div);
+
+            <!-- THUMBNAILS -->
+            var img = document.createElement("img");
+            img.src = "{{ image.image.url }}";
+            img.id = "slide_image_id-{{ forloop.counter0 }}";
+            var div = document.createElement("div");
+            div.id = 'div_image-{{ forloop.counter0 }}';
+            div.appendChild(img);
+            document.getElementById("slider_image").appendChild(div);
+        {% endfor %}
+        function generate(data) {
+            {% for image in image_objects %}
+                <!-- MAIN_SLIDES -->
+                var main_text = "main_slide_image_id-" + {{ forloop.counter0 }};
+                var main_text_div = "main_div_image-" + {{ forloop.counter0 }};
+                <!-- THUMBNAILS -->
+                var text = "slide_image_id-" + {{ forloop.counter0 }};
+                var text_div = "div_image-" + {{ forloop.counter0 }};
+                if (data.length > {{ forloop.counter0 }}) {
+                    <!-- MAIN_SLIDES -->
+                    document.getElementById(main_text).remove();
+                    var main_img = document.createElement("img");
+                    main_img.src = data[{{ forloop.counter0 }}].url;
+                    main_img.id = "main_slide_image_id-" + {{ forloop.counter0 }};
+                    var main_div = document.createElement("div");
+                    main_div.id = 'main_div_image_slide';
+                    main_div.appendChild(main_img);
+                    document.getElementById(main_text_div).appendChild(main_div);
+                    <!-- THUMBNAILS -->
+                    document.getElementById(text).remove();
+                    var img = document.createElement("img");
+                    img.src = data[{{ forloop.counter0 }}].url;
+                    img.id = "slide_image_id-" + {{ forloop.counter0 }};
+                    var div = document.createElement("div");
+                    div.id = 'div_image_slide';
+                    div.appendChild(img);
+                    document.getElementById(text_div).appendChild(div);
+                } else {
+                    <!-- MAIN_SLIDES -->
+                    var main_imge = document.getElementById(main_text);
+                    main_imge.src = "";
+                    main_imge.id = "main_slide_image_id-" + {{ forloop.counter0 }};
+                    var main_dive = document.createElement("div");
+                    main_dive.id = 'main_div_image_slide';
+                    main_dive.appendChild(main_imge);
+                    document.getElementById(main_text_div).appendChild(main_dive);
+                    <!-- THUMBNAILS -->
+                    var imge = document.getElementById(text);
+                    imge.src = "";
+                    imge.id = "slide_image_id-" + {{ forloop.counter0 }};
+                    var dive = document.createElement("div");
+                    dive.id = 'div_image_slide';
+                    dive.appendChild(imge);
+                    document.getElementById(text_div).appendChild(dive);
+                    // Expected output: ReferenceError: nonExistentFunction is not defined
+                    // (Note: the exact output may be browser-dependent)
+                }
+
+            {% endfor %}
+        }
 
 
+        function send_val(item_id, pro_id, price) {
 
+            calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
+            let image_id = item_id;
+            let product_id = pro_id;
+
+
+            var token = $("input[name=csrfmiddlewaretoken]").val();
+
+
+            $.ajax({
+                method: 'POST',
+                url: "{% url 'shop-images' %}",
+                data: {
+                    "product_id": product_id,
+                    "image_id": image_id,
+                    "variant": 2,
+                    csrfmiddlewaretoken: token
+                },
+                success: function (response) {
+                    generate(response.data)
+                }
+            })
+        }
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            var size = undefined
+            var product_image = undefined
+            var variant = undefined
+
+            $('.size_class li').click(function () {
+                size = $(this).text();
+            });
+
+            $('.form-submit').click(function (e) {
+                e.preventDefault(); // Prevent the default behavior of the anchor link
+                var spanText = $(this).find('span.d-none').text(); // Get the text inside the span
+                product_image = spanText
+            });
+
+
+            $('.personal.calculate').click(function () {
+                variant = $(this).find('span.d-none').text();
+            });
+
+            $('.btn.btn-primary').click(function () {
+                var phone_number = $("input[name='phone_number']").val()
+                var product_id = $('.prod_id').val()
+                var quantity = $('.qty-input').val()
+                var size = $('.size_class').val()
+                var product_image = $('.image_id').val()
+                var token = $("input[name=csrfmiddlewaretoken]").val();
+
+
+                $.ajax({
+                    method: 'POST',
+                    dataType: "json",
+                    url: "{% url 'one-click-order' %}",
+                    data: {
+                        "phone_number": phone_number,
+                        "product_id": product_id,
+                        "quantity": quantity,
+                        "size": size,
+                        "variant": variant,
+                        "product_image": product_image,
+                        csrfmiddlewaretoken: token
+                    },
+                    success: function (response) {
+                        if (response.status) {
+                            alertify.success(response.msg)
+                            location.reload();
+                        } else {
+                            alertify.error(response.msg)
+                        }
+                    }
+                })
+            })
+        });
+    </script>
+
+    <script>
+      
     </script>
 
 {% endblock %}
