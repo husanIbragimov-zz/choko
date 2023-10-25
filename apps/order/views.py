@@ -1,10 +1,9 @@
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-
-from apps.base.models import Variant
-from apps.order.models import Cart, CartItem, Order, Wishlist
 from apps.product.models import Product, Rate, Category, Size, ProductImage
+from django.shortcuts import render, redirect, get_object_or_404
+from apps.order.models import Cart, CartItem, Order, Wishlist
+from django.contrib.auth.decorators import login_required
+from apps.base.models import Variant
+from django.http import JsonResponse
 from bot.main import order_product
 import asyncio
 
