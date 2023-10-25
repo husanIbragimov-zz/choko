@@ -5,194 +5,6 @@
 
 {% block style %}
     <style>
-        .sales {
-            margin-top: 0;
-        }
-
-        .buy {
-            border: 1px solid #15916D;
-            border-radius: 20px;
-            padding: 10px 20px;
-        }
-
-        .buy:hover {
-            border: 1px solid #fff;
-            border-radius: 20px;
-            padding: 10px 20px;
-            color: white;
-            background-color: #15916D;
-        }
-
-        .main__box {
-            width: 100%;
-        }
-
-        .main_block {
-            display: flex;
-            flex-wrap: wrap;
-            column-gap: 30px;
-            row-gap: 30px;
-            justify-content: flex-start;
-        }
-
-        .main__box-el {
-            width: 22%;
-
-        }
-
-        .default-img-size {
-            width: 220px;
-            height: 220px;
-        }
-
-        .product-category_fz {
-            font-size: 12px;
-        }
-
-        .product-content-wrap_fz {
-            font-size: 13px;
-            color: #000;
-        }
-
-        .product-content-wrap_fz:hover {
-            color: #15916D;
-        }
-
-
-        .noUi-target, .noUi-target * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -ms-touch-action: none;
-            touch-action: none;
-            -ms-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-
-        .noUi-target {
-            position: relative;
-            direction: ltr;
-        }
-
-        .noUi-base {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            z-index: 1;
-            /* Fix 401 */
-        }
-
-        .noUi-origin {
-            position: absolute;
-            right: 0;
-            top: 0;
-            left: 0;
-            bottom: 0;
-        }
-
-        .noUi-handle {
-            position: relative;
-            z-index: 1;
-        }
-
-        .noUi-stacking .noUi-handle {
-            /* This class is applied to the lower origin when
-               its values is > 50%. */
-            z-index: 10;
-        }
-
-        .noUi-state-tap .noUi-origin {
-            -webkit-transition: left 0.3s, top .3s;
-            transition: left 0.3s, top .3s;
-        }
-
-        .noUi-state-drag * {
-            cursor: inherit !important;
-        }
-
-        /* Painting and performance;
-         * Browsers can paint handles in their own layer.
-         */
-        .noUi-base, .noUi-handle {
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-        }
-
-        /* Slider size and handle placement;
-         */
-        .noUi-horizontal {
-            height: 4px;
-        }
-
-        .noUi-horizontal .noUi-handle {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            left: -7px;
-            top: -7px;
-            background-color: #345DBB;
-        }
-
-        /* Styling;
-         */
-        .noUi-background {
-            background: #D6D7D9;
-        }
-
-        .noUi-connect {
-            background: #345DBB;
-            -webkit-transition: background 450ms;
-            transition: background 450ms;
-        }
-
-        .noUi-origin {
-            border-radius: 2px;
-        }
-
-        .noUi-target {
-            border-radius: 2px;
-        }
-
-        .noUi-target.noUi-connect {
-        }
-
-        /* Handles and cursors;
-         */
-        .noUi-draggable {
-            cursor: w-resize;
-        }
-
-        .noUi-vertical .noUi-draggable {
-            cursor: n-resize;
-        }
-
-        .noUi-handle {
-            cursor: default;
-            -webkit-box-sizing: content-box !important;
-            -moz-box-sizing: content-box !important;
-            box-sizing: content-box !important;
-        }
-
-        .noUi-handle:active {
-            border: 8px solid #345DBB;
-            border: 8px solid rgba(53, 93, 187, 0.38);
-            -webkit-background-clip: padding-box;
-            background-clip: padding-box;
-            left: -14px;
-            top: -14px;
-        }
-
-        /* Disabled state;
-         */
-        [disabled].noUi-connect, [disabled] .noUi-connect {
-            background: #B8B8B8;
-        }
-
-        [disabled].noUi-origin, [disabled] .noUi-handle {
-            cursor: not-allowed;
-        }
 
     </style>
 {% endblock %}
@@ -214,11 +26,12 @@
                         <div class="main_block">
 
                             {% for product in products %}
+
                                 <div class="main__box-el">
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url "shop-details" product.id %}">
+                                                <a href="{% url 'shop-details' product.id %}">
                                                     <img class="default-img default-img-size"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
                                                          width="230px" height="230px">
@@ -235,18 +48,18 @@
                                         </div>
                                         <div class="product-content-wrap p-10 pt-5">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}"><span
-                                                        class="product-category_fz">{{ product.category.first }}</span></a></a>
+                                                <a href="{% url 'shop-details' product.id %}"><span
+                                                        class="product-category_fz">{{ product.category.first }}</span></a>
                                             </div>
 
-                                            <div><a href="{% url "shop-details" product.id %}"><p
+                                            <div><a href="{% url 'shop-details' product.id %}"><p
                                                     class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
                                             </p></a></div>
 
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
-                                                     style="width:{{ product.mid_rate_percent }}%">
+                                                     style="width: {{ product.mid_rate_percent }}%">
                                                 </div>
                                                 <div>
                                                     {% if product.percentage %}
@@ -277,7 +90,7 @@
                                             </div>
                                             <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 5px;"
+                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 5px;"
                                                                                              class="far fa-heart"></i></a>
 
                                             </div>
@@ -291,69 +104,30 @@
                         <div class="pagination-area mt-10 mb-md-5 mb-lg-0 mb-10">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-start">
-                                    {% if active_cat %}
-                                        {% if products.has_previous %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?cat={{ active_cat_name }}&page={{ products.previous_page_number }}"><i
-                                                    class="fa fa-angle-left mt-15"></i></a></li>
-                                        {% endif %}
-                                        {% for obj in products.paginator.page_range %}
-                                            {% if products.number == obj %}
 
-                                                <li class="page-item active"><a class="page-link"
-                                                                                href="{% url 'products_filter' %}?cat={{ active_cat_name }}&page={{ obj }}">{{ obj }}</a>
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if products.has_next %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?cat={{ active_cat_name }}&page={{ products.next_page_number }}"><i
-                                                    class="fa fa-angle-right mt-15"></i></a></li>
+                                    {% if products.has_previous %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ products.previous_page_number }}"><i
+                                                class="fa fa-angle-left mt-15"></i></a></li>
+                                    {% endif %}
+                                    {% for obj in products.paginator.page_range %}
+                                        {% if products.number == obj %}
+                                            <li class="page-item active"><a class="page-link"
+                                                                            href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ obj }}">{{ obj }}</a>
+                                            </li>
                                         {% endif %}
-                                    {% elif active_brand %}
-                                        {% if products.has_previous %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?brand={{ active_brand_name }}&page={{ products.previous_page_number }}"><i
-                                                    class="fa fa-angle-left mt-15"></i></a></li>
-                                        {% endif %}
-                                        {% for obj in products.paginator.page_range %}
-                                            {% if products.number == obj %}
-
-                                                <li class="page-item active"><a class="page-link"
-                                                                                href="{% url 'products_filter' %}?brand={{ active_brand_name }}&page={{ obj }}">{{ obj }}</a>
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if products.has_next %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?brand={{ active_brand_name }}&page={{ products.next_page_number }}"><i
-                                                    class="fa fa-angle-right mt-15"></i></a></li>
-                                        {% endif %}
-                                    {% else %}
-                                        {% if products.has_previous %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?page={{ products.previous_page_number }}"><i
-                                                    class="fa fa-angle-left mt-15"></i></a></li>
-                                        {% endif %}
-                                        {% for obj in products.paginator.page_range %}
-                                            {% if products.number == obj %}
-
-                                                <li class="page-item active"><a class="page-link"
-                                                                                href="{% url 'products_filter' %}?page={{ obj }}">{{ obj }}</a>
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if products.has_next %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="{% url 'products_filter' %}?page={{ products.next_page_number }}"><i
-                                                    class="fa fa-angle-right mt-15"></i></a></li>
-                                        {% endif %}
+                                    {% endfor %}
+                                    {% if products.has_next %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ products.next_page_number }}"><i
+                                                class="fa fa-angle-right mt-15"></i></a></li>
                                     {% endif %}
 
                                 </ul>
                             </nav>
                         </div>
                     </div>
+
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="widget-area">
                             <!--Widget categories-->
@@ -365,62 +139,59 @@
                                 <div class=""
                                      style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <ul class="categor-list">
-                                        {% if active_brand %}
-                                            {% for sub_child in cats %}
-                                                {% if sub_child.parent != None %}
-                                                    <li class="cat-item text-muted">
-                                                    <a href="{% url 'products_filter' %}?brand={{ active_brand_name }}&cat={{ sub_child }}">{{ sub_child }}</a>
-                                                    ({{ sub_child.product_set.count }})
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% else %}
+
                                         {% for sub_child in cats %}
                                             {% if sub_child.parent != None %}
                                                 <li class="cat-item text-muted">
-                                                <a href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                <a href="{% url 'techniques' %}?search={{ search_name }}&cat={{ sub_child }}&brand={{ active_brand_name }}&min-value={{ low }}&max-value={{ high }}&page={{ active_page }}">{{ sub_child }}</a>
                                                 ({{ sub_child.product_set.count }})
                                             {% endif %}
                                         {% endfor %}
-                                        {% endif %}
-
 
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- Product sidebar Widget -->
-                            <div class="sidebar-widget p-20 border-radius-10">
+                            <div class="sidebar-widget p-30 border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
                                     <h5 class="widget-title mb-10">{% trans "Narx, baho" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
-                                <div class="">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div id="slider-range"></div>
-                                            </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div id="slider-range"></div>
                                         </div>
-                                        <div class="row slider-labels">
-                                            <div class="col-xs-6 caption">
-                                                <strong>Min:</strong> <span id="slider-range-value1"></span>
-                                            </div>
-                                            <div class="col-xs-6 text-right caption">
-                                                <strong>Max:</strong> <span id="slider-range-value2"></span>
-                                            </div>
+                                    </div>
+                                    <div class="row slider-labels pt-3">
+                                        <div class="col-xs-6 caption">
+                                            <strong>Min:</strong> <span id="slider-range-value1"></span> uzs
+                                            <p id="min_value" style="display: none">{{ min_price.total_uzs }}</p>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <form>
-                                                    <input type="hidden" name="min-value" value="">
-                                                    <input type="hidden" name="max-value" value="">
-                                                </form>
-                                            </div>
+                                        <div class="col-xs-6 text-right caption">
+                                            <strong>Max:</strong> <span id="slider-range-value2"></span> uzs
+                                            <p id="max_value" style="display: none">{{ max_price.total_uzs }}</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <form method="get" action="{% url 'techniques' %}">
+                                                <input type="hidden" name="min-value" value="{{ max_price.total_uzs }}">
+                                                <input type="hidden" name="max-value" value="{{ min_price.total_uzs }}">
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
-
+                                <script>
+                                    function updateRangeValue(value) {
+                                        document.getElementById('range-value').textContent = value;
+                                    }
+                                </script>
                             </div>
+
+                            <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
                                     <h5 class="widget-title mb-10">{% trans "Eng ko'p ko'rilgan mahsulotlar" %}</h5>
@@ -468,7 +239,7 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="{% url "shop-details" top_rate_product.id %}">{{ top_rate_product.title|slice:'0:25' }}</a>
+                                                <a href="{% url 'shop-details' top_rate_product.id %}">{{ top_rate_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
                                                 {% if top_rate_product.discount > 0 %}
@@ -520,19 +291,12 @@
                                 <div class=""
                                      style="position: sticky; height: 51vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <ul class="categor-list">
-                                        {% if active_cat %}
-                                            {% for brand in brands %}
-                                                <li class="cat-item text-muted">
-                                                <a href="{% url 'products_filter' %}?brand={{ brand }}&cat={{ active_cat_name }}">{{ brand.title }}</a>
-                                                ({{ brand.product_set.count }})
-                                            {% endfor %}
-                                        {% else %}
+
                                         {% for brand in brands %}
                                             <li class="cat-item text-muted">
-                                            <a href="{% url 'products_filter' %}?brand={{ brand }}">{{ brand.title }}</a>
+                                            <a href="{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ brand }}&min-value={{ low }}&max-value={{ high }}&page={{ active_page }}">{{ brand.title }}</a>
                                             ({{ brand.product_set.count }})
                                         {% endfor %}
-                                        {% endif %}
 
                                         </li>
                                     </ul>
@@ -624,7 +388,7 @@
                 // getBoundingClientRect contains left scroll in Chrome on Android.
                 // I haven't found a feature detection that proves this. Worst case
                 // scenario on mis-match: the 'tap' feature on horizontal sliders breaks.
-                if (/webkit.*Chrome.*Mobile/i.test(navigator.userAgent)) {
+                if (i.test(navigator.userAgent)) {
                     pageOffset.x = 0;
                 }
                 return {
@@ -722,6 +486,8 @@
             function stopPropagation(e) {
                 e.stopPropagation();
             }
+
+            // todo
 
             function addCssPrefix(cssPrefix) {
                 return function (className) {

@@ -7,6 +7,10 @@ from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rembg import remove
+from PIL import Image
 
 STATUS = (
     ('NEW', 'NEW'),
@@ -16,32 +20,20 @@ STATUS = (
 )
 
 LANGUAGE = (
-    ('krill', 'krill'),
     ('english', 'english'),
     ('russian', 'russian'),
     ('uzbek', 'uzbek'),
 )
 
 YOZUV = (
-    ('krill', 'krill'),
-    ('english', 'english'),
-    ('russian', 'russian'),
-    ('uzbek', 'uzbek'),
+    ('krill', 'Krill'),
+    ('lotin', 'Lotin'),
 
 )
 
 MUQOVA = (
     ('qattiq', 'qattiq'),
     ('yumshoq', 'yumshoq'),
-)
-
-FORMAT = (
-    ('a5', 'A5'),
-    ('a4', 'A4'),
-    ('a3', 'A3'),
-    ('a2', 'A2'),
-    ('a1', 'A1'),
-    ('a0', 'A0'),
 )
 
 PRODUCT_TYPE = (
@@ -54,7 +46,7 @@ PRODUCT_TYPE = (
 class BannerDiscount(BaseAbstractDate):
     title = models.TextField(null=True)
     image = models.ImageField(upload_to='sales', null=True)
-    deadline = models.DateTimeField(null=True, blank=True)
+    deadline = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def product_id(self):
@@ -156,7 +148,9 @@ class Author(BaseAbstractDate):
     name = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        return 'No name'
 
 
 class Product(BaseAbstractDate):
@@ -177,6 +171,10 @@ class Product(BaseAbstractDate):
     has_size = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True, db_index=True)
     product_type = models.CharField(max_length=25, choices=PRODUCT_TYPE, default='product')
+    # book
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True)
+    language = models.CharField(max_length=25, choices=LANGUAGE, default='uzbek')
+    yozuv = models.CharField(max_length=25, choices=YOZUV, default='lotin')
 
     @property
     def mid_rate(self):
@@ -247,7 +245,7 @@ class ProductImage(BaseAbstractDate):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
     color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='product_images', null=True, blank=True)
     wrapper = models.CharField(max_length=25, choices=MUQOVA, null=True, blank=True, verbose_name='Muqova')
-    image = models.ImageField(upload_to='products', null=False, blank=False)
+    image = models.FileField(upload_to='products', null=False, blank=False)
     price = models.FloatField(default=0)
     is_active = models.BooleanField(default=True)
 
@@ -265,6 +263,10 @@ class ProductImage(BaseAbstractDate):
         active_variant = variants.last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
+    
+    @property
+    def image_url(self):
+        return self.image.url 
 
 
 class AdditionalInfo(BaseAbstractDate):
@@ -296,3 +298,21 @@ class Rate(BaseAbstractDate):
     @property
     def rate_percent(self):
         return round(self.rate * 100 / 5, 1)
+
+@receiver(post_save, sender=ProductImage)
+def product_post_save(sender, instance, created, **kwargs):
+    try:
+        input_image_path = instance.image.path
+        input_image = Image.open(input_image_path)
+        output_image = remove(input_image)
+        
+        # Use pure white for the background color in RGB mode
+        background_color = (247,243,230)
+
+        output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
+        output_with_background.paste(output_image, (0, 0),output_image)
+        output_with_background.save(input_image_path)
+        
+    except Exception as e:
+        return f'{e}'
+

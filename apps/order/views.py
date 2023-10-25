@@ -28,8 +28,8 @@ def add_to_cart(request):
         variant = request.POST.get('variant', None)
         quantity = request.POST['quantity']
         size = request.POST.get('size', None)
-        cart = Cart.objects.get(session_id=session_id, completed=False)
-        product = Product.objects.get(id=product_id)
+        cart = get_object_or_404(Cart, session_id=session_id, completed=False)
+        product = get_object_or_404(Product, id=product_id)
         has_size = False
         has_color = False
         if product.size.all().exists():
@@ -38,32 +38,27 @@ def add_to_cart(request):
             has_color = True
         if has_color and product_image is not None:
             product_image = product_image.replace(" ", "")
-            product_image = ProductImage.objects.get(id=product_image)
+            product_image = get_object_or_404(ProductImage, id=product_image)
 
         elif has_color and product_image is None:
             return JsonResponse({"msg": "Iltimos! rang tanlang", "status": False})
 
         if has_size and size is not None:
-            size = size.replace(" ", "")
             size = Size.objects.get(name=size)
         elif has_size and size is None:
             return JsonResponse({"msg": "Iltimos! o'lcham tanlang", "status": False})
 
-        if variant is not None:
-            try:
-                variant = variant.replace(" ", '').split('oy')[1]
-            except:
-                variant = variant.replace(" ", '').split('месяц')[1]
         else:
             variants = Variant.objects.all().order_by('duration')
             variant = variants.last().id
-        variant = Variant.objects.get(id=variant)
+        variant = get_object_or_404(Variant, id=variant)
         cart_item = CartItem.objects.filter(cart=cart, product_id=product_id, variant=variant)
-
+        ids = 0
         if cart_item.exists():
             for i in cart_item:
                 i.quantity += int(quantity)
                 i.save()
+            ids = cart_item.last().id
         else:
             cart_item = CartItem.objects.create(
                 cart_id=cart.id,
@@ -77,12 +72,14 @@ def add_to_cart(request):
             if product_image is not None and has_color:
                 cart_item.product_image = product_image
                 cart_item.save()
+            ids = cart_item.id
 
-    return JsonResponse({"msg": "Savatchaga muvaffaqiyatli qo'shildi!", "status": True})
+    return JsonResponse({"msg": "Savatchaga muvaffaqiyatli qo'shildi!", 'card': ids, "status": True})
 
 
 @login_required(login_url='/login')
 def create_order(request, id):
+    phone_number = request.POST.get("phone_number", False)
     cart = get_object_or_404(Cart, id=id)
     cart_items = cart.cart_items.all()
     user = request.user
@@ -105,7 +102,36 @@ def create_order(request, id):
             variant=i.variant.duration,
             photo=i.product_image.image.url
         ))
-    asyncio.run(order_product(data))
+    # asyncio.run(order_product(data))
+
+    return redirect('/')
+
+
+def one_click_order(request):
+    phone_number = request.POST.get("phone_number", False)
+    cart = get_object_or_404(Cart, id=id)
+    cart_items = cart.cart_items.all()
+    user = request.user
+    order = Order.objects.create(
+        user=user,
+        phone_number=user.username
+    )
+    for item in cart_items:
+        item.order = order
+        item.save()
+
+    cart.completed = True
+    cart.save()
+    data = []
+    for i in cart_items:
+        data.append(dict(
+            user=request.user.username,
+            order=order.id,
+            product=i.product.title,
+            variant=i.variant.duration,
+            photo=i.product_image.image.url
+        ))
+    # asyncio.run(order_product(data))
 
     return redirect('/')
 
@@ -142,10 +168,9 @@ def confirm_order(request):
             variant=i.variant.duration,
             photo=i.product_image.image.url
         ))
-    asyncio.run(order_product(data))
+    # asyncio.run(order_product(data))
 
     return redirect('/')
-
 
 
 @login_required(login_url='/login')
@@ -219,4 +244,3 @@ def create_order_wishlist(request, id):
     wishlist = Wishlist.objects.filter(session_id=session_id, product_id=id).delete()
     url = request.META.get('HTTP_REFERER')
     return redirect(url)
-

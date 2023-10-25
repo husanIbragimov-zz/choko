@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.book.helper import LargeResultsSetPagination
+from .serializers import AuthorSerializer
 from .filter import BrandFilter, CategoryFilter, ProductFilter, SizeFilter
 from api.book.serializers import BookImageSerializer
 
@@ -10,7 +11,7 @@ from .serializers import CategoryListSerializer, CategoryCreateSerializer, Brand
     ProductImageCreateSerializer, ProductImageListSerializer, ProductCreateSerializer, ProductDetailSerializer, \
     ProductListSerializer, AdditionalInfoListSerializer, AdditionalInfoCreateSerializer, RateCreateSerializer, \
     RateListSerializer, VariantSerializer
-from apps.product.models import Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
+from apps.product.models import Author, Category, Brand, Color, Currency, BannerDiscount, Advertisement, Banner, Size, \
     ProductImage, Product, AdditionalInfo, Rate
 from apps.base.models import Variant
 from api.account.permissions import IsSuperUser
@@ -18,7 +19,7 @@ from rest_framework import viewsets, mixins, status, filters, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.permissions import IsAuthenticated
 
 class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                       mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
@@ -74,7 +75,7 @@ class VariantViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
     pagination_class = None
 
     def get_queryset(self):
-        return Category.objects.filter(is_active=True).order_by('-id')
+        return self.queryset.order_by('-id')
 
 
 class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
@@ -186,6 +187,7 @@ class SizeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = SizeSerializer
     ordering_fields = ['created_at']
+
     filterset_class = SizeFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     pagination_class = None
@@ -292,6 +294,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
         }
         files = request.FILES
         product_type = sz_.data['product_type']
+        errors = []
         for file in files:
             images[file] = []
             for i in files.getlist(file):
@@ -305,8 +308,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
                 sz.is_valid(raise_exception=True)
                 sz.save()
                 images[file].append(sz.data)
-
-        return Response({'data': sz_.data, 'images': images}, status=status.HTTP_201_CREATED)
+        return Response({'data': sz_.data, 'images': images,'errors':errors}, status=status.HTTP_201_CREATED)
 
     @action(methods=['delete'], detail=False)
     def remove_image(self, request):
@@ -331,6 +333,8 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
         images.update(price=price)
         return Response({'data': 'updated'}, status=status.HTTP_200_OK)
+    
+
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
@@ -394,3 +398,11 @@ class RateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
+
+
+
+class AuthorModelViewSet(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = AuthorSerializer
+    pagination_class = LargeResultsSetPagination

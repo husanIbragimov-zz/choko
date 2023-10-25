@@ -40,148 +40,11 @@
     <link rel="stylesheet" href="{% static 'assets/css/alertify.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'assets/css/choko_style.css' %}" type="text/css">
     {% block head %} {% endblock %}
     {% block style %} {% endblock %}
     {% block topscript %} {% endblock %}
     <style>
-        .new_price {
-            font-size: 12px !important;
-            color: black !important;
-            font-weight: normal !important;
-            padding: 3px 5px !important;
-            border-radius: 4px !important;
-        }
-
-        .product-content-wrap {
-            height: 205px;
-        }
-
-        @media screen and (max-width: 1389px) {
-            .main__box-el {
-                width: 17%;
-            }
-
-            .main_block {
-                column-gap: 41px;
-                row-gap: 5px;
-            }
-        }
-
-        @media screen and (max-width: 1200px) {
-            .main__box-el {
-                width: 30%;
-            }
-
-        }
-
-        @media screen and (max-width: 1000px) {
-            .main__box-el {
-                width: 25%;
-            }
-
-            .main_block {
-                display: flex;
-                flex-wrap: wrap;
-                row-gap: 30px;
-                justify-content: space-between;
-            }
-
-            .default-img-size {
-                width: 220px;
-                height: 220px;
-            }
-        }
-
-        @media screen and (max-width: 990px) {
-            .main__box-el {
-                width: 30%;
-            }
-
-            .main_block {
-                display: flex;
-                flex-wrap: wrap;
-                row-gap: 30px;
-                column-gap: 1px;
-            }
-
-            .default-img-size {
-                width: 180px;
-                height: 180px;
-            }
-        }
-
-        @media screen and (max-width: 770px) {
-            .main__box-el {
-                width: 40%;
-            }
-        }
-
-        @media screen and (max-width: 500px) {
-            .main__box-el {
-                width: 48%;
-            }
-
-            .main_block {
-                display: flex;
-                flex-wrap: wrap;
-                row-gap: 30px;
-                column-gap: 1px;
-            }
-
-            .new_price {
-                font-size: 8px !important;
-                max-width: 65%;
-            }
-
-            .product-cart-wrap .product-content-wrap .product-price span {
-                font-size: 12px;
-                max-width: 40%;
-            }
-
-        }
-
-        @media screen and (max-width: 390px) {
-            .main_block {
-                column-gap: 10px;
-                row-gap: 5px;
-            }
-
-            .main__box-el {
-                width: 48%;
-            }
-
-            .default-img-size {
-                width: 150px;
-                height: 150px;
-            }
-
-            .product-category_fz {
-                font-size: 12px;
-            }
-
-            .product-content-wrap_fz {
-                font-size: 14px;
-                max-width: 90%;
-
-            }
-
-            .product-cart-wrap .product-content-wrap .product-price span {
-                font-size: 11px;
-                max-width: 40%;
-            }
-
-            .new_price {
-                font-size: 9px !important;
-                max-width: 65%;
-            }
-        }
-        a {
-            color: #15916D;
-        }
-
-        a:hover {
-            color: #0c4128;
-        }
 
     </style>
 
@@ -249,7 +112,6 @@
                                 {% endif %}{{ language.code }}
                             </button>
                         {% endfor %}
-                        {#                        </ul>#}
                     </div>
                 </div>
             </div>
@@ -263,7 +125,7 @@
                                                      alt="choko_logo"></a>
                 </div>
                 <div class="search-style-2">
-                    <form action="{% url 'products_filter' %}" method="get">
+                    <form action="{{ request.path }}" method="get">
                         <select class="select-active">
                             <option>{% trans "Barcha bo'limlar" %}</option>
                             {% for category in categories %}
@@ -368,7 +230,7 @@
                                                                               alt="choko" width="19px"
                                                                               height="19px"
                                                                               style="margin-right: 17px">{% else %}
-                                                {% endif %}{{ cat }}</a>
+                                            {% endif %}{{ cat }}</a>
                                             <div class="dropdown-menu" style="left: 300px; width: 1000px">
                                                 <ul class="mega-menu d-lg-flex">
                                                     <li class="mega-menu-col col">
@@ -518,7 +380,7 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="/shop/">
+                <form action="{{ request.path }}">
                     <input type="text" name="search" placeholder="Search…">
                     <button type="submit"><i class="far fa-search"></i></button>
                 </form>
@@ -552,9 +414,6 @@
                     <ul class="mobile-menu">
                         <li><a class="active" href="{% url 'index' %}">{% trans "Bosh sahifa" %}</a>
                         </li>
-                        {#                        <li>#}
-                        {#                            <a href="{% url 'about' %}">{% trans "Biz haqimizda" %}</a>#}
-                        {#                        </li>#}
                         <li><a href="{% url 'products_filter' %}">{% trans "Mahsulotlar" %}</a>
                         </li>
                         <li>
@@ -737,6 +596,7 @@
 <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
 <script src="{% static 'assets/js/plugins/TweenMax.min.js' %}"></script>
 <script src="{% static 'assets/js/plugins/custom-parallax.js' %}"></script>
+<script src="{% static 'assets/js/min_max_price.js' %}"></script>
 {% block script %}
 
 {% endblock %}

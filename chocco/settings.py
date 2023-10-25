@@ -123,6 +123,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend',],
@@ -153,26 +154,29 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# ================================================== PostgresSQL =======================================================
+CSRF_TRUSTED_ORIGINS = ['https://oqdev.fibo.cloud',]
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'choko',
-         'USER': 'choko',
-         'PASSWORD': 'choko',
+         'NAME':'choco',
+         'USER': 'postgres',
+         'PASSWORD': 'choco',
          'HOST': 'localhost',
          'PORT': 5432,
      }
 }
+
+# ================================================== PostgresSQL =======================================================
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.postgresql',
+#          'NAME': 'choko',
+#          'USER': 'choko',
+#          'PASSWORD': 'choko',
+#          'HOST': 'localhost',
+#          'PORT': 5432,
+#      }
+# }
 
 
 # Password validation
