@@ -70,14 +70,9 @@
         .main_block {
             display: flex;
             flex-wrap: wrap;
-            column-gap: 30px;
+            column-gap: 15px;
             row-gap: 30px;
             justify-content: flex-start;
-        }
-
-        .main__box-el {
-            width: 22%;
-
         }
 
         .default-img-size {
@@ -97,7 +92,6 @@
         .product-content-wrap_fz:hover {
             color: #15916D;
         }
-
 
         .new_price {
             font-size: 12px !important;
@@ -154,14 +148,6 @@
             width: 100%;
         }
 
-        .main_block {
-            display: flex;
-            flex-wrap: wrap;
-            column-gap: 30px;
-            row-gap: 30px;
-            justify-content: flex-start;
-        }
-
         .text-brand {
             font-size: 20px;
         }
@@ -180,31 +166,38 @@
 
         @media screen and (max-width: 1389px) {
             .main__box-el {
-                width: 18%;
+                width: 22%;
             }
 
             .main_block {
-                column-gap: 41px;
+                column-gap: 16px;
                 row-gap: 5px;
+                display: flex;
+                justify-content: center;
             }
         }
 
         @media screen and (max-width: 1200px) {
+            .main_block {
+                column-gap: 10px;
+                row-gap: 5px;
+            }
+
             .main__box-el {
-                width: 29%;
+                width: 24%;
             }
 
         }
 
         @media screen and (max-width: 1000px) {
             .main__box-el {
-                width: 25%;
+                width: 32%;
             }
 
             .main_block {
                 display: flex;
                 flex-wrap: wrap;
-                row-gap: 30px;
+                row-gap: 10px;
                 justify-content: space-between;
             }
 
@@ -212,11 +205,19 @@
                 width: 220px;
                 height: 220px;
             }
+
+            .sidebar-widget.widget_categories.mb-30.p-30.bg-grey.border-radius-10 {
+                padding: 10px 5px;
+            }
+
+            .sidebar-widget.product-sidebar.mb-30.p-30.bg-grey.border-radius-10 {
+                display: none;
+            }
         }
 
         @media screen and (max-width: 990px) {
             .main__box-el {
-                width: 30%;
+                width: 32%;
             }
 
 
@@ -233,7 +234,7 @@
             .main_block {
                 display: flex;
                 flex-wrap: wrap;
-                row-gap: 30px;
+                row-gap: 12px;
                 column-gap: 1px;
             }
 
@@ -255,6 +256,7 @@
         }
 
         @media screen and (max-width: 770px) {
+
             .index-nav {
                 display: flex;
                 justify-content: center;
