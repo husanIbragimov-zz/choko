@@ -21,17 +21,15 @@ from django.urls import path, include, re_path
 from apps.base import views
 from apps.order.api.v1 import views as api_views
 from django.views.static import serve
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from .schema import swagger_urlpatterns
 
 
 urlpatterns = [
+    # admin
     path('chocolate-admin/', admin.site.urls),
 
-]+swagger_urlpatterns + i18n_patterns(
+] + swagger_urlpatterns + i18n_patterns(
     # media
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
@@ -47,7 +45,7 @@ urlpatterns = [
     path('base/', include('allauth.urls')),
 
     # swagger
-    
+
 
     # api
     path('api/v1/', include('api.product.urls'), name='product'),
