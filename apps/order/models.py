@@ -61,9 +61,10 @@ class CartItem(BaseAbstractDate):
     product_image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, null=True, blank=True)
     size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
+    # status = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.subtotal}'
+        return f'{self.product.id}'
 
     @property
     def subtotal(self):

@@ -102,7 +102,7 @@
                         <!--pagination-->
                         <div class="pagination-area mt-10 mb-md-5 mb-lg-0 mb-10">
                             <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-start">
+                                <ul class="pagination justify-content-center">
                                     {% if products.has_previous %}
                                         <li class="page-item"><a class="page-link"
                                                                  href="{% url 'books' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&lang={{ lang_name }}&inscription={{ inscription_name }}&wrapper={{ wrapper_name }}&author={{ author_name }}&page={{ products.previous_page_number }}"><i
@@ -270,7 +270,7 @@
                         <!-- Product sidebar Widget -->
                         <div class="sidebar-widget widget-ads mb-30">
                             {% for discount in discounts|slice:'0:1' %}
-                                <div class="banner-img banner-1 wow fadeIn  animated"
+                                <div class="banner-img banner-1 wow fadeIn animated ban-hide"
                                      style="visibility: visible; animation-name: fadeIn;">
                                     <img class="border-radius-10 ms-2"
                                          src="{{ discount.product_images.first.image.url }}" alt="" height="270px"
