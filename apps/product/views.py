@@ -52,6 +52,9 @@ def index(request):
         elif status == "books":
             product = product.filter(product_type='books')
             status_index = 'books'
+        elif status == "product":
+            product = product.filter(product_type='product')
+            status_index = 'product'
     if search:
         product = product.filter(Q(title__icontains=search) | Q(category__title__icontains=search))
 
@@ -150,12 +153,12 @@ def shop_appliances(request):
     last_3_products = products.order_by('-view')
 
     # filter
-    selected_range = request.GET.get('selected_range', None)
+    selected_range = request.GET.get('selected_range', '')
     min_value = request.GET.get('min-value', 0)
     max_value = request.GET.get('max-value', 0)
     cat = request.GET.get('cat', '')
     search = request.GET.get('search', '')
-    brand = request.GET.get('brand')
+    brand = request.GET.get('brand', '')
     # paginator
     page_number = request.GET.get('page', '')
 
@@ -300,11 +303,11 @@ def shop_clothes(request):
     colors_ids = list(map(int, request.POST.getlist('colors')))
     sizes_ids = list(map(int, request.POST.getlist('sizes')))
 
-    page_number = request.GET.get('page')
-    cat = request.GET.get('cat')
-    search = request.GET.get('search')
-    advertisement = request.GET.get('advertisement')
-    brand = request.GET.get('brand')
+    page_number = request.GET.get('page', '')
+    cat = request.GET.get('cat', '')
+    search = request.GET.get('search', '')
+    advertisement = request.GET.get('advertisement', '')
+    brand = request.GET.get('brand', '')
     min_value = request.GET.get('min-value', 0)
     max_value = request.GET.get('max-value', 0)
     if min_value == '':
