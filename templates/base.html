@@ -70,14 +70,9 @@
         .main_block {
             display: flex;
             flex-wrap: wrap;
-            column-gap: 30px;
+            column-gap: 15px;
             row-gap: 30px;
             justify-content: flex-start;
-        }
-
-        .main__box-el {
-            width: 22%;
-
         }
 
         .default-img-size {
@@ -97,7 +92,6 @@
         .product-content-wrap_fz:hover {
             color: #15916D;
         }
-
 
         .new_price {
             font-size: 12px !important;
@@ -154,14 +148,6 @@
             width: 100%;
         }
 
-        .main_block {
-            display: flex;
-            flex-wrap: wrap;
-            column-gap: 30px;
-            row-gap: 30px;
-            justify-content: flex-start;
-        }
-
         .text-brand {
             font-size: 20px;
         }
@@ -180,31 +166,39 @@
 
         @media screen and (max-width: 1389px) {
             .main__box-el {
-                width: 18%;
+                width: 22%;
             }
 
             .main_block {
-                column-gap: 41px;
+                column-gap: 16px;
                 row-gap: 5px;
+                display: flex;
+                justify-content: center;
             }
         }
 
         @media screen and (max-width: 1200px) {
+
+            .main_block {
+                column-gap: 10px;
+                row-gap: 5px;
+            }
+
             .main__box-el {
-                width: 29%;
+                width: 24%;
             }
 
         }
 
         @media screen and (max-width: 1000px) {
             .main__box-el {
-                width: 25%;
+                width: 32%;
             }
 
             .main_block {
                 display: flex;
                 flex-wrap: wrap;
-                row-gap: 30px;
+                row-gap: 10px;
                 justify-content: space-between;
             }
 
@@ -212,11 +206,20 @@
                 width: 220px;
                 height: 220px;
             }
+
+
+            .sidebar-widget.widget_categories.mb-30.p-30.bg-grey.border-radius-10 {
+                padding: 10px 5px;
+            }
+
+            .sidebar-widget.product-sidebar.mb-30.p-30.bg-grey.border-radius-10 {
+                display: none;
+            }
         }
 
         @media screen and (max-width: 990px) {
             .main__box-el {
-                width: 30%;
+                width: 32%;
             }
 
 
@@ -233,7 +236,7 @@
             .main_block {
                 display: flex;
                 flex-wrap: wrap;
-                row-gap: 30px;
+                row-gap: 12px;
                 column-gap: 1px;
             }
 
@@ -255,6 +258,7 @@
         }
 
         @media screen and (max-width: 770px) {
+
             .index-nav {
                 display: flex;
                 justify-content: center;
@@ -532,7 +536,7 @@
                                                      alt="choko_logo"></a>
                 </div>
                 <div class="search-style-2">
-                    <form action="{{ request.path }}" method="get">
+                    <form action="{% url 'index' %}" method="get">
                         <select class="select-active">
                             <option>{% trans "Barcha bo'limlar" %}</option>
                             {% for category in categories %}
@@ -647,13 +651,30 @@
                                                                     <li class="col col-6 col-md-4 mega-menu-col">
                                                                         <ul>
                                                                             <li><span><a class="submenu-title"
-                                                                                         href="{{ request.path }}?cat={{ child }}">{{ child }}</a></span>
+                                                                                    {% if child.product_type == 'product' %}
+                                                                                         href="{% url 'techniques' %}?cat={{ child }}"
+                                                                                    {% elif child.product_type == 'book' %}
+                                                                                         href="{% url 'books' %}?cat={{ child }}"
+                                                                                    {% elif sub_child.product_type == 'clothing' %}
+                                                                                         href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                    {% else %}
+                                                                                         href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                    {% endif %}
+                                                                            >{{ child }}</a></span>
                                                                             </li>
                                                                             {% for sub_child in categories %}
                                                                                 {% if sub_child.parent == child %}
                                                                                     <li>
                                                                                     <a class="dropdown-item nav-link nav_item"
-                                                                                       href="{{ request.path }}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                            {% if sub_child.product_type == 'product' %}
+                                                                                       href="{% url 'techniques' %}?cat={{ sub_child }}"
+                                                                                            {% elif sub_child.product_type == 'book' %}
+                                                                                       href="{% url 'books' %}?cat={{ sub_child }}"
+                                                                                            {% elif sub_child.product_type == 'clothing' %}
+                                                                                       href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                            {% else %}
+                                                                                       href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                            {% endif %}>{{ sub_child }}</a>
                                                                                 {% endif %}
                                                                             {% endfor %}
                                                                             </li>
@@ -689,13 +710,29 @@
                                                                             <li class="col col-6 col-md-4 mega-menu-col">
                                                                                 <ul>
                                                                                     <li><span><a class="submenu-title"
-                                                                                                 href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
+                                                                                            {% if child.product_type == 'product' %}
+                                                                                                 href="{% url 'techniques' %}?cat={{ child }}"
+                                                                                            {% elif child.product_type == 'book' %}
+                                                                                                 href="{% url 'books' %}?cat={{ child }}"
+                                                                                            {% elif sub.product_type == 'clothing' %}
+                                                                                                 href="{% url 'clothes' %}?cat={{ sub }}"
+                                                                                            {% else %}
+                                                                                                 href="{% url 'index' %}?cat={{ sub }}"
+                                                                                            {% endif %}>{{ child }}</a></span>
                                                                                     </li>
                                                                                     {% for sub_child in hide_categories %}
                                                                                         {% if sub_child.parent == child %}
                                                                                             <li>
                                                                                             <a class="dropdown-item nav-link nav_item"
-                                                                                               href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                                    {% if sub_child.product_type == 'product' %}
+                                                                                               href="{% url 'techniques' %}?cat={{ sub_child }}"
+                                                                                                    {% elif sub_child.product_type == 'book' %}
+                                                                                               href="{% url 'books' %}?cat={{ sub_child }}"
+                                                                                                    {% elif sub_child.product_type == 'clothing' %}
+                                                                                               href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                                    {% else %}
+                                                                                               href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                                    {% endif %}>{{ sub_child }}</a>
                                                                                         {% endif %}
                                                                                     {% endfor %}
                                                                                     </li>
@@ -785,7 +822,7 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="{{ request.path }}">
+                <form action="{% url 'index' %}">
                     <input type="text" name="search" placeholder="Search…">
                     <button type="submit"><i class="far fa-search"></i></button>
                 </form>

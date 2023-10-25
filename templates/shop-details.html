@@ -263,22 +263,9 @@
                                                     <label for="total"
                                                            class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
                                                 </div>
-
-                                                    <input class="prod_id w-50" name="prod_id" type="hidden"
-                                                           value="{{ product.id }}">
-                                                    <input id="miqdor" class="qty-input fs-6 w-50" name="qty-input"
-                                                           type="number" min="1"
-                                                           value="1">
-                                                    <label for="total"
-                                                           class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
-                                                </div>
                                             </div>
                                             <div class="product-extra-link2 mt-3">
                                                 <button type="button"
-<<<<<<< HEAD
-
-=======
->>>>>>> server
                                                         class="button fs-6 button-add-to-cart addToCartBtn rounded-pill res-left">{% trans "Savatchaga qo'shish" %}
                                                 </button>
                                                 <button type="button" class="button fs-6 rounded-pill res-right"
@@ -500,10 +487,6 @@
                                     <ul class="list">
                                         {% for variant in variants %}
                                             {% if variant.product_type == product.product_type %}
-<<<<<<< HEAD
-
-=======
->>>>>>> server
                                                 <li class="active-sale personal calculate pay-list" id="personal calculate"
                                                     data-id="{{ variant.id }}"
                                                     onclick="calculate({
@@ -633,10 +616,7 @@
 
         });
     </script>
-<<<<<<< HEAD
 
-=======
->>>>>>> server
     <script>
     var type_data = {
     variant: 0,

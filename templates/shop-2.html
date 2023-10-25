@@ -5,7 +5,9 @@
 
 {% block style %}
     <style>
-
+        .main__box-el {
+            width: 23%;
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -131,13 +133,13 @@
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="widget-area">
                             <!--Widget categories-->
-                            <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
+                            <div class="sidebar-widget widget_categories mb-30 p-20 bg-grey border-radius-10">
                                 <div class="widget-header position-relative mb-20 pb-10">
                                     <h5 class="widget-title mb-10">{% trans "Bo'limlar" %}</h5>
                                     <div class="bt-1 border-color-1"></div>
                                 </div>
                                 <div class=""
-                                     style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
+                                     style="position: sticky; height: 50vh; left: 0; overflow-y: scroll;">
                                     <ul class="categor-list">
 
                                         {% for sub_child in cats %}
@@ -320,18 +322,22 @@
             $('.noUi-handle').on('click', function () {
                 $(this).width(50);
             });
+            var getMinVal = document.getElementById('min_value');
+            var minVal = parseFloat(getMinVal.innerHTML);
+            var getMaxVal = document.getElementById('max_value');
+            var maxVal = parseFloat(getMaxVal.innerHTML);
             var rangeSlider = document.getElementById('slider-range');
             var moneyFormat = wNumb({
                 decimals: 0,
-                thousand: ',',
-                prefix: '$'
+                thousand: '',
+                prefix: ''
             });
             noUiSlider.create(rangeSlider, {
-                start: [500000, 1000000],
-                step: 1,
+                start: [minVal, maxVal],
+                step: 5,
                 range: {
-                    'min': [100000],
-                    'max': [1000000]
+                    'min': [minVal],
+                    'max': [maxVal]
                 },
                 format: moneyFormat,
                 connect: true
@@ -340,7 +346,9 @@
             // Set visual min and max values and also update value hidden form inputs
             rangeSlider.noUiSlider.on('update', function (values, handle) {
                 document.getElementById('slider-range-value1').innerHTML = values[0];
+                document.getElementById('slider-range-value1').setAttribute("data-price", values[0]);
                 document.getElementById('slider-range-value2').innerHTML = values[1];
+                document.getElementById('slider-range-value2').setAttribute("data-price", values[1]);
                 document.getElementsByName('min-value').value = moneyFormat.from(
                     values[0]);
                 document.getElementsByName('max-value').value = moneyFormat.from(
@@ -388,7 +396,8 @@
                 // getBoundingClientRect contains left scroll in Chrome on Android.
                 // I haven't found a feature detection that proves this. Worst case
                 // scenario on mis-match: the 'tap' feature on horizontal sliders breaks.
-                if (i.test(navigator.userAgent)) {
+
+                if (/webkit.*Chrome.*Mobile/i.test(navigator.userAgent)) {
                     pageOffset.x = 0;
                 }
                 return {
@@ -1586,7 +1595,16 @@
                     if (active !== null) {
                         removeClass(active, cssClasses[15]);
                     }
-                    // Remove cursor styles and text-selection events bound to the body.
+                    console.log(handleNumber, "<-shu", data.handleNumber, "shu ->", data,)
+                    let p1 = $('#slider-range-value1').attr('data-price')
+                    let p2 = $('#slider-range-value2').attr('data-price')
+                    console.log(location.href)
+                    setTimeout(() => {
+                        setPrice(p1, p2)
+                        location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
+                        {#location.href = `{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`#}
+
+                    }, 3000);
                     if (event.cursor) {
                         document.body.style.cursor = '';
                         document.body.removeEventListener('selectstart', document.body.noUiListener);
@@ -1605,6 +1623,10 @@
                     if (data.handleNumber !== undefined) {
                         fireEvent('end', data.handleNumber);
                     }
+                }
+
+                function setPrice(min, max) {
+                    location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
                 }
 
                 // Fire 'end' when a mouse or pen leaves the document.
@@ -2358,93 +2380,5 @@
             /** @export */
             window.wNumb = wNumb;
         }());
-
-        function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
-            const [from, to] = getParsed(fromInput, toInput);
-            fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
-            if (from > to) {
-                fromSlider.value = to;
-                fromInput.value = to;
-            } else {
-                fromSlider.value = from;
-            }
-        }
-
-        function controlToInput(toSlider, fromInput, toInput, controlSlider) {
-            const [from, to] = getParsed(fromInput, toInput);
-            fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
-            setToggleAccessible(toInput);
-            if (from <= to) {
-                toSlider.value = to;
-                toInput.value = to;
-            } else {
-                toInput.value = from;
-            }
-        }
-
-        function controlFromSlider(fromSlider, toSlider, fromInput) {
-            const [from, to] = getParsed(fromSlider, toSlider);
-            fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
-            if (from > to) {
-                fromSlider.value = to;
-                fromInput.value = to;
-            } else {
-                fromInput.value = from;
-            }
-        }
-
-        function controlToSlider(fromSlider, toSlider, toInput) {
-            const [from, to] = getParsed(fromSlider, toSlider);
-            fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
-            setToggleAccessible(toSlider);
-            if (from <= to) {
-                toSlider.value = to;
-                toInput.value = to;
-            } else {
-                toInput.value = from;
-                toSlider.value = from;
-            }
-        }
-
-        function getParsed(currentFrom, currentTo) {
-            const from = parseInt(currentFrom.value, 10);
-            const to = parseInt(currentTo.value, 10);
-            return [from, to];
-        }
-
-        function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
-            const rangeDistance = to.max - to.min;
-            const fromPosition = from.value - to.min;
-            const toPosition = to.value - to.min;
-            controlSlider.style.background = `linear-gradient(
-      to right,
-      ${sliderColor} 0%,
-      ${sliderColor} ${(fromPosition) / (rangeDistance) * 100}%,
-      ${rangeColor} ${((fromPosition) / (rangeDistance)) * 100}%,
-      ${rangeColor} ${(toPosition) / (rangeDistance) * 100}%,
-      ${sliderColor} ${(toPosition) / (rangeDistance) * 100}%,
-      ${sliderColor} 100%)`;
-        }
-
-        function setToggleAccessible(currentTarget) {
-            const toSlider = document.querySelector('#toSlider');
-            if (Number(currentTarget.value) <= 0) {
-                toSlider.style.zIndex = 2;
-            } else {
-                toSlider.style.zIndex = 0;
-            }
-        }
-
-        const fromSlider = document.querySelector('#fromSlider');
-        const toSlider = document.querySelector('#toSlider');
-        const fromInput = document.querySelector('#fromInput');
-        const toInput = document.querySelector('#toInput');
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
-        setToggleAccessible(toSlider);
-
-        fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
-        toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
-        fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
-        toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
     </script>
 {% endblock %}
