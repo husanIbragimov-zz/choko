@@ -188,7 +188,7 @@ def confirm_order(request):
             variant=i.variant.duration,
             photo=i.product_image.image.url
         ))
-    # asyncio.run(order_product(data))
+    asyncio.run(order_product(data))
 
     return redirect('/')
 
