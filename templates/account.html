@@ -80,15 +80,13 @@
                                                                 <td>{{ order.status }}</td>
                                                                 <td>{{ order.cart_total|intcomma }}</td>
                                                                 <td>{{ order.num_of_items }}</td>
-
                                                                 <td>
-
-                                                                    <a href="#" class="btn-small d-block">View</a>
+                                                                    <a href="{% url 'shop-details' order.pr %}"
+                                                                       class="btn-small d-block">View</a>
                                                                 </td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>
-
                                                     </table>
                                                 </div>
                                             </div>
