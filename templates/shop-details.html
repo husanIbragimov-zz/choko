@@ -75,6 +75,11 @@
             border-left-color: #00cc88;
         }
 
+        .active-pay {
+            color: #fff;
+            background: linear-gradient(102deg, #00cc88 0%, #1096b7 100%) !important;
+        }
+
     </style>
 {% endblock %}
 {% block content %}
@@ -136,10 +141,10 @@
         <section class="mt-60 mb-60">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-9 tel-ress">
                         <div class="product-detail accordion-detail">
-                            <div class="row mb-50">
-                                <div class="col-md-6 col-sm-12 col-xs-12" style="height: 70%; width: 471px;">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 res-col-left tel-col">
                                     <div class="detail-gallery">
                                         <!-- MAIN SLIDES -->
                                         <div class="product-image-slider" id="main_slider_image">
@@ -150,7 +155,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-md-6 col-sm-12 col-xs-12 res-col-right">
                                     <div class="detail-info">
                                         <h2 class="title-detail">{{ product.title }}</h2>
                                         <div class="product-detail-rating">
@@ -234,7 +239,7 @@
                                                 {% if product.percentage > 0 %}
                                                     <div class="mr-50">
                                                         <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
-                                                        <ins><span id="monthly" style="font-size: 20px"
+                                                        <ins><span id="monthly"
                                                                    class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
@@ -249,7 +254,7 @@
                                                 {% else %}
                                                     <div class="mr-50">
                                                         <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
-                                                        <ins><span id="monthly" style="font-size: 20px"
+                                                        <ins><span id="monthly"
                                                                    class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
@@ -284,9 +289,9 @@
                                             </div>
                                             <div class="product-extra-link2 mt-3">
                                                 <button type="button"
-                                                        class="button fs-6 button-add-to-cart addToCartBtn rounded-pill">{% trans "Savatchaga qo'shish" %}
+                                                        class="button fs-6 button-add-to-cart addToCartBtn rounded-pill res-left">{% trans "Savatchaga qo'shish" %}
                                                 </button>
-                                                <button type="button" class="button fs-6 rounded-pill"
+                                                <button type="button" class="button fs-6 rounded-pill res-right"
                                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                                     1 Click
                                                 </button>
@@ -297,17 +302,17 @@
                                 </div>
                             </div>
                             <div class="tab-style3">
-                                <ul class="nav nav-tabs text-uppercase">
+                                <ul class="nav nav-tabs text-uppercase detail-text">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="Description-tab" data-bs-toggle="tab"
+                                        <a class="nav-link active mobile-fs" id="Description-tab" data-bs-toggle="tab"
                                            href="#Description">{% trans "Tafsilotlar" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab"
+                                        <a class="nav-link mobile-fs" id="Additional-info-tab" data-bs-toggle="tab"
                                            href="#Additional-info">{% trans "Qo'shimcha ma'lumotlar" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab"
+                                        <a class="nav-link mobile-fs" id="Reviews-tab" data-bs-toggle="tab"
                                            href="#Reviews">{% trans "Baholar" %}
                                             ({{ product.product_rate.all.count }})</a>
                                     </li>
@@ -434,7 +439,7 @@
                                 <div class="col-12">
                                     <h3 class="section-title style-1 mb-30">{% trans "O'xshash Mahsulotlar" %}</h3>
                                 </div>
-                                <div class="row">
+                                <div class="row scrollmenu">
                                     {% for item in related_products %}
                                         <div class="col-lg-3 col-md-4 col-6 col-sm-6">
                                             <div class="product-cart-wrap small hover-up">
@@ -505,7 +510,8 @@
                                     <ul class="list">
                                         {% for variant in variants %}
                                             {% if variant.product_type == product.product_type %}
-                                                <li class="active-sale personal calculate" id="personal calculate"
+                                                <li class="active-sale personal calculate pay-list" id="personal calculate"
+                                                    data-id="{{ variant.id }}"
                                                     onclick="calculate({
                                                             duration:{{ variant.duration }},
                                                             percent:{{ variant.percent }},
@@ -621,7 +627,7 @@
                     success: function (response) {
                         if (response.status) {
                             alertify.success(response.msg)
-                            {#location.reload();#}
+                            location.reload();
                         } else {
                             alertify.error(response.msg)
                         }
@@ -632,6 +638,106 @@
 
 
         });
+    </script>
+    <script>
+    var type_data = {
+    variant: 0,
+    image: 0,
+};
+function calculate(duration, percent, price, status, id) {
+    $('.pay-list').removeClass('active-pay')
+    $( `li[data-id='${duration.id}']` ).addClass('active-pay');
+    if (status === "images") {
+        type_data.image = {
+            id: id,
+            price: price,
+            temp_price: price,
+        }
+        if (type_data.variant === 0) {
+            var image_total = price + ((percent * price) / 100);
+            var image_monthly = image_total / duration;
+            image_monthly = Math.trunc(image_monthly);
+            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+            type_data.image.price = price
+
+        } else {
+            var image_total = price + ((type_data.variant.percent * price) / 100);
+            var image_monthly = image_total / type_data.variant.duration;
+            image_monthly = Math.trunc(image_monthly);
+            type_data.image.temp_price = Math.trunc(image_total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+            type_data.image.price = price
+        }
+        image_monthly = Math.trunc(image_monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        image_monthly = image_monthly + " uzs/oy";
+        price = type_data.image.temp_price + " uzs";
+        $("#monthly").text(image_monthly);
+        $("#origin_price").text(price);
+    } else {
+        type_data.variant = {
+            id: duration.id,
+            duration: duration.duration,
+            percent: duration.percent
+        }
+
+        if (type_data.image === 0) {
+            var total = parseFloat(duration.price) + ((duration.percent * parseFloat(duration.price)) / 100);
+            var monthly = total / duration.duration;
+            monthly = monthly.toFixed(2);
+            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";
+        } else {
+            var total = parseFloat(type_data.image.price) + ((duration.percent * parseFloat(type_data.image.price)) / 100);
+            var monthly = total / duration.duration;
+            monthly = Math.trunc(monthly);
+            price = Math.trunc(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " uzs";
+        }
+        monthly = Math.trunc(monthly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        monthly = monthly + " uzs/oy";
+
+        $("#monthly").text(monthly);
+        $("#origin_price").text(price);
+    }
+}
+
+// ================================================ Banner Deadline ====================================================
+
+const eventBox = document.getElementById('event-box');
+const dayBox = document.getElementById('day');
+const hourBox = document.getElementById('hour');
+const minBox = document.getElementById('min');
+const secBox = document.getElementById('sec');
+// console.log(eventBox.textContent);
+
+const evenDate = Date.parse(eventBox.textContent);
+// console.log(evenDate);
+
+setInterval(() => {
+    const now = new Date().getTime();
+    // console.log(now);
+
+    const diff = evenDate - now;
+    // console.log(diff);
+
+    const d = Math.floor(evenDate / (1000 * 60 * 60 * 24) - (now / (1000 * 60 * 60 * 24)));
+    const h = Math.floor((evenDate / (1000 * 60 * 60) - (now / (1000 * 60 * 60))) % 24);
+    const m = Math.floor((evenDate / (1000 * 60) - (now / (1000 * 60))) % 60);
+    const s = Math.floor((evenDate / (1000) - (now / (1000))) % 60);
+    // console.log(m);
+    // console.log(s);
+
+    if (diff >= 0) {
+        // countdownBox.innerHTML = `${d.toString().padStart(2, '0')} : ${h.toString().padStart(2, '0')} : ${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
+        dayBox.innerHTML = `${d.toString().padStart(2, '0')}`;
+        hourBox.innerHTML = `${h.toString().padStart(2, '0')}`;
+        minBox.innerHTML = `${m.toString().padStart(2, '0')}`;
+        secBox.innerHTML = `${s.toString().padStart(2, '0')}`;
+        // console.log(countdownBox.innerHTML);
+    }
+
+}, 1000);
+
+
+
+
     </script>
     <script>
         let status = {
@@ -710,6 +816,7 @@
 
 
         function send_val(item_id, pro_id, price) {
+
             calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
             let image_id = item_id;
             let product_id = pro_id;
