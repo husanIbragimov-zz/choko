@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-26 14:02+0500\n"
+"POT-Creation-Date: 2023-10-26 14:14+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,8 +142,8 @@ msgstr ""
 msgid "Ko'proq"
 msgstr ""
 
-#: templates/base.html:765 templates/base.html:859
-msgid "Texnikalar"
+#: templates/base.html:765
+msgid "Elektronika"
 msgstr ""
 
 #: templates/base.html:767 templates/base.html:861 templates/index.html:99
@@ -158,6 +158,10 @@ msgstr ""
 #: templates/base.html:988 templates/page-contact.html:21
 #: templates/page-contact.html:46
 msgid "Aloqa"
+msgstr ""
+
+#: templates/base.html:859
+msgid "Texnikalar"
 msgstr ""
 
 #: templates/base.html:876 templates/shop-book.html:197

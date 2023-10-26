@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-26 14:02+0500\n"
+"POT-Creation-Date: 2023-10-26 14:14+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgstr ""
 
 #: chocco/settings.py:223
 msgid "Uzbek"
-msgstr ""
+msgstr "Узбекский"
 
 #: chocco/settings.py:224
 msgid "Russian"
-msgstr ""
+msgstr "Русский"
 
 #: templates/account.html:11 templates/base.html:763 templates/base.html:857
 #: templates/page-contact.html:20 templates/register.html:10
@@ -150,7 +150,7 @@ msgstr "Категории"
 msgid "Ko'proq"
 msgstr "Более"
 
-#: templates/base.html:765 templates/base.html:859
+#: templates/base.html:765
 msgid "Elektronika"
 msgstr "Электроника"
 
@@ -167,6 +167,12 @@ msgstr "Одежда"
 #: templates/page-contact.html:46
 msgid "Aloqa"
 msgstr "Cвязь"
+
+#: templates/base.html:859
+#, fuzzy
+#| msgid "Elektronikalar"
+msgid "Texnikalar"
+msgstr "Электроника"
 
 #: templates/base.html:876 templates/shop-book.html:197
 msgid "Til"
@@ -221,7 +227,8 @@ msgstr "Мой счет"
 
 #: templates/base.html:994 templates/login.html:12 templates/login.html:32
 #: templates/login.html:58 templates/register.html:62
-#, fuzzy
+
+#: templates/base.html:994
 msgid "Kirish"
 msgstr "Входить"
 

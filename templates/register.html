@@ -31,13 +31,21 @@
                                             {% endfor %}
                                         {% endif %}
                                         <div class="heading_s1">
-                                            <h3 class="mb-30">{% trans "Hisob yaratish" %}</h3>
+                                            <h3 class="mb-15">{% trans "Hisob yaratish" %}</h3>
                                         </div>
-                                        <p class="mb-50 font-sm">
+                                        <p class="mb-30 font-sm">
                                             {% trans "Sizning shaxsiy ma'lumotlaringiz bu vaqt davomida tajribangizni qo'llab-quvvatlash uchun ishlatiladi veb-sayt, hisobingizga kirishni boshqarish va tavsiflangan boshqa maqsadlar uchun maxfiylik siyosatimizda" %}
                                         </p>
                                         <form method="post" action="/register/">
                                             {% csrf_token %}
+                                            <div class="form-group">
+                                                <input type="text" required="" name="first_name"
+                                                       placeholder="{% trans "Ism" %}">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" required="" name="last_name"
+                                                       placeholder="{% trans "Familiya" %}">
+                                            </div>
                                             <div class="form-group">
                                                 <input type="text" required="" name="username"
                                                        placeholder="{% trans "Telefon raqam" %}">
@@ -50,7 +58,7 @@
                                                 <input required="" type="password" name="password2"
                                                        placeholder="{% trans "Parolni tasdiqlash" %}">
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group text-center">
                                                 <button type="submit" class="btn btn-fill-out btn-block hover-up"
                                                         name="login">{% trans "Ro'yxatdan o'tish" %}
                                                 </button>

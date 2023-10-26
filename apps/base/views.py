@@ -10,6 +10,8 @@ from django.shortcuts import render, redirect
 # Create your views here.
 def register(request):
     if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
         username = request.POST['username']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
@@ -21,7 +23,8 @@ def register(request):
         if not re.match(username_regex, username):
             if not re.match(username_regex2, username):
                 if not re.match(username_regex3, username):
-                    messages.warning(request, "Invalid phone number! The phone number must be +998994187100 characters!")
+                    messages.warning(request,
+                                     "Invalid phone number! The phone number must be +998994187100 characters!")
                     return redirect('register')
 
         user = User.objects.filter(username=username)
@@ -30,8 +33,9 @@ def register(request):
             return redirect('register')
         else:
             if password1 == password2:
-                instance = User.objects.create_user(username=username, password=password1)
-                user = authenticate(username=username, password=password1)
+                instance = User.objects.create_user(username=username, password=password1, first_name=first_name,
+                                                    last_name=last_name)
+                user = authenticate(username=username, password=password1, first_name=first_name, last_name=last_name)
                 if user is not None:
                     login(request, user)
                 messages.success(request, 'Your account has been created!')
