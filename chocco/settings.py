@@ -31,9 +31,9 @@ STAGE = 'dev'
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ORIGIN_ALLOW_ALL = True
+CSRF_TRUSTED_ORIGINS = ['https://husanibragimov.jprq.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://husanibragimov.jprq.app/', 'https://oqdev.fibo.cloud']
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
