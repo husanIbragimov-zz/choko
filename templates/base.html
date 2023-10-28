@@ -18,7 +18,18 @@
         j.src =
             'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-KT2Z9NH');</script>
+    })(window, document, 'script', 'dataLayer', 'GTM-KT2Z9NH');
+    const menuButton = document.querySelector('.categori-button-active');
+    const menu_all_category = document.querySelector('.menu-all-category-wrapper');
+
+
+
+    document.addEventListener('click', (event) => {
+      if (!menu_all_category.contains(event.target) && !menuButton.contains(event.target)) {
+        menu_all_category.classList.add('open');
+      }
+    })
+    </script>
     <!-- End Google Tag Manager -->
     <meta charset="utf-8">
     <title>Azbo Online Market — Интернет-магазин</title>
@@ -162,6 +173,37 @@
 
         .product-content-wrap_fz:hover {
             color: #15916D;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #15916D;
+            border-radius: 50px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bolder;
+            margin-bottom: 10px;
+            padding: 12px;
+            column-gap: 30px;
+        }
+
+        .social-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .social-item:hover {
+            background-color: #15916D;
+            color: white;
         }
 
         @media screen and (max-width: 1389px) {
@@ -457,12 +499,41 @@
                 max-width: 65%;
             }
         }
-
+        .hidden {
+          display: none;
+        }
     </style>
 
 </head>
 
 <body style="line-height: 15px">
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">{% trans "Bizning Instagram sahifamiz" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a class="social-item" href="https://www.instagram.com/azbo.uz/"><img class="social-img"
+                                                     src="{% static 'assets/imgs/theme/azbo_instagram.jpg' %}"
+                                                     alt="Azbo.uz">Azbo.uz</a>
+                <a class="social-item" href="https://www.instagram.com/azbobooks/"><img class="social-img"
+                                                     src="{% static 'assets/imgs/theme/azbobooks_instagram.jpg' %}"
+                                                     alt="Azbo.uz">Azbobooks</a>
+                <a class="social-item" href="https://www.instagram.com/azbokids/"><img class="social-img"
+                                                     src="{% static 'assets/imgs/theme/azbokids_insatgram.jpg' %}"
+                                                     alt="Azbo.uz">Azbokids.uz</a>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Google Tag Manager (noscript) -->
 <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KT2Z9NH"
@@ -597,7 +668,7 @@
                                     <div class="shopping-cart-total">
                                         <h4>{% trans "Jami" %} <span>{{ cart.cart_total|intcomma }} UZS</span></h4>
                                     </div>
-                                    <div class="shopping-cart-button d-flex">
+                                    <div class="shopping-cart-button d-flex justify-content-between">
                                         <a href="{% url 'shop-cart' %}">{% trans "Ko'rish" %}</a>
                                         <a href="{% url 'create-order' cart.id %}">{% trans "Tasdiqlash" %}</a>
                                     </div>
@@ -631,7 +702,7 @@
                             class="down far fa-chevron-down"></i> <i
                             class="up far fa-chevron-up"></i>
                     </a>
-                    <div class="categori-dropdown-wrap categori-dropdown-active-large">
+                    <div class="categori-dropdown-wrap menu-all-category-wrapper categori-dropdown-active-large">
                         <div style="width: 68vw; position: relative">
                             <ul style="width: 300px; height: 100vh; border-right: solid 1px grey;">
                                 {% for cat in categories %}
@@ -975,7 +1046,9 @@
                             <a class="facebook" href="#"><i class="fab fa-facebook-f pt-10"></i></a>
                             <a class="twitter" href="#"><i class="fab fa-twitter pt-10"></i></a>
                             <a class="tumblr" href="#"><i class="fab fa-tumblr pt-10"></i></a>
-                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i
+                            {#                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i#}
+                            {#                                    class="fab fa-instagram pt-10"></i></a>#}
+                            <a class="instagram" data-bs-toggle="modal" href="#exampleModalToggle" role="button"><i
                                     class="fab fa-instagram pt-10"></i></a>
                         </div>
                     </div>
@@ -1069,6 +1142,8 @@
 
     ga('create', 'UA-XXXXX-Y', 'auto');
     ga('send', 'pageview');
+
+    ;
 </script>
 <!-- End Google Analytics -->
 

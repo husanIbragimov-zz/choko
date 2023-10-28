@@ -434,7 +434,7 @@ def shop_details(request, pk):
             return redirect(f'/shop-details/{product.id}#comments')
     else:
         form = CommentForm()
-    variants = Variant.objects.filter(is_integration=True, product_type=product.product_type).order_by('duration')
+    variants = Variant.objects.filter(product_type=product.product_type).order_by('duration')
     active_variant = variants.last()
     total = image_objects.first().price_uzs + ((active_variant.percent * image_objects.first().price_uzs) / 100)
     monthly = total / active_variant.duration

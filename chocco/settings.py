@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'import_export',
+    'django_cleanup.apps.CleanupConfig',
 
     # local apps
     'apps.base',

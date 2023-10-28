@@ -5162,7 +5162,7 @@ h6.post-title {
   right: 0;
   top: calc(100% + 20px);
   z-index: 99;
-  width: 360px;
+  width: 380px;
   background-color: #fff;
   -webkit-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
