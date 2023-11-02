@@ -1606,8 +1606,8 @@
                     console.log(location.href)
                     setTimeout(() => {
                         setPrice(p1, p2)
-                        location.href = `/book/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
-                        {#location.href = `{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`#}
+                        // location.href = `/books/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
+                        location.href = `{% url 'books' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
 
                     }, 3000);
                     console.log(p1, p2)

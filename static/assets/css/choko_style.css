@@ -473,3 +473,35 @@ fieldset, label {
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
     display: none;
 }
+
+#filter-img {
+    cursor: pointer;
+}
+
+.filter-wrapper{
+    width: 100% !important;
+    position: fixed !important;
+    height: 100vh !important;
+    width: 100% !important;
+    background-color: #fff !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1000 !important;
+    overflow-y: auto !important;
+}
+
+.dip-none {
+        display: none !important;
+    }
+
+@media only screen and (max-width: 990px) {
+    .dbn{
+        display: none;
+    }
+  }
+
+@media screen and (max-width: 990px) {
+    .dip-none {
+        display: flex !important;
+    }
+}
