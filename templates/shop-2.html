@@ -23,6 +23,11 @@
         </div>
         <section class="mt-60 mb-60">
             <div class="container">
+                <div class="m-3 d-flex justify-content-end dip-none">
+                    <img id="filter-img" src="{% static 'assets/imgs/theme/filter-removebg-preview.png' %}" alt="azbo-filter-icon" width="30px" height="30px"/>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row flex-row-reverse main__box">
                     <div class="col-lg-9">
                         <div class="main_block">
@@ -130,7 +135,12 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="col-lg-3 primary-sidebar sticky-sidebar dbn" id="all-filter">
+
+                            <div class="m-3 d-flex justify-content-end">
+                                <img id="filter-img-cl" class="dip-none" src="{% static 'assets/imgs/theme/filter-removebg-preview.png' %}" alt="azbo-filter-icon" width="30px" height="30px"/>
+                            </div>
+                        
                         <div class="widget-area">
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-30 p-20 bg-grey border-radius-10">
@@ -206,7 +216,7 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="{% url "shop-details" last_3_product.id %}">{{ last_3_product.title|slice:'0:25' }}</a>
+                                                <a href="{% url 'shop-details' last_3_product.id %}">{{ last_3_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
                                                 {% if last_3_product.discount > 0 %}
@@ -1601,8 +1611,8 @@
                     console.log(location.href)
                     setTimeout(() => {
                         setPrice(p1, p2)
-                        location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
-                        {#location.href = `{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`#}
+                        // location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
+                        location.href = `{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`
 
                     }, 3000);
                     if (event.cursor) {
