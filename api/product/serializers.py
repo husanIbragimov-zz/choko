@@ -14,21 +14,15 @@ class VariantSerializer(serializers.ModelSerializer):
 class CategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'title_uz', 'title_ru', 'icon', 'parent']
+        fields = ['id', 'title_uz', 'title_ru', 'icon', 'parent', 'product_type']
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
-    icon = serializers.SerializerMethodField()
-
-    def get_icon(self, obj):
-        if obj.icon:
-            return obj.icon.url
-        return ''
 
     class Meta:
         model = Category
-        fields = ['id', 'title_uz', 'title_ru', 'icon', 'parent', 'children']
+        fields = ['id', 'title_uz', 'title_ru', 'icon', 'parent', 'product_type', 'children']
 
     @staticmethod
     def get_children(obj):
@@ -50,7 +44,7 @@ class ColorSerializer(serializers.ModelSerializer):
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Size
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'product_type']
 
 
 class CurrencySerializer(serializers.ModelSerializer):
