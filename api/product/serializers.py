@@ -20,16 +20,11 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
 class CategoryListSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
-    icon = serializers.SerializerMethodField()
-
-    def get_icon(self, obj):
-        if obj.icon:
-            return obj.icon.url
-        return ''
 
     class Meta:
         model = Category
         fields = ['id', 'title_uz','title_ru', 'icon', 'parent','product_type','is_active', 'children']
+
 
     @staticmethod
     def get_children(obj):
@@ -39,7 +34,8 @@ class CategoryListSerializer(serializers.ModelSerializer):
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['id', 'title_uz','title_ru','product_type']
+        fields = ['id', 'title_uz', 'title_ru', 'product_type']
+
 
 
 class ColorSerializer(serializers.ModelSerializer):
@@ -51,7 +47,7 @@ class ColorSerializer(serializers.ModelSerializer):
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Size
-        fields = ['id', 'name','product_type']
+        fields = ['id', 'name', 'product_type']
 
 
 class CurrencySerializer(serializers.ModelSerializer):
@@ -62,6 +58,7 @@ class CurrencySerializer(serializers.ModelSerializer):
 
 class BannerDiscountSerializer(serializers.ModelSerializer):
     deadline = serializers.DateField()
+
     class Meta:
         model = BannerDiscount
         fields = ['id', 'title', 'image', 'deadline', 'is_active']
@@ -70,13 +67,13 @@ class BannerDiscountSerializer(serializers.ModelSerializer):
 class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
-        fields = ['id', 'icon', 'title_uz','title_ru', 'description_uz','description_ru', 'banner_image']
+        fields = ['id', 'icon', 'title_uz', 'title_ru', 'description_uz', 'description_ru', 'banner_image']
 
 
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
-        fields = ['id', 'desc_uz', 'title_uz','desc_ru', 'title_ru', 'image']
+        fields = ['id', 'desc_uz', 'title_uz', 'desc_ru', 'title_ru', 'image']
 
 
 class RateCreateSerializer(serializers.ModelSerializer):
@@ -112,7 +109,8 @@ class AdditionalInfoListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AdditionalInfo
-        fields = ['id', 'product', 'title_uz', 'description_uz','title_ru', 'description_ru']
+        fields = ['id', 'product', 'title_uz', 'description_uz', 'title_ru', 'description_ru']
+
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -126,12 +124,11 @@ class ProductListSerializer(serializers.ModelSerializer):
     discount_uzs = serializers.SerializerMethodField()
     brand_uz = serializers.CharField(source='brand.title_uz', read_only=True)
     brand_ru = serializers.CharField(source='brand.title_ru', read_only=True)
-    
 
     class Meta:
         model = Product
-        fields = ['id', 'title_uz','title_ru','author', 'product_type', 'brand_uz','brand_ru', 'status',
-                  'category', 'price_uzs', 'discount_uzs', 'is_active','language','yozuv']
+        fields = ['id', 'title_uz', 'title_ru', 'author', 'product_type', 'brand_uz', 'brand_ru', 'status',
+                  'category', 'price_uzs', 'discount_uzs', 'is_active', 'language', 'yozuv']
 
     def validate(self, attrs):
         currency = Currency.objects.last()
@@ -149,7 +146,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     def get_discount_uzs(obj):
         if obj.percentage:
             discount_sell = obj.product_images.first().price - (
-                obj.product_images.first().price * (obj.percentage / 100))
+                    obj.product_images.first().price * (obj.percentage / 100))
             return discount_sell * Currency.objects.last().amount
         return 0
 
@@ -173,8 +170,9 @@ class ProductImageListSerializer(serializers.ModelSerializer):
 class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'product_type','author', 'title_uz','title_ru', 'category', 'status', 'advertisement', 'banner_discount', 'brand',
-                  'size', 'percentage', 'description_uz','description_ru','language','yozuv', 'availability', 'has_size', 'is_active']
+        fields = ['id', 'product_type', 'author', 'title_uz', 'title_ru', 'category', 'status', 'advertisement',
+                  'banner_discount', 'brand', 'size', 'percentage', 'description_uz', 'description_ru', 'language',
+                  'yozuv', 'availability', 'has_size', 'is_active']
 
 
 class ProductImagesSerializer(serializers.ModelSerializer):
@@ -196,7 +194,7 @@ class ProductImagesSerializer(serializers.ModelSerializer):
 class ProductDetailSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
     brand_uz = serializers.CharField(source='brand.title_uz', read_only=True)
-    brand_ru = serializers.CharField(source='brand.title_ru', read_only=True)    
+    brand_ru = serializers.CharField(source='brand.title_ru', read_only=True)
     size = SizeSerializer(many=True)
     mid_rate = serializers.SerializerMethodField()
     mid_rate_percent = serializers.SerializerMethodField()
@@ -208,8 +206,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
-            'id', 'product_type', 'title_uz','title_ru','banner_discount','brand', 'brand_uz', 'category', 'brand_ru', 'size', 'percentage', 'price_uzs', 'discount_uzs',
-            'view', 'mid_rate', 'mid_rate_percent', 'availability', 'description_uz','description_ru', 'product_images', 'additional_info',
+            'id', 'product_type', 'title_uz', 'title_ru', 'brand_uz', 'category', 'brand_ru', 'size', 'percentage',
+            'price_uzs', 'discount_uzs', 'view', 'mid_rate', 'mid_rate_percent', 'availability', 'description_uz', 'description_ru',
+            'product_images', 'additional_info', 'is_active', 'yozuv', 'advertisement', 'banner_discount', 'brand'
         ]
 
     def get_category(self, obj):
@@ -252,7 +251,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     def get_discount_uzs(obj):
         if obj.percentage:
             discount_sell = obj.product_images.first().price - (
-                obj.product_images.first().price * (obj.percentage / 100))
+                    obj.product_images.first().price * (obj.percentage / 100))
             return discount_sell * Currency.objects.last().amount
         return 0
 

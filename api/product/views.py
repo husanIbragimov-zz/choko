@@ -252,13 +252,13 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
     filterset_class = ProductFilter
     filter_backends = [DjangoFilterBackend,
                        filters.SearchFilter, filters.OrderingFilter]
-   
+
     search_fields = ['title', 'description']
     pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
         qs = self.queryset.all()
-        
+
         category = self.request.GET.get('category')
         brand = self.request.GET.get('brand')
         size = self.request.GET.get('size')
@@ -316,7 +316,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
                 sz.is_valid(raise_exception=True)
                 sz.save()
                 images[file].append(sz.data)
-        return Response({'data': sz_.data, 'images': images,'errors':errors}, status=status.HTTP_201_CREATED)
+        return Response({'data': sz_.data, 'images': images, 'errors': errors}, status=status.HTTP_201_CREATED)
 
     @action(methods=['delete'], detail=False)
     def remove_image(self, request):
@@ -341,8 +341,6 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
 
         images.update(price=price)
         return Response({'data': 'updated'}, status=status.HTTP_200_OK)
-    
-
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
@@ -406,7 +404,6 @@ class RateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Creat
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
-
 
 
 class AuthorModelViewSet(viewsets.ModelViewSet):

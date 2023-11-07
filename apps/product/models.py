@@ -46,7 +46,7 @@ PRODUCT_TYPE = (
 class BannerDiscount(BaseAbstractDate):
     title = models.TextField(null=True)
     image = models.ImageField(upload_to='sales', null=True)
-    deadline = models.DateField(null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def product_id(self):
