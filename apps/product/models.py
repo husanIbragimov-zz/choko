@@ -317,11 +317,11 @@ def product_post_save(sender, instance, created, **kwargs):
         output_image = remove(input_image)
 
         # Use pure white for the background color in RGB mode
-        background_color = (247, 243, 230)
+        background_color = (255, 255, 255)
 
         output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
         output_with_background.paste(output_image, (0, 0), output_image)
-        output_with_background.save(input_image_path)
+        output_with_background.save(input_image_path, quality=85)
 
     except Exception as e:
         return f'{e}'
