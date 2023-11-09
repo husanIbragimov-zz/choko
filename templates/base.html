@@ -587,9 +587,9 @@
                                     value="Submit"
                                     style="padding: 12px 10px">
                                 {% if language.code == 'uz' %}
-                                    <img src="{% static '' %}assets/uz.png" alt="choko_lang" width="20px">
+                                    <img src="{% static 'assets/uz.png' %}" alt="choko_lang" width="20px">
                                 {% else %}
-                                    <img src="{% static '' %}assets/ru.png" alt="choko_lang" width="20px">
+                                    <img src="{% static 'assets/ru.png' %}" alt="choko_lang" width="20px">
                                 {% endif %}{{ language.code }}
                             </button>
                         {% endfor %}
@@ -712,7 +712,7 @@
                                                                               height="19px"
                                                                               style="margin-right: 17px">{% else %}
                                             {% endif %}{{ cat }}</a>
-                                            <div class="dropdown-menu" style="left: 300px; width: 1000px">
+                                            <div class="dropdown-menu" style="left: 300px; width: 1000px; height: 800px">
                                                 <ul class="mega-menu d-lg-flex">
                                                     <li class="mega-menu-col col">
                                                         <ul class="d-lg-flex row row-cols-3">
