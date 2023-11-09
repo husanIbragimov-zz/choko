@@ -852,7 +852,8 @@
                 </div>
                 <div class="hotline d-none d-lg-block">
                     <p><i style="font-size: 25px" class="fa fa-phone-alt"></i><span></span><a
-                            style="text-decoration: none; font-size: 15px" href="tel:+998555060102">+998 (55)-506-0102</a></p>
+                            style="text-decoration: none; font-size: 15px" href="tel:+998555060102">+998
+                        (55)-506-0102</a></p>
                 </div>
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
@@ -909,21 +910,38 @@
                     <div class="categori-dropdown-wrap categori-dropdown-active-small">
                         <ul>
                             {% for cat in categories %}
-                                {% if cat.parent %}
-                                    <li>
-                                        <a href="{% url 'products_filter' %}?cat={{ cat.title }}">{% if cat.icon %}
-                                            <img src="{{ cat.icon.url }}" alt="choko" width="19px" height="19px"
-                                                 style="margin-right: 17px">{% else %}
-                                            <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
-
+                                {% if not cat.parent %}
+                                    <li class="main-category">
+                                        <a class="categori-button-active-2" href="#">
+                                            {{ cat }}<i class="down far fa-chevron-down"></i>
+                                        </a>
+                                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                                            <ul>
+                                                {% for subcat in categories %}
+                                                    {% if subcat.parent == cat %}
+                                                        <li class="sub-category">
+                                                            <a href="{% url 'index' %}?cat={{ subcat.title }}">
+                                                                {% if subcat.icon %}
+                                                                    <img src="{{ subcat.icon.url }}" alt="choko"
+                                                                         width="19px"
+                                                                         height="19px" style="margin-right: 17px">
+                                                                {% else %}
+                                                                    <i class="wowy-font-cpu"></i>
+                                                                {% endif %}
+                                                                {{ subcat }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     </li>
                                 {% endif %}
                             {% endfor %}
                         </ul>
-                        {#                        <div class="more_categories">{% trans "Ko'proq" %} ...</div>#}
                     </div>
-
                 </div>
+
 
                 <nav>
                     <ul class="mobile-menu">
