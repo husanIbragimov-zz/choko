@@ -729,8 +729,15 @@
                                                                                          href="{% url 'clothes' %}?cat={{ sub_child }}"
                                                                                     {% else %}
                                                                                          href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                    {% endif %}>
+                                                                                    {% if child.icon %}
+                                                                                        <img src="{{ child.icon.url }}"
+                                                                                            alt="choko" width="19px"
+                                                                                            height="19px"
+                                                                                            style="margin-right: 12px">
+                                                                                    {% else %}
                                                                                     {% endif %}
-                                                                            >{{ child }}</a></span>
+                                                                                    {{ child }}</a></span>
                                                                             </li>
                                                                             {% for sub_child in categories %}
                                                                                 {% if sub_child.parent == child %}
