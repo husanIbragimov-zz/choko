@@ -15,11 +15,12 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Category
-        fields = ['id', 'title_uz','title_ru', 'icon', 'parent','product_type','is_active']
+        fields = ['id', 'title_uz','title_ru', 'icon', 'parent','product_type']
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = Category
@@ -138,7 +139,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_price_uzs(obj):
-        if obj.product_images.first().price:
+        if obj.product_images.first().price > 0:
             return obj.product_images.first().price * Currency.objects.last().amount
         return 0
 
