@@ -95,8 +95,8 @@ def create_order(request, id):
     data = []
     for i in cart_items:
         data.append(dict(
-            user=request.user.username,
             order=order.id,
+            user=request.user.username,
             product=i.product.title,
             variant=i.variant.duration,
             photo=i.product_image.image.url
@@ -142,13 +142,13 @@ def one_click_order(request):
     )
     cart_item.save()
     data = []
-    for i in cart_item:
-        data.append(dict(
+    
+    data.append(dict(
             user=phone_number,
             order=order.id,
-            product=i.product.title,
-            variant=i.variant.duration,
-            photo=i.product_image.image.url
+            product=cart_item.product.title,
+            variant=cart_item.variant.duration,
+            photo=cart_item.product_image.image.url
         ))
     asyncio.run(order_product(data))
 

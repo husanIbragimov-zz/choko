@@ -26,12 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m2!utmzv^8h@k)^a5elg^h4*d$xow(@z9(i3n=qe5)s&$a!ts5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 STAGE = 'dev'
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://husanibragimov.jprq.app']
+#CSRF_TRUSTED_ORIGINS = ['https://husanibragimov.jprq.app']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -161,8 +161,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'choko',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
+        'USER': 'choko',
+        'PASSWORD': 'choko',
         'HOST': 'localhost',
         'PORT': 5432,
     }

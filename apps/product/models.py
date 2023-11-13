@@ -48,7 +48,7 @@ class BannerDiscount(BaseAbstractDate):
     image = models.ImageField(upload_to='sales', null=True)
     deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-
+    
     def product_id(self):
         return self.product_set.last()
 
@@ -309,19 +309,19 @@ class Rate(BaseAbstractDate):
         return round(self.rate * 100 / 5, 1)
 
 
-@receiver(post_save, sender=ProductImage)
-def product_post_save(sender, instance, created, **kwargs):
-    try:
-        input_image_path = instance.image.path
-        input_image = Image.open(input_image_path)
-        output_image = remove(input_image)
+# @receiver(post_save, sender=ProductImage)
+# def product_post_save(sender, instance, created, **kwargs):
+#     try:
+#         input_image_path = instance.image.path
+#         input_image = Image.open(input_image_path)
+#         output_image = remove(input_image)
 
-        # Use pure white for the background color in RGB mode
-        background_color = (255, 255, 255)
+#         # Use pure white for the background color in RGB mode
+#         background_color = (255, 255, 255)
 
-        output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
-        output_with_background.paste(output_image, (0, 0), output_image)
-        output_with_background.save(input_image_path, quality=85)
+#         output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
+#         output_with_background.paste(output_image, (0, 0), output_image)
+#         output_with_background.save(input_image_path, quality=85)
 
-    except Exception as e:
-        return f'{e}'
+#     except Exception as e:
+#         return f'{e}'

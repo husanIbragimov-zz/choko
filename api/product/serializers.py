@@ -58,7 +58,7 @@ class CurrencySerializer(serializers.ModelSerializer):
 
 
 class BannerDiscountSerializer(serializers.ModelSerializer):
-    deadline = serializers.DateField()
+    deadline = serializers.DateTimeField()
 
     class Meta:
         model = BannerDiscount
