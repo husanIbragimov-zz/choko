@@ -223,11 +223,12 @@
                                                     </div>
                                                     <div>
                                                         <p>{% trans "Narx" %}:</p>
-                                                        <span style="font-size: 20px" id="origin_price"
-                                                        >{{ image_objects.first.total_uzs|intcomma }} uzs</span>
-
+                                                        <del class="pb-1 text-danger">{{ image_objects.first.total_uzs|intcomma }} uzs</del>
+                                                        <br>
+                                                        <span style="font-size: 20px" id="origin_price">
+                                                            {{ image_objects.first.total_uzs|intcomma }} uzs
+                                                        </span>
                                                     </div>
-
                                                     <span class="save-price  font-md color3 ml-15">{{ product.percentage }}% Off</span>
                                                 {% else %}
                                                     <div class="mr-50">
