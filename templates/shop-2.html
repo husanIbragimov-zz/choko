@@ -23,6 +23,11 @@
         </div>
         <section class="mt-60 mb-60">
             <div class="container">
+                <div class="m-3 d-flex justify-content-end dip-none">
+                    <img id="filter-img" src="{% static 'assets/imgs/theme/filter-removebg-preview.png' %}" alt="azbo-filter-icon" width="30px" height="30px"/>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row flex-row-reverse main__box">
                     <div class="col-lg-9">
                         <div class="main_block">
@@ -33,7 +38,7 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url "shop-details" product.id %}">
+                                                <a href="{% url 'shop-details' product.id %}">
                                                     <img class="default-img default-img-size"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
                                                          width="230px" height="230px">
@@ -50,18 +55,18 @@
                                         </div>
                                         <div class="product-content-wrap p-10 pt-5">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}"><span
+                                                <a href="{% url 'shop-details' product.id %}"><span
                                                         class="product-category_fz">{{ product.category.first }}</span></a>
                                             </div>
 
-                                            <div><a href="{% url "shop-details" product.id %}"><p
+                                            <div><a href="{% url 'shop-details' product.id %}"><p
                                                     class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
                                             </p></a></div>
 
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" title="{{ product.mid_rate_percent }}%"
-                                                     style="width:{{ product.mid_rate_percent }}%">
+                                                     style="width: {{ product.mid_rate_percent }}%">
                                                 </div>
                                                 <div>
                                                     {% if product.percentage %}
@@ -92,7 +97,7 @@
                                             </div>
                                             <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 5px;"
+                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 5px;"
                                                                                              class="far fa-heart"></i></a>
 
                                             </div>
@@ -130,7 +135,12 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="col-lg-3 primary-sidebar sticky-sidebar dbn" id="all-filter">
+
+                            <div class="m-3 d-flex justify-content-end">
+                                <img id="filter-img-cl" class="dip-none" src="{% static 'assets/imgs/theme/filter-removebg-preview.png' %}" alt="azbo-filter-icon" width="30px" height="30px"/>
+                            </div>
+                        
                         <div class="widget-area">
                             <!--Widget categories-->
                             <div class="sidebar-widget widget_categories mb-30 p-20 bg-grey border-radius-10">
@@ -206,7 +216,7 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="{% url "shop-details" last_3_product.id %}">{{ last_3_product.title|slice:'0:25' }}</a>
+                                                <a href="{% url 'shop-details' last_3_product.id %}">{{ last_3_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
                                                 {% if last_3_product.discount > 0 %}
@@ -241,7 +251,7 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="{% url "shop-details" top_rate_product.id %}">{{ top_rate_product.title|slice:'0:25' }}</a>
+                                                <a href="{% url 'shop-details' top_rate_product.id %}">{{ top_rate_product.title|slice:'0:25' }}</a>
                                             </h5>
                                             <div class="product-price">
                                                 {% if top_rate_product.discount > 0 %}
@@ -396,6 +406,7 @@
                 // getBoundingClientRect contains left scroll in Chrome on Android.
                 // I haven't found a feature detection that proves this. Worst case
                 // scenario on mis-match: the 'tap' feature on horizontal sliders breaks.
+
                 if (/webkit.*Chrome.*Mobile/i.test(navigator.userAgent)) {
                     pageOffset.x = 0;
                 }
@@ -1588,7 +1599,6 @@
                 // Unbind move events on document, call callbacks.
 
                 function end(event, data) {
-                    console.log("end")
                     // The handle is no longer active, so remove the class.
                     var active = scope_Base.querySelector('.' + cssClasses[15]),
                         handleNumber = data.handles[0] === scope_Handles[0] ? 0 : 1;
@@ -1601,11 +1611,10 @@
                     console.log(location.href)
                     setTimeout(() => {
                         setPrice(p1, p2)
-                        location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`
-                        {#location.href = `{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`#}
+                        // location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
+                        location.href = `{% url 'techniques' %}?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`
 
                     }, 3000);
-                    console.log(p1, p2)
                     if (event.cursor) {
                         document.body.style.cursor = '';
                         document.body.removeEventListener('selectstart', document.body.noUiListener);
@@ -1627,7 +1636,7 @@
                 }
 
                 function setPrice(min, max) {
-                    location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${ min }&max-value=${ max }&page={{ active_page }}`
+                    location.href = `/techniques/?search={{ search_name }}&cat={{ active_cat_name }}&brand={{ active_brand_name }}&min-value=${min}&max-value=${max}&page={{ active_page }}`
                 }
 
                 // Fire 'end' when a mouse or pen leaves the document.
@@ -1642,7 +1651,6 @@
                 // Bind move events on document.
 
                 function start(event, data) {
-                    console.log("start")
                     var d = document.documentElement;
                     // Mark the handle as 'active' so it can be styled.
                     if (data.handles.length === 1) {
@@ -2382,7 +2390,5 @@
             /** @export */
             window.wNumb = wNumb;
         }());
-
-
     </script>
 {% endblock %}

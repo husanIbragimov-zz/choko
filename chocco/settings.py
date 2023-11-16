@@ -26,9 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m2!utmzv^8h@k)^a5elg^h4*d$xow(@z9(i3n=qe5)s&$a!ts5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+STAGE = 'dev'
 
 ALLOWED_HOSTS = ['*']
+
+#CSRF_TRUSTED_ORIGINS = ['https://husanibragimov.jprq.app']
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -56,6 +61,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'import_export',
+    'django_cleanup.apps.CleanupConfig',
 
     # local apps
     'apps.base',
@@ -110,7 +116,6 @@ SITE_ID = 1
 
 WSGI_APPLICATION = 'chocco.wsgi.application'
 
-
 # rest_framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -126,7 +131,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend',],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', ],
 }
 
 # swagger ->
@@ -141,8 +146,6 @@ SWAGGER_SETTINGS = {
 }
 
 # cors headers ->
-CORS_ORIGIN_ALLOW_ALL = True
-
 CORS_ALLOW_METHODS = [
     '*'
 ]
@@ -154,16 +157,15 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-CSRF_TRUSTED_ORIGINS = ['https://oqdev.fibo.cloud',]
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql',
-         'NAME':'choco',
-         'USER': 'postgres',
-         'PASSWORD': 'choco',
-         'HOST': 'localhost',
-         'PORT': 5432,
-     }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'choko',
+        'USER': 'choko',
+        'PASSWORD': 'choko',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    }
 }
 
 # ================================================== PostgresSQL =======================================================
@@ -241,7 +243,6 @@ PARLER_LANGUAGES = {
     }
 }
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -303,7 +304,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
-
 
 # ckeditor
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'

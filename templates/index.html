@@ -23,9 +23,8 @@
                                         <div class="container">
                                             <div class="slider-1-height-3 slider-animated-1">
                                                 <div class="hero-slider-content-2">
-                                                    {#                                                    <h4>{{ banner.desc|safe }}</h4>#}
                                                     <a class="animated btn btn-default btn-rounded"
-                                                       href="{% url 'products_filter' %}"> {% trans "Sotib Olish" %} <i
+                                                       href="{% url 'index' %}"> {% trans "Sotib Olish" %} <i
                                                             class="fa fa-arrow-right"></i> </a>
                                                 </div>
                                                 <div class="slider-img">
@@ -70,6 +69,8 @@
                                     {#                                            class="fa fa-arrow-right"></i></a>#}
 
                                     <div id="event-box" class="hidden">{{ foo.deadline|date:'m.d.y, H:m:s' }}</div>
+                                    <!-- <div id="event-box">{{ foo.deadline|date:'m.d.y, H:m:s' }}</div> -->
+
                                 </div>
                             </div>
                         {% endfor %}
@@ -198,7 +199,7 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}"
+                            <a href="{% url 'products_filter' %}?advertisement={{ advertisement }}"
                                class="btn btn-green">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
@@ -309,7 +310,7 @@
                             <h4 class="text-white">{{ advertisement.title }}</h4>
                             {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
-                            <a href="{% url 'index' %}shop/?advertisement={{ advertisement }}"
+                            <a href="{% url 'products_filter' %}?advertisement={{ advertisement }}"
                                class="btn btn-green">{% trans "Batafsil" %} <i
                                     class="fa fa-arrow-right"></i></a>
                         </div>
@@ -563,5 +564,5 @@
 
 {% endblock %}
 {% block script %}
-    <script src="{% static 'assets/js/calculate_price.js' %}"></script>
+    <!-- <script src="{% static 'assets/js/calculate_price.js' %}"></script> -->
 {% endblock %}

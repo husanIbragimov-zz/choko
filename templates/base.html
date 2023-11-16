@@ -18,7 +18,17 @@
         j.src =
             'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-KT2Z9NH');</script>
+    })(window, document, 'script', 'dataLayer', 'GTM-KT2Z9NH');
+    const menuButton = document.querySelector('.categori-button-active');
+    const menu_all_category = document.querySelector('.menu-all-category-wrapper');
+
+
+    document.addEventListener('click', (event) => {
+        if (!menu_all_category.contains(event.target) && !menuButton.contains(event.target)) {
+            menu_all_category.classList.add('open');
+        }
+    })
+    </script>
     <!-- End Google Tag Manager -->
     <meta charset="utf-8">
     <title>Azbo Online Market — Интернет-магазин</title>
@@ -164,6 +174,37 @@
             color: #15916D;
         }
 
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #15916D;
+            border-radius: 50px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bolder;
+            margin-bottom: 10px;
+            padding: 12px;
+            column-gap: 30px;
+        }
+
+        .social-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .social-item:hover {
+            background-color: #15916D;
+            color: white;
+        }
+
         @media screen and (max-width: 1389px) {
             .main__box-el {
                 width: 22%;
@@ -178,6 +219,7 @@
         }
 
         @media screen and (max-width: 1200px) {
+
             .main_block {
                 column-gap: 10px;
                 row-gap: 5px;
@@ -186,7 +228,6 @@
             .main__box-el {
                 width: 24%;
             }
-
         }
 
         @media screen and (max-width: 1000px) {
@@ -205,6 +246,7 @@
                 width: 220px;
                 height: 220px;
             }
+
 
             .sidebar-widget.widget_categories.mb-30.p-30.bg-grey.border-radius-10 {
                 padding: 10px 5px;
@@ -456,11 +498,41 @@
             }
         }
 
+        .hidden {
+            display: none;
+        }
     </style>
 
 </head>
 
 <body style="line-height: 15px">
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">{% trans "Bizning Instagram sahifamiz" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a class="social-item" href="https://www.instagram.com/azbo.uz/"><img class="social-img"
+                                                                                      src="{% static 'assets/imgs/theme/azbo_instagram.jpg' %}"
+                                                                                      alt="Azbo.uz">Azbo.uz</a>
+                <a class="social-item" href="https://www.instagram.com/azbobooks/"><img class="social-img"
+                                                                                        src="{% static 'assets/imgs/theme/azbobooks_instagram.jpg' %}"
+                                                                                        alt="Azbo.uz">Azbobooks</a>
+                <a class="social-item" href="https://www.instagram.com/azbokids/"><img class="social-img"
+                                                                                       src="{% static 'assets/imgs/theme/azbokids_insatgram.jpg' %}"
+                                                                                       alt="Azbo.uz">Azbokids.uz</a>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Google Tag Manager (noscript) -->
 <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KT2Z9NH"
@@ -474,7 +546,7 @@
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info">
                         <ul>
-                            <li><a href="tel:+99899-418-7100">+998 (99)-418-7100</a></li>
+                            <li><a href="tel:+99899-418-7100">+998 (55)-506-0102</a></li>
                             <li><i class="fa fa-map-marker-alt mr-5"></i><a target="_blank"
                                                                             href="{% url 'contact' %}">{% trans 'Bizning joylashuv' %}</a>
                             </li>
@@ -515,9 +587,9 @@
                                     value="Submit"
                                     style="padding: 12px 10px">
                                 {% if language.code == 'uz' %}
-                                    <img src="{% static '' %}assets/uz.png" alt="choko_lang" width="20px">
+                                    <img src="{% static 'assets/uz.png' %}" alt="choko_lang" width="20px">
                                 {% else %}
-                                    <img src="{% static '' %}assets/ru.png" alt="choko_lang" width="20px">
+                                    <img src="{% static 'assets/ru.png' %}" alt="choko_lang" width="20px">
                                 {% endif %}{{ language.code }}
                             </button>
                         {% endfor %}
@@ -534,7 +606,7 @@
                                                      alt="choko_logo"></a>
                 </div>
                 <div class="search-style-2">
-                    <form action="{{ request.path }}" method="get">
+                    <form action="{% url 'index' %}" method="get">
                         <select class="select-active">
                             <option>{% trans "Barcha bo'limlar" %}</option>
                             {% for category in categories %}
@@ -595,7 +667,7 @@
                                     <div class="shopping-cart-total">
                                         <h4>{% trans "Jami" %} <span>{{ cart.cart_total|intcomma }} UZS</span></h4>
                                     </div>
-                                    <div class="shopping-cart-button d-flex">
+                                    <div class="shopping-cart-button d-flex justify-content-between">
                                         <a href="{% url 'shop-cart' %}">{% trans "Ko'rish" %}</a>
                                         <a href="{% url 'create-order' cart.id %}">{% trans "Tasdiqlash" %}</a>
                                     </div>
@@ -629,7 +701,7 @@
                             class="down far fa-chevron-down"></i> <i
                             class="up far fa-chevron-up"></i>
                     </a>
-                    <div class="categori-dropdown-wrap categori-dropdown-active-large">
+                    <div class="categori-dropdown-wrap menu-all-category-wrapper categori-dropdown-active-large">
                         <div style="width: 68vw; position: relative">
                             <ul style="width: 300px; height: 100vh; border-right: solid 1px grey;">
                                 {% for cat in categories %}
@@ -640,7 +712,7 @@
                                                                               height="19px"
                                                                               style="margin-right: 17px">{% else %}
                                             {% endif %}{{ cat }}</a>
-                                            <div class="dropdown-menu" style="left: 300px; width: 1000px">
+                                            <div class="dropdown-menu" style="left: 300px; width: 1000px; height: 800px">
                                                 <ul class="mega-menu d-lg-flex">
                                                     <li class="mega-menu-col col">
                                                         <ul class="d-lg-flex row row-cols-3">
@@ -649,13 +721,37 @@
                                                                     <li class="col col-6 col-md-4 mega-menu-col">
                                                                         <ul>
                                                                             <li><span><a class="submenu-title"
-                                                                                         href="{{ request.path }}?cat={{ child }}">{{ child }}</a></span>
+                                                                                    {% if child.product_type == 'product' %}
+                                                                                         href="{% url 'techniques' %}?cat={{ child }}"
+                                                                                    {% elif child.product_type == 'book' %}
+                                                                                         href="{% url 'books' %}?cat={{ child }}"
+                                                                                    {% elif sub_child.product_type == 'clothing' %}
+                                                                                         href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                    {% else %}
+                                                                                         href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                    {% endif %}>
+                                                                                    {% if child.icon %}
+                                                                                        <img src="{{ child.icon.url }}"
+                                                                                            alt="choko" width="19px"
+                                                                                            height="19px"
+                                                                                            style="margin-right: 12px">
+                                                                                    {% else %}
+                                                                                    {% endif %}
+                                                                                    {{ child }}</a></span>
                                                                             </li>
                                                                             {% for sub_child in categories %}
                                                                                 {% if sub_child.parent == child %}
                                                                                     <li>
                                                                                     <a class="dropdown-item nav-link nav_item"
-                                                                                       href="{{ request.path }}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                            {% if sub_child.product_type == 'product' %}
+                                                                                       href="{% url 'techniques' %}?cat={{ sub_child }}"
+                                                                                            {% elif sub_child.product_type == 'book' %}
+                                                                                       href="{% url 'books' %}?cat={{ sub_child }}"
+                                                                                            {% elif sub_child.product_type == 'clothing' %}
+                                                                                       href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                            {% else %}
+                                                                                       href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                            {% endif %}>{{ sub_child }}</a>
                                                                                 {% endif %}
                                                                             {% endfor %}
                                                                             </li>
@@ -691,13 +787,29 @@
                                                                             <li class="col col-6 col-md-4 mega-menu-col">
                                                                                 <ul>
                                                                                     <li><span><a class="submenu-title"
-                                                                                                 href="{% url 'products_filter' %}?cat={{ child }}">{{ child }}</a></span>
+                                                                                            {% if child.product_type == 'product' %}
+                                                                                                 href="{% url 'techniques' %}?cat={{ child }}"
+                                                                                            {% elif child.product_type == 'book' %}
+                                                                                                 href="{% url 'books' %}?cat={{ child }}"
+                                                                                            {% elif sub.product_type == 'clothing' %}
+                                                                                                 href="{% url 'clothes' %}?cat={{ sub }}"
+                                                                                            {% else %}
+                                                                                                 href="{% url 'index' %}?cat={{ sub }}"
+                                                                                            {% endif %}>{{ child }}</a></span>
                                                                                     </li>
                                                                                     {% for sub_child in hide_categories %}
                                                                                         {% if sub_child.parent == child %}
                                                                                             <li>
                                                                                             <a class="dropdown-item nav-link nav_item"
-                                                                                               href="{% url 'products_filter' %}?cat={{ sub_child }}">{{ sub_child }}</a>
+                                                                                                    {% if sub_child.product_type == 'product' %}
+                                                                                               href="{% url 'techniques' %}?cat={{ sub_child }}"
+                                                                                                    {% elif sub_child.product_type == 'book' %}
+                                                                                               href="{% url 'books' %}?cat={{ sub_child }}"
+                                                                                                    {% elif sub_child.product_type == 'clothing' %}
+                                                                                               href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                                    {% else %}
+                                                                                               href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                                    {% endif %}>{{ sub_child }}</a>
                                                                                         {% endif %}
                                                                                     {% endfor %}
                                                                                     </li>
@@ -727,7 +839,7 @@
                         <ul>
                             <li><a class="active" href="{% url 'index' %}">{% trans "Bosh sahifa" %}</a>
                             </li>
-                            <li><a href="{% url 'techniques' %}">{% trans "Texnikalar" %}</a>
+                            <li><a href="{% url 'techniques' %}">{% trans "Elektronika" %}</a>
                             </li>
                             <li><a href="{% url 'books' %}">{% trans "Kitoblar" %}</a>
                             </li>
@@ -735,16 +847,13 @@
                             </li>
                             <li><a href="{% url 'contact' %}">{% trans "Aloqa" %}</a>
                             </li>
-
-                            {#                            <li><a href="#">My Account</a></li>#}
-
                         </ul>
                     </nav>
                 </div>
                 <div class="hotline d-none d-lg-block">
                     <p><i style="font-size: 25px" class="fa fa-phone-alt"></i><span></span><a
-                            style="text-decoration: none; font-size: 15px" href="tel:+998994187100">+998
-                        (99)-418-7100</a></p>
+                            style="text-decoration: none; font-size: 15px" href="tel:+998555060102">+998
+                        (55)-506-0102</a></p>
                 </div>
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
@@ -787,7 +896,7 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="{{ request.path }}">
+                <form action="{% url 'index' %}">
                     <input type="text" name="search" placeholder="Search…">
                     <button type="submit"><i class="far fa-search"></i></button>
                 </form>
@@ -801,21 +910,38 @@
                     <div class="categori-dropdown-wrap categori-dropdown-active-small">
                         <ul>
                             {% for cat in categories %}
-                                {% if cat.parent %}
-                                    <li>
-                                        <a href="{% url 'products_filter' %}?cat={{ cat.title }}">{% if cat.icon %}
-                                            <img src="{{ cat.icon.url }}" alt="choko" width="19px" height="19px"
-                                                 style="margin-right: 17px">{% else %}
-                                            <i class="wowy-font-cpu"></i>{% endif %}{{ cat }}</a>
-
+                                {% if not cat.parent %}
+                                    <li class="main-category">
+                                        <a class="categori-button-active-2" href="#">
+                                            {{ cat }}<i class="down far fa-chevron-down"></i>
+                                        </a>
+                                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                                            <ul>
+                                                {% for subcat in categories %}
+                                                    {% if subcat.parent == cat %}
+                                                        <li class="sub-category">
+                                                            <a href="{% url 'index' %}?cat={{ subcat.title }}">
+                                                                {% if subcat.icon %}
+                                                                    <img src="{{ subcat.icon.url }}" alt="choko"
+                                                                         width="19px"
+                                                                         height="19px" style="margin-right: 17px">
+                                                                {% else %}
+                                                                    <i class="wowy-font-cpu"></i>
+                                                                {% endif %}
+                                                                {{ subcat }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     </li>
                                 {% endif %}
                             {% endfor %}
                         </ul>
-                        {#                        <div class="more_categories">{% trans "Ko'proq" %} ...</div>#}
                     </div>
-
                 </div>
+
 
                 <nav>
                     <ul class="mobile-menu">
@@ -870,7 +996,7 @@
                 </div>
 
                 <div class="single-mobile-header-info">
-                    <a href="tel:+998994187100">+998 (99)-418-7100 </a>
+                    <a href="tel:+998994187100">+998 (55)-506-0102 </a>
                 </div>
             </div>
             <div class="mobile-social-icon">
@@ -907,7 +1033,7 @@
                     <form class="form-subcriber d-flex wow fadeIn animated" method="post" action="#">
                         {% csrf_token %}
                         <input type="email" name="sbb" class="form-control bg-white font-small"
-                               placeholder="{% trans "Emailingizni kiriting" %}">
+                               placeholder="{% trans 'Emailingizni kiriting' %}">
                         <button class="btn bg- text-white" type="submit">{% trans "A'zo bo'lish" %}</button>
 
                     </form>
@@ -927,10 +1053,10 @@
                         </div>
                         <h4 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">{% trans "Aloqa" %}</h4>
                         <p class="wow fadeIn animated">
-                            <strong>{% trans "Manzil" %}: </strong>Tashkent, Baynalmilal
+                            <strong>{% trans "Manzil" %}: </strong>Tashkent, Cho'pon ota ko'chasi, 4B uy
                         </p>
                         <p class="wow fadeIn animated">
-                            <strong>{% trans "Tel" %}: </strong>+998 (99)-418-7100
+                            <strong>{% trans "Tel" %}: </strong>+998 (55)-506-0102
                         </p>
                         <p class="wow fadeIn animated">
                             <strong>{% trans "Ish vaqti" %}: </strong>10:00 - 18:00, Mon - Sat
@@ -940,7 +1066,9 @@
                             <a class="facebook" href="#"><i class="fab fa-facebook-f pt-10"></i></a>
                             <a class="twitter" href="#"><i class="fab fa-twitter pt-10"></i></a>
                             <a class="tumblr" href="#"><i class="fab fa-tumblr pt-10"></i></a>
-                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i
+                            {#                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i#}
+                            {#                                    class="fab fa-instagram pt-10"></i></a>#}
+                            <a class="instagram" data-bs-toggle="modal" href="#exampleModalToggle" role="button"><i
                                     class="fab fa-instagram pt-10"></i></a>
                         </div>
                     </div>
@@ -949,7 +1077,9 @@
                     <h5 class="widget-title mb-30 wow fadeIn animated">{% trans "Biz haqimizda" %}</h5>
                     <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
                         {#                        <li><a href="{% url 'about' %}">About Us</a></li>#}
-                        <li><a href="{% url "products_filter" %}">{% trans "Mahsulotlar" %}</a></li>
+                        <li><a href="{% url 'techniques' %}">{% trans "Elektronika" %}</a></li>
+                        <li><a href="{% url 'books' %}">{% trans "Kitoblar" %}</a></li>
+                        <li><a href="{% url 'clothes' %}">{% trans "Kiyimlar" %}</a></li>
                         <li><a href="{% url 'contact' %}">{% trans "Aloqa" %}</a></li>
                     </ul>
                 </div>
@@ -967,23 +1097,23 @@
     </section>
 </footer>
 <!-- Preloader Start -->
-{#<div id="preloader-active" class="loader">#}
-{#    <div class="preloader d-flex align-items-center justify-content-center">#}
-{#        <div class="preloader-inner position-relative">#}
-{#            <div class="text-center">#}
-{#                <img class="jump" src="{% static 'assets/imgs/theme/iconchoko.png' %}" alt="" height="70px"#}
-{#                     width="70px">#}
-{#                <h5 class="mb-5 pt-20">{% trans "Yuklanmoqda" %}...</h5>#}
-{##}
-{#                <div class="loader">#}
-{#                    <div class="bar bar1"></div>#}
-{#                    <div class="bar bar2"></div>#}
-{#                    <div class="bar bar3"></div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
+<!-- <div id="preloader-active" class="loader">
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-inner position-relative">
+            <div class="text-center">
+                <img class="jump" src="{% static 'assets/imgs/theme/iconchoko.png' %}" alt="" height="70px"
+                     width="70px">
+                <h5 class="mb-5 pt-20">{% trans "Yuklanmoqda" %}...</h5>
+
+                <div class="loader">
+                    <div class="bar bar1"></div>
+                    <div class="bar bar2"></div>
+                    <div class="bar bar3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
 <!-- Vendor JS-->
 <script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
 <script src="{% static 'assets/js/vendor/jquery-3.5.1.min.js' %}"></script>
@@ -1006,6 +1136,7 @@
 <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
 <script src="{% static 'assets/js/plugins/TweenMax.min.js' %}"></script>
 <script src="{% static 'assets/js/plugins/custom-parallax.js' %}"></script>
+<script src="{% static 'assets/js/calculate_price.js' %}"></script>
 <script src="{% static 'assets/js/min_max_price.js' %}"></script>
 {% block script %}
 
@@ -1032,6 +1163,8 @@
 
     ga('create', 'UA-XXXXX-Y', 'auto');
     ga('send', 'pageview');
+
+
 </script>
 <!-- End Google Analytics -->
 

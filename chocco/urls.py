@@ -21,28 +21,15 @@ from django.urls import path, include, re_path
 from apps.base import views
 from apps.order.api.v1 import views as api_views
 from django.views.static import serve
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from .schema import swagger_urlpatterns
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Choko.uz",
-        default_version='api',
-        description="The choko.uz is documentation API",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="ibragimovxusanofficial@gmail.com"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
-)
 
 urlpatterns = [
+    # admin
     path('chocolate-admin/', admin.site.urls),
 
-] + i18n_patterns(
+] + swagger_urlpatterns + i18n_patterns(
     # media
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
@@ -58,14 +45,13 @@ urlpatterns = [
     path('base/', include('allauth.urls')),
 
     # swagger
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('docs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
 
     # api
     path('api/v1/', include('api.product.urls'), name='product'),
     path('api/v1/', include('api.account.urls'), name='account'),
     path('api/v1/', include('api.contact.urls'), name='contact'),
+    path('api/v1/', include('api.order.urls'), name='order'),
 
     path('change_status/', api_views.change_status),
     path('count-products/', api_views.count_products),
@@ -84,8 +70,9 @@ urlpatterns = [
     prefix_default_language=False,
 )
 
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = "chocco.errors.page_not_found_view"

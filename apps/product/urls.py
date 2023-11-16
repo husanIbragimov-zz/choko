@@ -10,7 +10,8 @@ urlpatterns = [
     path('clothes/', shop_clothes, name="clothes"),
     path('techniques/', shop_appliances, name="techniques"),
     path('shop-images/', shop_images, name="shop-images"),
-
     path('shop-details/<int:pk>/', shop_details, name="shop-details"),
-    path('detail/<int:pk>/',PorductDetail.as_view(),)
+    path('detail/<int:pk>/', PorductDetail.as_view(), ),
+    path('shop-details/<int:pk>/', shop_details, name="shop-details"),
+    path('detail/<int:pk>/', PorductDetail.as_view(), )
 ]

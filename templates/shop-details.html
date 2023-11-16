@@ -103,7 +103,7 @@
                                    required
                                    name="phone_number"
                                    pattern="+[0-9]{3}[0-9]{2}[0-9]{3}[0-9]{4}"
-                                   placeholder="+998 (99)-418-7100">
+                                   placeholder="+998 (55)-506-0102">
                             <span id="phone-error" class="error"></span>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
                                                 <span> {% trans "Brand" %}: <a
-                                                        href="{% url 'products_filter' %}?brand={{ product.brand }}">{{ product.brand }}</a></span>
+                                                        href="{% if product.product_type == 'product' %}{% url 'techniques' %}{% elif product.product_type == 'clothing' %}{% url 'clothing' %}{% else %}{% url 'books' %}{% endif %}?brand={{ product.brand }}">{{ product.brand }}</a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -211,28 +211,6 @@
                                             </div>
 
                                         {% endif %}
-                                        {#                                        <div class="attr-detail attr-size mt-15 mb-15">#}
-                                        {#                                            <strong class="mr-10">{% trans "Bo'lib to'lash" %}:</strong>#}
-                                        {#                                            <ul class="list-filter size-filter font-small variant_class">#}
-                                        {#                                                {% for variant in variants %}#}
-                                        {#                                                    <li class="{% if variant.id == active_variant.id %}active{% endif %}">#}
-                                        {#                                                        <a class="calculate"#}
-                                        {#                                                           onclick="calculate({#}
-                                        {#                                                                   duration:{{ variant.duration }},#}
-                                        {#                                                                   percent:{{ variant.percent }},#}
-                                        {#                                                                   price:'{{ image_objects.first.price_uzs }}',#}
-                                        {#                                                                   status: 'variant',#}
-                                        {#                                                                   id:{{ variant.id }}#}
-                                        {#                                                                   })"#}
-                                        {##}
-                                        {#                                                           href="#">{{ variant.duration }} {% trans "oy" %}#}
-                                        {#                                                            <span class="d-none">{{ variant.id }}</span>#}
-                                        {#                                                        </a>#}
-                                        {#                                                    </li>#}
-                                        {##}
-                                        {#                                                {% endfor %}#}
-                                        {#                                            </ul>#}
-                                        {#                                        </div>#}
 
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left d-flex">
@@ -283,9 +261,8 @@
                                                            type="number" min="1"
                                                            value="1">
                                                     <label for="total"
-                                                           class="ml-10">({{ product.availability }} {% trans "ta mavjud" %})</label>
+                                                           class="ml-10" {% if product.availability == 0 %} style="color: red" {% endif %}>({{ product.availability }} {% trans "ta mavjud" %})</label>
                                                 </div>
-
                                             </div>
                                             <div class="product-extra-link2 mt-3">
                                                 <button type="button"
@@ -639,6 +616,7 @@
 
         });
     </script>
+
     <script>
     var type_data = {
     variant: 0,
@@ -735,8 +713,108 @@ setInterval(() => {
 
 }, 1000);
 
+    </script>
+
+    <script>
+        let status = {
+            image: 0,
+            variant: 0,
+        }
+        {% for image in image_objects %}
+            <!-- MAIN_SLIDES -->
+            var main_img = document.createElement("img");
+            main_img.src = "{{ image.image.url }}";
+            main_img.id = "main_slide_image_id-{{ forloop.counter0 }}";
+            var main_div = document.createElement("div");
+            main_div.id = 'main_div_image-{{ forloop.counter0 }}';
+            main_div.appendChild(main_img);
+            document.getElementById("main_slider_image").appendChild(main_div);
+
+            <!-- THUMBNAILS -->
+            var img = document.createElement("img");
+            img.src = "{{ image.image.url }}";
+            img.id = "slide_image_id-{{ forloop.counter0 }}";
+            var div = document.createElement("div");
+            div.id = 'div_image-{{ forloop.counter0 }}';
+            div.appendChild(img);
+            document.getElementById("slider_image").appendChild(div);
+        {% endfor %}
+        function generate(data) {
+            {% for image in image_objects %}
+                <!-- MAIN_SLIDES -->
+                var main_text = "main_slide_image_id-" + {{ forloop.counter0 }};
+                var main_text_div = "main_div_image-" + {{ forloop.counter0 }};
+                <!-- THUMBNAILS -->
+                var text = "slide_image_id-" + {{ forloop.counter0 }};
+                var text_div = "div_image-" + {{ forloop.counter0 }};
+                if (data.length > {{ forloop.counter0 }}) {
+                    <!-- MAIN_SLIDES -->
+                    document.getElementById(main_text).remove();
+                    var main_img = document.createElement("img");
+                    main_img.src = data[{{ forloop.counter0 }}].url;
+                    main_img.id = "main_slide_image_id-" + {{ forloop.counter0 }};
+                    var main_div = document.createElement("div");
+                    main_div.id = 'main_div_image_slide';
+                    main_div.appendChild(main_img);
+                    document.getElementById(main_text_div).appendChild(main_div);
+                    <!-- THUMBNAILS -->
+                    document.getElementById(text).remove();
+                    var img = document.createElement("img");
+                    img.src = data[{{ forloop.counter0 }}].url;
+                    img.id = "slide_image_id-" + {{ forloop.counter0 }};
+                    var div = document.createElement("div");
+                    div.id = 'div_image_slide';
+                    div.appendChild(img);
+                    document.getElementById(text_div).appendChild(div);
+                } else {
+                    <!-- MAIN_SLIDES -->
+                    var main_imge = document.getElementById(main_text);
+                    main_imge.src = "";
+                    main_imge.id = "main_slide_image_id-" + {{ forloop.counter0 }};
+                    var main_dive = document.createElement("div");
+                    main_dive.id = 'main_div_image_slide';
+                    main_dive.appendChild(main_imge);
+                    document.getElementById(main_text_div).appendChild(main_dive);
+                    <!-- THUMBNAILS -->
+                    var imge = document.getElementById(text);
+                    imge.src = "";
+                    imge.id = "slide_image_id-" + {{ forloop.counter0 }};
+                    var dive = document.createElement("div");
+                    dive.id = 'div_image_slide';
+                    dive.appendChild(imge);
+                    document.getElementById(text_div).appendChild(dive);
+                    // Expected output: ReferenceError: nonExistentFunction is not defined
+                    // (Note: the exact output may be browser-dependent)
+                }
+
+            {% endfor %}
+        }
 
 
+        function send_val(item_id, pro_id, price) {
+
+            calculate({{ active_variant.duration }}, {{ active_variant.percent }}, price, "images", item_id)
+            let image_id = item_id;
+            let product_id = pro_id;
+
+
+            var token = $("input[name=csrfmiddlewaretoken]").val();
+
+
+            $.ajax({
+                method: 'POST',
+                url: "{% url 'shop-images' %}",
+                data: {
+                    "product_id": product_id,
+                    "image_id": image_id,
+                    "variant": 2,
+                    csrfmiddlewaretoken: token
+                },
+                success: function (response) {
+                    generate(response.data)
+                }
+            })
+        }
 
     </script>
     <script>
@@ -961,5 +1039,67 @@ setInterval(() => {
         //}
 
     </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            var size = undefined
+            var product_image = undefined
+            var variant = undefined
+
+            $('.size_class li').click(function () {
+                size = $(this).text();
+            });
+
+            $('.form-submit').click(function (e) {
+                e.preventDefault(); // Prevent the default behavior of the anchor link
+                var spanText = $(this).find('span.d-none').text(); // Get the text inside the span
+                product_image = spanText
+            });
+
+
+            $('.personal.calculate').click(function () {
+                variant = $(this).find('span.d-none').text();
+            });
+
+            $('.btn.btn-primary').click(function () {
+                var phone_number = $("input[name='phone_number']").val()
+                var product_id = $('.prod_id').val()
+                var quantity = $('.qty-input').val()
+                var size = $('.size_class').val()
+                var product_image = $('.image_id').val()
+                var token = $("input[name=csrfmiddlewaretoken]").val();
+
+
+                $.ajax({
+                    method: 'POST',
+                    dataType: "json",
+                    url: "{% url 'one-click-order' %}",
+                    data: {
+                        "phone_number": phone_number,
+                        "product_id": product_id,
+                        "quantity": quantity,
+                        "size": size,
+                        "variant": variant,
+                        "product_image": product_image,
+                        csrfmiddlewaretoken: token
+                    },
+                    success: function (response) {
+
+                        if (response.status) {
+                            alertify.success(response.msg)
+                            location.reload();
+                        } else {
+                            alertify.error(response.msg)
+                        }
+                    }
+                })
+            })
+        });
+    </script>
+
+
+
 
 {% endblock %}

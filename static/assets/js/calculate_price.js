@@ -1,5 +1,3 @@
-import {type_data} from "./type_data";
-
 var total;
 var monthly;
 var image_total;
@@ -59,41 +57,47 @@ function calculate(duration, percent, price, status, id) {
 }
 
 // ================================================ Banner Deadline ====================================================
+// Function to pad numbers with leading zeros
+function padWithZero(num) {
+    return num.toString().padStart(2, '0');
+}
 
-const eventBox = document.getElementById('event-box');
-const dayBox = document.getElementById('day');
-const hourBox = document.getElementById('hour');
-const minBox = document.getElementById('min');
-const secBox = document.getElementById('sec');
-// console.log(eventBox.textContent);
+// Function to update the countdown
+function updateCountdown() {
+    const eventBox = document.getElementById('event-box');
+    const dayBox = document.getElementById('day');
+    const hourBox = document.getElementById('hour');
+    const minBox = document.getElementById('min');
+    const secBox = document.getElementById('sec');
+    const countdownBox = document.getElementById('countdown-box');
 
-const evenDate = Date.parse(eventBox.textContent);
-// console.log(evenDate);
+    const evenDate = Date.parse(eventBox.textContent);
 
-setInterval(() => {
-    const now = new Date().getTime();
-    // console.log(now);
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = evenDate - now;
 
-    const diff = evenDate - now;
-    // console.log(diff);
+        if (diff >= 0) {
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
 
-    const d = Math.floor(evenDate / (1000 * 60 * 60 * 24) - (now / (1000 * 60 * 60 * 24)));
-    const h = Math.floor((evenDate / (1000 * 60 * 60) - (now / (1000 * 60 * 60))) % 24);
-    const m = Math.floor((evenDate / (1000 * 60) - (now / (1000 * 60))) % 60);
-    const s = Math.floor((evenDate / (1000) - (now / (1000))) % 60);
-    // console.log(m);
-    // console.log(s);
+            // countdownBox.innerHTML = `${padWithZero(d)} : ${padWithZero(h)} : ${padWithZero(m)} : ${padWithZero(s)}`;
+            dayBox.innerHTML = padWithZero(d);
+            hourBox.innerHTML = padWithZero(h);
+            minBox.innerHTML = padWithZero(m);
+            secBox.innerHTML = padWithZero(s);
 
-    if (diff >= 0) {
-        // countdownBox.innerHTML = `${d.toString().padStart(2, '0')} : ${h.toString().padStart(2, '0')} : ${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
-        dayBox.innerHTML = `${d.toString().padStart(2, '0')}`;
-        hourBox.innerHTML = `${h.toString().padStart(2, '0')}`;
-        minBox.innerHTML = `${m.toString().padStart(2, '0')}`;
-        secBox.innerHTML = `${s.toString().padStart(2, '0')}`;
-        // console.log(countdownBox.innerHTML);
-    }
+            // console.log(countdownBox.innerHTML);
+        }
 
-}, 1000);
+    }, 1000);
+}
+
+// Call the function to start the countdown
+updateCountdown();
+
 
 
 

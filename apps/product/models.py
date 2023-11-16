@@ -46,9 +46,9 @@ PRODUCT_TYPE = (
 class BannerDiscount(BaseAbstractDate):
     title = models.TextField(null=True)
     image = models.ImageField(upload_to='sales', null=True)
-    deadline = models.DateField(null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-
+    
     def product_id(self):
         return self.product_set.last()
 
@@ -219,12 +219,18 @@ class Product(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        price = int(self.product_images.first().price * Currency.objects.last().amount)
+        if self.product_type != 'product':
+            price = int(self.product_images.first().price * Currency.objects.get(id=2).amount)
+        else:
+            price = int(self.product_images.first().price * Currency.objects.last().amount)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
-        discount = int(self.discount * Currency.objects.last().amount)
+        if self.product_type != 'product':
+            discount = int(self.discount * Currency.objects.get(id=2).amount)
+        else:
+            discount = int(self.discount * Currency.objects.last().amount)
         return discount  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
 
     @property
@@ -254,7 +260,10 @@ class ProductImage(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        price = int(self.price * Currency.objects.last().amount)
+        if self.product.product_type != 'product':
+            price = int(self.price * Currency.objects.get(id=2).amount)
+        else:
+            price = int(self.price * Currency.objects.last().amount)
         return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
@@ -263,10 +272,10 @@ class ProductImage(BaseAbstractDate):
         active_variant = variants.last()
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         return int(total)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
-    
+
     @property
     def image_url(self):
-        return self.image.url 
+        return self.image.url
 
 
 class AdditionalInfo(BaseAbstractDate):
@@ -299,20 +308,20 @@ class Rate(BaseAbstractDate):
     def rate_percent(self):
         return round(self.rate * 100 / 5, 1)
 
-@receiver(post_save, sender=ProductImage)
-def product_post_save(sender, instance, created, **kwargs):
-    try:
-        input_image_path = instance.image.path
-        input_image = Image.open(input_image_path)
-        output_image = remove(input_image)
-        
-        # Use pure white for the background color in RGB mode
-        background_color = (247,243,230)
 
-        output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
-        output_with_background.paste(output_image, (0, 0),output_image)
-        output_with_background.save(input_image_path)
-        
-    except Exception as e:
-        return f'{e}'
+# @receiver(post_save, sender=ProductImage)
+# def product_post_save(sender, instance, created, **kwargs):
+#     try:
+#         input_image_path = instance.image.path
+#         input_image = Image.open(input_image_path)
+#         output_image = remove(input_image)
 
+#         # Use pure white for the background color in RGB mode
+#         background_color = (255, 255, 255)
+
+#         output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
+#         output_with_background.paste(output_image, (0, 0), output_image)
+#         output_with_background.save(input_image_path, quality=85)
+
+#     except Exception as e:
+#         return f'{e}'
