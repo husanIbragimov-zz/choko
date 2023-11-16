@@ -3,18 +3,19 @@ from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.dispatcher import FSMContext
 
-token = '5978476855:AAEUfYUTXPDGQsjLzGBmuf21fbz3hgKje7k'
+token = '5978476855:AAFnLrAPgP7_POmWA4ZG_sQDRTWVODqrQ8Q'
 url = 'http://127.0.0.1:8000/'
-url_server = 'http://choko.uz/'
+url_server = 'http://91.227.41.195:8000/'
 bot = Bot(token=token)
 
 dp = Dispatcher(bot)
 
-chat = '-1001906730536'
+chat = '663153232'
 
 
 
 async def order_product(data):
+    print(data)
     User = data[0]['user']
     order_id = data[0]['order']
     media = []
