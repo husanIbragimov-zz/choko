@@ -247,7 +247,7 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
 class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                      mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = ProductListSerializer
-    queryset = Product.objects.filter(is_active=True).order_by('-id')
+    queryset = Product.objects.all().order_by('-id')
     ordering_fields = ['created_at']
     filterset_class = ProductFilter
     filter_backends = [DjangoFilterBackend,
