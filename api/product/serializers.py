@@ -140,7 +140,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 class ProductImageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['id', 'product', 'color', 'image', 'price']
+        fields = ['id', 'product', 'wrapper','color', 'image', 'price']
 
 
 class ProductImageListSerializer(serializers.ModelSerializer):
@@ -150,7 +150,7 @@ class ProductImageListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductImage
-        fields = ['id', 'product_id', 'product', 'color', 'image', 'price']
+        fields = ['id', 'product_id','wrapper', 'product', 'color', 'image', 'price']
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):
@@ -244,3 +244,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_additional_info(obj):
         return AdditionalInfoListSerializer(obj.additional_info.all(), many=True).data
+
+
+
+class ProductImageSZ(serializers.Serializer):
+    id = serializers.IntegerField()
+    image = serializers.URLField()
+
+
