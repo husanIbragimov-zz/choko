@@ -2,7 +2,7 @@ from django.db.models import Q, Min,F,ExpressionWrapper, fields
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.book.helper import LargeResultsSetPagination
-from .serializers import AuthorSerializer
+from .serializers import AuthorSerializer, ProductImageSZ
 from .filter import BrandFilter, CategoryFilter, ProductFilter, SizeFilter
 from api.book.serializers import BookImageSerializer
 from django.db.models import Value, FloatField
@@ -309,6 +309,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
         if self.action == 'retrieve':
             return ProductDetailSerializer
         return ProductListSerializer
+    
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -346,29 +347,60 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
                 images[file].append(sz.data)
         return Response({'data': sz_.data, 'images': images, 'errors': errors}, status=status.HTTP_201_CREATED)
 
-    @action(methods=['delete'], detail=False)
-    def remove_image(self, request):
+    @action(methods=['delete'], detail=True)
+    def remove_image(self, request,pk = None):
+        product = self.get_object()
         color = request.GET.get('color')
         wrapper = request.GET.get('wrapper')
-        product = request.GET.get('product')
-        product = get_object_or_404(Product, id=product)
-        images = product.product_images.filter(
-            Q(wrapper=wrapper) | Q(color=color))
-        images.delete()
+        if wrapper:
+            images = product.product_images.filter(wrapper = wrapper)
+            images.delete()
+        else:
+            images = product.product_images.filter(color = color)
+            images.delete()
+        
         return Response({'data': 'removed'}, status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=['put'], detail=False)
-    def image_price(self, request):
-        color = request.GET.get('color')
-        wrapper = request.GET.get('wrapper')
-        product = request.GET.get('product')
-        price = request.GET.get('price')
-        product = get_object_or_404(Product, id=product)
-        images = product.product_images.filter(
-            Q(wrapper=wrapper) | Q(color=color))
+    @action(methods=['put'], detail=True)
+    def image_price(self, request,pk = None):
+        product = self.get_object()
+        data = request.data
+        color =data.get('color',None)
+        wrapper =data.get('wrapper',None)
+        price =data.get('price',None)
+        if wrapper:
+            images = product.product_images.filter(wrapper = wrapper)
+            images.update(price=price)
+        else:
+            images = product.product_images.filter(color = color)
+            images.update(price=price)
 
-        images.update(price=price)
         return Response({'data': 'updated'}, status=status.HTTP_200_OK)
+    
+    @action(methods=['get'],detail=True)
+    def images(self, request, pk=None):
+        product = self.get_object()
+        images = product.product_images.all()
+        product_images = []
+        if images and product.product_type !='book':
+            colors = set(images.values_list('color',flat=True))
+            for i in colors:
+
+                images_ = images.filter(color = i)
+                price = images_.first().price
+                color = images_.first().color
+                sz = ProductImageSZ(images_,many=True)
+              
+                product_images.append({'color_id':color.id,'color_title':color.title,'price':price,'images':sz.data})
+        elif images:
+            wrappers = ('qattiq','yumshoq')
+            for i in wrappers:
+                images_ = images.filter(wrapper = i)
+                if images_:
+                    price = images_.first().price
+                    sz = ProductImageSZ(images_,many=True)
+                    product_images.append({'wrapper':i,'price':price,'images':sz.data})
+        return Response({'product_type':product.product_type,'all_images':product_images})
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':

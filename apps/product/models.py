@@ -222,11 +222,15 @@ class Product(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        if self.product_type != 'product':
-            price = int(self.product_images.first().price * Currency.objects.get(id=2).amount)
-        else:
-            price = int(self.product_images.first().price * Currency.objects.last().amount)
-        return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
+        try:
+            if self.product_type != 'product':
+                price = int(self.product_images.first().price * Currency.objects.get(id=2).amount)
+            else:
+                price = int(self.product_images.first().price * Currency.objects.last().amount)
+        except Exception as e:
+            print(self.id)
+            print(e)
+        return 0  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
