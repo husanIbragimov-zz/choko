@@ -121,8 +121,6 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source='author.name', read_only=True)
-    price_uzs = serializers.SerializerMethodField()
-    discount_uzs = serializers.SerializerMethodField()
     brand_uz = serializers.CharField(source='brand.title_uz', read_only=True)
     brand_ru = serializers.CharField(source='brand.title_ru', read_only=True)
 
@@ -137,20 +135,7 @@ class ProductListSerializer(serializers.ModelSerializer):
             return serializers.ValidationError('Currency not found')
         return attrs
 
-    @staticmethod
-    def get_price_uzs(obj):
-        if obj.product_images.first().price > 0:
-            return obj.product_images.first().price * Currency.objects.last().amount
-        return 0
-
-    @staticmethod
-    def get_discount_uzs(obj):
-        if obj.percentage:
-            discount_sell = obj.product_images.first().price - (
-                    obj.product_images.first().price * (obj.percentage / 100))
-            return discount_sell * Currency.objects.last().amount
-        return 0
-
+   
 
 class ProductImageCreateSerializer(serializers.ModelSerializer):
     class Meta:

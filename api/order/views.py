@@ -37,7 +37,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
-        return Order.objects.all()
+        return Order.objects.all().order_by('-id')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
