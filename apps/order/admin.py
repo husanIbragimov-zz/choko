@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 from django.db.models import Count, Sum
+from apps.base.models import Profile
 
 from apps.order.models import CartItem, Cart, Order, Wishlist, Variant
 
@@ -40,3 +41,4 @@ admin.site.register(Wishlist, WishlistAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Cart, CartAdmin)
 admin.site.register(Variant)
+admin.site.register(Profile)

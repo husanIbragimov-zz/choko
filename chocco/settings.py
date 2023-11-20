@@ -31,7 +31,7 @@ STAGE = 'dev'
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://husanibragimov.jprq.app']
+#CSRF_TRUSTED_ORIGINS = ['https://husanibragimov.jprq.app']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -161,8 +161,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'choko',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
+        'USER': 'choko',
+        'PASSWORD': 'choko',
         'HOST': 'localhost',
         'PORT': 5432,
     }

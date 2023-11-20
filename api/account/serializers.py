@@ -1,7 +1,20 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
+from apps.base.models import Profile
+from rest_framework_simplejwt.tokens import RefreshToken
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
 
 
 class AdminCreateSerializer(serializers.ModelSerializer):
@@ -124,7 +137,62 @@ class ClientCreateSerializer(serializers.ModelSerializer):
         return user
 
 
+class AdminLoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=13, required=True)
+    password = serializers.CharField(max_length=16, write_only=True)
+    tokens = serializers.SerializerMethodField(read_only=True)
+    role = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_role(obj):
+        user = User.objects.filter(username=obj.get('username')).first()
+        admin = Profile.objects.filter(user=user).first()        
+        if admin:
+            return admin.role
+        return None
+    
+
+    @staticmethod
+    def get_tokens(obj):
+        user = User.objects.filter(username=obj.get('username')).first()
+        return get_tokens_for_user(user)
+
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'role', 'tokens')
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+        user = authenticate(username=username, password=password)
+        admin = Profile.objects.filter(user=user).first()
+
+
+        if not user:
+            raise AuthenticationFailed({'success': False, 'message': 'User not found'})
+        
+
+        data = {
+            'success': True,
+            'username': user.username,
+            'role': admin.role,
+            'tokens': get_tokens_for_user(user=user)
+        }
+        return data
+
+
 class ClientListSerializer(serializers.ModelSerializer):
+    role = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = '__all__'
+
+
+    def get_role(self, obj):
+        user_role = Profile.objects.filter(user_id=obj.id).first()
+        if user_role is not None:
+            return user_role.role
+        return None
+    

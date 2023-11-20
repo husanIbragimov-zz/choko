@@ -435,7 +435,7 @@ def shop_details(request, pk):
     else:
         form = CommentForm()
     variants = Variant.objects.filter(product_type=product.product_type).order_by('duration')
-    active_variant = variants.last()
+    active_variant = variants.filter(product_type=product.product_type).last()
     total = image_objects.first().price_uzs + ((active_variant.percent * image_objects.first().price_uzs) / 100)
     monthly = total / active_variant.duration
     context = {

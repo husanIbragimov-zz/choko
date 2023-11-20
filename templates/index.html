@@ -23,7 +23,6 @@
                                         <div class="container">
                                             <div class="slider-1-height-3 slider-animated-1">
                                                 <div class="hero-slider-content-2">
-                                                    {#                                                    <h4>{{ banner.desc|safe }}</h4>#}
                                                     <a class="animated btn btn-default btn-rounded"
                                                        href="{% url 'index' %}"> {% trans "Sotib Olish" %} <i
                                                             class="fa fa-arrow-right"></i> </a>
@@ -70,6 +69,8 @@
                                     {#                                            class="fa fa-arrow-right"></i></a>#}
 
                                     <div id="event-box" class="hidden">{{ foo.deadline|date:'m.d.y, H:m:s' }}</div>
+                                    <!-- <div id="event-box">{{ foo.deadline|date:'m.d.y, H:m:s' }}</div> -->
+
                                 </div>
                             </div>
                         {% endfor %}
@@ -563,5 +564,5 @@
 
 {% endblock %}
 {% block script %}
-    <script src="{% static 'assets/js/calculate_price.js' %}"></script>
+    <!-- <script src="{% static 'assets/js/calculate_price.js' %}"></script> -->
 {% endblock %}
