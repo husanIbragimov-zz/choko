@@ -14,7 +14,6 @@ chat = '663153232'
 
 
 async def order_product(data):
-    print(data)
     User = data[0]['user']
     order_id = data[0]['order']
     media = []
