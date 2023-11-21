@@ -227,10 +227,9 @@ class Product(BaseAbstractDate):
                 price = int(self.product_images.first().price * Currency.objects.get(id=2).amount)
             else:
                 price = int(self.product_images.first().price * Currency.objects.last().amount)
+            return price
         except Exception as e:
-            print(self.id)
-            print(e)
-        return 0  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
+            return 0  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
@@ -242,7 +241,7 @@ class Product(BaseAbstractDate):
 
     @property
     def monthly_uzs(self):
-        active_variant = Variant.objects.all().last()
+        active_variant = Variant.objects.filter(product_type=self.product_type).earliest('percent')
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         monthly = total / active_variant.duration
         return int(monthly)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])

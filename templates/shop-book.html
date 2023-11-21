@@ -45,17 +45,17 @@
                                             </div>
 
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status }}">{% if product.status %}
+                                                <span class="{{ product.status|lower }}">{% if product.status %}
                                                     {{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap p-10 pt-5">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}"><span
+                                                <a href="{% url 'shop-details' product.id %}"><span
                                                         class="product-category_fz">{{ product.category.first }}</span></a>
                                             </div>
 
-                                            <div><a href="{% url "shop-details" product.id %}"><p
+                                            <div><a href="{% url 'shop-details' product.id %}"><p
                                                     class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
                                             </p></a></div>
@@ -250,7 +250,8 @@
                                 <div class="widget-header position-relative mb-20 pb-10">
                                     <h5 class="widget-title mb-10">{% trans "Muallif" %}</h5>
                                 </div>
-                                <div class="">
+                                <div class=""
+                                style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <form method="post">
                                         {% csrf_token %}
                                         <div>
