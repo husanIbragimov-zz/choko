@@ -150,8 +150,7 @@ class ProductImageListSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
 
     def get_image(self, obj):
-        print(obj.image, type(obj.image))
-        return f"/media/{obj.image}"
+        return f"{obj.image.url}"
 
     class Meta:
         model = ProductImage
@@ -257,3 +256,10 @@ class ProductImageSZ(serializers.Serializer):
     image = serializers.FileField()
 
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if 'image' in data and data['image']:
+            # Assuming your domain is 'domain.com'
+            domain = 'https://azbo.uz'
+            data['image'] = f'{domain}{data["image"]}'
+        return data
