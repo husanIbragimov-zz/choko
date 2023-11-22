@@ -37,8 +37,8 @@ def cart_renderer(request):
     sbb = request.POST.get('sbb')
     subscribe = Subscribe.objects.filter(email=sbb)
     variants = Variant.objects.all().order_by('duration')
-    max_price = ProductImage.objects.latest('price')
-    min_price = ProductImage.objects.earliest('price')
+    max_price = Product.objects.latest('uzs_price')
+    min_price = Product.objects.earliest('uzs_price')
     active_variant = variants.last()
     if not subscribe.exists():
         if request.method == 'POST':
