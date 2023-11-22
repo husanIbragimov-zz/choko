@@ -696,7 +696,7 @@
                     <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbowhite.png' %}"
                                                      alt="logo"></a>
                 </div>
-                <div class="main-categori-wrap d-none d-lg-block">
+                <div class="main-categori-wrap d-none d-lg-block categori-button-active">
                     <a class="categori-button-active" href="#">
                         <span class="fa fa-list"></span> {% trans "Bo'limlar" %} <i
                             class="down far fa-chevron-down"></i> <i
@@ -1003,7 +1003,8 @@
                 <a class="facebook" href="#"><i class="fab fa-facebook-f"></i></a>
                 <a class="twitter" href="#"><i class="fab fa-twitter"></i></a>
                 <a class="tumblr" href="#"><i class="fab fa-tumblr"></i></a>
-                <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i class="fab fa-instagram"></i></a>
+                <a class="instagram" data-bs-toggle="modal" href="#exampleModalToggle" role="button"><i
+                        class="fab fa-instagram pt-10"></i></a>
             </div>
         </div>
     </div>
@@ -1062,12 +1063,10 @@
                             <strong>{% trans "Ish vaqti" %}: </strong>10:00 - 18:00, Mon - Sat
                         </p>
                         <h4 class="mb-10 mt-20 fw-600 text-grey-4 wow fadeIn animated">{% trans "Kuzating" %}</h4>
-                        <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                        <div class="mobile-social-icon wow fadeIn mb-sm-5 mb-md-0 animated">
                             <a class="facebook" href="#"><i class="fab fa-facebook-f pt-10"></i></a>
                             <a class="twitter" href="#"><i class="fab fa-twitter pt-10"></i></a>
                             <a class="tumblr" href="#"><i class="fab fa-tumblr pt-10"></i></a>
-                            {#                            <a class="instagram" href="https://www.instagram.com/choko.uzz/"><i#}
-                            {#                                    class="fab fa-instagram pt-10"></i></a>#}
                             <a class="instagram" data-bs-toggle="modal" href="#exampleModalToggle" role="button"><i
                                     class="fab fa-instagram pt-10"></i></a>
                         </div>
