@@ -721,7 +721,7 @@
                                                             {% if child.parent == cat %}
                                                                 <li class="col col-6 col-md-4 mega-menu-col">
                                                                     <ul>
-                                                                        <li><span><a class="submenu-title"
+                                                                        <li><span><a class="submenu-title text-center"
                                                                                 {% if child.product_type == 'product' %}
                                                                                      href="{% url 'techniques' %}?cat={{ child }}"
                                                                                 {% elif child.product_type == 'book' %}
@@ -734,9 +734,7 @@
                                                                                     {% if child.icon %}
                                                                                         <img src="{{ child.icon.url }}"
                                                                                              alt="choko" width="19px"
-                                                                                             height="19px"
-                                                                                             style="margin-right: 12px">
-                                                                                    {% else %}
+                                                                                             height="19px" class="me-2">
                                                                                     {% endif %}
                                                                             {{ child }}</a></span>
                                                                         </li>
