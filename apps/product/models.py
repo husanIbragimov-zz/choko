@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
 from rembg import remove
 from PIL import Image
@@ -175,6 +175,9 @@ class Product(BaseAbstractDate):
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True)
     language = models.CharField(max_length=25, choices=LANGUAGE, default='uzbek')
     yozuv = models.CharField(max_length=25, choices=YOZUV, default='lotin')
+    uzs_price = models.IntegerField(null=True,blank=True, default=0)
+
+    
 
     @property
     def mid_rate(self):
@@ -219,11 +222,14 @@ class Product(BaseAbstractDate):
 
     @property
     def price_uzs(self):
-        if self.product_type != 'product':
-            price = int(self.product_images.first().price * Currency.objects.get(id=2).amount)
-        else:
-            price = int(self.product_images.first().price * Currency.objects.last().amount)
-        return price  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
+        try:
+            if self.product_type != 'product':
+                price = int(self.product_images.first().price * Currency.objects.get(id=2).amount)
+            else:
+                price = int(self.product_images.first().price * Currency.objects.last().amount)
+            return price
+        except Exception as e:
+            return 0  # "%s%s" % (intcomma(int(price)), ("%0.2f" % price)[-3:])
 
     @property
     def discount_uzs(self):
@@ -235,7 +241,7 @@ class Product(BaseAbstractDate):
 
     @property
     def monthly_uzs(self):
-        active_variant = Variant.objects.all().last()
+        active_variant = Variant.objects.filter(product_type=self.product_type).earliest('percent')
         total = self.price_uzs + ((active_variant.percent * self.price_uzs) / 100)
         monthly = total / active_variant.duration
         return int(monthly)  # f"%s%s" % (intcomma(int(discount)), ("%0.2f" % discount)[-3:])
@@ -309,19 +315,21 @@ class Rate(BaseAbstractDate):
         return round(self.rate * 100 / 5, 1)
 
 
-# @receiver(post_save, sender=ProductImage)
-# def product_post_save(sender, instance, created, **kwargs):
-#     try:
-#         input_image_path = instance.image.path
-#         input_image = Image.open(input_image_path)
-#         output_image = remove(input_image)
 
-#         # Use pure white for the background color in RGB mode
-#         background_color = (255, 255, 255)
+    
 
-#         output_with_background = Image.new(mode="RGB", size=output_image.size, color=background_color)
-#         output_with_background.paste(output_image, (0, 0), output_image)
-#         output_with_background.save(input_image_path, quality=85)
 
-#     except Exception as e:
-#         return f'{e}'
+
+@receiver(post_save, sender=ProductImage)
+def set_uzs_price(sender, instance, **kwargs):
+    if instance.price_uzs:
+        instance.product.uzs_price = instance.product.price_uzs
+        instance.product.save()
+
+# @receiver(post_save, sender=Product)
+# def set_uzs_prices(sender,created, instance, **kwargs):
+#     print(created)
+    
+#     if created :
+#         if instance.price_uzs:
+#             instance.uzs_price = instance.price_uzs

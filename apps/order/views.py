@@ -25,7 +25,6 @@ def add_to_cart(request):
         product_id = request.POST['product_id']
         product_image = request.POST.get('product_image', None)
         variant = request.POST.get('variant', None)
-        print(variant)
         quantity = request.POST['quantity']
         size = request.POST.get('size', None)
         cart = get_object_or_404(Cart, session_id=session_id, completed=False)

@@ -121,8 +121,6 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source='author.name', read_only=True)
-    price_uzs = serializers.SerializerMethodField()
-    discount_uzs = serializers.SerializerMethodField()
     brand_uz = serializers.CharField(source='brand.title_uz', read_only=True)
     brand_ru = serializers.CharField(source='brand.title_ru', read_only=True)
 
@@ -137,35 +135,27 @@ class ProductListSerializer(serializers.ModelSerializer):
             return serializers.ValidationError('Currency not found')
         return attrs
 
-    @staticmethod
-    def get_price_uzs(obj):
-        if obj.product_images.first().price > 0:
-            return obj.product_images.first().price * Currency.objects.last().amount
-        return 0
-
-    @staticmethod
-    def get_discount_uzs(obj):
-        if obj.percentage:
-            discount_sell = obj.product_images.first().price - (
-                    obj.product_images.first().price * (obj.percentage / 100))
-            return discount_sell * Currency.objects.last().amount
-        return 0
-
+   
 
 class ProductImageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['id', 'product', 'color', 'image', 'price']
+        fields = ['id', 'product', 'wrapper','color', 'image', 'price']
 
 
 class ProductImageListSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField(source='product.id', read_only=True)
     product = serializers.CharField(source='product.title', read_only=True)
     color = serializers.CharField(source='color.name', read_only=True)
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        print(obj.image, type(obj.image))
+        return f"/media/{obj.image}"
 
     class Meta:
         model = ProductImage
-        fields = ['id', 'product_id', 'product', 'color', 'image', 'price']
+        fields = ['id', 'product_id','wrapper', 'product', 'color', 'image', 'price']
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):
@@ -259,3 +249,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_additional_info(obj):
         return AdditionalInfoListSerializer(obj.additional_info.all(), many=True).data
+
+
+
+class ProductImageSZ(serializers.Serializer):
+    id = serializers.IntegerField()
+    image = serializers.FileField()
+
+
