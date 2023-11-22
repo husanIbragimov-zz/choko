@@ -68,17 +68,17 @@
                                             </div>
 
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="{{ product.status }}">{% if product.status %}
+                                                <span class="{{ product.status|lower }}">{% if product.status %}
                                                     {{ product.status }}{% endif %}</span>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap p-10 pt-5">
                                             <div class="product-category">
-                                                <a href="{% url "shop-details" product.id %}"><span
+                                                <a href="{% url 'shop-details' product.id %}"><span
                                                         class="product-category_fz">{{ product.category.first }}</span></a>
                                             </div>
 
-                                            <div><a href="{% url "shop-details" product.id %}"><p
+                                            <div><a href="{% url 'shop-details' product.id %}"><p
                                                     class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
                                             </p></a></div>
