@@ -721,21 +721,22 @@
                                                             {% if child.parent == cat %}
                                                                 <li class="col col-6 col-md-4 mega-menu-col">
                                                                     <ul>
-                                                                        <li><span><a class="submenu-title text-center"
-                                                                                {% if child.product_type == 'product' %}
-                                                                                     href="{% url 'techniques' %}?cat={{ child }}"
-                                                                                {% elif child.product_type == 'book' %}
-                                                                                     href="{% url 'books' %}?cat={{ child }}"
-                                                                                {% elif sub_child.product_type == 'clothing' %}
-                                                                                     href="{% url 'clothes' %}?cat={{ sub_child }}"
-                                                                                {% else %}
-                                                                                     href="{% url 'index' %}?cat={{ sub_child }}"
-                                                                                {% endif %}>
-                                                                                    {% if child.icon %}
-                                                                                        <img src="{{ child.icon.url }}"
-                                                                                             alt="choko" width="19px"
-                                                                                             height="19px" class="me-2">
-                                                                                    {% endif %}
+                                                                        <li><span>
+                                                                            {% if child.icon %}
+                                                                                <img src="{{ child.icon.url }}"
+                                                                                     alt="choko" width="19px"
+                                                                                     height="19px" class="me-2">
+                                                                            {% endif %}
+                                                                            <a class="submenu-title text-start"
+                                                                                    {% if child.product_type == 'product' %}
+                                                                               href="{% url 'techniques' %}?cat={{ child }}"
+                                                                                    {% elif child.product_type == 'book' %}
+                                                                               href="{% url 'books' %}?cat={{ child }}"
+                                                                                    {% elif sub_child.product_type == 'clothing' %}
+                                                                               href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                    {% else %}
+                                                                               href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                    {% endif %}>
                                                                             {{ child }}</a></span>
                                                                         </li>
                                                                         {% for sub_child in categories %}

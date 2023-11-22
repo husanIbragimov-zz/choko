@@ -18,8 +18,8 @@ def range_filter(high, low, products):
     currency = Currency.objects.last().amount
     active_variant = Variant.objects.last().percent
 
-    products = products.annotate(min_price=Min('product_images__price') * currency + active_variant).filter(
-        min_price__gte=low, min_price__lte=high)
+    products = products.filter(
+        uzs_price__gte=low, uzs_price__lte=high)
 
     return products
 
