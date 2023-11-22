@@ -160,8 +160,13 @@
                                         <h2 class="title-detail">{{ product.title }}</h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
+                                            {% if product.product_type == 'book' %}
+                                                <span> {% trans "Author" %}: <a
+                                                        href="{% if product.product_type == 'product' %}{% url 'techniques' %}{% elif product.product_type == 'clothing' %}{% url 'clothes' %}{% else %}{% url 'books' %}{% endif %}?brand={{ product.brand }}">{{ product.author.name }}</a></span>
+                                            {% endif %}
+                                            <br>
                                                 <span> {% trans "Brand" %}: <a
-                                                        href="{% if product.product_type == 'product' %}{% url 'techniques' %}{% elif product.product_type == 'clothing' %}{% url 'clothing' %}{% else %}{% url 'books' %}{% endif %}?brand={{ product.brand }}">{{ product.brand }}</a></span>
+                                                        href="{% if product.product_type == 'product' %}{% url 'techniques' %}{% elif product.product_type == 'clothing' %}{% url 'clothes' %}{% else %}{% url 'books' %}{% endif %}?brand={{ product.brand }}">{{ product.brand }}</a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -223,7 +228,7 @@
                                                     </div>
                                                     <div>
                                                         <p>{% trans "Narx" %}:</p>
-                                                        <del class="pb-1 text-danger">{{ image_objects.first.total_uzs|intcomma }} uzs</del>
+                                                        <del class="pb-1 text-danger">{{ product.discount_uzs|intcomma }} uzs</del>
                                                         <br>
                                                         <span style="font-size: 20px" id="origin_price">
                                                             {{ image_objects.first.total_uzs|intcomma }} uzs
@@ -234,7 +239,7 @@
                                                     <div class="mr-50">
                                                         <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
                                                         <ins><span id="monthly"
-                                                                   class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
+                                                                   class="text-brand">{{ product.product_images.first.price }} uzs/oy</span>
                                                         </ins>
                                                     </div>
                                                     <div class="mt-15">

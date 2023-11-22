@@ -3,15 +3,14 @@ from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.dispatcher import FSMContext
 
-token = '5978476855:AAFnLrAPgP7_POmWA4ZG_sQDRTWVODqrQ8Q'
+token = '6348206840:AAG6TSXl9tNsJVbYlS3O2S2Z-VdRBeT1GFs'
 url = 'http://127.0.0.1:8000/'
-url_server = 'http://91.227.41.195:8000/'
+url_server = 'https://azbo.uz/'
 bot = Bot(token=token)
 
 dp = Dispatcher(bot)
 
 chat = '663153232'
-
 
 
 async def order_product(data):
@@ -31,11 +30,16 @@ async def order_product(data):
 
     for i in data:
         text += f"------------------------\n" \
-                f"Product: {i['product']} \n" \
+                f"Mahsulot: {i['product']} \n" \
+                f"Soni: {i['quantity']} ta\n" \
                 f"Muddat: {i['variant']} oyga\n"
-        media.append(types.InputMediaPhoto(
-            media=url_server + i['photo']
-	))
-    await bot.send_media_group(chat_id=chat, media=media)
-    await bot.send_message(chat_id=chat, text=text, reply_markup=categoryMenu,
-                           parse_mode='html')
+
+        # Replace 'photo_file_id_x' with actual file identifiers or URLs
+        media.append(types.InputMediaPhoto(media=url_server + i['photo'][1:]))
+
+    try:
+        await bot.send_media_group(chat_id=chat, media=media)
+        await bot.send_message(chat_id=chat, text=text, reply_markup=categoryMenu, parse_mode='html')
+    except Exception as e:
+        print(f"Failed to send message: {e}")
+

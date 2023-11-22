@@ -147,6 +147,11 @@ class ProductImageListSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField(source='product.id', read_only=True)
     product = serializers.CharField(source='product.title', read_only=True)
     color = serializers.CharField(source='color.name', read_only=True)
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        print(obj.image, type(obj.image))
+        return f"/media/{obj.image}"
 
     class Meta:
         model = ProductImage
@@ -249,6 +254,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
 class ProductImageSZ(serializers.Serializer):
     id = serializers.IntegerField()
-    image = serializers.URLField()
+    image = serializers.FileField()
 
 

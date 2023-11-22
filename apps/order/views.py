@@ -97,9 +97,11 @@ def create_order(request, id):
             order=order.id,
             user=request.user.username,
             product=i.product.title,
+            quantity=i.quantity,
             variant=i.variant.duration,
             photo=i.product_image.image.url
         ))
+    print(data)
     asyncio.run(order_product(data))
 
     return redirect('/')
@@ -146,6 +148,7 @@ def one_click_order(request):
             user=phone_number,
             order=order.id,
             product=cart_item.product.title,
+            quantity=cart_item.quantity,
             variant=cart_item.variant.duration,
             photo=cart_item.product_image.image.url
         ))
@@ -183,6 +186,7 @@ def confirm_order(request):
             user=phone_number,
             order=order.id,
             product=i.product.title,
+            quantity=i.quantity,
             variant=i.variant.duration,
             photo=i.product_image.image.url
         ))
