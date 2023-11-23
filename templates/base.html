@@ -716,18 +716,13 @@
                                         <div class="dropdown-menu">
                                             <ul class="mega-menu d-lg-flex">
                                                 <li class="mega-menu-col col">
-                                                    <ul class="d-lg-flex row row-cols-3">
+                                                    <ul class="d-lg-flex row row-cols-3 w-100">
                                                         {% for child in categories %}
                                                             {% if child.parent == cat %}
-                                                                <li class="col col-6 col-md-4 mega-menu-col">
+                                                                <li class="col col-6 col-md-6 mega-menu-col">
                                                                     <ul>
                                                                         <li><span>
-                                                                            {% if child.icon %}
-                                                                                <img src="{{ child.icon.url }}"
-                                                                                     alt="choko" width="19px"
-                                                                                     height="19px" class="me-2">
-                                                                            {% endif %}
-                                                                            <a class="submenu-title text-start"
+                                                                            <a class="submenu-title text-start text-dark fw-bold"
                                                                                     {% if child.product_type == 'product' %}
                                                                                href="{% url 'techniques' %}?cat={{ child }}"
                                                                                     {% elif child.product_type == 'book' %}
@@ -737,24 +732,30 @@
                                                                                     {% else %}
                                                                                href="{% url 'index' %}?cat={{ sub_child }}"
                                                                                     {% endif %}>
-                                                                            {{ child }}</a></span>
+                                                                            {% if child.icon %}
+                                                                                <img src="{{ child.icon.url }}"
+                                                                                     alt="choko" width="19px"
+                                                                                     height="19px" class="mt-2">
+                                                                            {% endif %}
+                                                                                {{ child }}</a></span>
                                                                         </li>
                                                                         {% for sub_child in categories %}
                                                                             {% if sub_child.parent == child %}
                                                                                 <li>
-                                                                                <a class="dropdown-item nav-link nav_item"
-                                                                                        {% if sub_child.product_type == 'product' %}
-                                                                                   href="{% url 'techniques' %}?cat={{ sub_child }}"
-                                                                                        {% elif sub_child.product_type == 'book' %}
-                                                                                   href="{% url 'books' %}?cat={{ sub_child }}"
-                                                                                        {% elif sub_child.product_type == 'clothing' %}
-                                                                                   href="{% url 'clothes' %}?cat={{ sub_child }}"
-                                                                                        {% else %}
-                                                                                   href="{% url 'index' %}?cat={{ sub_child }}"
-                                                                                        {% endif %}>{{ sub_child }}</a>
+                                                                                    <a class="dropdown-item nav-link nav_item"
+                                                                                            {% if sub_child.product_type == 'product' %}
+                                                                                       href="{% url 'techniques' %}?cat={{ sub_child }}"
+                                                                                            {% elif sub_child.product_type == 'book' %}
+                                                                                       href="{% url 'books' %}?cat={{ sub_child }}"
+                                                                                            {% elif sub_child.product_type == 'clothing' %}
+                                                                                       href="{% url 'clothes' %}?cat={{ sub_child }}"
+                                                                                            {% else %}
+                                                                                       href="{% url 'index' %}?cat={{ sub_child }}"
+                                                                                            {% endif %}>{{ sub_child }}</a>
+                                                                                </li>
+
                                                                             {% endif %}
                                                                         {% endfor %}
-                                                                        </li>
                                                                     </ul>
                                                                 </li>
 
