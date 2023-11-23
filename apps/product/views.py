@@ -483,3 +483,75 @@ class PorductDetail(RetrieveAPIView):
         variant = VariantSerializer(Variant.objects.filter(product_type=product.product_type), many=True).data
 
         return Response({'data': data, 'footer': footer, 'sidebar': sidebar, 'variant': variant})
+
+
+def book_detail(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    related_products = Product.objects.filter(~Q(id=product.id), category__in=[i.id for i in product.category.all()],
+                                              is_active=True)
+    images = ProductImage.objects.filter(product_id=pk)
+    data = []
+    data_ids = []
+    for image in images:
+        if image.wrapper in data_ids:
+            data.append({
+                "id": image.id,
+                'wrapper': image.wrapper
+            })
+            number = [d.get('count') for d in data if d['wrapper'] == image.wrapper]
+            data[-1]['count'] = number[0] + 1
+        else:
+            data.append({
+                "id": image.id,
+                'count': 1,
+                'wrapper': image.wrapper
+            })
+            data_ids.append(image.wrapper)
+
+    filtered_data = sorted(data, key=lambda t: t.get('count'), reverse=True)
+    result_data = []
+    for i in filtered_data:
+        res = ProductImage.objects.filter(product_id=pk, wrapper__exact=i['wrapper']).first()
+        if res not in result_data and res is not None:
+            result_data.append(res)
+
+    new_products = Product.objects.filter(~Q(id=product.id), is_active=True).order_by('-created_at')[:5]
+    comments = Rate.objects.filter(product_id=pk).order_by('-id')
+    category = Category.objects.filter(is_active=True)
+    colors = Color.objects.all()
+    if product.id:
+        product.view += 1
+        product.save()
+    image_objects = ProductImage.objects.filter(product_id=pk, color=images[0].color)
+    # comments
+    comment = None
+    if request.method == "POST":
+
+        form = CommentForm(data=request.POST or None)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.user = request.user
+            comment.save()
+            return redirect(f'/shop-details/{product.id}#comments')
+    else:
+        form = CommentForm()
+    variants = Variant.objects.filter(product_type=product.product_type).order_by('duration')
+    active_variant = variants.filter(product_type=product.product_type).last()
+    total = image_objects.first().price_uzs + ((active_variant.percent * image_objects.first().price_uzs) / 100)
+    monthly = total / active_variant.duration
+    context = {
+        'form': form,
+        "colors": colors,
+        "images": result_data,
+        "image_objects": image_objects,
+        "product": product,
+        "variants": variants,
+        "active_variant": active_variant,
+        "default_monthly_price": int(monthly),
+        'comments': comments,
+        "new_products": new_products,
+        "categories": category,
+        "related_products": related_products[:4],
+    }
+    return render(request, "book-detail.html", context)
