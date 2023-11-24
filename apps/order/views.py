@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from apps.base.models import Variant
 from django.http import JsonResponse
 from bot.main import order_product
+# message
+from django.contrib import messages
 import asyncio
 
 
@@ -115,6 +117,16 @@ def one_click_order(request):
     size = request.POST.get("size", None)
     product_image = request.POST.get("product_image", None)
     user = request.user
+
+    if phone_number is None:
+        return JsonResponse({"msg": "Iltimos, telefon raqamni kiriting!", "status": False})
+
+    if variant is None:
+        return JsonResponse({"msg": "Iltimos, variantni tanlang!", "status": False})
+
+    if product_id is None:
+        return JsonResponse({"msg": "Iltimos, mahsulotni tanlang!", "status": False})
+
     cart = Cart.objects.create(
         session_id=request.session['nonuser'],
         completed=True
@@ -143,7 +155,7 @@ def one_click_order(request):
     )
     cart_item.save()
     data = []
-    
+
     data.append(dict(
             user=phone_number,
             order=order.id,

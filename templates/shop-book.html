@@ -34,7 +34,7 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url "shop-details" product.id %}">
+                                                <a href="{% url "book-details" product.id %}">
                                                     <img class="default-img default-img-size"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
                                                          width="230px" height="230px">
@@ -51,11 +51,11 @@
                                         </div>
                                         <div class="product-content-wrap p-10 pt-5">
                                             <div class="product-category">
-                                                <a href="{% url 'shop-details' product.id %}"><span
+                                                <a href="{% url 'book-details' product.id %}"><span
                                                         class="product-category_fz">{{ product.category.first }}</span></a>
                                             </div>
 
-                                            <div><a href="{% url 'shop-details' product.id %}"><p
+                                            <div><a href="{% url 'book-details' product.id %}"><p
                                                     class="product-content-wrap_fz">
                                                 {{ product.title|slice:'0:45' }}
                                             </p></a></div>
