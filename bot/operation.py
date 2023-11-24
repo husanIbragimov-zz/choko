@@ -7,7 +7,7 @@ import logging
 from aiogram.dispatcher.filters.builtin import Command
 from aiogram import Bot, Dispatcher, executor, types
 
-API_TOKEN = '6348206840:AAG6TSXl9tNsJVbYlS3O2S2Z-VdRBeT1GFs'
+API_TOKEN = '5978476855:AAFnLrAPgP7_POmWA4ZG_sQDRTWVODqrQ8Q'
 URL_PRODUCT = "http://127.0.0.1:8000/count-products/"
 URL_CHANGE_STATUS = "http://127.0.0.1:8000/change_status/"
 URL_SERVER = "https://azbo.uz/change_status/"
@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-chat_id = '663153232'
+chat_id = '-1002108827381'
 
 
 @dp.message_handler(Command('count'))
