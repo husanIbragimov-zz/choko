@@ -449,7 +449,7 @@ def shop_details(request, pk):
         "variants": variants,
         "active_variant": active_variant,
         "default_monthly_price": int(monthly),
-        "monthly": monthly,
+        "monthly": int(monthly),
         'comments': comments,
         "new_products": new_products,
         "categories": category,
