@@ -177,6 +177,13 @@ class Product(BaseAbstractDate):
     yozuv = models.CharField(max_length=25, choices=YOZUV, default='lotin')
     uzs_price = models.IntegerField(null=True,blank=True, default=0)
 
+
+    @property
+    def get_discount(self):
+        if self.percentage > 0:
+            discount_sell = self.uzs_price - (self.uzs_price * (self.percentage / 100))
+            return int(discount_sell)
+        return 0
     
 
     @property

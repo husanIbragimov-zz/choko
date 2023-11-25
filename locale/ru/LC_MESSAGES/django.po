@@ -304,7 +304,7 @@ msgstr ""
 #: templates/shop.html:79 templates/shop.html:85 templates/shop.html:219
 #: templates/shop.html:223 templates/shop.html:255 templates/shop.html:259
 msgid "oy"
-msgstr "месяц"
+msgstr "мес"
 
 #: templates/index copy.html:378 templates/index.html:426
 #: templates/shop-2.html:279 templates/shop-appliance.html:288
