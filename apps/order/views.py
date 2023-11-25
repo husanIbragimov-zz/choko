@@ -118,6 +118,11 @@ def one_click_order(request):
     product_image = request.POST.get("product_image", None)
     user = request.user
 
+    print(product_image, 'product_image')
+
+    product = get_object_or_404(Product, id=product_id)
+
+
     if phone_number is None:
         return JsonResponse({"msg": "Iltimos, telefon raqamni kiriting!", "status": False})
 
@@ -157,13 +162,13 @@ def one_click_order(request):
     data = []
 
     data.append(dict(
-            user=phone_number,
-            order=order.id,
-            product=cart_item.product.title,
-            quantity=cart_item.quantity,
-            variant=cart_item.variant.duration,
-            photo=cart_item.product_image.image.url
-        ))
+        user=phone_number,
+        order=order.id,
+        product=cart_item.product.title,
+        quantity=cart_item.quantity,
+        variant=cart_item.variant.duration,
+        photo=cart_item.product_image.image.url
+    ))
     asyncio.run(order_product(data))
 
     return redirect('/')

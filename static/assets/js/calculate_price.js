@@ -7,9 +7,7 @@ var image_monthly;
 function calculate(duration, percent, price, status, id) {
     if (status === "images") {
         type_data.image = {
-            id: id,
-            price: price,
-            temp_price: price,
+            id: id, price: price, temp_price: price,
         }
         if (type_data.variant === 0) {
             image_total = price + ((percent * price) / 100);
@@ -32,9 +30,7 @@ function calculate(duration, percent, price, status, id) {
         $("#origin_price").text(price);
     } else {
         type_data.variant = {
-            id: duration.id,
-            duration: duration.duration,
-            percent: duration.percent
+            id: duration.id, duration: duration.duration, percent: duration.percent
         }
 
         if (type_data.image === 0) {
@@ -64,14 +60,11 @@ function padWithZero(num) {
 
 // Function to update the countdown
 function updateCountdown() {
-    const eventBox = document.getElementById('event-box');
-    const dayBox = document.getElementById('day');
-    const hourBox = document.getElementById('hour');
-    const minBox = document.getElementById('min');
-    const secBox = document.getElementById('sec');
-    const countdownBox = document.getElementById('countdown-box');
+    // const countdownBox = document.getElementById('countdown-box');
+    const eventBox = document.getElementById('event-box'), dayBox = document.getElementById('day'),
+        hourBox = document.getElementById('hour'), minBox = document.getElementById('min'),
+        secBox = document.getElementById('sec'), evenDate = Date.parse(eventBox.textContent);
 
-    const evenDate = Date.parse(eventBox.textContent);
 
     setInterval(() => {
         const now = new Date().getTime();
