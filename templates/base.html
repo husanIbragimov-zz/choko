@@ -52,10 +52,22 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/choko_style.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'assets/css/vendors/wowy-font.css' %}">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous"> -->
     {% block head %} {% endblock %}
     {% block style %} {% endblock %}
     {% block topscript %} {% endblock %}
     <style>
+        /* .containerbanner{
+            animation: animateBg 10s linear infinite;
+            background-image: linear-gradient(90deg, #15916D, #26BCAA, yellow, #d70056);
+            background-size: 300% 100%;
+        }
+
+        @keyframes animateBg {
+            0% { background-position: 100% 0%; }
+            100% { background-position: 0% 0%; }
+        } */
+
         .sales {
             margin-top: 0;
         }
@@ -109,7 +121,7 @@
         }
 
         .new_price {
-            font-size: 12px !important;
+            font-size: 11px !important;
             color: black !important;
             font-weight: normal !important;
             padding: 3px 5px !important;
@@ -457,7 +469,7 @@
             }
 
             .new_price {
-                font-size: 8px !important;
+                font-size: 11px !important;
                 max-width: 65%;
             }
 
@@ -514,7 +526,7 @@
             }
 
             .new_price {
-                font-size: 9px !important;
+                font-size: 11px !important;
                 max-width: 65%;
             }
         }

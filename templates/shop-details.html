@@ -447,7 +447,7 @@
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
-                                                        <a href="{% url "shop-details" item.id %}" tabindex="0">
+                                                        <a href="{% url 'shop-details' item.id %}" tabindex="0">
                                                             <img class="default-img"
                                                                  src="{{ item.product_images.first.image.url }}"
                                                                  alt="">
@@ -459,7 +459,7 @@
                                                     <div class="product-action-1">
                                                         <a aria-label="Add To Wishlist"
                                                            class="action-btn small hover-up"
-                                                           href="{% url "wishlist" item.id %}" tabindex="0"><i
+                                                           href="{% url 'wishlist' item.id %}" tabindex="0"><i
                                                                 class="far fa-heart pt-10"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
@@ -468,7 +468,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
-                                                    <h2><a href="{% url "shop-details" item.id %}"
+                                                    <h2><a href="{% url 'shop-details' item.id %}"
                                                            tabindex="0">{{ item.title|slice:'0:20' }}</a>
                                                     </h2>
                                                     <div class="product-rate d-inline-block">
@@ -479,17 +479,17 @@
                                                     </div>
                                                     <div class="product-price">
                                                         {% if item.percentage > 0 %}
-                                                            <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                            <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} / {% trans "oy" %}</span>
                                                             <br>
-                                                            <span class= new_price" style="background-color: yellow;">UZS {{ item.discount_uzs|intcomma }} </span>
+                                                            <span class="new_price" style="background-color: yellow;">UZS {{ item.discount_uzs|intcomma }} </span>
                                                             <br>
                                                             <br>
                                                             <span class="old-price">UZS {{ item.total_uzs|intcomma }}</span>
 
                                                         {% else %}
-                                                            <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                            <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} / {% trans "oy" %}</span>
                                                             <br>
-                                                            <span class= new_price" style="background-color: yellow;">UZS {{ item.total_uzs|intcomma }} UZS</span>
+                                                            <span class="new_price" style="background-color: yellow;">UZS {{ item.total_uzs|intcomma }}</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -512,7 +512,7 @@
                                     <ul class="list">
                                         {% for variant in variants %}
                                             {% if variant.product_type == product.product_type %}
-                                                <li class="active-sale personal calculate pay-list" id="personal calculate"
+                                                <li class="active-sale personal calculate pay-list containerbanner" id="personal calculate"
                                                     data-id="{{ variant.id }}"
                                                     onclick="calculate({
                                                             duration:{{ variant.duration }},
@@ -550,13 +550,13 @@
                                             </h5>
 
                                             {% if item.percentage > 0 %}
-                                                <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} / {% trans "oy" %}</span>
                                                 <br>
-                                                <span class="price mb-0 mt-5 new_price" style="background-color: yellow;">UZS {{ item.discount_uzs|intcomma }} </span>
+                                                <span class="price mb-0 mt-5 new_price" style="background-color: yellow;">UZS {{ item.get_discount|intcomma }} </span>
                                             {% else %}
-                                                <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
+                                                <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} / {% trans "oy" %}</span>
                                                 <br>
-                                                <span class="price mb-0 mt-5 new_price" style="background-color: yellow;">UZS {{ item.total_uzs|intcomma }} </span>
+                                                <span class="price mb-0 mt-5 new_price" style="background-color: yellow;">UZS {{ item.uzs_price|intcomma }} </span>
                                             {% endif %}
 
                                             <div class="product-rate">
