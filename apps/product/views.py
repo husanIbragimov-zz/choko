@@ -437,7 +437,9 @@ def shop_details(request, pk):
     variants = Variant.objects.filter(product_type=product.product_type).order_by('duration')
     active_variant = variants.filter(product_type=product.product_type).last()
     total = image_objects.first().price_uzs + ((active_variant.percent * image_objects.first().price_uzs) / 100)
-    monthly = total / active_variant.duration
+    _total = product.uzs_price + ((active_variant.percent * product.uzs_price) / 100)
+    monthly = _total / active_variant.duration
+    print(monthly)
     context = {
         'form': form,
         "colors": colors,
@@ -447,6 +449,7 @@ def shop_details(request, pk):
         "variants": variants,
         "active_variant": active_variant,
         "default_monthly_price": int(monthly),
+        "monthly": monthly,
         'comments': comments,
         "new_products": new_products,
         "categories": category,
