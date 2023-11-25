@@ -162,14 +162,15 @@
 
                                             <div class="product-price">
                                                 {% if product.percentage > 0 %}
-                                                    <span style="font-size: 13px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                     <br>
                                                     <br>
                                                     <span class="old-price" style="margin-left: 0;">UZS {{ product.uzs_price|intcomma }}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ product.get_discount|intcomma }}</span>
                                                 {% else %}
-                                                    <span style="font-size: 13px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
+                                                    <br>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ product.uzs_price|intcomma }}</span>
 
@@ -201,7 +202,6 @@
                         <img src="{{ advertisement.banner_image.url }}" alt="" width="1296px">
                         <div class="banner-text">
                             <h4 class="text-white">{{ advertisement.title }}</h4>
-                            {#                            <p>{{ advertisement.description|safe }}</p>#}
                             <br>
                             <a href="{% url 'products_filter' %}?advertisement={{ advertisement }}"
                                class="btn btn-green">{% trans "Batafsil" %} <i
@@ -280,13 +280,13 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span style="font-size: 13px;"> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;"> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ product.discount_uzs|intcomma }}</span>
                                                     <br>
                                                     <span class="old-price">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                 {% else %}
-                                                    <span style="font-size: 13px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ product.uzs_price|intcomma }}</span>
                                                 {% endif %}
@@ -395,13 +395,13 @@
                                             <div class="product-price">
                                                 {% if product.discount > 0 %}
 
-                                                    <span style="font-size: 13px;"> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;"> {{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ product.discount_uzs|intcomma }}</span>
                                                     <br>
                                                     <span class="old-price">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                 {% else %}
-                                                    <span style="font-size: 13px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ product.uzs_price|intcomma }}</span>
                                                 {% endif %}
@@ -476,14 +476,14 @@
                                         <div class="product-price">
                                             {% if qs.discount > 0 %}
 
-                                                <span style="font-size: 13px;">{{ qs.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
+                                                <span style="font-size: 11px;">{{ qs.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
                                                 <br>
                                                 <span class="new_price" style="background-color: yellow;">UZS {{ qs.discount_uzs|intcomma }}</span>
                                                 <br>
                                                 <span style="font-size: 12px"
                                                       class="old-price">UZS {{ qs.total_uzs|intcomma }}</span>
                                             {% else %}
-                                                <span style="font-size: 13px;">{{ qs.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
+                                                <span style="font-size: 11px;">{{ qs.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
                                                 <br>
                                                 <span class="new_price" style="background-color: yellow;">UZS {{ qs.total_uzs|intcomma }}</span>
                                             {% endif %}
@@ -524,14 +524,14 @@
                                         <div class="product-price">
                                             <div class="product-price">
                                                 {% if trp.discount > 0 %}
-                                                    <span style="font-size: 13px;">{{ trp.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ trp.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ trp.discount_uzs|intcomma }}</span>
                                                     <br>
                                                     <span style="font-size: 12px"
                                                           class="old-price">UZS {{ trp.total_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span style="font-size: 13px;">{{ trp.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ trp.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ trp.total_uzs|intcomma }}</span>
                                                 {% endif %}
@@ -574,14 +574,14 @@
                                             <div class="product-price">
                                                 {% if top_viewed_product.discount > 0 %}
 
-                                                    <span style="font-size: 12px;">{{ top_viewed_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ top_viewed_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ top_viewed_product.discount_uzs|intcomma }}</span>
                                                     <br>
                                                     <span style="font-size: 12px"
                                                           class="old-price">UZS {{ top_viewed_product.total_uzs|intcomma }}</span>
                                                 {% else %}
-                                                    <span style="font-size: 13px;">{{ top_viewed_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ top_viewed_product.monthly_uzs|intcomma }} {% trans "uzs" %} x {% trans "oy" %}</span>
                                                     <br>
                                                     <span class="new_price" style="background-color: yellow;">UZS {{ top_viewed_product.total_uzs|intcomma }}</span>
                                                 {% endif %}

@@ -7,7 +7,7 @@
     <style>
 
         .main__box-el {
-            width: 22%;
+            width: 21%;
         }
 
     </style>
@@ -40,7 +40,7 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url "book-details" product.id %}">
+                                                <a href="{% url 'book-details' product.id %}">
                                                     <img class="default-img default-img-size"
                                                          src="{{ product.product_images.first.image.url }}" alt=""
                                                          width="230px" height="230px">
@@ -56,14 +56,9 @@
                                             </div>
                                         </div>
                                         <div class="product-content-wrap p-10 pt-5">
-                                            <div class="product-category">
-                                                <a href="{% url 'book-details' product.id %}"><span
-                                                        class="product-category_fz">{{ product.category.first }}</span></a>
-                                            </div>
-
                                             <div><a href="{% url 'book-details' product.id %}"><p
                                                     class="product-content-wrap_fz">
-                                                {{ product.title|slice:'0:45' }}
+                                                {{ product.title|slice:'0:40' }}
                                             </p></a></div>
 
                                             <div class="product-rate d-inline-block">
@@ -85,21 +80,24 @@
 
                                             </div>
                                             <div class="product-price">
-                                                {% if product.discount > 0 %}
-                                                    <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
+                                                {% if product.percentage > 0 %}
+                                                    <span style="font-size: 11px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                     <br>
-                                                    <span class="bg-warning new_price">UZS {{ product.discount_uzs|intcomma }} </span>
                                                     <br>
-                                                    <span class="old-price">UZS {{ product.total_uzs|intcomma }}</span>
+                                                    <span class="old-price" style="margin-left: 0;">UZS {{ product.uzs_price|intcomma }}</span>
+                                                    <br>
+                                                    <span class="new_price" style="background-color: yellow;">UZS {{ product.get_discount|intcomma }}</span>
                                                 {% else %}
-                                                    <span>{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{{ active_variant }} {% trans "oy" %}</span>
+                                                    <span style="font-size: 11px;">{{ product.monthly_uzs|intcomma }} {% trans "uzs" %}/{% trans "oy" %}</span>
                                                     <br>
-                                                    <span class="bg-warning new_price">UZS {{ product.total_uzs|intcomma }} </span>
+                                                    <br>
+                                                    <span class="new_price" style="background-color: yellow;">UZS {{ product.uzs_price|intcomma }}</span>
+
                                                 {% endif %}
                                             </div>
                                             <div class="product-action-1 show" style="bottom: 15px; right: 10px;">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="{% url "wishlist" product.id %}"><i style="padding-top: 5px;"
+                                                   href="{% url 'wishlist' product.id %}"><i style="padding-top: 5px;"
                                                                                              class="far fa-heart"></i></a>
 
                                             </div>

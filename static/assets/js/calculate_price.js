@@ -7,9 +7,9 @@ var image_monthly;
 function calculate(duration, percent, price, status, id) {
     // const { duration, percent, price, status, id } = duration
     console.log(duration, percent, price, status, id)
-    console.log(duration.percent, "<---")
+    console.log(Math.ceil((((duration.percent / 100)*duration.price)+duration.price)/duration.duration), "<---")
     console.log(Math.ceil((((duration.percent / 100)*duration.price)+duration.price)/duration.duration), (((duration.percent / 100)*duration.price)+duration.price)/duration.duration)
-    let new_price = Math.trunc(Math.parseInt((((duration.percent / 100)*duration.price)+duration.price)/duration.duration)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+    let new_price = Math.trunc(((((duration.percent / 100)*duration.price)+duration.price)/duration.duration).toFixed(0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
     $('#monthly').text(new_price)
     // if (status === "images") {
     //     type_data.image = {
