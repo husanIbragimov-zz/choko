@@ -4,6 +4,10 @@ from api.book.helper import LargeResultsSetPagination
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from apps.order.models import Order, Cart, CartItem, Wishlist
 from .serializers import OrderSerializer, CartSerializer, CartItemSerializer, WishlistSerializer
+from .filters import OrderFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -35,6 +39,11 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAdminUser]
     pagination_class = LargeResultsSetPagination
+    filterset_class = OrderFilter
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
+    parser_classes = [MultiPartParser, FormParser]
+    
 
     def get_queryset(self):
         return Order.objects.all().order_by('-id')
