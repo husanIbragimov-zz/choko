@@ -22,6 +22,7 @@ class CartViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
+
 class CartItemViewSet(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
