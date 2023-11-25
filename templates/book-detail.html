@@ -164,7 +164,7 @@
                                                 <span> {% trans "Author" %}: <a
                                                         href="{% url 'books' %}?brand={{ product.brand }}">{{ product.author.name }}</a></span>
 
-                                            <br>
+                                                <br>
                                                 <span> {% trans "Nashriyot" %}: <a
                                                         href="{% url 'books' %}?brand={{ product.brand }}">{{ product.brand }}</a></span>
                                             </div>
@@ -178,7 +178,7 @@
                                             </div>
                                         </div>
                                         <div class="short-desc mb-20">
-                                            {{ product.description|safe|truncatewords:40 }}
+                                            {{ product.description|safe|truncatewords:20 }}
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
 
@@ -228,7 +228,9 @@
                                                     </div>
                                                     <div>
                                                         <p>{% trans "Narx" %}:</p>
-                                                        <del class="pb-1 text-danger">{{ product.discount_uzs|intcomma }} uzs</del>
+                                                        <del class="pb-1 text-danger">
+                                                            {{ product.discount_uzs|intcomma }} uzs
+                                                        </del>
                                                         <br>
                                                         <span style="font-size: 20px" id="origin_price">
                                                             {{ image_objects.first.total_uzs|intcomma }} uzs
@@ -267,9 +269,39 @@
                                                            type="number" min="1"
                                                            value="1">
                                                     <label for="total"
-                                                           class="ml-10" {% if product.availability == 0 %} style="color: red" {% endif %}>({{ product.availability }} {% trans "ta mavjud" %})</label>
+                                                           class="ml-10" {% if product.availability == 0 %}
+                                                           style="color: red" {% endif %}>({{ product.availability }} {% trans "ta mavjud" %})</label>
                                                 </div>
                                             </div>
+                                            <div class="sidebar-widget product-sidebar mb-30 mt-30 w-100 p-20 bg-grey border-radius-10 mobile-tolov">
+                                                <div class="widget-header position-relative mb-20 pb-10">
+                                                    <h5 class="widget-title mb-10">{% trans "To'lovlar" %}</h5>
+                                                    <div class="bt-1 border-color-1"></div>
+                                                </div>
+                                                <div id="example list-group">
+                                                    <ul class="list">
+                                                        {% for variant in variants %}
+                                                            {% if variant.product_type == product.product_type %}
+                                                                <li class="active-sale personal calculate pay-list"
+                                                                    id="personal calculate"
+                                                                    data-id="{{ variant.id }}"
+                                                                    onclick="calculate({
+                                                                            duration:{{ variant.duration }},
+                                                                            percent:{{ variant.percent }},
+                                                                            price:'{{ image_objects.first.price_uzs }}',
+                                                                            status: 'variant',
+                                                                            id:{{ variant.id }}
+                                                                            })">
+                                                                    <span class="d-none">{{ variant.id }}</span>
+                                                                    <span class="title">{{ variant.name }}</span>
+                                                                    <span class="subtitle">{{ variant.duration }} {% trans "oy" %} </span>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+
                                             <div class="product-extra-link2 mt-3">
                                                 <button type="button"
                                                         class="button fs-6 button-add-to-cart addToCartBtn rounded-pill res-left">{% trans "Savatchaga qo'shish" %}
@@ -780,8 +812,5 @@
             })
         });
     </script>
-
-
-
 
 {% endblock %}

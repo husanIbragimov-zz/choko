@@ -60,6 +60,10 @@
             margin-top: 0;
         }
 
+        .mobile-tolov {
+            display: none !important;
+        }
+
         .buy {
             border: 1px solid #15916D;
             border-radius: 20px;
@@ -217,6 +221,10 @@
                 display: flex;
                 justify-content: center;
             }
+
+            .button.fs-6.rounded-pill.res-right {
+                margin-top: 10px;
+            }
         }
 
         @media screen and (max-width: 1200px) {
@@ -256,6 +264,10 @@
             .sidebar-widget.product-sidebar.mb-30.p-30.bg-grey.border-radius-10 {
                 display: none;
             }
+
+            .mobile-tolov {
+                display: none !important;
+            }
         }
 
         @media screen and (max-width: 990px) {
@@ -263,6 +275,13 @@
                 width: 32%;
             }
 
+            .mobile-tolov {
+                display: block !important;
+            }
+
+            .product-sidebar {
+                display: none;
+            }
 
             .header-style-3 .header-bottom-bg-color {
                 padding: 9px 0;
@@ -696,7 +715,7 @@
                     <a href="{% url 'index' %}"><img src="{% static 'assets/imgs/theme/azbowhite.png' %}"
                                                      alt="logo"></a>
                 </div>
-                <div class="main-categori-wrap d-none d-lg-block categori-button-active">
+                <div class="main-categori-wrap d-none d-lg-block">
                     <a class="categori-button-active" href="#">
                         <span class="fa fa-list"></span> {% trans "Bo'limlar" %} <i
                             class="down far fa-chevron-down"></i> <i
@@ -721,7 +740,8 @@
                                                             {% if child.parent == cat %}
                                                                 <li class="col col-6 col-md-6 mega-menu-col">
                                                                     <ul>
-                                                                        <li><span>
+                                                                        <li>
+                                                                            <span>
                                                                             <a class="submenu-title text-start text-dark fw-bold"
                                                                                     {% if child.product_type == 'product' %}
                                                                                href="{% url 'techniques' %}?cat={{ child }}"
@@ -1089,7 +1109,6 @@
                         <li><a href="{% url 'login' %}">{% trans "Kirish" %}</a></li>
                         <li><a href="{% url 'shop-cart' %}">{% trans "Mening Savatcham" %}</a></li>
                         <li><a href="{% url 'wishlist' %}">{% trans "Yoqtirganlarim" %}</a></li>
-
                     </ul>
                 </div>
             </div>
