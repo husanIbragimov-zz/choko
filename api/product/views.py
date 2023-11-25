@@ -292,8 +292,10 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
             q_objects &= Q(uzs_price__gte=int(price_min))
         if price_max is not None:
             q_objects &= Q(uzs_price__lte=int(price_max))
-        
+        print(qs)
+        print(q_objects)
         qs = qs.filter(q_objects)
+        print(qs)
         if size:
             qs = qs.filter(size=size)
         if banner_discount:
