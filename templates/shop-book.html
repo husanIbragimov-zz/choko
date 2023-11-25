@@ -25,6 +25,12 @@
         </div>
         <section class="mt-60 mb-60">
             <div class="container">
+                <div class="m-3 d-flex justify-content-end dip-none">
+                    <img id="filter-img" src="{% static 'assets/imgs/theme/filter-removebg-preview.png' %}"
+                         alt="azbo-filter-icon" width="30px" height="30px"/>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row flex-row-reverse main__box">
                     <div class="col-lg-9">
                         <div class="main_block">
@@ -251,7 +257,7 @@
                                     <h5 class="widget-title mb-10">{% trans "Muallif" %}</h5>
                                 </div>
                                 <div class=""
-                                style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
+                                     style="position: sticky; height: 50vh; left: 0; overflow-y: scroll; padding: 5px">
                                     <form method="post">
                                         {% csrf_token %}
                                         <div>

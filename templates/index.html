@@ -110,13 +110,17 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <img class="default-img  default-img-size"
-                                                         src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="230px" height="230px">
-                                                    <img class="hover-img  default-img-size"
-                                                         src="{{ product.product_images.last.image.url }}" alt=""
-                                                         width="230px" height="230px">
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <img class="default-img  default-img-size"
+                                                     src="{{ product.product_images.first.image.url }}" alt=""
+                                                     width="230px" height="230px">
+                                                <img class="hover-img  default-img-size"
+                                                     src="{{ product.product_images.last.image.url }}" alt=""
+                                                     width="230px" height="230px">
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
@@ -126,14 +130,23 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <span class="product-category_fz">{{ product.category.first }}</span></a>
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <span class="product-category_fz">{{ product.category.first }}</span>
+                                                </a>
                                             </div>
                                             <div>
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <p class="product-content-wrap_fz">
-                                                        {{ product.title|slice:'0:45' }}
-                                                    </p>
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <p class="product-content-wrap_fz">
+                                                    {{ product.title|slice:'0:45' }}
+                                                </p>
                                                 </a>
                                             </div>
 
@@ -227,13 +240,17 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <img class="default-img default-img-size"
-                                                         src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="230px" height="230px">
-                                                    <img class="hover-img default-img-size"
-                                                         src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="230px" height="230px">
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <img class="default-img default-img-size"
+                                                     src="{{ product.product_images.first.image.url }}" alt=""
+                                                     width="230px" height="230px">
+                                                <img class="hover-img default-img-size"
+                                                     src="{{ product.product_images.first.image.url }}" alt=""
+                                                     width="230px" height="230px">
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
@@ -243,13 +260,21 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <span class="product-category_fz">{{ product.category.first }}</span>
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <span class="product-category_fz">{{ product.category.first }}</span>
                                                 </a>
                                             </div>
                                             <div>
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p>
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p>
                                                 </a>
                                             </div>
                                             <div class="product-rate">
@@ -339,13 +364,17 @@
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <img class="default-img default-img-size"
-                                                         src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="230px" height="230px">
-                                                    <img class="hover-img default-img-size"
-                                                         src="{{ product.product_images.first.image.url }}" alt=""
-                                                         width="230px" height="230px">
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <img class="default-img default-img-size"
+                                                     src="{{ product.product_images.first.image.url }}" alt=""
+                                                     width="230px" height="230px">
+                                                <img class="hover-img default-img-size"
+                                                     src="{{ product.product_images.first.image.url }}" alt=""
+                                                     width="230px" height="230px">
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
@@ -355,13 +384,21 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <span class="product-category_fz">{{ product.category.first }}</span>
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <span class="product-category_fz">{{ product.category.first }}</span>
                                                 </a>
                                             </div>
                                             <div>
-                                                <a href="{% url 'shop-details' product.id %}">
-                                                    <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p>
+                                                {% if product.product_type == 'book' %}
+                                                    <a href="{% url 'book-details' product.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'shop-details' product.id %}">
+                                                {% endif %}
+                                                <p class="product-content-wrap_fz">{{ product.title|slice:'0:45' }}</p>
                                                 </a>
                                             </div>
                                             <div class="product-rate">
@@ -424,8 +461,12 @@
                                 <img class="border-radius-10 ms-4" src="{{ discount.product_images.first.image.url }}"
                                      alt="" height="320px" width="290px">
                                 <div style="padding: 0 15px; top: 60px" class="banner-text sales ms-4">
-                                    <a class="buy" href="{% url 'shop-details' discount.id %}">{% trans "Sotib olish" %}
-                                        <i class="fa fa-arrow-right"></i></a>
+                                    {% if discount.product_type == 'book' %}
+                                        <a class="buy" href="{% url 'book-details' discount.id %}">
+                                    {% else %}
+                                        <a class="buy" href="{% url 'shop-details' discount.id %}">
+                                    {% endif %}{% trans "Sotib olish" %}
+                                    <i class="fa fa-arrow-right"></i></a>
 
                                 </div>
                             </div>
@@ -438,13 +479,21 @@
                             {% for qs in last_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
                                     <figure class="col-md-3 col-6 mb-0">
-                                        <a href="{% url 'shop-details' qs.id %}"><img
-                                                src="{{ qs.product_images.first.image.url }}"
-                                                alt=""></a>
+                                        {% if qs.product_type == 'book' %}
+                                            <a href="{% url 'book-details' qs.id %}">
+                                        {% else %}
+                                            <a href="{% url 'shop-details' qs.id %}">
+                                        {% endif %}
+                                        <img src="{{ qs.product_images.first.image.url }}"
+                                             alt=""></a>
                                     </figure>
                                     <div class="col-md-9 col-6 pl-0">
                                         <h4 class="title-small mb-2">
-                                            <a href="{% url 'shop-details' qs.id %}">{{ qs.title|slice:'0:20' }}</a>
+                                            {% if qs.product_type == 'book' %}
+                                                <a href="{% url 'book-details' qs.id %}">
+                                            {% else %}
+                                                <a href="{% url 'shop-details' qs.id %}">
+                                            {% endif %}{{ qs.title|slice:'0:20' }}</a>
                                         </h4>
                                         <p class="d-inline p-2"><code><i
                                                 class="fa fa-star-half-alt"></i> {% if qs.mid_rate %}
@@ -477,13 +526,20 @@
                             {% for trp in top_rate_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
                                     <figure class="col-md-3 col-6 mb-0">
-                                        <a href="{% url 'shop-details' trp.id %}"><img
-                                                src="{{ trp.product_images.first.image.url }}"
-                                                alt=""></a>
+                                        {% if trp.product_type == 'book' %}
+                                            <a href="{% url 'book-details' trp.id %}">
+                                        {% else %}
+                                            <a href="{% url 'shop-details' trp.id %}">
+                                        {% endif %}<img src="{{ trp.product_images.first.image.url }}"
+                                                        alt=""></a>
                                     </figure>
                                     <div class="col-md-9 col-6 pl-0">
                                         <h4 class="title-small mb-2">
-                                            <a href="{% url 'shop-details' trp.id %}">{{ trp.title|slice:'0:20' }}</a>
+                                            {% if trp.product_type == 'book' %}
+                                                <a href="{% url 'book-details' trp.id %}">
+                                            {% else %}
+                                                <a href="{% url 'shop-details' trp.id %}">
+                                            {% endif %}{{ trp.title|slice:'0:20' }}</a>
                                         </h4>
 
                                         <p class="d-inline p-2"><code><i
@@ -520,14 +576,21 @@
                             {% for top_viewed_product in top_viewed_products|slice:'0:3' %}
                                 <article class="row align-items-center mb-10">
                                     <figure class="col-md-3 col-6 mb-0">
-                                        <a href="{% url 'shop-details' top_viewed_product.id %}"><img
-                                                src="{{ top_viewed_product.product_images.first.image.url }}"
-                                                alt=""></a>
+                                        {% if top_viewed_product.product_type == 'book' %}
+                                            <a href="{% url 'book-details' top_viewed_product.id %}">
+                                        {% else %}
+                                            <a href="{% url 'shop-details' top_viewed_product.id %}">
+                                        {% endif %}<img src="{{ top_viewed_product.product_images.first.image.url }}"
+                                                        alt=""></a>
                                     </figure>
                                     <div class="col-md-9 col-6 pl-0">
 
                                         <h4 class="title-small mb-2">
-                                            <a href="{% url 'shop-details' top_viewed_product.id %}">{{ top_viewed_product.title|slice:'0:20' }}</a>
+                                            {% if top_viewed_product.product_type == 'book' %}
+                                                <a href="{% url 'book-details' top_viewed_product.id %}">
+                                            {% else %}
+                                                <a href="{% url 'shop-details' top_viewed_product.id %}">
+                                            {% endif %}{{ top_viewed_product.title|slice:'0:20' }}</a>
                                         </h4>
                                         <p class="d-inline p-2"><code><i
                                                 class="fa fa-star-half-alt"></i> {% if top_viewed_product.mid_rate %}
