@@ -237,7 +237,7 @@
                                                     <div class="mr-50">
                                                         <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
                                                         <ins><span id="monthly"
-                                                                   class="text-brand">{{ product.product_images.first.price }} uzs/oy</span>
+                                                                   class="text-brand">{{ monthly|intcomma }} uzs/oy</span>
                                                         </ins>
                                                     </div>
                                                     <div class="mt-15">
@@ -630,7 +630,7 @@
                         "quantity": quantity,
                         "size": size,
                         "variant": variant,
-                        "product_image": product_image,
+                        "product_image": $('#image_id').val(),
                         csrfmiddlewaretoken: token
                     },
                     success: function (response) {
