@@ -35,7 +35,7 @@ class CartItemViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('-id')
     serializer_class = OrderSerializer
     permission_classes = [IsAdminUser]
     pagination_class = LargeResultsSetPagination
