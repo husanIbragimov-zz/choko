@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel
 from apps.base.models import BaseAbstractDate, Variant
 from colorfield.fields import ColorField
-from django.db.models.signals import post_save,pre_save
+from django.db.models.signals import post_save,pre_save, post_delete
 from django.dispatch import receiver
 from rembg import remove
 from PIL import Image
@@ -326,10 +326,19 @@ def set_uzs_price(sender, instance, **kwargs):
         instance.product.uzs_price = instance.product.price_uzs
         instance.product.save()
 
-# @receiver(post_save, sender=Product)
-# def set_uzs_prices(sender,created, instance, **kwargs):
-#     print(created)
-    
-#     if created :
-#         if instance.price_uzs:
-#             instance.uzs_price = instance.price_uzs
+@receiver(post_delete,sender = ProductImage)
+def delete_image(sender,instance,**kwargs):
+    instance.product.save()
+
+
+@receiver(pre_save, sender=Product)
+def set_uzs_prices(sender, instance, **kwargs):
+    try:
+        if instance.product_images.exists():
+            instance.uzs_price = instance.price_uzs
+        else:
+            instance.uzs_price = 0
+    except:
+        pass
+
+
