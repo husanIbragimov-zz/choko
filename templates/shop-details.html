@@ -188,7 +188,7 @@
                                                                type="hidden"
                                                                value="{{ item.id }}">
                                                         <a href="#"
-                                                           onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.price_uzs }})"
+                                                           onclick="send_val({{ item.id }}, {{ product.id }}, {{ item.product.uzs_price }})"
                                                            class="form-submit">
                                                             <span class="d-none">{{ item.id }}</span>
                                                             <img src="{{ item.image.url }}" alt="" width="50"
@@ -201,8 +201,12 @@
                                             </ul>
                                         </div>
                                         <div class="attr-detail attr-color mb-10">
-                                            <strong class="mr-10">{% trans "Tannarxi" %}:</strong>
-                                            <span>{{ product.uzs_price }}</span>
+                                            <strong class="mr-10">{% trans "Narx" %}:</strong>
+                                            {%if product.percentage > 0 %}
+                                            <span class="me-2" style="font-size: 18px; color: #00cc88">{{ product.get_discount|intcomma }}</span> <del style="color: red">{{ product.uzs_price|intcomma }}</del>
+                                            {%else%}
+                                            <span>{{ product.uzs_price|intcomma }}</span>
+                                            {% endif %}
                                         </div>
 
                                         {% if product.size.all %}
@@ -219,38 +223,21 @@
 
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left d-flex">
-                                                {% if product.percentage > 0 %}
+                                                
                                                     <div class="mr-50">
                                                         <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
-                                                        <ins><span id="monthly"
-                                                                   class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
+                                                        <ins><span id="monthly" style="font-size: 18px;"
+                                                                   class="text-brand">{{ default_monthly_price|intcomma }} </span><span style="font-size: 18px;"
+                                                                   class="text-brand">uzs/oy</span>
                                                         </ins>
                                                     </div>
-                                                    <div>
-                                                        <p>{% trans "Narx" %}:</p>
-                                                        <del class="pb-1 text-danger">{{ product.discount_uzs|intcomma }}
-                                                            uzs
-                                                        </del>
-                                                        <br>
-                                                        <span style="font-size: 20px" id="origin_price">
-                                                            {{ image_objects.first.total_uzs|intcomma }} uzs
-                                                        </span>
-                                                    </div>
-                                                    <span class="save-price  font-md color3 ml-15">-{{ product.percentage }}%</span>
-                                                {% else %}
-                                                    <div class="mr-50">
-                                                        <p class="fw-600">{% trans "Bo'lib to'lash" %}:</p>
-                                                        <ins><span id="monthly"
-                                                                   class="text-brand">{{ default_monthly_price|intcomma }} uzs/oy</span>
-                                                        </ins>
-                                                    </div>
-                                                    <div class="mt-15">
+                                                    <div class="mt-10">
                                                         <p>{% trans "Narx" %}:</p>
                                                         <span style="font-size: 15px" id="origin_price">
                                                             {{ image_objects.first.total_uzs|intcomma }} uzs</span>
 
                                                     </div>
-                                                {% endif %}
+                                                
                                             </div>
                                         </div>
 
@@ -494,7 +481,7 @@
                                                         {% if item.percentage > 0 %}
                                                             <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                             <br>
-                                                            <span class="bg-warning new_price">UZS {{ item.discount_uzs|intcomma }} </span>
+                                                            <span class= new_price" style="background-color: yellow;">UZS {{ item.discount_uzs|intcomma }} </span>
                                                             <br>
                                                             <br>
                                                             <span class="old-price">UZS {{ item.total_uzs|intcomma }}</span>
@@ -502,7 +489,7 @@
                                                         {% else %}
                                                             <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                             <br>
-                                                            <span class="bg-warning new_price">UZS {{ item.total_uzs|intcomma }} UZS</span>
+                                                            <span class= new_price" style="background-color: yellow;">UZS {{ item.total_uzs|intcomma }} UZS</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -530,7 +517,7 @@
                                                     onclick="calculate({
                                                             duration:{{ variant.duration }},
                                                             percent:{{ variant.percent }},
-                                                            price:'{{ image_objects.first.price_uzs }}',
+                                                            price: {{ product.uzs_price }},
                                                             status: 'variant',
                                                             id:{{ variant.id }}
                                                             })">
@@ -559,17 +546,17 @@
                                         </div>
                                         <div class="content pt-10">
                                             <h5>
-                                                <a href="{% url "shop-details" item.id %}">{{ item.title|slice:'0:8' }}</a>
+                                                <a href="{% url 'shop-details' item.id %}">{{ item.title|slice:'0:8' }}</a>
                                             </h5>
 
                                             {% if item.percentage > 0 %}
                                                 <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                 <br>
-                                                <span class="price mb-0 mt-5 bg-warning new_price">UZS {{ item.discount_uzs|intcomma }} </span>
+                                                <span class="price mb-0 mt-5 new_price" style="background-color: yellow;">UZS {{ item.discount_uzs|intcomma }} </span>
                                             {% else %}
                                                 <span>{{ item.monthly_uzs|intcomma }} {% trans "uzs" %} x {{ active_variant }} {% trans "oy" %}</span>
                                                 <br>
-                                                <span class="price mb-0 mt-5 bg-warning new_price">UZS {{ item.total_uzs|intcomma }} </span>
+                                                <span class="price mb-0 mt-5 new_price" style="background-color: yellow;">UZS {{ item.total_uzs|intcomma }} </span>
                                             {% endif %}
 
                                             <div class="product-rate">
@@ -596,8 +583,8 @@
     <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
 
     <script src="{% static 'assets/js/alertify.min.js' %}"></script>
-    {#    <script src="{% static 'assets/js/ajax_request.js' %}"></script>#}
-    {#    <script src="{% static 'assets/js/calculate_price.js' %}"></script>#}
+    <script src="{% static 'assets/js/ajax_request.js' %}"></script>
+    <script src="{% static 'assets/js/calculate_price.js' %}"></script>
     <script src="{% static 'assets/js/change_photo.js' %}"></script>
     <script>
 
@@ -659,7 +646,7 @@
             variant: 0,
         }
         {% for image in image_objects %}
-            <!-- MAIN_SLIDES -->
+            // <!-- MAIN_SLIDES -->
             var main_img = document.createElement("img");
             main_img.src = "{{ image.image.url }}";
             main_img.id = "main_slide_image_id-{{ forloop.counter0 }}";
@@ -668,7 +655,7 @@
             main_div.appendChild(main_img);
             document.getElementById("main_slider_image").appendChild(main_div);
 
-            <!-- THUMBNAILS -->
+            // <!-- THUMBNAILS -->
             var img = document.createElement("img");
             img.src = "{{ image.image.url }}";
             img.id = "slide_image_id-{{ forloop.counter0 }}";
@@ -679,14 +666,14 @@
         {% endfor %}
         function generate(data) {
             {% for image in image_objects %}
-                <!-- MAIN_SLIDES -->
+                // <!-- MAIN_SLIDES -->
                 var main_text = "main_slide_image_id-" + {{ forloop.counter0 }};
                 var main_text_div = "main_div_image-" + {{ forloop.counter0 }};
-                <!-- THUMBNAILS -->
+                // <!-- THUMBNAILS -->
                 var text = "slide_image_id-" + {{ forloop.counter0 }};
                 var text_div = "div_image-" + {{ forloop.counter0 }};
                 if (data.length > {{ forloop.counter0 }}) {
-                    <!-- MAIN_SLIDES -->
+                    // <!-- MAIN_SLIDES -->
                     document.getElementById(main_text).remove();
                     var main_img = document.createElement("img");
                     main_img.src = data[{{ forloop.counter0 }}].url;
@@ -713,7 +700,7 @@
                     main_dive.id = 'main_div_image_slide';
                     main_dive.appendChild(main_imge);
                     document.getElementById(main_text_div).appendChild(main_dive);
-                    <!-- THUMBNAILS -->
+                    // <!-- THUMBNAILS -->
                     var imge = document.getElementById(text);
                     imge.src = "";
                     imge.id = "slide_image_id-" + {{ forloop.counter0 }};
