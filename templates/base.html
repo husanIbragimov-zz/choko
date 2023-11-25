@@ -386,6 +386,7 @@
                 display: none;
             }
 
+
             .pagination .justify-content-start {
                 justify-content: center;
             }
@@ -738,7 +739,7 @@
                                                     <ul class="d-lg-flex row row-cols-3 w-100">
                                                         {% for child in categories %}
                                                             {% if child.parent == cat %}
-                                                                <li class="col col-6 col-md-6 mega-menu-col">
+                                                                <li class="col col-6 col-md-6 ">
                                                                     <ul>
                                                                         <li>
                                                                             <span>
@@ -1186,6 +1187,17 @@
 
 </script>
 <!-- End Google Analytics -->
+<script>
+    {#gotopage#}
+    $(document).ready(function () {
+        $('.gotopage').click(event => {
+            {#console.log(event.target.getAttribute('data-url'))#}
+            console.log(event.target.getAttribute('data-url'))
+            console.log(event.target)
+            {#window.location=event.target.getAttribute('data-url')#}
+        })
+    });
+</script>
 
 </body>
 

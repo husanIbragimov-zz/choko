@@ -109,10 +109,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary"
+                        <button type="button" class="btn btn-secondary"
                                 data-bs-dismiss="modal">{% trans "Bekor qilish" %}
                         </button>
-                        <button type="submit"
+                        <button type="button"
                                 class="btn btn-primary">{% trans "Yuborish" %}
                         </button>
 
@@ -306,7 +306,8 @@
                                                 <button type="button"
                                                         class="button fs-6 button-add-to-cart addToCartBtn rounded-pill res-left">{% trans "Savatchaga qo'shish" %}
                                                 </button>
-                                                <button type="button" class="button fs-6 rounded-pill res-right"
+                                                <button type="button"
+                                                        class="button fs-6 rounded-pill res-right btn-one-click"
                                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                                     1 Click
                                                 </button>
@@ -525,7 +526,8 @@
                                     <ul class="list">
                                         {% for variant in variants %}
                                             {% if variant.product_type == product.product_type %}
-                                                <li class="active-sale personal calculate pay-list" id="personal calculate"
+                                                <li class="active-sale personal calculate pay-list"
+                                                    id="personal calculate"
                                                     data-id="{{ variant.id }}"
                                                     onclick="calculate({
                                                             duration:{{ variant.duration }},
@@ -784,7 +786,6 @@
                 var product_id = $('.prod_id').val()
                 var quantity = $('.qty-input').val()
                 var size = $('.size_class').val()
-                var product_image = $('.image_id').val()
                 var token = $("input[name=csrfmiddlewaretoken]").val();
 
                 $.ajax({
